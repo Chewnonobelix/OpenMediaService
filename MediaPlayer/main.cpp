@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 
 #include "libraryprobe.h"
-
+#include <QTime>
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -20,7 +20,9 @@ int main(int argc, char *argv[])
     
     LibraryProbe lp;
     
+    QTime t;
+    t.start();
     lp.explore();
-    
+    qDebug()<<t.elapsed()/1000;
     return app.exec();
 }
