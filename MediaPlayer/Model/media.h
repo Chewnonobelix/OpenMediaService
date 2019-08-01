@@ -6,8 +6,12 @@
 #include <QCryptographicHash>
 #include <QFile>
 #include <QMap>
+#include <QSharedPointer>
 #include "global.h"
 
+class Media;
+
+typedef QSharedPointer<Media> MediaPointer;
 
 class Media
 {
@@ -43,7 +47,8 @@ public:
     double currentRead() const;
     void setCurrentRead(double currentRead);
     
-    static Media createMedia(QString path);
+    static MediaPointer createMedia(QString path);
 };
+
 
 #endif // MEDIA_H

@@ -12,7 +12,7 @@ LibraryProbe::~LibraryProbe()
 
 QByteArray LibraryProbe::getMd5(QFileInfo info)
 {
-    QCryptographicHash ch(QCryptographicHash::Md5);
+    QCryptographicHash ch(QCryptographicHash::Sha512);
     QFile f(info.absoluteFilePath());
     if(!f.open(QIODevice::ReadOnly))
         return "";
@@ -31,7 +31,7 @@ void LibraryProbe::explore(QString dirName)
     for(auto it: fl)
     {
         auto md = getMd5(it);
-        qDebug()<<it.baseName()<<md;
+        qDebug()<<it.baseName()<<md<<md.size();
         md5<<md;
     }
     

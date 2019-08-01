@@ -14,14 +14,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        global.cpp \
-        library.cpp \
-        libraryprobe.cpp \
         main.cpp \
-        media.cpp \
-        playlist.cpp
+        Model\global.cpp \
+        Model\library.cpp \
+        Model\libraryprobe.cpp \
+        Model\media.cpp \
+        Model\playlist.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += View\qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -35,8 +35,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    global.h \
-    library.h \
-    libraryprobe.h \
-    media.h \
-    playlist.h
+    Controller/interfacesaver.h \
+    Model\global.h \
+    Model\library.h \
+    Model\libraryprobe.h \
+    Model\media.h \
+    Model\playlist.h

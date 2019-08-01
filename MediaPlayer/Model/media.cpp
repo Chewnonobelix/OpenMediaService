@@ -75,21 +75,21 @@ void Media::setCurrentRead(double currentRead)
     m_currentRead = currentRead;
 }
 
-Media Media::createMedia(QString path)
+MediaPointer Media::createMedia(QString path)
 {
-    Media ret;
+    MediaPointer ret = MediaPointer::create();
     QCryptographicHash hasher(QCryptographicHash::Md5);
     
-    ret.setPath(path);
+    ret->setPath(path);
     QFile file(path);
     file.open(QIODevice::ReadOnly);
     
     hasher.addData(&file);
     MD5 hash = hasher.result().toHex();
-    ret.setId(hash);
-    ret.setPath(path);
-    ret.setAdded(QDate::currentDate());
-    ret.setRole(MediaPlayerGlobal::getRole(path));
+    ret->setId(hash);
+    ret->setPath(path);
+    ret->setAdded(QDate::currentDate());
+    ret->setRole(MediaPlayerGlobal::getRole(path));
     file.close();
     
     return ret;
