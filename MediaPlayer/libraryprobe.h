@@ -9,21 +9,31 @@
 #include <QFileInfo>
 #include <QSet>
 #include <QTime>
+#include <QThread>
 
-class LibraryProbe
+class LibraryProbe: public QThread
 {
 private:
-    QSet<QByteArray> md5;
-    QStringList filter;
-    int counter;
-    
+protected:
+    void run();
+
 public:
+    static QSet<QByteArray> global;
+    static int globalCount;
+
+    QStringList baseName;
     LibraryProbe();
     ~LibraryProbe();
     
+    QSet<QByteArray> md5;
+    QStringList filter;
+    int counter;
+
     void explore(QString = "./");
     QByteArray getMd5(QFileInfo);
     
+public slots:
+    void onEnd();
 };
 
 #endif // LIBRARYPROBE_H
