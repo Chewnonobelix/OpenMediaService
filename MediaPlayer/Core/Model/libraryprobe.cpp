@@ -1,18 +1,30 @@
 #include "libraryprobe.h"
 
+QSet<QByteArray> LibraryProbe::global = QSet<QByteArray>();
+int LibraryProbe::globalCount = 0;
+
+void LibraryProbe::onEnd()
+{
+    global+= md5;
+    globalCount += counter;
+
+    qDebug()<<"Finish"<<baseName<<counter<<md5.size()<<globalCount<<global.size();
+}
+
 LibraryProbe::LibraryProbe(): counter(0)
 {
-        filter<<"*.mp3";
+        filter<<"*.mp3"<<"*.ogg"<<"*.flac"<<"*.cbr"<<"*.cbz"<<"*.pdf";
+        connect(this, LibraryProbe::finished, this, LibraryProbe::onEnd);
 }
 
 LibraryProbe::~LibraryProbe()
 {
-    qDebug()<<"Finish"<<counter<<md5.size();
+    qDebug()<<"Finish"<<baseName<<counter<<md5.size();
 }
 
 QByteArray LibraryProbe::getMd5(QFileInfo info)
 {
-    QCryptographicHash ch(QCryptographicHash::Sha512);
+    QCryptographicHash ch(QCryptographicHash::Md5);
     QFile f(info.absoluteFilePath());
     if(!f.open(QIODevice::ReadOnly))
         return "";
@@ -23,15 +35,23 @@ QByteArray LibraryProbe::getMd5(QFileInfo info)
     return ch.result().toHex();    
 }
 
+void LibraryProbe::run()
+{
+    for(auto it: baseName)
+        explore(it);
+}
+
 void LibraryProbe::explore(QString dirName)
 {
-    qDebug()<<"Explore"<<dirName;
+//    qDebug()<<"Explore"<<dirName;
     QDir dir(dirName);
     auto fl = dir.entryInfoList(filter);
     for(auto it: fl)
     {
         auto md = getMd5(it);
-        qDebug()<<it.baseName()<<md<<md.size();
+        if(md5.contains(md))
+            qDebug()<<it;
+        qDebug()<<it.baseName()<<md;
         md5<<md;
     }
     
@@ -40,7 +60,9 @@ void LibraryProbe::explore(QString dirName)
     
     for(auto it: subDirs)
     {
-        qDebug()<<it.absoluteFilePath();
+//        qDebug()<<it.absoluteFilePath();
         explore(it.absoluteFilePath());
     }
+
+//    qDebug()<<"End"<<dirName;
 }
