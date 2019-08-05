@@ -1,10 +1,15 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-#include "libraryprobe.h"
+#include "Model/libraryprobe.h"
+#include "Model/library.h"
 #include <QTime>
+
+
 int main(int argc, char *argv[])
 {
+    QString testDir = "E:\\Cloud\\Scan";
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     
     QGuiApplication app(argc, argv);
@@ -18,11 +23,7 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
     
-    LibraryProbe lp;
-    
-    QTime t;
-    t.start();
-    lp.explore();
-    qDebug()<<t.elapsed()/1000;
+    Library lp;
+    lp.probe();
     return app.exec();
 }

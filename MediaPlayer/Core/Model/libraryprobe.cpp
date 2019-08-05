@@ -1,17 +1,6 @@
 #include "libraryprobe.h"
 
-QSet<QByteArray> LibraryProbe::global = QSet<QByteArray>();
-int LibraryProbe::globalCount = 0;
-
-void LibraryProbe::onEnd()
-{
-    global+= md5;
-    globalCount += counter;
-
-    qDebug()<<"Finish"<<baseName<<counter<<md5.size()<<globalCount<<global.size();
-}
-
-LibraryProbe::LibraryProbe(): counter(0)
+LibraryProbe::LibraryProbe(): QThread(nullptr)
 {
         filter<<"*.mp3"<<"*.ogg"<<"*.flac"<<"*.cbr"<<"*.cbz"<<"*.pdf";
         connect(this, LibraryProbe::finished, this, LibraryProbe::onEnd);
@@ -19,19 +8,18 @@ LibraryProbe::LibraryProbe(): counter(0)
 
 LibraryProbe::~LibraryProbe()
 {
-    qDebug()<<"Finish"<<baseName<<counter<<md5.size();
 }
 
 QByteArray LibraryProbe::getMd5(QFileInfo info)
 {
-    QCryptographicHash ch(QCryptographicHash::Md5);
+    QCryptographicHash ch(QCryptographicHash::Sha512);
     QFile f(info.absoluteFilePath());
     if(!f.open(QIODevice::ReadOnly))
         return "";
     
     ch.addData(&f);
     f.close();
-    counter++;
+    m_counter++;
     return ch.result().toHex();    
 }
 
@@ -39,30 +27,39 @@ void LibraryProbe::run()
 {
     for(auto it: baseName)
         explore(it);
+
+    QTime t;
+    t.start();
+
+    for(int i = 0; i < m_all.size(); i++)
+    {
+        auto md = getMd5(m_all[i]);
+        emit s_add(md, m_all[i].absoluteFilePath());
+
+        double per = (i*100.0/m_all.size());
+        qDebug()<<per;
+    }
+
+    qDebug()<<"During"<<t.elapsed()/60;
 }
 
 void LibraryProbe::explore(QString dirName)
 {
-//    qDebug()<<"Explore"<<dirName;
+    qDebug()<<dirName;
     QDir dir(dirName);
     auto fl = dir.entryInfoList(filter);
-    for(auto it: fl)
-    {
-        auto md = getMd5(it);
-        if(md5.contains(md))
-            qDebug()<<it;
-        qDebug()<<it.baseName()<<md;
-        md5<<md;
-    }
+    m_all.append(fl);
+
     
     auto subDirs = dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot);
     
     
     for(auto it: subDirs)
-    {
-//        qDebug()<<it.absoluteFilePath();
         explore(it.absoluteFilePath());
-    }
 
-//    qDebug()<<"End"<<dirName;
+}
+
+void LibraryProbe::onEnd()
+{
+    qDebug()<<"Get "<<m_all.size();
 }

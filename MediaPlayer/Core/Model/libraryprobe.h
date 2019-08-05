@@ -13,25 +13,28 @@
 
 class LibraryProbe: public QThread
 {
+    Q_OBJECT
+
 private:
+    int m_counter;
+    QFileInfoList m_all;
 protected:
     void run();
 
 public:
-    static QSet<QByteArray> global;
-    static int globalCount;
 
     QStringList baseName;
     LibraryProbe();
     ~LibraryProbe();
     
-    QSet<QByteArray> md5;
     QStringList filter;
-    int counter;
 
     void explore(QString = "./");
     QByteArray getMd5(QFileInfo);
-    
+
+signals:
+    void s_add(QByteArray, QString);
+
 public slots:
     void onEnd();
 };
