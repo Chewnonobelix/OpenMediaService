@@ -26,6 +26,7 @@ private:
     double m_currentRead;
     
     
+    
 public:
     Media(MD5, QString);
     Media(const Media& other) = default;
@@ -38,6 +39,7 @@ public:
     MediaPlayerGlobal::MediaRole role() const;
     void setRole(MediaPlayerGlobal::MediaRole role);
     QString path() const;
+    QSet<QString> paths() const;
     void setPath(QString path);
     int nbPath() const;
     bool isAvailable() const;
@@ -52,7 +54,7 @@ public:
     
     friend MediaPointer operator << (MediaPointer, QString);
     void operator ++();
-    static MediaPointer createMedia(MD5, QString path);
+    static MediaPointer createMedia(MD5, QString path = "");
 };
 
 

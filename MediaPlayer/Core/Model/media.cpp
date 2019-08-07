@@ -31,6 +31,11 @@ QString Media::path() const
     return *m_path.begin();
 }
 
+QSet<QString> Media::paths() const
+{
+    return m_path;
+}
+
 void Media::setPath(QString path)
 {
     m_path<<path;

@@ -1,4 +1,4 @@
-QT += quick
+QT += quick xml core
 
 CONFIG += c++17
 
@@ -14,6 +14,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        Controller/controllerlibrary.cpp \
+        Controller/interfacesaver.cpp \
+        Controller/xmldatabase.cpp \
         main.cpp \
         Model\global.cpp \
         Model\library.cpp \
@@ -35,7 +38,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    Controller/controllerlibrary.h \
     Controller/interfacesaver.h \
+    Controller/xmldatabase.h \
     Model\global.h \
     Model\library.h \
     Model\libraryprobe.h \
