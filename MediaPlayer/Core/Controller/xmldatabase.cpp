@@ -5,6 +5,29 @@ XmlDatabase::XmlDatabase()
     
 }
 
+XmlDatabase::XmlDatabase(const XmlDatabase& xd): InterfaceSaver(xd)
+{
+    
+}
+
+XmlDatabase::~XmlDatabase()
+{
+    
+    QDir dir = QDir::currentPath();
+    if(!dir.exists("Library"))
+        dir.mkdir("Library");
+    
+    QFile file("Library\\"+name()+".xml");
+    
+    if(!file.open(QIODevice::WriteOnly))
+        return;
+
+    qDebug()<<"To print"<<m_doc.toString().size();
+    file.write(m_doc.toByteArray());    
+    
+    file.close();
+}
+
 void XmlDatabase::init()
 {
     QFile file("Library\\"+name()+".xml");
@@ -13,7 +36,7 @@ void XmlDatabase::init()
         return;
     
     if(!m_doc.setContent(file.readAll()))
-        m_doc.setContent("<library role="+QString::number((int)role())+" />");
+        qDebug()<<"Content"<<m_doc.setContent("<library role=\""+QString::number((int)role())+"\" />");
     
     file.close();
 }
@@ -94,6 +117,7 @@ QMap<MD5, MediaPointer> XmlDatabase::selectMedia()
 
 bool XmlDatabase::addMedia(MediaPointer p)
 {
+//    qDebug()<<"Add "<<p->id();
     bool ret = false;
     
     auto root = m_doc.documentElement();
@@ -145,7 +169,13 @@ bool XmlDatabase::updateMedia(MediaPointer p)
             setter(el, "counter", QString::number(p->count()));
             setter(el, "lastFinished", p->lastFinish().toString("hh:mm:ss dd-MM-yyyy"));
             setter(el, "currentRead", QString::number(p->currentRead()));
-        }
+            
+            auto list2 = el.elementsByTagName("path");
+            for(int j = 0; j < list2.size(); j++)
+                el.removeChild(list2.at(j).toElement());
+            
+            for(auto it: p->paths())
+                adder(el, "path", it);        }
     }
     return false;
 }

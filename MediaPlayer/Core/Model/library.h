@@ -3,10 +3,14 @@
 
 #include <QMap>
 #include <QObject>
-
+#include <QSharedPointer>
 #include "media.h"
 #include "playlist.h"
 #include "libraryprobe.h"
+
+class Library;
+
+typedef QSharedPointer<Library> LibraryPointer;
 
 class Library: public QObject
 {
@@ -28,9 +32,21 @@ public:
 
     void probe();
 
+    QString name() const;
+    void setName(QString name);
+    
+    MediaPlayerGlobal::MediaRole role() const;
+    void setRole(MediaPlayerGlobal::MediaRole role);
+    
 public slots:
     void addProbedMedia(MD5, QString);
     void endProbe();
+    
+signals:
+    void s_addMedia(MediaPointer);
+    void s_updateMedia(MediaPointer);
+    void s_removeMedia(MediaPointer);
+    
 };
 
 #endif // LIBRARY_H

@@ -4,11 +4,14 @@
 #include <QDomDocument>
 #include <QDomElement>
 #include <QFile>
+#include <QDir>
 #include <QDebug>
 #include "interfacesaver.h"
 
 class XmlDatabase: public InterfaceSaver
 {
+    Q_OBJECT
+    
 private:
     QDomDocument m_doc;
     
@@ -19,8 +22,12 @@ private:
     
 public:
     XmlDatabase();
+    XmlDatabase(const XmlDatabase&);
+    ~XmlDatabase();
     
     virtual void init();
+ 
+public slots:
     
     virtual QMap<MD5, MediaPointer> selectMedia();
     virtual bool addMedia(MediaPointer);

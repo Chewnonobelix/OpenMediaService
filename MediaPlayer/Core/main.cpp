@@ -5,6 +5,7 @@
 #include "Model/library.h"
 
 #include "Controller/xmldatabase.h"
+#include "Controller/controllerlibrary.h"
 #include <QTime>
 
 
@@ -26,7 +27,8 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
     
-    Library lp;
-    lp.probe();
+    ControllerLibrary cl;
+    cl.addLibrary("Test", MediaRole::Audio);
+    cl.probeAll();
     return app.exec();
 }

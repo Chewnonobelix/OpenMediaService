@@ -14,6 +14,12 @@ namespace MediaPlayerGlobal
     Q_ENUM_NS(MediaRole)
     
     MediaRole getRole(QString path);
+    
+    template<class T>
+    QSharedPointer<T> factory() 
+    {
+        return QSharedPointer<T>::create();
+    }
 }
 
 #endif // GLOBAL_H
