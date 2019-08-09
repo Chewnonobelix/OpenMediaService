@@ -12,7 +12,7 @@ void Library::setMedias(const QMap<MD5, MediaPointer> &medias)
 
 Library::Library(): QObject(nullptr)
 {
-    m_sourceDir<<"C:\\Perso\\MediaPlayer\\build-MediaPlayer-Desktop_Qt_5_13_0_MinGW_64_bit-Debug\\hexagone";
+    m_sourceDir<<"C:\\Perso\\MediaPlayer\\build-MediaPlayer-Desktop_Qt_5_13_0_MinGW_64_bit-Debug\\hexagone\\Musique save\\Variete";
     
     connect(&m_probe, LibraryProbe::finished, this, Library::endProbe);
     connect(&m_probe, LibraryProbe::s_add, this, Library::addProbedMedia);
@@ -30,7 +30,6 @@ void Library::addProbedMedia(MD5 md, QString path)
     }
     else
     {
-        qDebug()<<"path"<<path;
         auto n = Media::createMedia(md, path);
         m_medias[md] = n;
         emit s_addMedia(n);

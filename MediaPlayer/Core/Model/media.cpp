@@ -38,6 +38,9 @@ QSet<QString> Media::paths() const
 
 void Media::setPath(QString path)
 {
+    if(path.isEmpty())
+        return;
+ 
     m_path<<path;
 }
 

@@ -79,8 +79,9 @@ void XmlDatabase::setter(QDomElement& el, QString tagname, QString value, QMap<Q
 void XmlDatabase::deleter(QDomElement & el, QString tagname)
 {
     auto old = el.elementsByTagName(tagname);
-    if(old.size() == 1)
-        el.removeChild(old.at(0));
+    for(int i = 0; i < old.size(); i++)
+        el.removeChild(old.at(i).toElement());
+    
 }
 
 void XmlDatabase::deleter(QDomElement & root, QDomElement& el)
@@ -168,7 +169,7 @@ bool XmlDatabase::updateMedia(MediaPointer p)
     
     for(int i = 0; i < list.size(); i++)
     {
-        auto el = list.at(i).toElement();
+        QDomElement el = list.at(i).toElement();
         if(el.attribute("id").toLatin1() == p->id())
         {
             setter(el, "counter", QString::number(p->count()));
@@ -176,11 +177,17 @@ bool XmlDatabase::updateMedia(MediaPointer p)
             setter(el, "currentRead", QString::number(p->currentRead()));
             
             auto list2 = el.elementsByTagName("path");
-            for(int j = 0; j < list2.size(); j++)
-                el.removeChild(list2.at(j).toElement());
+            while(list2.size() > 0)
+                el.removeChild(list2.at(0).toElement());
             
             for(auto it: p->paths())
-                adder(el, "path", it);        }
+            {
+                if(it.isEmpty())
+                    continue;
+
+                adder(el, "path", it);      
+            }
+        }
     }
     return false;
 }
