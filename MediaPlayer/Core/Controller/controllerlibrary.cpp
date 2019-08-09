@@ -24,28 +24,28 @@ void ControllerLibrary::open(QString filename)
     qDebug()<<"Open "<<filename;
     auto name = filename.split("/").last().remove(".xml");
     qDebug()<<name;
-    auto lib = factory<Library>();
+//    auto lib = factory<Library>();
+    addLibrary(name, MediaRole::Undefined);    
+//    int type = QMetaType::type("XmlDatabase");
+//    if(type == QMetaType::UnknownType)
+//        throw QString("Unknow DB Type");
     
-    int type = QMetaType::type("XmlDatabase");
-    if(type == QMetaType::UnknownType)
-        throw QString("Unknow DB Type");
+//    InterfaceSaver* saver = (InterfaceSaver*)(QMetaType::create(type));
+//    QSharedPointer<InterfaceSaver> pis;
+//    pis.reset(saver);
+
+//    pis->setName(name);
+//    pis->init();
+
+//    m_libs<<qMakePair(lib, pis);
+
+//    connect(lib.data(), Library::s_addMedia, pis.data(), InterfaceSaver::addMedia);
+//    connect(lib.data(), Library::s_updateMedia, pis.data(), InterfaceSaver::updateMedia);
+//    connect(lib.data(), Library::s_removeMedia, pis.data(), InterfaceSaver::removeMedia);
     
-    InterfaceSaver* saver = (InterfaceSaver*)(QMetaType::create(type));
-    QSharedPointer<InterfaceSaver> pis;
-    pis.reset(saver);
-
-    pis->setName(name);
-    pis->init();
-
-    m_libs<<qMakePair(lib, pis);
-
-    connect(lib.data(), Library::s_addMedia, pis.data(), InterfaceSaver::addMedia);
-    connect(lib.data(), Library::s_updateMedia, pis.data(), InterfaceSaver::updateMedia);
-    connect(lib.data(), Library::s_removeMedia, pis.data(), InterfaceSaver::removeMedia);
-    
-    lib->setName(name);
-    lib->setRole(pis->role());
-    lib->setMedias(pis->selectMedia());    
+//    lib->setName(name);
+//    lib->setRole(pis->role());
+//    lib->setMedias(pis->selectMedia());    
 }
 
 bool ControllerLibrary::addLibrary(QString name, MediaRole role)
@@ -69,7 +69,7 @@ bool ControllerLibrary::addLibrary(QString name, MediaRole role)
     saver->setRole(role);
     l->setRole(role);
     pis->init();
-    
+    l->setMedias(pis->selectMedia());
     connect(l.data(), Library::s_addMedia, pis.data(), InterfaceSaver::addMedia);
     connect(l.data(), Library::s_updateMedia, pis.data(), InterfaceSaver::updateMedia);
     connect(l.data(), Library::s_removeMedia, pis.data(), InterfaceSaver::removeMedia);
