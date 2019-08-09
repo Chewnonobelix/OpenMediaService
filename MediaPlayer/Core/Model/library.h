@@ -38,6 +38,9 @@ public:
     MediaPlayerGlobal::MediaRole role() const;
     void setRole(MediaPlayerGlobal::MediaRole role);
     
+    QMap<MD5, MediaPointer> medias() const;
+    void setMedias(const QMap<MD5, MediaPointer> &medias);
+    
 public slots:
     void addProbedMedia(MD5, QString);
     void endProbe();

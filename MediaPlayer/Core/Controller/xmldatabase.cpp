@@ -37,6 +37,11 @@ void XmlDatabase::init()
     
     if(!m_doc.setContent(file.readAll()))
         qDebug()<<"Content"<<m_doc.setContent("<library role=\""+QString::number((int)role())+"\" />");
+    else
+    {
+        int role = m_doc.documentElement().attribute("role").toInt();
+        setRole((MediaRole)role);
+    }
     
     file.close();
 }
@@ -91,7 +96,7 @@ QMap<MD5, MediaPointer> XmlDatabase::selectMedia()
     auto root = m_doc.documentElement();
     
     auto list = root.elementsByTagName("media");
-    
+    qDebug()<<"Media size"<<list.size();
     for(int i = 0; i < list.size(); i++)
     {
         auto el = list.at(i).toElement();
