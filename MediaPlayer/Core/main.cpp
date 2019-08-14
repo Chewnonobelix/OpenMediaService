@@ -30,5 +30,7 @@ int main(int argc, char *argv[])
     ControllerLibrary cl;
     cl.addLibrary("Test", MediaRole::Audio);
     cl.probeAll();
+    
+    
     return app.exec();
 }

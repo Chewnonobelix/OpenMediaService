@@ -76,6 +76,16 @@ void XmlDatabase::setter(QDomElement& el, QString tagname, QString value, QMap<Q
         child.setAttribute(it.key(), it.key());
 }
 
+void XmlDatabase::setter(QDomElement& el, QString value, QMap<QString, QString> attr)
+{
+        
+    QDomText txt = el.firstChild().toText();
+    txt.setData(value);
+    
+    for(auto it = attr.begin(); it != attr.end(); it++)
+        el.setAttribute(it.key(), it.key());
+}
+
 void XmlDatabase::deleter(QDomElement & el, QString tagname)
 {
     auto old = el.elementsByTagName(tagname);
@@ -190,4 +200,67 @@ bool XmlDatabase::updateMedia(MediaPointer p)
         }
     }
     return false;
+}
+
+bool XmlDatabase::updateSourceDir(QSet<QString> sourceDir)
+{
+    qDebug()<<"Update source dir"<<sourceDir;
+    auto root = m_doc.documentElement();
+    auto list = root.elementsByTagName("sourceDir");
+    
+    if(sourceDir.size() != list.size())
+    {
+        while(list.size() != 0)
+        {
+            auto el = list.at(0).toElement();
+            deleter(root, el);
+        }
+        
+        for(auto it: sourceDir)
+            adder(root, "sourceDir", it);
+    }
+    else
+    {
+        auto it = sourceDir.begin();
+        for(int i = 0; i < list.size(); i++, it++)
+        {
+            auto el = list.at(i).toElement();
+            setter(el, *it);
+        }
+    }
+    
+    return true;
+}
+
+bool XmlDatabase::updateLastProbed(QDateTime probed)
+{
+    auto root = m_doc.documentElement();
+    auto list = root.elementsByTagName("lastProbed");
+    
+    if(list.size() == 0)
+        adder(root, "lastProbed", probed.toString("hh:mm:ss dd-MM-yyyy"));
+    else
+        setter(root, "lastProbed", probed.toString("hh:mm:ss dd-MM-yyyy"));
+    
+    return true;
+}
+
+QDateTime XmlDatabase::selectLastProbed()
+{
+    auto root = m_doc.documentElement();
+    auto list = root.elementsByTagName("lastProbed");
+
+    return list.size() == 0 ? QDateTime() : QDateTime::fromString(list.at(0).toElement().text(), "hh:mm:ss dd-MM-yyyy");    
+}
+
+QSet<QString> XmlDatabase::selectSourceDir()
+{
+    QSet<QString> ret;
+    auto root = m_doc.documentElement();
+    auto list = root.elementsByTagName("sourceDir");
+    
+    for(int i = 0; i < list.size(); i++)
+        ret<<list.at(i).toElement().text();
+        
+    return ret;
 }

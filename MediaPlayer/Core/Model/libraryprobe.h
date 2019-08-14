@@ -18,6 +18,8 @@ class LibraryProbe: public QThread
 private:
     int m_counter;
     QFileInfoList m_all;
+    QDateTime m_lastProbed;
+    
 protected:
     void run();
 
@@ -32,9 +34,12 @@ public:
     void explore(QString = "./");
     QByteArray getMd5(QFileInfo);
 
+    QDateTime lastProbed() const;
+    void setLastProbed(QDateTime lastProbed);
+    
 signals:
     void s_add(QByteArray, QString);
-
+    
 public slots:
     void onEnd();
 };

@@ -70,12 +70,21 @@ bool ControllerLibrary::addLibrary(QString name, MediaRole role)
     l->setRole(role);
     pis->init();
     l->setMedias(pis->selectMedia());
+    l->setLastProbed(pis->selectLastProbed());
+
+    for(auto it: pis->selectSourceDir())
+        l->addSourceDir(it);
+    
     connect(l.data(), Library::s_addMedia, pis.data(), InterfaceSaver::addMedia);
     connect(l.data(), Library::s_updateMedia, pis.data(), InterfaceSaver::updateMedia);
     connect(l.data(), Library::s_removeMedia, pis.data(), InterfaceSaver::removeMedia);
     
+    connect(l.data(), Library::s_updateLastProbed, pis.data(), InterfaceSaver::updateLastProbed);
+    connect(l.data(), Library::s_updateSourceDir, pis.data(), InterfaceSaver::updateSourceDir);
     m_libs.push_back(qMakePair(l, pis));
     
+    //l->addSourceDir("C:\\Perso\\MediaPlayer\\build-MediaPlayer-Desktop_Qt_5_13_0_MinGW_64_bit-Debug\\hexagone\\");
+
     qDebug()<<l->name()<<l->role()<<m_libs.size();
     return ret;
 }

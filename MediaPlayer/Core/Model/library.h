@@ -23,6 +23,7 @@ private:
     MediaPlayerGlobal::MediaRole m_role;    
     QMap<MD5, MediaPointer> m_medias;    
     QList<PlayListPointer> m_playlists;
+    QDateTime m_lastProbed;
     
     LibraryProbe m_probe;
 
@@ -41,14 +42,26 @@ public:
     QMap<MD5, MediaPointer> medias() const;
     void setMedias(const QMap<MD5, MediaPointer> &medias);
     
+    void addSourceDir(QString);
+    QSet<QString> sourceDir() const;
+    void removeSourceDir(QString);
+    
+    QDateTime lastProbed() const;
+    void setLastProbed(QDateTime lastProbed);
+    
 public slots:
     void addProbedMedia(MD5, QString);
     void endProbe();
+    void removeMedia(MD5);
     
 signals:
     void s_addMedia(MediaPointer);
     void s_updateMedia(MediaPointer);
     void s_removeMedia(MediaPointer);
+    void s_updateLastProbed(QDateTime);
+    void s_updateSourceDir(QSet<QString>);
+    
+    
     
 };
 

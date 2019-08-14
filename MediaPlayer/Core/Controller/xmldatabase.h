@@ -17,6 +17,7 @@ private:
     
     QDomElement adder(QDomElement&, QString , QString, QMap<QString, QString> = QMap<QString, QString>());
     void setter(QDomElement&, QString , QString, QMap<QString, QString> = QMap<QString, QString>() );
+    void setter(QDomElement&, QString, QMap<QString, QString> = QMap<QString, QString>() );
     void deleter(QDomElement&, QString);
     void deleter(QDomElement&, QDomElement&);
     
@@ -28,11 +29,16 @@ public:
     virtual void init();
  
 public slots:
-    
     virtual QMap<MD5, MediaPointer> selectMedia();
     virtual bool addMedia(MediaPointer);
     virtual bool removeMedia(MediaPointer);
     virtual bool updateMedia(MediaPointer);
+    
+    virtual QSet<QString> selectSourceDir();
+    virtual bool updateSourceDir(QSet<QString>);
+    
+    virtual QDateTime selectLastProbed();
+    virtual bool updateLastProbed(QDateTime);
     
 };
 

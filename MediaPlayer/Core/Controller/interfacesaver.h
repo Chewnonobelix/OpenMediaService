@@ -35,6 +35,11 @@ public slots:
     virtual bool removeMedia(MediaPointer) = 0;
     virtual bool updateMedia(MediaPointer) = 0;
     
+    virtual QSet<QString> selectSourceDir() = 0;
+    virtual bool updateSourceDir(QSet<QString>) = 0;
+   
+    virtual QDateTime selectLastProbed() = 0;
+    virtual bool updateLastProbed(QDateTime) = 0;
     
 };
 
