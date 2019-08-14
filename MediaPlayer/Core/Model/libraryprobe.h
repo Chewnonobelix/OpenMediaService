@@ -37,6 +37,8 @@ public:
     QDateTime lastProbed() const;
     void setLastProbed(QDateTime lastProbed);
     
+    bool hasProbed() const;
+    
 signals:
     void s_add(QByteArray, QString);
     

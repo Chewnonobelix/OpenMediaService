@@ -24,7 +24,7 @@ private:
     QDate m_added;
     QDateTime m_lastFinish;
     double m_currentRead;
-    
+    QMap<QString, QVariant> m_metadata;
     
     
 public:

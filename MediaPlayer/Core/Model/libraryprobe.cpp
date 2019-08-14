@@ -19,7 +19,7 @@ QByteArray LibraryProbe::getMd5(QFileInfo info)
     
     ch.addData(&f);
     f.close();
-    m_counter++;
+
     return ch.result().toHex();    
 }
 
@@ -35,6 +35,7 @@ void LibraryProbe::setLastProbed(QDateTime lastProbed)
 
 void LibraryProbe::run()
 {
+    m_counter = 0;
     for(auto it: baseName)
         explore(it);
     
@@ -60,6 +61,8 @@ void LibraryProbe::explore(QString dirName)
     auto fl = dir.entryInfoList(filter);
     m_all.append(fl);
 
+    m_counter += fl.size();
+    
     
     auto subDirs = dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot);
     
@@ -67,7 +70,7 @@ void LibraryProbe::explore(QString dirName)
     for(auto it: subDirs)
     {
         qDebug()<<lastProbed()<<it.lastModified()<<it.path();
-        if(it.lastModified() >= lastProbed() || it.created() > lastProbed())
+        if(it.metadataChangeTime() >= lastProbed()/* || it.created() > lastProbed()*/)
             explore(it.absoluteFilePath());
         else
             qDebug()<<"Unprobe"<<it.absolutePath();
@@ -78,4 +81,9 @@ void LibraryProbe::explore(QString dirName)
 void LibraryProbe::onEnd()
 {
     qDebug()<<"Get "<<m_all.size();
+}
+
+bool LibraryProbe::hasProbed() const
+{
+    return m_counter != 0;
 }

@@ -53,6 +53,7 @@ public slots:
     void addProbedMedia(MD5, QString);
     void endProbe();
     void removeMedia(MD5);
+    bool addMedia(QString);
     
 signals:
     void s_addMedia(MediaPointer);

@@ -52,7 +52,9 @@ void Library::endProbe()
     qDebug()<<"Endprobe;";
     for(auto it: m_medias)
         nPath += it->nbPath();
-    setLastProbed(QDateTime::currentDateTime());
+    
+    if(m_probe.hasProbed())
+        setLastProbed(QDateTime::currentDateTime());
     qDebug()<<m_medias.size()<<nPath;
 //    probe();
 }
@@ -106,4 +108,12 @@ void Library::removeMedia(MD5 id)
     emit s_removeMedia(m_medias[id]);
     
     m_medias.remove(id);
+}
+
+bool Library::addMedia(QString path)
+{
+    auto id = m_probe.getMd5(path);
+    addProbedMedia(id, path);
+    
+    return true;
 }
