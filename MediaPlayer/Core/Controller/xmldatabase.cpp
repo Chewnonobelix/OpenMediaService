@@ -111,21 +111,24 @@ QMap<MD5, MediaPointer> XmlDatabase::selectMedia()
     for(int i = 0; i < list.size(); i++)
     {
         auto el = list.at(i).toElement();
-        QString id = el.attribute("id");
-        auto med = Media::createMedia(id.toLatin1());
-        med->setRole(role());
+        auto child = el.elementsByTagName("id").at(0).toElement();
+
+        auto med = Media::createMedia(child.text().toLatin1());
+
         
         auto path = el.elementsByTagName("path");
         
         for(auto j = 0; j < path.size(); j++)
             med->setPath(path.at(j).toElement().text());
+
+        auto childs = el.childNodes();
+        for(int j = 0; j < childs.size(); j++)
+        {
+            if(childs.at(j).toElement().tagName() != "path" && childs.at(j).toElement().tagName() != "id")
+                med->setMetadata(childs.at(j).toElement().tagName(), childs.at(j).toElement().text());
+        }
         
-        med->setCount(el.elementsByTagName("counter").at(0).toElement().text().toInt());
-        med->setAdded(QDate::fromString(el.elementsByTagName("added").at(0).toElement().text(), "dd-MM-yyy"));
-        med->setLastFinish(QDateTime::fromString(el.elementsByTagName("lastFinish").at(0).toElement().text(), "hh:mm:ss dd-MM-yyy"));
-        med->setCurrentRead(el.elementsByTagName("currentRead").at(0).toElement().text().toDouble());
-        
-        ret[id.toLatin1()] = med;
+        ret[med->id()] = med;
     }
     
     return ret;
@@ -138,17 +141,19 @@ bool XmlDatabase::addMedia(MediaPointer p)
     
     auto root = m_doc.documentElement();
     QMap<QString, QString> attr;
-    attr["id"] = p->id();
+
     auto el = adder(root, "media", "", attr);
     
     ret = !el.isNull();
     
     if(ret)
     {
-        ret |= adder(el, "counter", QString::number(p->count())).isNull();
-        ret |= adder(el, "currentRead", QString::number(p->currentRead())).isNull();
-        ret |= adder(el, "added", p->added().toString("dd-MM-yyyy")).isNull();
-        ret |= adder(el, "lastFinished", p->lastFinish().toString("hh:mm:ss dd-MM-yyyy")).isNull();
+        auto keys = p->metaDataList();
+        
+        for(auto it: keys)
+        {
+            ret |= adder(el, it, p->metaData<QString>(it)).isNull();
+        }
         
         for(auto it: p->paths())
             ret |= adder(el, "path", it).isNull();
@@ -163,12 +168,16 @@ bool XmlDatabase::removeMedia(MediaPointer p)
     auto list = root.elementsByTagName("media");
     bool ret = false;
     for(int i = 0; i < list.size(); i++)
-        if((list.at(i).toElement().attribute("id").toLatin1() == p->id()))
+    {
+        auto el1 = list.at(i).toElement();
+        auto c = el1.elementsByTagName("id").at(0).toElement();
+        if(c.text() == p->id())
         {
              auto el = list.at(i).toElement(); 
              deleter(root, el);
              ret = true;
         }
+    }
     return ret;
 }
 
@@ -180,11 +189,13 @@ bool XmlDatabase::updateMedia(MediaPointer p)
     for(int i = 0; i < list.size(); i++)
     {
         QDomElement el = list.at(i).toElement();
-        if(el.attribute("id").toLatin1() == p->id())
+        auto el1 = list.at(i).toElement();
+        auto c = el1.elementsByTagName("id").at(0).toElement();
+        
+        if(c.text() == p->id())
         {
-            setter(el, "counter", QString::number(p->count()));
-            setter(el, "lastFinished", p->lastFinish().toString("hh:mm:ss dd-MM-yyyy"));
-            setter(el, "currentRead", QString::number(p->currentRead()));
+            for(auto it: p->metaDataList())
+                setter(el, it,  p->metaData<QString>(it));
             
             auto list2 = el.elementsByTagName("path");
             while(list2.size() > 0)

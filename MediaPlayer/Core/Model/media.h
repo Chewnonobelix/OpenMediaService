@@ -8,6 +8,7 @@
 #include <QMap>
 #include <QSharedPointer>
 #include <QSet>
+#include <QVariant>
 #include "global.h"
 
 class Media;
@@ -17,14 +18,8 @@ typedef QSharedPointer<Media> MediaPointer;
 class Media
 {
 private:
-    MD5 m_id;    
-    MediaPlayerGlobal::MediaRole m_role;
     QSet<QString> m_path;
-    int m_count;
-    QDate m_added;
-    QDateTime m_lastFinish;
-    double m_currentRead;
-    QMap<QString, QVariant> m_metadata;
+    QVariantMap m_metadata;
     
     
 public:
@@ -51,6 +46,22 @@ public:
     void setLastFinish(QDateTime lastFinish);
     double currentRead() const;
     void setCurrentRead(double currentRead);
+    
+    QStringList metaDataList() const;
+    bool hasMetadata(QString) const;
+    bool hasMetadata() const;
+    
+    template<class T>
+    T metaData(QString key)
+    {
+        return m_metadata[key].value<T>();
+    }
+    
+    template<class T>
+    void setMetadata(QString key, T value)
+    {
+        m_metadata[key] = value;
+    }
     
     friend MediaPointer operator << (MediaPointer, QString);
     void operator ++();
