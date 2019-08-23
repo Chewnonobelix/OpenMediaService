@@ -86,8 +86,8 @@ void Media::setCurrentRead(double currentRead)
 
 MediaPointer Media::createMedia(MD5 id, QString path)
 {
-    MediaPointer ret = MediaPointer::create(id, path);
-    ret->setPath(path);
+    MediaPointer ret = MediaPlayerGlobal::factory<Media>(id, path);
+//    ret->setPath(path);
     ret->setAdded(QDate::currentDate());
     ret->setRole(MediaPlayerGlobal::getRole(path));
     

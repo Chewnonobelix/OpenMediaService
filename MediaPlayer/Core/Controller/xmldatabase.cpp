@@ -113,7 +113,7 @@ QMap<MD5, MediaPointer> XmlDatabase::selectMedia()
         auto el = list.at(i).toElement();
         auto child = el.elementsByTagName("id").at(0).toElement();
 
-        auto med = Media::createMedia(child.text().toLatin1());
+        auto med = factory<Media>(child.text().toLatin1());
 
         
         auto path = el.elementsByTagName("path");

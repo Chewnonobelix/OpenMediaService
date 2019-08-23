@@ -15,10 +15,10 @@ namespace MediaPlayerGlobal
     
     MediaRole getRole(QString path);
     
-    template<class T>
-    QSharedPointer<T> factory() 
+    template<class T, typename... U>
+    QSharedPointer<T> factory(U&&... params) 
     {
-        return QSharedPointer<T>::create();
+        return QSharedPointer<T>::create(params...);
     }
 }
 

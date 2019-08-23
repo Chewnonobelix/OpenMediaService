@@ -23,7 +23,7 @@ private:
     
     
 public:
-    Media(MD5, QString);
+    Media(MD5, QString = "");
     Media(const Media& other) = default;
     ~Media() = default;
     
