@@ -2,8 +2,8 @@
 
 LibraryProbe::LibraryProbe(): QThread(nullptr)
 {
-        filter<<"*.mp3"<<"*.ogg"<<"*.flac"<<"*.cbr"<<"*.cbz"<<"*.pdf";
-        connect(this, LibraryProbe::finished, this, LibraryProbe::onEnd);
+    filter<<"*.mp3"<<"*.ogg"<<"*.flac"<<"*.cbr"<<"*.cbz"<<"*.pdf";
+    connect(this, LibraryProbe::finished, this, LibraryProbe::onEnd);
 }
 
 LibraryProbe::~LibraryProbe()
@@ -19,7 +19,7 @@ QByteArray LibraryProbe::getMd5(QFileInfo info)
     
     ch.addData(&f);
     f.close();
-
+    
     return ch.result().toHex();    
 }
 
@@ -44,13 +44,16 @@ void LibraryProbe::run()
     
     for(int i = 0; i < m_all.size(); i++)
     {
+        if(m_all[i].lastModified() <= lastProbed() && m_all[i].birthTime() <= lastProbed())
+            continue;
+        
         auto md = getMd5(m_all[i]);
         emit s_add(md, m_all[i].absoluteFilePath());
-
+        setLastProbed(m_all[i].lastModified());
         double per = (i*100.0/m_all.size());
         qDebug()<<per;
     }
-
+    
     qDebug()<<"During"<<t.elapsed()/60;
 }
 
@@ -60,7 +63,7 @@ void LibraryProbe::explore(QString dirName)
     QDir dir(dirName);
     auto fl = dir.entryInfoList(filter);
     m_all.append(fl);
-
+    
     m_counter += fl.size();
     
     
@@ -70,12 +73,9 @@ void LibraryProbe::explore(QString dirName)
     for(auto it: subDirs)
     {
         qDebug()<<lastProbed()<<it.lastModified()<<it.path();
-        if(it.metadataChangeTime() >= lastProbed()/* || it.created() > lastProbed()*/)
-            explore(it.absoluteFilePath());
-        else
-            qDebug()<<"Unprobe"<<it.absolutePath();
+        explore(it.absoluteFilePath());
     }
-
+    
 }
 
 void LibraryProbe::onEnd()
