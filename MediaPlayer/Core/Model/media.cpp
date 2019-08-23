@@ -8,22 +8,22 @@ Media::Media(MD5 id, QString path)
 
 MD5 Media::id() const
 {
-    return m_metadata["id"].toByteArray();
+    return metaData<MD5>("id");
 }
 
 void Media::setId(MD5 id)
 {
-    m_metadata["id"] = id;
+    setMetadata("id", id);
 }
 
 MediaPlayerGlobal::MediaRole Media::role() const
 {
-    return m_metadata["role"].value<MediaPlayerGlobal::MediaRole>();
+    return metaData<MediaPlayerGlobal::MediaRole>("role");
 }
 
 void Media::setRole(MediaPlayerGlobal::MediaRole role)
 {
-    m_metadata["role"] = role;
+    setMetadata("role", role);
 }
 
 QString Media::path() const
@@ -46,48 +46,47 @@ void Media::setPath(QString path)
 
 int Media::count() const
 {
-    return hasMetadata("count") ? m_metadata["count"].toInt() : 0;
+    return hasMetadata("count") ? metaData<int>("count") : 0;
 }
 
 void Media::setCount(int count)
 {
-    m_metadata["count"] = count;
+    setMetadata("count", count);
 }
 
 QDate Media::added() const
 {
-    return m_metadata["added"].toDate();
+    return metaData<QDate>("added");
 }
 
 void Media::setAdded(QDate added)
 {
-    m_metadata["added"] = added;
+    setMetadata("added", added);
 }
 
 QDateTime Media::lastFinish() const
 {
-    return m_metadata["lastFinish"].toDateTime();
+    return metaData<QDateTime>("lastFinish");
 }
 
 void Media::setLastFinish(QDateTime lastFinish)
 {
-    m_metadata["lastFinish"] = lastFinish;
+    setMetadata("lastFinish", lastFinish);
 }
 
 double Media::currentRead() const
 {
-    return m_metadata["currentRead"].toDouble();
+    return metaData<double>("currentRead");
 }
 
 void Media::setCurrentRead(double currentRead)
 {
-    m_metadata["currentRead"] = currentRead;
+    setMetadata("currentRead", currentRead);
 }
 
 MediaPointer Media::createMedia(MD5 id, QString path)
 {
     MediaPointer ret = MediaPlayerGlobal::factory<Media>(id, path);
-//    ret->setPath(path);
     ret->setAdded(QDate::currentDate());
     ret->setRole(MediaPlayerGlobal::getRole(path));
     
@@ -114,21 +113,4 @@ bool Media::isAvailable() const
 {
     return !m_path.isEmpty();
 }
-
-QStringList Media::metaDataList() const
-{
-    return m_metadata.keys();
-}
-
-bool Media::hasMetadata(QString key) const
-{
-    return m_metadata.contains(key);
-}
-
-bool Media::hasMetadata() const
-{
-    return !m_metadata.empty();
-}
-
-
 

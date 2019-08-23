@@ -17,6 +17,7 @@ SOURCES += \
         Controller/controllerlibrary.cpp \
         Controller/interfacesaver.cpp \
         Controller/xmldatabase.cpp \
+        Model/metadata.cpp \
         Model/smartplaylist.cpp \
         main.cpp \
         Model\global.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     Controller/controllerlibrary.h \
     Controller/interfacesaver.h \
     Controller/xmldatabase.h \
+    Model/metadata.h \
     Model/smartplaylist.h \
     Model\global.h \
     Model\library.h \

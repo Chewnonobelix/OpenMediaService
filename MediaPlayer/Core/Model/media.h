@@ -10,16 +10,16 @@
 #include <QSet>
 #include <QVariant>
 #include "global.h"
+#include "metadata.h"
 
 class Media;
 
 typedef QSharedPointer<Media> MediaPointer;
 
-class Media
+class Media: public Metadata
 {
 private:
     QSet<QString> m_path;
-    QVariantMap m_metadata;
     
     
 public:
@@ -47,21 +47,6 @@ public:
     double currentRead() const;
     void setCurrentRead(double currentRead);
     
-    QStringList metaDataList() const;
-    bool hasMetadata(QString) const;
-    bool hasMetadata() const;
-    
-    template<class T>
-    T metaData(QString key)
-    {
-        return m_metadata[key].value<T>();
-    }
-    
-    template<class T>
-    void setMetadata(QString key, T value)
-    {
-        m_metadata[key] = value;
-    }
     
     friend MediaPointer operator << (MediaPointer, QString);
     void operator ++();
