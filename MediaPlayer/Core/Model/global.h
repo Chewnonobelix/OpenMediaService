@@ -6,6 +6,7 @@
 
 typedef QByteArray MD5;
 
+Q_DECLARE_METATYPE(MD5)
 namespace MediaPlayerGlobal
 {
     Q_NAMESPACE

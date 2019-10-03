@@ -1,4 +1,4 @@
-QT += quick xml core
+QT += quick xml core qml
 
 CONFIG += c++17
 
@@ -51,5 +51,3 @@ HEADERS += \
     Model\media.h \
     Model\playlist.h
 
-SUBDIRS += \
-    meta.pro

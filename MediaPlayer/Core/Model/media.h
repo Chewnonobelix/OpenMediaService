@@ -9,6 +9,8 @@
 #include <QSharedPointer>
 #include <QSet>
 #include <QVariant>
+#include <QObject>
+#include <QDebug>
 #include "global.h"
 #include "metadata.h"
 
@@ -18,12 +20,16 @@ typedef QSharedPointer<Media> MediaPointer;
 
 class Media: public Metadata
 {
+    Q_GADGET
+    
+    Q_PROPERTY(MD5 id READ id)
+    Q_PROPERTY(int count READ count WRITE setCount)
 private:
     QSet<QString> m_path;
     
     
 public:
-    Media(MD5, QString = "");
+    Media(MD5 = "", QString = "");
     Media(const Media& other) = default;
     ~Media() = default;
     
@@ -33,7 +39,7 @@ public:
     void setId(MD5 id);
     MediaPlayerGlobal::MediaRole role() const;
     void setRole(MediaPlayerGlobal::MediaRole role);
-    QString path() const;
+    Q_INVOKABLE QString path() const;
     QSet<QString> paths() const;
     void setPath(QString path);
     int nbPath() const;
@@ -50,8 +56,9 @@ public:
     
     friend MediaPointer operator << (MediaPointer, QString);
     void operator ++();
+    Q_INVOKABLE bool pp();
     static MediaPointer createMedia(MD5, QString path = "");
 };
 
-
+Q_DECLARE_METATYPE(Media)
 #endif // MEDIA_H

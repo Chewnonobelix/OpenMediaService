@@ -15,8 +15,8 @@
 class ControllerLibrary: public QObject
 {
     Q_OBJECT
+    
 private:
-    QList<QPair<LibraryPointer, QSharedPointer<InterfaceSaver>>> m_libs;
     void open(QString);
     
 public:
@@ -25,6 +25,9 @@ public:
     
     void probeAll();
     bool addLibrary(QString, MediaRole);
+    
+    QList<QPair<LibraryPointer, QSharedPointer<InterfaceSaver>>> m_libs;
+    
 };
 
 #endif // CONTROLLERLIBRARY_H

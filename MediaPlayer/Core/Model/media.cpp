@@ -3,8 +3,10 @@
 Media::Media(MD5 id, QString path)
 {
     setId(id);
-    m_path<<path;
+    if(!path.isEmpty())
+        m_path<<path;
 }
+
 
 MD5 Media::id() const
 {
@@ -102,8 +104,16 @@ MediaPointer operator << (MediaPointer p, QString path)
 void Media::operator ++ ()
 {
     setCount(count() + 1);
+    qDebug()<<"Go on"<<count();
+    
 }
 
+bool Media::pp()
+{
+    int o = count();
+    ++(*this);
+    return (o+1) == count();
+}
 int Media::nbPath() const
 {
     return m_path.size();
