@@ -16,8 +16,10 @@ class ControllerLibrary: public QObject
 {
     Q_OBJECT
     
+    
 private:
     void open(QString);
+    QMap<QString, QPair<LibraryPointer, QSharedPointer<InterfaceSaver>>> m_libs;
     
 public:
     ControllerLibrary();
@@ -26,8 +28,8 @@ public:
     void probeAll();
     bool addLibrary(QString, MediaRole);
     
-    QList<QPair<LibraryPointer, QSharedPointer<InterfaceSaver>>> m_libs;
-    
+    QStringList librariesName() const;
+    QPair<LibraryPointer, QSharedPointer<InterfaceSaver>> library(QString);
 };
 
 #endif // CONTROLLERLIBRARY_H

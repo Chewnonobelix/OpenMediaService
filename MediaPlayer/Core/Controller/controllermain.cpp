@@ -14,7 +14,7 @@ ControllerMain::ControllerMain()
     
     m_library.probeAll();
     
-    auto list = m_library.m_libs.first().second->selectMedia();
+    auto list = m_library.library(m_library.librariesName().first()).second->selectMedia();
     QList<QVariant> lm;
     for(auto it: list)
         lm<<QVariant::fromValue(*it);

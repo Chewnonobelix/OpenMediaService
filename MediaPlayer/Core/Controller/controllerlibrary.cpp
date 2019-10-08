@@ -24,28 +24,8 @@ void ControllerLibrary::open(QString filename)
     qDebug()<<"Open "<<filename;
     auto name = filename.split("/").last().remove(".xml");
     qDebug()<<name;
-//    auto lib = factory<Library>();
+
     addLibrary(name, MediaRole::Undefined);    
-//    int type = QMetaType::type("XmlDatabase");
-//    if(type == QMetaType::UnknownType)
-//        throw QString("Unknow DB Type");
-    
-//    InterfaceSaver* saver = (InterfaceSaver*)(QMetaType::create(type));
-//    QSharedPointer<InterfaceSaver> pis;
-//    pis.reset(saver);
-
-//    pis->setName(name);
-//    pis->init();
-
-//    m_libs<<qMakePair(lib, pis);
-
-//    connect(lib.data(), Library::s_addMedia, pis.data(), InterfaceSaver::addMedia);
-//    connect(lib.data(), Library::s_updateMedia, pis.data(), InterfaceSaver::updateMedia);
-//    connect(lib.data(), Library::s_removeMedia, pis.data(), InterfaceSaver::removeMedia);
-    
-//    lib->setName(name);
-//    lib->setRole(pis->role());
-//    lib->setMedias(pis->selectMedia());    
 }
 
 bool ControllerLibrary::addLibrary(QString name, MediaRole role)
@@ -81,7 +61,7 @@ bool ControllerLibrary::addLibrary(QString name, MediaRole role)
     
     connect(l.data(), Library::s_updateLastProbed, pis.data(), InterfaceSaver::updateLastProbed);
     connect(l.data(), Library::s_updateSourceDir, pis.data(), InterfaceSaver::updateSourceDir);
-    m_libs.push_back(qMakePair(l, pis));
+    m_libs[l->name()] = qMakePair(l, pis);
     
     l->addSourceDir("C:\\Perso\\MediaPlayer\\build-MediaPlayer-Desktop_Qt_5_13_0_MinGW_64_bit-Debug\\hexagone\\");
 
@@ -93,4 +73,14 @@ void ControllerLibrary::probeAll()
 {
     for(auto it: m_libs)
         it.first->probe();
+}
+
+QStringList ControllerLibrary::librariesName() const
+{
+    return m_libs.keys();
+}
+
+QPair<LibraryPointer, QSharedPointer<InterfaceSaver>> ControllerLibrary::library(QString name)
+{
+    return m_libs[name];
 }

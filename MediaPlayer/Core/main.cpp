@@ -1,12 +1,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "Model/libraryprobe.h"
-#include "Model/library.h"
-
-#include "Controller/xmldatabase.h"
-#include "Controller/controllerlibrary.h"
 #include "Controller/controllermain.h"
+#include "Controller/xmldatabase.h"
 #include <QTime>
 
 
