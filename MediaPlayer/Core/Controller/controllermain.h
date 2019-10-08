@@ -14,6 +14,8 @@ private:
     QObject* m_root;
     
     ControllerLibrary m_library;
+    QMap<QString, MediaPlayerGlobal::MediaRole> m_tabWindows;
+    
 public:
     ControllerMain();
     
