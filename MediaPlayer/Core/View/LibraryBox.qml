@@ -36,6 +36,7 @@ Item {
             Layout.column: 0
             Layout.preferredWidth: parent.width * .2            
             Layout.fillHeight: true
+            clip: true
         }
         
         ListView {
@@ -44,7 +45,8 @@ Item {
             Layout.row: 1
             Layout.column: 1             
             Layout.preferredWidth: parent.width * .2            
-            Layout.fillHeight: true            
+            Layout.fillHeight: true
+            clip: true
         }
         
         GridView {
@@ -54,7 +56,7 @@ Item {
             Layout.column: 2
             Layout.fillWidth: true
             Layout.fillHeight: true
-            
+            clip: true
         }
     }
         
