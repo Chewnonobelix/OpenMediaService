@@ -16,6 +16,10 @@ class Library: public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString name READ name)
+    Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role)
+    Q_PROPERTY(QDateTime lastProbed READ lastProbed)
+    Q_PROPERTY(QStringList sourceDir READ sourceDir)
 private:
     QString m_name;
     QSet<QString> m_sourceDir;
@@ -31,7 +35,7 @@ public:
     Library();
     ~Library();
 
-    void probe();
+    Q_INVOKABLE void probe();
 
     QString name() const;
     void setName(QString name);
@@ -42,9 +46,9 @@ public:
     QMap<MD5, MediaPointer> medias() const;
     void setMedias(const QMap<MD5, MediaPointer> &medias);
     
-    void addSourceDir(QString);
-    QSet<QString> sourceDir() const;
-    void removeSourceDir(QString);
+    Q_INVOKABLE void addSourceDir(QString);
+    QList<QString> sourceDir() const;
+    Q_INVOKABLE void removeSourceDir(QString);
     
     QDateTime lastProbed() const;
     void setLastProbed(QDateTime lastProbed);

@@ -93,9 +93,9 @@ void Library::addSourceDir(QString srcDir)
     emit s_updateSourceDir(m_sourceDir);
 }
 
-QSet<QString> Library::sourceDir() const
+QList<QString> Library::sourceDir() const
 {
-    return m_sourceDir;
+    return m_sourceDir.toList();
 }
 
 void Library::removeSourceDir(QString srcDir)
