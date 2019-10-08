@@ -33,9 +33,9 @@ QString Media::path() const
     return *m_path.begin();
 }
 
-QSet<QString> Media::paths() const
+QList<QString> Media::paths() const
 {
-    return m_path;
+    return m_path.toList();
 }
 
 void Media::setPath(QString path)
@@ -101,7 +101,7 @@ MediaPointer operator << (MediaPointer p, QString path)
     return p;
 }
 
-void Media::operator ++ ()
+void Media::operator ++ (int)
 {
     setCount(count() + 1);
     qDebug()<<"Go on"<<count();
@@ -111,7 +111,7 @@ void Media::operator ++ ()
 bool Media::pp()
 {
     int o = count();
-    ++(*this);
+    (*this)++;
     return (o+1) == count();
 }
 int Media::nbPath() const

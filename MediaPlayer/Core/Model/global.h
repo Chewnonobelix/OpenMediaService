@@ -21,6 +21,9 @@ namespace MediaPlayerGlobal
     {
         return QSharedPointer<T>::create(params...);
     }
+    
 }
+
+Q_DECLARE_METATYPE(MediaPlayerGlobal::MediaRole)
 
 #endif // GLOBAL_H

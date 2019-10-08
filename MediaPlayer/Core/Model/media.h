@@ -24,6 +24,13 @@ class Media: public Metadata
     
     Q_PROPERTY(MD5 id READ id)
     Q_PROPERTY(int count READ count WRITE setCount)
+    Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role)
+    Q_PROPERTY(bool isAvailable READ isAvailable)
+    Q_PROPERTY(QDate added READ added)
+    Q_PROPERTY(QDateTime lastFinish READ lastFinish)
+    Q_PROPERTY(double currentRead READ currentRead WRITE setCurrentRead)
+    Q_PROPERTY(QStringList paths READ paths)
+    
 private:
     QSet<QString> m_path;
     
@@ -39,8 +46,8 @@ public:
     void setId(MD5 id);
     MediaPlayerGlobal::MediaRole role() const;
     void setRole(MediaPlayerGlobal::MediaRole role);
-    Q_INVOKABLE QString path() const;
-    QSet<QString> paths() const;
+    QString path() const;
+    QList<QString> paths() const;
     void setPath(QString path);
     int nbPath() const;
     bool isAvailable() const;
@@ -55,7 +62,7 @@ public:
     
     
     friend MediaPointer operator << (MediaPointer, QString);
-    void operator ++();
+    void operator ++(int);
     Q_INVOKABLE bool pp();
     static MediaPointer createMedia(MD5, QString path = "");
 };
