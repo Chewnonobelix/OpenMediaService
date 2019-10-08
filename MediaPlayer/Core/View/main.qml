@@ -5,22 +5,12 @@ import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.13
 
 
-Window {
+ApplicationWindow {
     visible: true
     width: 640
     height: 480
-    
-//    ListModel {
-//        id: libraryModel
-//        ListElement {
-//            name: "Test 1"
-//        }
-//        ListElement {
-//            name: "Test 2"
-//        }
-//    }
-    
-    MenuBar {
+        
+    menuBar: MenuBar {
         id: menuBar
         
         Menu {
@@ -30,34 +20,13 @@ Window {
         
     }
     
-    //        Row {
-    //            width: parent * .15
-    //            anchors.top: menuBar.bottom
-    //            id: rectLib
     
-    //            Label {
-    //                text: qsTr("Library")
-    //                verticalAlignment: Qt.AlignVCenter
-    //                id: libraryLabel
-    //            }
-    
-    //            ToolButton {
-    //                id: showLibrary
-    //                height: libraryLabel.height 
-    //                property bool on: true
-    //                text:  on ? "<<" : ">>"
-    
-    //                onClicked: on = !on
-    //            }
-    //        }
-    
-    Rectangle
-    {
-        anchors.top: menuBar.bottom
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.left: parent.left
-        //                anchors.fill: parent
+    Rectangle {
+//        anchors.top: menuBar.bottom
+//        anchors.bottom: parent.bottom
+//        anchors.right: parent.right
+//        anchors.left: parent.left
+                        anchors.fill: parent
         
                 ListModel {
                     id: tabModel
@@ -109,6 +78,7 @@ Window {
 //                        forceLayout()
                     }
                     anchors.fill: parent
+                    clip: true
                     delegate: Rectangle {
                         height: 40
                         width: libraryView.width
