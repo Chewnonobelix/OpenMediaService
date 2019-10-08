@@ -116,8 +116,8 @@ Window {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                console.log(modelData,modelData.pp())
-                                console.log(modelData.count)
+                                console.log(modelData, modelData.paths)
+                                modelData.pp()
                             }
                         }
 
