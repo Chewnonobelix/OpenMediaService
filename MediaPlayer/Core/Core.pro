@@ -15,6 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         Controller/controllerlibrary.cpp \
+        Controller/controllermain.cpp \
         Controller/interfacesaver.cpp \
         Controller/xmldatabase.cpp \
         Model/metadata.cpp \
@@ -41,6 +42,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     Controller/controllerlibrary.h \
+    Controller/controllermain.h \
     Controller/interfacesaver.h \
     Controller/xmldatabase.h \
     Model/metadata.h \

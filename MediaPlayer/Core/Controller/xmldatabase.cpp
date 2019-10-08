@@ -61,7 +61,6 @@ QDomElement XmlDatabase::adder(QDomElement& el, QString tagname, QString value, 
 
 void XmlDatabase::setter(QDomElement& el, QString tagname, QString value, QMap<QString, QString> attr)
 {
-
     QDomElement child = el.elementsByTagName(tagname).at(0).toElement();
     if(child.isNull())
     {
@@ -78,7 +77,6 @@ void XmlDatabase::setter(QDomElement& el, QString tagname, QString value, QMap<Q
 
 void XmlDatabase::setter(QDomElement& el, QString value, QMap<QString, QString> attr)
 {
-        
     QDomText txt = el.firstChild().toText();
     txt.setData(value);
     
@@ -107,7 +105,7 @@ QMap<MD5, MediaPointer> XmlDatabase::selectMedia()
     auto root = m_doc.documentElement();
     
     auto list = root.elementsByTagName("media");
-    qDebug()<<"Media size"<<list.size();
+
     for(int i = 0; i < list.size(); i++)
     {
         auto el = list.at(i).toElement();
@@ -136,7 +134,6 @@ QMap<MD5, MediaPointer> XmlDatabase::selectMedia()
 
 bool XmlDatabase::addMedia(MediaPointer p)
 {
-//    qDebug()<<"Add "<<p->id();
     bool ret = false;
     
     auto root = m_doc.documentElement();
@@ -215,7 +212,6 @@ bool XmlDatabase::updateMedia(MediaPointer p)
 
 bool XmlDatabase::updateSourceDir(QSet<QString> sourceDir)
 {
-    qDebug()<<"Update source dir"<<sourceDir;
     auto root = m_doc.documentElement();
     auto list = root.elementsByTagName("sourceDir");
     
