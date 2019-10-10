@@ -63,7 +63,6 @@ Item {
                 height: libraryView.height * 0.04
                 width: libraryView.width
                 
-//                Component.onCompleted: libraryView.forceLayout()
                 Label {
                     anchors.fill: parent
                     text: modelData.name
