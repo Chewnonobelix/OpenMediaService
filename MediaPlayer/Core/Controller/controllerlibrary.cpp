@@ -23,7 +23,6 @@ void ControllerLibrary::open(QString filename)
 {
     qDebug()<<"Open "<<filename;
     auto name = filename.split("/").last().remove(".xml");
-    qDebug()<<name;
 
     addLibrary(name, MediaRole::Undefined);    
 }
@@ -47,8 +46,9 @@ bool ControllerLibrary::addLibrary(QString name, MediaRole role)
     saver->setName(name);
     l->setName(name);
     saver->setRole(role);
-    l->setRole(role);
+
     pis->init();
+    l->setRole(pis->role());
     l->setMedias(pis->selectMedia());
     l->setLastProbed(pis->selectLastProbed());
 
@@ -65,7 +65,6 @@ bool ControllerLibrary::addLibrary(QString name, MediaRole role)
     
     l->addSourceDir("C:\\Perso\\MediaPlayer\\build-MediaPlayer-Desktop_Qt_5_13_0_MinGW_64_bit-Debug\\hexagone\\");
 
-    qDebug()<<l->name()<<l->role()<<m_libs.size();
     return ret;
 }
 
