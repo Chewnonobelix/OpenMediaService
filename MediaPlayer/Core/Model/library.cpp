@@ -132,6 +132,15 @@ void Library::removeSourceDir(QString srcDir)
 {
     m_sourceDir.remove(srcDir);
     
+    for(auto it: m_medias)
+    {
+        for(auto it2: it->paths())
+        {
+            if(it2.contains(srcDir))
+            {
+            }
+        }
+    }
     emit s_updateSourceDir(m_sourceDir);
     emit s_updateSourceDirList(m_sourceDir.toList());    
 }
