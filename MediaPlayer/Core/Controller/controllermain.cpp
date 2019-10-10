@@ -14,12 +14,18 @@ ControllerMain::ControllerMain()
     
     m_library.probeAll();
     
-    auto list = m_library.library(m_library.librariesName().first()).second->selectMedia();
-    QList<QVariant> lm;
-    for(auto it: list)
-        lm<<QVariant::fromValue(*it);
-    
-    auto o = m_root->findChild<QObject*>("libraryView");
-    o->setProperty("model", lm);
-    
+    auto lb = m_root->findChild<QObject*>("libraryBox");
+    m_library.addLibrary("Test", MediaPlayerGlobal::MediaRole::Audio);
+    m_library.probeAll();
+    if(!m_library.librariesName().isEmpty())
+    {        
+        auto lv = lb->findChild<QObject*>("libraryView");
+        
+        auto ll = m_library.libraries();
+        QList<QVariant> list;
+        for(auto it: ll)
+            list<<QVariant::fromValue(it.first.data());
+                
+        lv->setProperty("model", list);
+    }
 }
