@@ -37,10 +37,12 @@ Window {
             text: root.lib.role
         }
         
-        Label {
+        
+        Button {
             Layout.row: 0
             Layout.column: 2
             text: qsTr("Last probed") + ": " + Qt.formatDateTime(root.lib.lastProbed, "hh:mm:ss dd-MM-yyyy")
+            onClicked: root.lib.probe()
         }
         
         Rectangle {
