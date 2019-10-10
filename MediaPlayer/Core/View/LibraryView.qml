@@ -2,10 +2,25 @@ import QtQuick 2.13
 import QtQuick.Window 2.13
 import QtQuick.Layouts 1.13
 import QtQuick.Controls 2.13
+import QtQuick.Dialogs 1.3
 
 Window {
     id: root
     property var lib
+    
+    FileDialog {
+        id: sourceDialog
+        selectFolder: true
+        
+        title: qsTr("Select source directory")
+        
+        onAccepted: {
+            root.lib.addSourceDir(folder)
+            close()
+        }
+        
+        onRejected: close()
+    }
     
     GridLayout {
         anchors.fill: parent
@@ -55,8 +70,16 @@ Window {
                         anchors.fill: parent
                         text: modelData
                         MouseArea {
+                            acceptedButtons: Qt.LeftButton | Qt.RightButton
                             anchors.fill: parent
-                            onClicked: console.log("youkou")
+                            onClicked: {
+                                if(mouse.button === Qt.RightButton) {
+                                    sourceDialog.open()
+                                }
+                                else {
+                                    console.log("youkou")
+                                }
+                            }
                         }
                         
                         //                    horizontalAlignment: Qt.AlignHCenter
