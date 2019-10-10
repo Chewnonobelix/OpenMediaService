@@ -19,8 +19,8 @@ class Library: public QObject
     
     Q_PROPERTY(QString name READ name CONSTANT)
     Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role CONSTANT)
-    Q_PROPERTY(QDateTime lastProbed READ lastProbed)
-    Q_PROPERTY(QStringList sourceDir READ sourceDir)
+    Q_PROPERTY(QDateTime lastProbed READ lastProbed NOTIFY s_updateLastProbed)
+    Q_PROPERTY(QStringList sourceDir READ sourceDir NOTIFY s_updateSourceDirList)
     
 private:
     QString m_name;
@@ -70,9 +70,7 @@ signals:
     void s_removeMedia(MediaPointer);
     void s_updateLastProbed(QDateTime);
     void s_updateSourceDir(QSet<QString>);
-    
-    
-    
+    void s_updateSourceDirList(QList<QString>);
 };
 
 Q_DECLARE_METATYPE(Library)

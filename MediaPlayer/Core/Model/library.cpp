@@ -120,6 +120,7 @@ void Library::addSourceDir(QString srcDir)
     m_sourceDir<<srcDir;
     
     emit s_updateSourceDir(m_sourceDir);
+    emit s_updateSourceDirList(m_sourceDir.toList());
 }
 
 QList<QString> Library::sourceDir() const
@@ -130,6 +131,9 @@ QList<QString> Library::sourceDir() const
 void Library::removeSourceDir(QString srcDir)
 {
     m_sourceDir.remove(srcDir);
+    
+    emit s_updateSourceDir(m_sourceDir);
+    emit s_updateSourceDirList(m_sourceDir.toList());    
 }
 
 void Library::removeMedia(MD5 id)
