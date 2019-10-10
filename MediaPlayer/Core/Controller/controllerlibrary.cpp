@@ -83,3 +83,8 @@ QPair<LibraryPointer, QSharedPointer<InterfaceSaver>> ControllerLibrary::library
 {
     return m_libs[name];
 }
+
+QMap<QString, QPair<LibraryPointer, QSharedPointer<InterfaceSaver>>> ControllerLibrary::libraries() const
+{
+    return m_libs;
+}

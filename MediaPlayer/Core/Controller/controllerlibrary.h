@@ -30,6 +30,7 @@ public:
     
     QStringList librariesName() const;
     QPair<LibraryPointer, QSharedPointer<InterfaceSaver>> library(QString);
+    QMap<QString, QPair<LibraryPointer, QSharedPointer<InterfaceSaver>>> libraries() const;
 };
 
 #endif // CONTROLLERLIBRARY_H
