@@ -15,11 +15,13 @@ typedef QSharedPointer<Library> LibraryPointer;
 class Library: public QObject
 {
     Q_OBJECT
-
+    
+    
     Q_PROPERTY(QString name READ name)
     Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role)
     Q_PROPERTY(QDateTime lastProbed READ lastProbed)
     Q_PROPERTY(QStringList sourceDir READ sourceDir)
+    
 private:
     QString m_name;
     QSet<QString> m_sourceDir;
@@ -33,8 +35,11 @@ private:
 
 public:
     Library();
+    Library(const Library&);
     ~Library();
 
+    Library& operator = (const Library&);
+    
     Q_INVOKABLE void probe();
 
     QString name() const;
@@ -70,4 +75,5 @@ signals:
     
 };
 
+Q_DECLARE_METATYPE(Library)
 #endif // LIBRARY_H

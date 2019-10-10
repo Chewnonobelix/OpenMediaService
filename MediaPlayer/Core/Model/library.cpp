@@ -28,6 +28,35 @@ Library::Library(): QObject(nullptr)
     connect(&m_probe, LibraryProbe::s_add, this, Library::addProbedMedia);
 }
 
+Library::Library(const Library& other): QObject(nullptr), 
+    m_name(other.name()), m_sourceDir(other.sourceDir().toSet()),
+    m_role(other.role()), m_medias(other.medias()),
+    m_lastProbed(other.lastProbed()), m_probe(other.m_probe)
+{
+    
+    connect(&m_probe, LibraryProbe::finished, this, Library::endProbe);
+    connect(&m_probe, LibraryProbe::s_add, this, Library::addProbedMedia);
+}
+
+Library& Library::operator = (const Library& other)
+{
+
+    m_name = other.name();
+    m_sourceDir = other.sourceDir().toSet();
+    m_role = other.role();
+    m_medias = other.medias();
+    m_lastProbed = other.lastProbed();
+    
+    m_probe.baseName = other.m_probe.baseName;
+    m_probe.filter = other.m_probe.filter;
+    
+    connect(&m_probe, LibraryProbe::finished, this, Library::endProbe);
+    connect(&m_probe, LibraryProbe::s_add, this, Library::addProbedMedia);
+    
+    
+    return *this;    
+}
+
 Library::~Library()
 {}
 

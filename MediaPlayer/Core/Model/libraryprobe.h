@@ -27,6 +27,7 @@ public:
 
     QStringList baseName;
     LibraryProbe();
+    LibraryProbe(const LibraryProbe&);
     ~LibraryProbe();
     
     QStringList filter;

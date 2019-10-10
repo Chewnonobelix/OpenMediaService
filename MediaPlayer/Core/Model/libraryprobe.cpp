@@ -6,6 +6,12 @@ LibraryProbe::LibraryProbe(): QThread(nullptr)
     connect(this, LibraryProbe::finished, this, LibraryProbe::onEnd);
 }
 
+LibraryProbe::LibraryProbe(const LibraryProbe& other): QThread(nullptr),
+    baseName(other.baseName), filter(other.filter)
+{
+    connect(this, LibraryProbe::finished, this, LibraryProbe::onEnd);
+}
+
 LibraryProbe::~LibraryProbe()
 {
 }
@@ -59,7 +65,7 @@ void LibraryProbe::run()
 
 void LibraryProbe::explore(QString dirName)
 {
-    qDebug()<<dirName;
+//    qDebug()<<dirName;
     QDir dir(dirName);
     auto fl = dir.entryInfoList(filter);
     m_all.append(fl);
@@ -72,7 +78,7 @@ void LibraryProbe::explore(QString dirName)
     
     for(auto it: subDirs)
     {
-        qDebug()<<lastProbed()<<it.lastModified()<<it.path();
+//        qDebug()<<lastProbed()<<it.lastModified()<<it.path();
         explore(it.absoluteFilePath());
     }
     
