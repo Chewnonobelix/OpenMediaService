@@ -64,6 +64,33 @@ Window {
                 }
                 
                 headerPositioning: ListView.OverlayHeader
+                
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.RightButton
+                    z:10
+                    onClicked: {
+                                     sourceMenu.popup(mouseX, mouseY)
+                    }
+                }
+                Menu {
+                    id: sourceMenu
+                    
+                    MenuItem {
+                        text: qsTr("Add source")
+                        onClicked: sourceDialog.open()
+                    }
+                    
+                    MenuItem {
+                        text: qsTr("Remove source")
+                        visible: sourceDir.indexAt(sourceMenu.x, sourceMenu.y) !== -1
+                        
+                        onClicked: {
+                            root.lib.removeSourceDir(sourceDir.model[sourceDir.indexAt(sourceMenu.x, sourceMenu.y)])
+                        }
+                    }
+                }
+                
                 delegate: Rectangle {
                     width: sourceDir.width * .99
                     height: sourceDir.height * 0.05
@@ -71,21 +98,6 @@ Window {
                     Label {
                         anchors.fill: parent
                         text: modelData
-                        MouseArea {
-                            acceptedButtons: Qt.LeftButton | Qt.RightButton
-                            anchors.fill: parent
-                            onClicked: {
-                                if(mouse.button === Qt.RightButton) {
-                                    sourceDialog.open()
-                                }
-                                else {
-                                    console.log("youkou")
-                                }
-                            }
-                        }
-                        
-                        //                    horizontalAlignment: Qt.AlignHCenter
-                        //                    verticalAlignment: Qt.AlignVCenter
                     }
                 }
             }
