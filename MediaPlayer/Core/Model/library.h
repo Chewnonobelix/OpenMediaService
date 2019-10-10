@@ -17,8 +17,8 @@ class Library: public QObject
     Q_OBJECT
     
     
-    Q_PROPERTY(QString name READ name)
-    Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role)
+    Q_PROPERTY(QString name READ name CONSTANT)
+    Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role CONSTANT)
     Q_PROPERTY(QDateTime lastProbed READ lastProbed)
     Q_PROPERTY(QStringList sourceDir READ sourceDir)
     

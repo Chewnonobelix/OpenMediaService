@@ -71,7 +71,7 @@ Item {
                     
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: console.log(ListView.section)
+                        onClicked: console.log(modelData.sourceDir)
                     }
                     
                 }
