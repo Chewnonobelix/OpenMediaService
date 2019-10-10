@@ -7,8 +7,9 @@
 #include "controllerlibrary.h"
 
 
-class ControllerMain
+class ControllerMain: public QObject
 {
+    Q_OBJECT
 private:    
     QQmlApplicationEngine m_engine;
     QObject* m_root;
@@ -18,6 +19,7 @@ private:
     
 public:
     ControllerMain();
+    ~ControllerMain() = default;
     
 };
 

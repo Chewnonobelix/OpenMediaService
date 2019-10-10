@@ -14,6 +14,8 @@ ControllerLibrary::ControllerLibrary(): QObject(nullptr)
     for(auto it: list)
         open(it.absoluteFilePath());
     
+    m_eng.load(QUrl(QStringLiteral("qrc:/LibraryView.qml")));
+    m_view = m_eng.rootObjects().first();
 }
 
 ControllerLibrary::~ControllerLibrary()
@@ -87,4 +89,14 @@ QPair<LibraryPointer, QSharedPointer<InterfaceSaver>> ControllerLibrary::library
 QMap<QString, QPair<LibraryPointer, QSharedPointer<InterfaceSaver>>> ControllerLibrary::libraries() const
 {
     return m_libs;
+}
+
+void ControllerLibrary::displayLibrary(QString name)
+{
+    Library* l = library(name).first.data();
+    QVariant v = QVariant::fromValue(l);
+    
+    m_view->setProperty("lib", v);
+    
+    QMetaObject::invokeMethod(m_view, "show");
 }

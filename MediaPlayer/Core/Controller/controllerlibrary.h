@@ -9,6 +9,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QFileInfoList>
+#include <QQmlApplicationEngine>
 #include "interfacesaver.h"
 #include "Model/library.h"
 
@@ -18,9 +19,11 @@ class ControllerLibrary: public QObject
     
     
 private:
+    QQmlApplicationEngine m_eng;
+    QObject* m_view;
+    
     void open(QString);
     QMap<QString, QPair<LibraryPointer, QSharedPointer<InterfaceSaver>>> m_libs;
-    
 public:
     ControllerLibrary();
     ~ControllerLibrary();
@@ -31,6 +34,10 @@ public:
     QStringList librariesName() const;
     QPair<LibraryPointer, QSharedPointer<InterfaceSaver>> library(QString);
     QMap<QString, QPair<LibraryPointer, QSharedPointer<InterfaceSaver>>> libraries() const;
+    
+public slots:
+    void displayLibrary(QString);
+    
 };
 
 #endif // CONTROLLERLIBRARY_H

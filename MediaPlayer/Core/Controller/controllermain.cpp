@@ -1,6 +1,6 @@
 #include "controllermain.h"
 
-ControllerMain::ControllerMain()
+ControllerMain::ControllerMain(): QObject(nullptr)
 {
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&m_engine, &QQmlApplicationEngine::objectCreated,
@@ -27,5 +27,7 @@ ControllerMain::ControllerMain()
             list<<QVariant::fromValue(it.first.data());
                 
         lv->setProperty("model", list);
+        
+        connect(lv, SIGNAL(s_openLibrary(QString)), &m_library, SLOT(displayLibrary(QString)));
     }
 }

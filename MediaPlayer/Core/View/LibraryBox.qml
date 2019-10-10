@@ -57,6 +57,7 @@ Item {
             }
 
            
+            signal s_openLibrary(string name)
             
             delegate: Rectangle {
                 color: "transparent"
@@ -71,7 +72,10 @@ Item {
                     
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: console.log(modelData.sourceDir)
+                        onDoubleClicked: {
+                            libraryView.s_openLibrary(modelData.name)
+                            console.log(modelData.sourceDir)
+                        }
                     }
                     
                 }
