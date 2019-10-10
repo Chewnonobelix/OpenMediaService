@@ -87,6 +87,26 @@ Item {
             Layout.preferredWidth: parent.width * .2            
             Layout.fillHeight: true
             clip: true
+            
+            model: []
+
+            delegate: Rectangle {
+                color: "transparent"
+                height: playlistView.height * 0.03
+                width: playlistView.width
+                
+
+                Label {
+                    anchors.fill: parent
+                    text: modelData.added
+                    MouseArea {
+                        anchors.fill: parent
+//                        onClicked: console.log(playlistView.model)
+                    }
+                    
+                }
+            }
+            
         }
         
         GridView {
@@ -97,6 +117,27 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
             clip: true
+            
+            model: []
+
+            delegate: Rectangle {
+                color: "transparent"
+                height: playlistView.height * 0.03
+                width: playlistView.width
+                
+
+                Label {
+                    anchors.fill: parent
+                    text: Qt.formatDate(modelData.added, "dd-MM-yyyy")
+                    clip: true
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: console.log(modelData.paths)
+//                        onClicked: console.log(playlistView.model)
+                    }
+                    
+                }
+            }
         }
     }
         
