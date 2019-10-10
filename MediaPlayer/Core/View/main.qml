@@ -9,7 +9,7 @@ ApplicationWindow {
     visible: true
     width: 640
     height: 480
-        
+    
     menuBar: MenuBar {
         id: menuBar
         
@@ -22,21 +22,17 @@ ApplicationWindow {
     
     
     Rectangle {
-//        anchors.top: menuBar.bottom
-//        anchors.bottom: parent.bottom
-//        anchors.right: parent.right
-//        anchors.left: parent.left
-                        anchors.fill: parent
+        anchors.fill: parent
         
-                ListModel {
-                    id: tabModel
-                    ListElement {
-                        name: qsTr("Library")
-                    }
-                    ListElement {
-                        name: qsTr("+")
-                    }
-                }
+        ListModel {
+            id: tabModel
+            ListElement {
+                name: qsTr("Library")
+            }
+            ListElement {
+                name: qsTr("+")
+            }
+        }
         
         TabBar {
             id: bar
@@ -65,37 +61,11 @@ ApplicationWindow {
             anchors.left: parent.left
             currentIndex: bar.currentIndex
             Rectangle {
-//                anchors.fill:parent
-                //                title: qsTr("Library")
-                ListView {
-                    id: libraryView
-                    objectName: "libraryView"
-                    //                    visible: showLibrary.on
-
-                    model: []
-                    onModelChanged: { 
-                        console.log(model/*, model[100], model[100].count, model[100].path()*/)
-//                        forceLayout()
-                    }
+                LibraryBox {
                     anchors.fill: parent
-                    clip: true
-                    delegate: Rectangle {
-                        height: 40
-                        width: libraryView.width
-                           
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: {
-                                console.log(modelData, modelData.paths)
-                                modelData.pp()
-                            }
-                        }
-
-                        Text {
-                            text: modelData.count
-                        }
-                    }
+                    objectName: "libraryBox"
                 }
+                
                 
             }
         }
