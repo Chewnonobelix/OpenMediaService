@@ -49,6 +49,7 @@ public:
     QString path() const;
     QList<QString> paths() const;
     void setPath(QString path);
+    void removePath(QString path);
     int nbPath() const;
     bool isAvailable() const;
     int count() const;
@@ -62,6 +63,8 @@ public:
     
     
     friend MediaPointer operator << (MediaPointer, QString);
+    friend MediaPointer operator >> (MediaPointer, QString);
+    
     void operator ++(int);
     Q_INVOKABLE bool pp();
     static MediaPointer createMedia(MD5, QString path = "");

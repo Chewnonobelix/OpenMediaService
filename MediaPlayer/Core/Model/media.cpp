@@ -46,6 +46,11 @@ void Media::setPath(QString path)
     m_path<<path;
 }
 
+void Media::removePath(QString path)
+{
+    m_path.remove(path);   
+}
+
 int Media::count() const
 {
     return hasMetadata("count") ? metaData<int>("count") : 0;
@@ -101,11 +106,15 @@ MediaPointer operator << (MediaPointer p, QString path)
     return p;
 }
 
+MediaPointer operator >> (MediaPointer p, QString path)
+{
+    p->removePath(path);
+    return p;
+}
+
 void Media::operator ++ (int)
 {
-    setCount(count() + 1);
-    qDebug()<<"Go on"<<count();
-    
+    setCount(count() + 1);    
 }
 
 bool Media::pp()
