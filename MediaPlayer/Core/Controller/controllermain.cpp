@@ -15,7 +15,7 @@ ControllerMain::ControllerMain(): QObject(nullptr)
     m_library.probeAll();
     
     auto lb = m_root->findChild<QObject*>("libraryBox");
-    m_library.addLibrary("Test", MediaPlayerGlobal::MediaRole::Audio);
+    //m_library.addLibrary("Test", MediaPlayerGlobal::MediaRole::Audio);
     m_library.probeAll();
     if(!m_library.librariesName().isEmpty())
     {        
