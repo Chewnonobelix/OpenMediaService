@@ -129,13 +129,6 @@ Window {
                     Label {
                         anchors.fill: parent
                         text: modelData
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: console.log("youkou2")
-                        }
-                        
-                        //                    horizontalAlignment: Qt.AlignHCenter
-                        //                    verticalAlignment: Qt.AlignVCenter
                     }
                 }
             }

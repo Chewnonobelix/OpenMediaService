@@ -74,7 +74,6 @@ Item {
                         anchors.fill: parent
                         onDoubleClicked: {
                             libraryView.s_openLibrary(modelData.name)
-                            console.log(modelData.sourceDir)
                         }
                     }
                     
@@ -101,12 +100,7 @@ Item {
 
                 Label {
                     anchors.fill: parent
-                    text: modelData.added
-                    MouseArea {
-                        anchors.fill: parent
-//                        onClicked: console.log(playlistView.model)
-                    }
-                    
+                    text: modelData.added                    
                 }
             }
             
@@ -132,13 +126,7 @@ Item {
                 Label {
                     anchors.fill: parent
                     text: Qt.formatDate(modelData.added, "dd-MM-yyyy")
-                    clip: true
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: console.log(modelData.paths)
-//                        onClicked: console.log(playlistView.model)
-                    }
-                    
+                    clip: true                    
                 }
             }
         }
