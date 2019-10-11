@@ -11,6 +11,10 @@ private:
 public:
     SmartPlaylist() = default;
     
+    void setCritera(QString, QVariant);
+    bool removeCritera(QString);
+    QVariantMap critera() const;
+    
     void update();
 };
 

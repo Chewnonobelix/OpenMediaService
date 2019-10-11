@@ -2,12 +2,23 @@
 
 void SmartPlaylist::update()
 {
-    QList<MediaPointer> toRemove;
-    for(auto it: playlist())
-        for(auto it2 = m_critera.begin(); it2 != m_critera.end(); it2++)
-            if(!(it->hasMetadata(it2.key()) /*&& (it->metaData(it2.key()) == it2.value()))*/))
-                    toRemove<<it;
+   
+}
+
+void SmartPlaylist::setCritera(QString name, QVariant value)
+{
+    m_critera[name] = value;
+}
+
+void SmartPlaylist::removeCritera(QString name)
+{
+    if(m_critera.contains(name))
+         return m_critera.remove(name) > 0;
     
-    for(auto it: toRemove)
-        removeMedia(it);
+    return false;
+}
+
+QVariantMap SmartPlaylist::critera() const
+{
+    return m_critera;
 }
