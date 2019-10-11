@@ -128,6 +128,17 @@ QList<QString> Library::sourceDir() const
     return m_sourceDir.toList();
 }
 
+bool Library::in(MediaPointer m) const
+{
+    bool ret = false;
+    
+    for(auto it: sourceDir())
+        for(auto it2: m->paths())
+            ret |= it2.contains(it);
+    
+    return ret;
+}
+
 void Library::removeSourceDir(QString srcDir)
 {
     m_sourceDir.remove(srcDir);
@@ -138,9 +149,15 @@ void Library::removeSourceDir(QString srcDir)
         {
             if(it2.contains(srcDir))
             {
+                it>>it2;
             }
         }
+        
+        if(!in(it))
+            m_medias.remove(it->id());
     }
+    
+    
     emit s_updateSourceDir(m_sourceDir);
     emit s_updateSourceDirList(m_sourceDir.toList());    
 }

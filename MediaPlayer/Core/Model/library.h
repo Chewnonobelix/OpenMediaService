@@ -21,6 +21,7 @@ class Library: public QObject
     Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role CONSTANT)
     Q_PROPERTY(QDateTime lastProbed READ lastProbed NOTIFY s_updateLastProbed)
     Q_PROPERTY(QStringList sourceDir READ sourceDir NOTIFY s_updateSourceDirList)
+    Q_PROPERTY(int nbMedia READ nbMedia CONSTANT)
     
 private:
     QString m_name;
@@ -33,6 +34,10 @@ private:
     
     LibraryProbe m_probe;
 
+    bool in(MediaPointer) const;
+    
+    inline int nbMedia() const {return m_medias.size();}
+    
 public:
     Library();
     Library(const Library&);
