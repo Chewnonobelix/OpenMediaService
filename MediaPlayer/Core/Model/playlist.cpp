@@ -1,5 +1,25 @@
 #include "playlist.h"
 
+bool PlayList::basicPlaylist() const
+{
+    return m_basicPlaylist;
+}
+
+void PlayList::setBasicPlaylist(bool basicPlaylist)
+{
+    m_basicPlaylist = basicPlaylist;
+}
+
+bool PlayList::lock() const
+{
+    return m_lock;
+}
+
+void PlayList::setLock(bool lock)
+{
+    m_lock = lock;
+}
+
 PlayList::PlayList()
 {
     setMetadata("id", QUuid::createUuid().toString());

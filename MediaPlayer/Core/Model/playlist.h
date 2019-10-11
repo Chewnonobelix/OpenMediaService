@@ -16,6 +16,8 @@ class PlayList: public Metadata
 {
 private:
     QList<MediaPointer> m_playlist;
+    bool m_basicPlaylist;
+    bool m_lock;
     
 public:
     PlayList();
@@ -29,6 +31,11 @@ public:
     void removeMedia(int);
     void removeMedia(MediaPointer);
     QList<MediaPointer> playlist() const;
+    
+    bool basicPlaylist() const;
+    void setBasicPlaylist(bool basicPlaylist);
+    bool lock() const;
+    void setLock(bool lock);
 };
 
 #endif // PLAYLIST_H
