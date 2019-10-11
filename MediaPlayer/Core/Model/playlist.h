@@ -12,8 +12,10 @@ class PlayList;
 
 typedef QSharedPointer<PlayList> PlayListPointer;
 
-class PlayList: public Metadata
+class PlayList: public QObject,  public Metadata
 {
+    Q_OBJECT 
+    
 private:
     QList<MediaPointer> m_playlist;
     bool m_basicPlaylist;
@@ -21,6 +23,8 @@ private:
     
 public:
     PlayList();
+    PlayList(const PlayList &);
+    ~PlayList() = default;
     
     QString name() const;
     void setName(QString);
