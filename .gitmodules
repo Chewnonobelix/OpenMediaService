@@ -1,6 +1,3 @@
-[submodule "ExpressionLibrary"]
-	path = ExpressionLibrary
-	url = git@github.com:Chewnonobelix/ExpressionLibrary.git
 [submodule "vlc-qt"]
 	path = vlc-qt
 	url = git@github.com:vlc-qt/vlc-qt.git
