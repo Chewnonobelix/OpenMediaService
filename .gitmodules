@@ -4,3 +4,9 @@
 [submodule "MediaPlayer/ExpressionLibrary"]
 	path = MediaPlayer/ExpressionLibrary
 	url = git@github.com:Chewnonobelix/ExpressionLibrary.git
+[submodule "MediaPlayer/vlc"]
+	path = MediaPlayer/vlc
+	url = git@github.com:videolan/vlc.git
+[submodule "MediaPlayer/vlc-qt"]
+	path = MediaPlayer/vlc-qt
+	url = git@github.com:vlc-qt/vlc-qt.git
