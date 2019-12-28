@@ -7,6 +7,9 @@
 #include <QDir>
 #include <QDebug>
 #include "interfacesaver.h"
+#include "designpattern.h"
+
+using namespace DesignPattern;
 
 class XmlDatabase: public InterfaceSaver
 {

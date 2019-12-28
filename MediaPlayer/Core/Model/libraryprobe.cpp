@@ -45,7 +45,7 @@ void LibraryProbe::run()
     for(auto it: baseName)
         explore(it);
     
-    QTime t;
+    QElapsedTimer t;
     t.start();
     
     for(int i = 0; i < m_all.size(); i++)

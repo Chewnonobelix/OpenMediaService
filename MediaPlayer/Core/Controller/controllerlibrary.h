@@ -12,6 +12,9 @@
 #include <QQmlApplicationEngine>
 #include "interfacesaver.h"
 #include "Model/library.h"
+#include "designpattern.h"
+
+using namespace DesignPattern;
 
 class ControllerLibrary: public QObject
 {

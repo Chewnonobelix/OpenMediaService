@@ -8,6 +8,9 @@
 #include "playlist.h"
 #include "libraryprobe.h"
 
+
+using namespace MediaPlayerGlobal;
+
 class Library;
 
 typedef QSharedPointer<Library> LibraryPointer;

@@ -12,7 +12,7 @@ class PlayList;
 
 typedef QSharedPointer<PlayList> PlayListPointer;
 
-class PlayList: public QObject,  public Metadata
+class PlayList: public QObject,  public MetaData
 {
     Q_OBJECT 
     

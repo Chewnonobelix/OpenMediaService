@@ -145,7 +145,7 @@ bool XmlDatabase::addMedia(MediaPointer p)
     
     if(ret)
     {
-        auto keys = p->metaDataList();
+        auto keys = p->metadataList();
         
         for(auto it: keys)
         {
@@ -191,7 +191,7 @@ bool XmlDatabase::updateMedia(MediaPointer p)
         
         if(c.text() == p->id())
         {
-            for(auto it: p->metaDataList())
+            for(auto it: p->metadataList())
                 setter(el, it,  p->metaData<QString>(it));
             
             auto list2 = el.elementsByTagName("path");

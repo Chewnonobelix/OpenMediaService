@@ -29,7 +29,7 @@ Library::Library(): QObject(nullptr)
 }
 
 Library::Library(const Library& other): QObject(nullptr), 
-    m_name(other.name()), m_sourceDir(other.sourceDir().toSet()),
+    m_name(other.name()), m_sourceDir(toSet(other.sourceDir())),
     m_role(other.role()), m_medias(other.medias()),
     m_lastProbed(other.lastProbed()), m_probe(other.m_probe)
 {
@@ -42,7 +42,7 @@ Library& Library::operator = (const Library& other)
 {
 
     m_name = other.name();
-    m_sourceDir = other.sourceDir().toSet();
+    m_sourceDir = toSet(other.sourceDir());
     m_role = other.role();
     m_medias = other.medias();
     m_lastProbed = other.lastProbed();
@@ -90,7 +90,7 @@ void Library::endProbe()
 
 void Library::probe()
 {
-    m_probe.baseName = m_sourceDir.toList();
+    m_probe.baseName = m_sourceDir.values();
     m_probe.setLastProbed(lastProbed());
     m_probe.start();
 }
@@ -120,12 +120,12 @@ void Library::addSourceDir(QString srcDir)
     m_sourceDir<<srcDir;
     
     emit s_updateSourceDir(m_sourceDir);
-    emit s_updateSourceDirList(m_sourceDir.toList());
+    emit s_updateSourceDirList(m_sourceDir.values());
 }
 
 QList<QString> Library::sourceDir() const
 {
-    return m_sourceDir.toList();
+    return m_sourceDir.values();
 }
 
 bool Library::in(MediaPointer m) const
@@ -159,7 +159,7 @@ void Library::removeSourceDir(QString srcDir)
     
     
     emit s_updateSourceDir(m_sourceDir);
-    emit s_updateSourceDirList(m_sourceDir.toList());    
+    emit s_updateSourceDirList(m_sourceDir.values());
 }
 
 void Library::removeMedia(MD5 id)

@@ -15,13 +15,12 @@ namespace MediaPlayerGlobal
     Q_ENUM_NS(MediaRole)
     
     MediaRole getRole(QString path);
-    
-    template<class T, typename... U>
-    QSharedPointer<T> factory(U&&... params) 
+
+    template<class T>
+    QSet<T> toSet(QList<T> l)
     {
-        return QSharedPointer<T>::create(params...);
+        return QSet<T>(l.begin(), l.end());
     }
-    
 }
 
 Q_DECLARE_METATYPE(MediaPlayerGlobal::MediaRole)

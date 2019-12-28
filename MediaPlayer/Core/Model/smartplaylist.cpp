@@ -1,6 +1,6 @@
 #include "smartplaylist.h"
 
-void SmartPlaylist::update(MediaPointer m)
+void SmartPlaylist::update(MediaPointer)
 {
    
 }

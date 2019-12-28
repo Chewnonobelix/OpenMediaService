@@ -18,7 +18,6 @@ SOURCES += \
         Controller/controllermain.cpp \
         Controller/interfacesaver.cpp \
         Controller/xmldatabase.cpp \
-        Model/metadata.cpp \
         Model/smartplaylist.cpp \
         main.cpp \
         Model\global.cpp \
@@ -45,7 +44,6 @@ HEADERS += \
     Controller/controllermain.h \
     Controller/interfacesaver.h \
     Controller/xmldatabase.h \
-    Model/metadata.h \
     Model/smartplaylist.h \
     Model\global.h \
     Model\library.h \
@@ -53,3 +51,8 @@ HEADERS += \
     Model\media.h \
     Model\playlist.h
 
+
+INCLUDEPATH += ../DesignLibrary/DesignPattern
+
+
+LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern -lDesignPattern

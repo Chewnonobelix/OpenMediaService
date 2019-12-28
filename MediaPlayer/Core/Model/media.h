@@ -13,12 +13,15 @@
 #include <QDebug>
 #include "global.h"
 #include "metadata.h"
+#include "designpattern.h"
+
+using namespace DesignPattern;
 
 class Media;
 
 typedef QSharedPointer<Media> MediaPointer;
 
-class Media: public Metadata
+class Media: public MetaData
 {
     Q_GADGET
     

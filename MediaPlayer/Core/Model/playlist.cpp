@@ -25,7 +25,7 @@ PlayList::PlayList(): QObject(nullptr)
     setMetadata("id", QUuid::createUuid().toString());
 }
 
-PlayList::PlayList(const PlayList& other): QObject(nullptr), Metadata(other), m_playlist(other.playlist()),
+PlayList::PlayList(const PlayList& other): QObject(nullptr), MetaData(other), m_playlist(other.playlist()),
     m_basicPlaylist(other.basicPlaylist()), m_lock(other.lock())
 {
 }

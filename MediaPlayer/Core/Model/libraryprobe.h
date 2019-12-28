@@ -10,6 +10,7 @@
 #include <QSet>
 #include <QTime>
 #include <QThread>
+#include <QElapsedTimer>
 
 class LibraryProbe: public QThread
 {

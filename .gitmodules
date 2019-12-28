@@ -1,0 +1,6 @@
+[submodule "MediaPlayer/DesignLibrary"]
+	path = MediaPlayer/DesignLibrary
+	url = git@github.com:Chewnonobelix/DesignLibrary.git
+[submodule "MediaPlayer/ExpressionLibrary"]
+	path = MediaPlayer/ExpressionLibrary
+	url = git@github.com:Chewnonobelix/ExpressionLibrary.git
