@@ -74,6 +74,7 @@ Item {
                         anchors.fill: parent
                         onDoubleClicked: {
                             libraryView.s_openLibrary(modelData.name)
+                            modelData.searchMedia()
                         }
                     }
                     

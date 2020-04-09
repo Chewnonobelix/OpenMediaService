@@ -12,11 +12,11 @@ ControllerMain::ControllerMain(): QObject(nullptr)
 
     m_root = m_engine.rootObjects().first();
     
-    m_library.probeAll();
+//    m_library.probeAll();
     
     auto lb = m_root->findChild<QObject*>("libraryBox");
-    //m_library.addLibrary("Test", MediaPlayerGlobal::MediaRole::Audio);
-    m_library.probeAll();
+//    m_library.addLibrary("Test", MediaPlayerGlobal::MediaRole::Audio);
+//    m_library.probeAll();
     if(!m_library.librariesName().isEmpty())
     {        
         auto lv = lb->findChild<QObject*>("libraryView");

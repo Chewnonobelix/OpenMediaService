@@ -22,6 +22,7 @@ Window {
         onRejected: close()
     }
     
+
     GridLayout {
         anchors.fill: parent
         
@@ -133,6 +134,5 @@ Window {
                 }
             }
         }
-        
     }
 }
