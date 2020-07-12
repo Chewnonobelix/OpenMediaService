@@ -4,7 +4,6 @@
 #include <QQmlApplicationEngine>
 #include <QObject>
 #include <QCoreApplication>
-#include "controllerlibrary.h"
 
 
 class ControllerMain: public QObject
@@ -14,11 +13,9 @@ private:
     QQmlApplicationEngine m_engine;
     QObject* m_root;
     
-    ControllerLibrary m_library;
-    QMap<QString, MediaPlayerGlobal::MediaRole> m_tabWindows;
     
 public:
-    ControllerMain();
+    ControllerMain() = default;
     ~ControllerMain() = default;
     
 };
