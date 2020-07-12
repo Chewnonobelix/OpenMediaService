@@ -75,42 +75,61 @@ void MediaTest::test_count()
 
 void MediaTest::test_role()
 {
-    QFAIL("Not set");
+    QVERIFY(model1.role() != role);
+    model1.setRole(role);
+    QCOMPARE(model1.role(), role);
 }
 
 void MediaTest::test_paths()
 {
-    QFAIL("Not set");
+    QVERIFY(model1.paths().isEmpty());
+    model1.setPath(path);
+    QCOMPARE(model1.paths().first(), path);
 }
 
 void MediaTest::test_isAvailable()
 {
-    QFAIL("Not set");
+    QCOMPARE(model1.isAvailable(), true);
 }
 
 void MediaTest::test_removePath()
 {
-    QFAIL("Not set");
+    model1.removePath(path);
+    QCOMPARE(model1.isAvailable(), false);
 }
 
 void MediaTest::test_added()
 {
-    QFAIL("Not set");
+    QVERIFY(model1.added() != added);
+    model1.setAdded(added);
+    QCOMPARE(model1.added(), added);
 }
 
 void MediaTest::test_lastFinish()
 {
-    QFAIL("Not set");
+    QVERIFY(model1.lastFinish() != lastFinish);
+    QSignalSpy spy(&model1, SIGNAL(lastFinishChanged(QDateTime)));
+    model1.setLastFinish(lastFinish);
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(model1.lastFinish(), lastFinish);
 }
 
 void MediaTest::test_currentRead()
 {
-    QFAIL("Not set");
+    QVERIFY(model1.currentRead() != currentRead);
+    QSignalSpy spy(&model1, SIGNAL(currentReadChanged(double)));
+    model1.setCurrentRead(currentRead);
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(model1.currentRead(), currentRead);
 }
 
 void MediaTest::test_rating()
 {
-    QFAIL("Not set");
+    QVERIFY(model1.rating() != rate);
+    QSignalSpy spy(&model1, SIGNAL(ratingChanged(int)));
+    model1.setRating(rate);
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(model1.rating(), rate);
 }
 
 
