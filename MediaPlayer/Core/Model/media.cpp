@@ -131,3 +131,14 @@ bool Media::isAvailable() const
     return !m_path.isEmpty();
 }
 
+Media& Media::operator =(const Media& other)
+{
+
+    m_path.clear();
+    for(auto it: other.paths())
+        m_path<<it;
+
+    MetaData& mt = *this;
+    mt = other;
+    return *this;
+}
