@@ -2,6 +2,9 @@ QT += quick xml core qml
 
 CONFIG += c++17
 
+TEMPLATE = lib
+DEFINES += MEDIAPLAYERCORE_LIBRARY
+TARGET = LibMediaPlayerCore
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Refer to the documentation for the
@@ -17,7 +20,6 @@ SOURCES += \
         Controller/controllermain.cpp \
         Controller/interfacesaver.cpp \
         Model/smartplaylist.cpp \
-        main.cpp \
         Model\global.cpp \
         Model\library.cpp \
         Model\libraryprobe.cpp \
@@ -45,10 +47,12 @@ HEADERS += \
     Model\library.h \
     Model\libraryprobe.h \
     Model\media.h \
-    Model\playlist.h
+    Model\playlist.h \
+    mediaplayercore_global.h
 
 
-INCLUDEPATH += ../DesignLibrary/DesignPattern
+INCLUDEPATH += ../DesignLibrary/DesignPattern ../ExpressionLibrary/LibExpression
 
 
-LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern -lDesignPattern
+LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
+LIBS += -L$$OUT_PWD/../ExpressionLibrary/LibExpression/debug -lLibExpression

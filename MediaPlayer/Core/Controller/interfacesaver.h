@@ -3,11 +3,6 @@
 
 #include <QObject>
 
-#include "Model/global.h"
-#include "Model/media.h"
-
-using namespace MediaPlayerGlobal;
-
 class InterfaceSaver: public QObject
 {
     
