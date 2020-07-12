@@ -34,7 +34,7 @@ private slots:
     void test_lastFinish();
     void test_currentRead();
     void test_rating();
-
+    void test_copy();
 };
 
 MediaTest::MediaTest()
@@ -131,6 +131,14 @@ void MediaTest::test_rating()
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.rating(), rate);
 }
+
+void MediaTest::test_copy()
+{
+    QVERIFY(model2.id() != id);
+    model2 = model1;
+    QCOMPARE(model2.id(), model1.id());
+}
+
 
 
 QTEST_APPLESS_MAIN(MediaTest)
