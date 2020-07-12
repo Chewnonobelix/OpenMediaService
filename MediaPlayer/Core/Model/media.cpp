@@ -1,6 +1,6 @@
 #include "media.h"
 
-Media::Media(MD5 id, QString path)
+Media::Media(MD5 id, QString path): QObject(nullptr)
 {
     setId(id);
     if(!path.isEmpty())

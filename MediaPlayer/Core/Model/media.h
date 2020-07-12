@@ -21,17 +21,17 @@ class Media;
 
 typedef QSharedPointer<Media> MediaPointer;
 
-class Media: public MetaData
+class Media: public QObject, public MetaData
 {
-    Q_GADGET
-    
-    Q_PROPERTY(MD5 id READ id)
-    Q_PROPERTY(int count READ count WRITE setCount)
-    Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role)
-    Q_PROPERTY(bool isAvailable READ isAvailable)
-    Q_PROPERTY(QDate added READ added)
-    Q_PROPERTY(QDateTime lastFinish READ lastFinish)
-    Q_PROPERTY(double currentRead READ currentRead WRITE setCurrentRead)
+    Q_OBJECT
+
+    Q_PROPERTY(MD5 id READ id CONSTANT)
+    Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
+    Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role CONSTANT)
+    Q_PROPERTY(bool isAvailable READ isAvailable NOTIFY isAvailableChanged)
+    Q_PROPERTY(QDate added READ added CONSTANT)
+    Q_PROPERTY(QDateTime lastFinish READ lastFinish NOTIFY lasFinishChanged)
+    Q_PROPERTY(double currentRead READ currentRead WRITE setCurrentRead NOTIFY currentReadChaned)
     Q_PROPERTY(QStringList paths READ paths)
     
 private:
@@ -40,11 +40,11 @@ private:
     
 public:
     Media(MD5 = "", QString = "");
-    Media(const Media& other) = default;
+    Media(const Media& other);
     ~Media() = default;
     
     Media& operator= (const Media& other);
-    
+
     MD5 id() const;
     void setId(MD5 id);
     MediaPlayerGlobal::MediaRole role() const;

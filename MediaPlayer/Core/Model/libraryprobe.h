@@ -20,7 +20,7 @@ private:
     int m_counter;
     QFileInfoList m_all;
     QDateTime m_lastProbed;
-    
+    QFile stat;
 protected:
     void run();
 

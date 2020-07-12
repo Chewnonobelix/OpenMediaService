@@ -117,6 +117,7 @@ void Library::setRole(MediaPlayerGlobal::MediaRole role)
 
 void Library::addSourceDir(QString srcDir)
 {
+    srcDir.remove("file:///");
     m_sourceDir<<srcDir;
     
     emit s_updateSourceDir(m_sourceDir);
@@ -175,4 +176,23 @@ bool Library::addMedia(QString path)
     addProbedMedia(id, path);
     
     return true;
+}
+
+void Library::searchMedia() const
+{
+    QFile multiple("multiple.txt");
+    multiple.open(QIODevice::WriteOnly);
+
+    for(auto it: m_medias)
+    {
+        if(it->paths().size() > 1)
+        {
+            for(auto it2: it->paths())
+                multiple.write(it2.toLatin1() + ", ");
+
+            multiple.write("\n");
+        }
+    }
+
+    multiple.close();
 }

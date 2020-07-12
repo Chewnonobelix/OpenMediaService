@@ -26,7 +26,7 @@ QByteArray LibraryProbe::getMd5(QFileInfo info)
     ch.addData(&f);
     f.close();
     
-    return ch.result().toHex();    
+    return ch.result().toHex();
 }
 
 QDateTime LibraryProbe::lastProbed() const
@@ -41,23 +41,32 @@ void LibraryProbe::setLastProbed(QDateTime lastProbed)
 
 void LibraryProbe::run()
 {
+    stat.setFileName("stat.txt");
+    stat.open(QIODevice::WriteOnly);
     m_counter = 0;
+    setLastProbed(QDateTime::currentDateTime());
     for(auto it: baseName)
         explore(it);
     
     QElapsedTimer t;
     t.start();
-    
-    for(int i = 0; i < m_all.size(); i++)
+    int start = m_all.count();
+    qDebug()<<"Start"<<m_all.count();
+    qDebug()<<"base"<<baseName;
+    while(m_all.count())
     {
-        if(m_all[i].lastModified() <= lastProbed() && m_all[i].birthTime() <= lastProbed())
+        auto first = m_all.takeFirst();
+        if(first.fileTime(QFileDevice::FileBirthTime) <= lastProbed() && first.fileTime(QFileDevice::FileModificationTime) <= lastProbed())
             continue;
-        
-        auto md = getMd5(m_all[i]);
-        emit s_add(md, m_all[i].absoluteFilePath());
-        setLastProbed(m_all[i].lastModified());
-        double per = (i*100.0/m_all.size());
-        qDebug()<<per;
+
+        stat.write(QString("%1, %2\n").arg(((start - m_all.count())*100.0/start)).arg((start - m_all.count())).toLatin1());
+        auto md = getMd5(first);
+        emit s_add(md, first.absoluteFilePath());
+        if((start - m_all.count()) % 2500 == 0)
+        {
+            double per = ((start - m_all.count())*100.0/start);
+            qDebug()<<per;
+        }
     }
     
     qDebug()<<"During"<<t.elapsed()/60;
@@ -65,7 +74,7 @@ void LibraryProbe::run()
 
 void LibraryProbe::explore(QString dirName)
 {
-//    qDebug()<<dirName;
+    qDebug()<<dirName;
     QDir dir(dirName);
     auto fl = dir.entryInfoList(filter);
     m_all.append(fl);
@@ -74,11 +83,11 @@ void LibraryProbe::explore(QString dirName)
     
     
     auto subDirs = dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot);
-    
+    qDebug()<<"Subs"<<subDirs;
     
     for(auto it: subDirs)
     {
-//        qDebug()<<lastProbed()<<it.lastModified()<<it.path();
+        qDebug()<<lastProbed()<<it.lastModified()<<it.path();
         explore(it.absoluteFilePath());
     }
     
@@ -86,6 +95,7 @@ void LibraryProbe::explore(QString dirName)
 
 void LibraryProbe::onEnd()
 {
+    stat.close();
     qDebug()<<"Get "<<m_all.size();
 }
 

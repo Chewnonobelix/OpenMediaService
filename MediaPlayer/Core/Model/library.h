@@ -66,6 +66,8 @@ public:
     QDateTime lastProbed() const;
     void setLastProbed(QDateTime lastProbed);
     
+    Q_INVOKABLE void searchMedia() const;
+
 public slots:
     void addProbedMedia(MD5, QString);
     void endProbe();
