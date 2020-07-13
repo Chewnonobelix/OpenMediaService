@@ -8,6 +8,11 @@ Media::Media(MD5 id, QString path): QObject(nullptr)
 }
 
 
+Media::Media(const Media &other): QObject(nullptr), MetaData(other), m_path(other.paths().begin(), other.paths().end())
+{
+
+}
+
 MD5 Media::id() const
 {
     return metaData<MD5>("id");
@@ -44,11 +49,13 @@ void Media::setPath(QString path)
         return;
  
     m_path<<path;
+    emit isAvailableChanged(!m_path.isEmpty());
 }
 
 void Media::removePath(QString path)
 {
     m_path.remove(path);   
+    emit isAvailableChanged(!m_path.isEmpty());
 }
 
 int Media::count() const
@@ -59,6 +66,18 @@ int Media::count() const
 void Media::setCount(int count)
 {
     setMetadata("count", count);
+    emit countChanged(count);
+}
+
+int Media::rating() const
+{
+    return hasMetadata("rating") ? metaData<int>("rating") : 0;
+}
+
+void Media::setRating(int rate)
+{
+    setMetadata("rating", rate);
+    emit ratingChanged(rate);
 }
 
 QDate Media::added() const
@@ -79,6 +98,7 @@ QDateTime Media::lastFinish() const
 void Media::setLastFinish(QDateTime lastFinish)
 {
     setMetadata("lastFinish", lastFinish);
+    emit lastFinishChanged(lastFinish);
 }
 
 double Media::currentRead() const
@@ -89,6 +109,7 @@ double Media::currentRead() const
 void Media::setCurrentRead(double currentRead)
 {
     setMetadata("currentRead", currentRead);
+    emit currentReadChanged(currentRead);
 }
 
 MediaPointer Media::createMedia(MD5 id, QString path)
@@ -100,29 +121,6 @@ MediaPointer Media::createMedia(MD5 id, QString path)
     return ret;
 }
 
-MediaPointer operator << (MediaPointer p, QString path)
-{
-    p->setPath(path);
-    return p;
-}
-
-MediaPointer operator >> (MediaPointer p, QString path)
-{
-    p->removePath(path);
-    return p;
-}
-
-void Media::operator ++ (int)
-{
-    setCount(count() + 1);    
-}
-
-bool Media::pp()
-{
-    int o = count();
-    (*this)++;
-    return (o+1) == count();
-}
 int Media::nbPath() const
 {
     return m_path.size();
@@ -133,3 +131,14 @@ bool Media::isAvailable() const
     return !m_path.isEmpty();
 }
 
+Media& Media::operator =(const Media& other)
+{
+
+    m_path.clear();
+    for(auto it: other.paths())
+        m_path<<it;
+
+    MetaData& mt = *this;
+    mt = other;
+    return *this;
+}

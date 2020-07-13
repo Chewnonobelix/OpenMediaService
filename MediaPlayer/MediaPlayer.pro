@@ -1,6 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
+    Application \
     Core \
     DesignLibrary \
-    ExpressionLibrary
+    ExpressionLibrary \
+    UnitTest

@@ -64,7 +64,7 @@ void Library::addProbedMedia(MD5 md, QString path)
 {
     if(m_medias.contains(md))
     {        
-        (m_medias[md])<<path;
+        m_medias[md]->setPath(path);
         emit s_updateMedia(m_medias[md]);
     }
     else
@@ -150,7 +150,7 @@ void Library::removeSourceDir(QString srcDir)
         {
             if(it2.contains(srcDir))
             {
-                it>>it2;
+                it->removePath(it2);
             }
         }
         
