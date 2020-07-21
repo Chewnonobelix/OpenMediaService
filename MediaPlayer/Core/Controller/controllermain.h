@@ -8,7 +8,6 @@
 
 class ControllerMain
 {
-    Q_OBJECT
 private:    
     QQmlApplicationEngine m_engine;
     QObject* m_root;
