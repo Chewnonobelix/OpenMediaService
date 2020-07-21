@@ -101,6 +101,17 @@ void Media::setLastFinish(QDateTime lastFinish)
     emit lastFinishChanged(lastFinish);
 }
 
+QDateTime Media::lastProbed() const
+{
+    return metaData<QDateTime>("lastProbed");
+}
+
+void Media::setLastProbed(QDateTime lastProbed)
+{
+    setMetadata("lastProbed", lastProbed);
+    emit lastProbedChanged(lastProbed);
+}
+
 double Media::currentRead() const
 {
     return metaData<double>("currentRead");

@@ -66,6 +66,8 @@ public:
     void setLastFinish(QDateTime lastFinish);
     double currentRead() const;
     void setCurrentRead(double currentRead);
+    QDateTime lastProbed() const;
+    void setLastProbed(QDateTime);
     
     static MediaPointer createMedia(MD5, QString path = "");
 
@@ -75,6 +77,7 @@ signals:
     void currentReadChanged(double);
     void lastFinishChanged(QDateTime);
     void isAvailableChanged(bool);
+    void lastProbedChanged(QDateTime);
 };
 
 Q_DECLARE_METATYPE(Media)
