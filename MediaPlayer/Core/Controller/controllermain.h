@@ -6,7 +6,7 @@
 #include <QCoreApplication>
 
 
-class ControllerMain: public QObject
+class ControllerMain
 {
     Q_OBJECT
 private:    
