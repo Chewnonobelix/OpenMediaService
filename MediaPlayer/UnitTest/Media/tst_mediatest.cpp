@@ -14,6 +14,7 @@ class MediaTest : public QObject
     const MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::Game;
     const QDate added = QDate::currentDate();
     const QDateTime lastFinish = QDateTime::currentDateTime();
+    const QDateTime lastProbed = QDateTime::currentDateTime().addDays(5);
     const double currentRead = 99.0;
     const int rate = 2;
 
@@ -34,6 +35,7 @@ private slots:
     void test_lastFinish();
     void test_currentRead();
     void test_rating();
+    void test_lastProbed();
     void test_copy();
 };
 
@@ -130,6 +132,15 @@ void MediaTest::test_rating()
     model1.setRating(rate);
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.rating(), rate);
+}
+
+void MediaTest::test_lastProbed()
+{
+    QVERIFY(model1.lastProbed() != lastProbed);
+    QSignalSpy spy(&model1, SIGNAL(lastProbedChanged(QDateTime)));
+    model1.setLastProbed(lastProbed);
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(model1.lastProbed(), lastProbed);
 }
 
 void MediaTest::test_copy()
