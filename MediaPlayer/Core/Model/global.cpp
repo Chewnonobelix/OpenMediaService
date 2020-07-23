@@ -21,6 +21,7 @@ MediaRole MediaPlayerGlobal::getRole(QString path)
     map["bmp"] = MediaRole::Image;
     map["png"] = MediaRole::Image;
     
+    map["ts"] = MediaRole::Video;
     
     auto ext = path.split(".").last();
     
