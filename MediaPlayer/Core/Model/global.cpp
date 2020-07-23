@@ -5,21 +5,21 @@ using namespace MediaPlayerGlobal;
 MediaRole MediaPlayerGlobal::getRole(QString path)
 {
     QMap<QString, MediaRole> map;
-    map["mp3"] = Audio;
-    map["ogg"] = Audio;
-    map["flac"] = Audio;
-    map["wav"] = Audio;
+    map["mp3"] = MediaRole::Audio;
+    map["ogg"] = MediaRole::Audio;
+    map["flac"] = MediaRole::Audio;
+    map["wav"] = MediaRole::Audio;
     
-    map["cbr"] = Comics;
-    map["cbz"] = Comics;
-    map["pdf"] = Comics;
+    map["cbr"] = MediaRole::Comics;
+    map["cbz"] = MediaRole::Comics;
+    map["pdf"] = MediaRole::Comics;
     
-    map["epub"] = Books;
+    map["epub"] = MediaRole::Books;
     
-    map["jpg"] = Image;
-    map["jpeg"] = Image;
-    map["bmp"] = Image;
-    map["png"] = Image;
+    map["jpg"] = MediaRole::Image;
+    map["jpeg"] = MediaRole::Image;
+    map["bmp"] = MediaRole::Image;
+    map["png"] = MediaRole::Image;
     
     
     auto ext = path.split(".").last();

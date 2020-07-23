@@ -2,6 +2,7 @@
 #define INTERFACESAVER_H
 
 #include <QObject>
+#include "Model/library.h"
 
 class InterfaceSaver: public QObject
 {
@@ -14,7 +15,12 @@ public:
     InterfaceSaver() = default;
     InterfaceSaver(const InterfaceSaver&) = default;
     virtual ~InterfaceSaver() = default;
-        
+
+    QMap<QUuid, LibraryPointer> selectLibrary(QUuid = QUuid()) const;
+    LibraryPointer createLibrary();
+    bool removeLibrary(LibraryPointer);
+    bool updateLibrary(LibraryPointer);
+    
     virtual void init() = 0;
 
 public slots:    

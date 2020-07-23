@@ -11,7 +11,7 @@ class MediaTest : public QObject
     const MD5 id = "testid";
     const QString path = "path1";
     const int count = 1;
-    const MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::Game;
+    const MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::MediaRole::Game;
     const QDate added = QDate::currentDate();
     const QDateTime lastFinish = QDateTime::currentDateTime();
     const QDateTime lastProbed = QDateTime::currentDateTime().addDays(5);

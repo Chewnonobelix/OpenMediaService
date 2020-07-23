@@ -12,7 +12,7 @@ namespace MediaPlayerGlobal
 {
     Q_NAMESPACE
 
-    enum MediaRole {Undefined, Audio, Video, Comics, Books, Image, Game};
+    enum class MediaRole {Undefined, Audio, Video, Comics, Books, Image, Game};
     Q_ENUM_NS(MediaRole)
     
     MediaRole getRole(QString path);
