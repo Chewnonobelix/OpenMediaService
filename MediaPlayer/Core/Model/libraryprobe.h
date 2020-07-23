@@ -17,35 +17,18 @@ class LibraryProbe: public QThread
     Q_OBJECT
 
 private:
-    int m_counter;
-    QFileInfoList m_all;
-    QDateTime m_lastProbed;
-    QFile stat;
+
 protected:
-    void run();
 
 public:
 
-    QStringList baseName;
-    LibraryProbe();
-    LibraryProbe(const LibraryProbe&);
-    ~LibraryProbe();
+    LibraryProbe() = default;
+    ~LibraryProbe() = default;
     
-    QStringList filter;
-
-    void explore(QString = "./");
-    QByteArray getMd5(QFileInfo);
-
-    QDateTime lastProbed() const;
-    void setLastProbed(QDateTime lastProbed);
-    
-    bool hasProbed() const;
     
 signals:
-    void s_add(QByteArray, QString);
     
 public slots:
-    void onEnd();
 };
 
 #endif // LIBRARYPROBE_H
