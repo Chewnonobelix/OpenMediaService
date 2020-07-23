@@ -1,6 +1,6 @@
 #include "library.h"
 
-Library::Library(const Library& l): MetaData(l)
+Library::Library(const Library& l): QObject(nullptr), MetaData(l)
 {}
 
 Library& Library::operator = (const Library& l)
@@ -92,15 +92,54 @@ bool Library::removeSourceDir(QString source)
 
 bool Library::addMedia(QString path)
 {
-    return false;        
+    QFile f(path);
+    if(!f.open(QIODevice::ReadOnly))
+        return false;
+    
+    QCryptographicHash ch(QCryptographicHash::Md5);
+    if(!ch.addData(&f))
+        return false;
+    
+    auto md = ch.result();
+    
+    if(m_medias.contains(md))
+        m_medias[md]->setPath(path);
+    else if(MediaPlayerGlobal::getRole(path) == role())
+        m_medias[md] = Media::createMedia(md, path);
+    else
+        return false;
+    
+    emit mediasChanged();
+    
+    return m_medias[md]->paths().contains(path);        
 }
 
 bool Library::removeMedia(QString path)
 {
-    return false;
+    QFile f(path);
+    if(!f.open(QIODevice::ReadOnly))
+        return false;
+    
+    QCryptographicHash ch(QCryptographicHash::Md5);
+    if(!ch.addData(&f))
+        return false;
+    
+    auto md = ch.result();
+    if(!m_medias.contains(md))
+        return false;
+    
+    m_medias[md]->removePath(path);
+    emit mediasChanged();
+    return !m_medias[md]->paths().contains(path);
 }
 
 QMap<MD5, MediaPointer> Library::medias(MD5 id) const
 {
-    return QMap<MD5, MediaPointer>();
+    QMap<MD5, MediaPointer> ret;
+    if(id.isEmpty())
+        ret = m_medias;
+    else
+        ret[id] = m_medias[id];
+    
+    return ret;
 }
