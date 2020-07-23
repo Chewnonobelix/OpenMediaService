@@ -1,10 +1,12 @@
 #include "library.h"
 
-Library::Library(const Library&)
+Library::Library(const Library& l): MetaData(l)
 {}
 
-Library& Library::operator = (const Library&)
+Library& Library::operator = (const Library& l)
 {
+    MetaData& mt = *this;
+    mt = l;
     return *this;
 }
 
@@ -13,57 +15,77 @@ void Library::probe()
 
 QUuid Library::id() const 
 {
-    return QUuid();
+    return metaData<QUuid>("id");
 }
 
-void Library::setId(QUuid)
-{}
+void Library::setId(QUuid id)
+{
+    setMetadata("id", id);    
+}
 
 QString Library::name() const
 {
-    return QString();
+    return metaData<QString>("name");
 }
 
-void Library::setName(QString)
+void Library::setName(QString name)
 {
-    
+    setMetadata("name", name);  
+    emit nameChanged(name);
 }
 
 MediaPlayerGlobal::MediaRole Library::role() const
 {
-    return MediaPlayerGlobal::MediaRole::Undefined;    
+    return metaData<MediaPlayerGlobal::MediaRole>("role");    
 }
 
-void Library::setRole(MediaPlayerGlobal::MediaRole)
-{}
+void Library::setRole(MediaPlayerGlobal::MediaRole role)
+{
+    setMetadata("role", role);
+}
 
 bool Library::isShared() const
 {
-    return false;
+    return metaData<bool>("shared");
 }
 
-void Library::setShared(bool)
-{}
+void Library::setShared(bool shared)
+{
+    setMetadata("shared", shared);
+    emit isSharedChanged(shared);
+}
 
 QDateTime Library::lastProbed() const
 {
-    return QDateTime();    
+    return metaData<QDateTime>("lastProbed");    
 }
 
-void Library::setLastProbed(QDateTime)
-{}
+void Library::setLastProbed(QDateTime lp)
+{
+    setMetadata("lastProbed", lp);
+    emit lastProbedChanged(lp);
+}
 
 QSet<QString> Library::sourceDir() const
 {
-    return QSet<QString>();
+    return metaData<QSet<QString>>("sourceDir");
 }
 
-bool Library::addSourceDir(QString)
+bool Library::addSourceDir(QString source)
 {
-    return false;
+    auto t = sourceDir();
+    bool ret = t.contains(source);
+    t<<source;
+    setMetadata("sourceDir", t);
+    emit sourceDirChanged(t);
+    return !ret;;
 }
 
-bool Library::removeSourceDir(QString)
+bool Library::removeSourceDir(QString source)
 {
-    return false;
+    auto t = sourceDir();
+    bool ret = t.remove(source);
+    setMetadata("sourceDir", t);    
+    emit sourceDirChanged(t);
+    return ret;;
 }
