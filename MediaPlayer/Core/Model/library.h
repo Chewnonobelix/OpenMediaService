@@ -52,10 +52,6 @@ public:
 
     Library& operator = (const Library&);
     
-    Q_INVOKABLE void probe();
-    Q_INVOKABLE bool addMedia(QString);
-    Q_INVOKABLE bool removeMedia(QString);
-    Q_INVOKABLE QMap<MD5, MediaPointer> medias(MD5 = "") const;
 
     QUuid id() const;
     void setId(QUuid);
@@ -68,10 +64,14 @@ public:
     QDateTime lastProbed() const;
     void setLastProbed(QDateTime);
     QSet<QString> sourceDir() const;
-    Q_INVOKABLE bool addSourceDir(QString);
-    Q_INVOKABLE bool removeSourceDir(QString);
     
 public slots:
+    Q_INVOKABLE void probe();
+    Q_INVOKABLE bool addMedia(QString);
+    Q_INVOKABLE bool removeMedia(QString);
+    Q_INVOKABLE QMap<MD5, MediaPointer> medias(MD5 = "") const;
+    Q_INVOKABLE bool addSourceDir(QString);
+    Q_INVOKABLE bool removeSourceDir(QString);
      
 signals:
     void nameChanged(QString);
