@@ -43,7 +43,7 @@ class Library: public QObject, public MetaData
     
 private:
     LibraryProbe m_probe;
-
+    QMap<MD5, MediaPointer> m_medias;
     
 public:
     Library() = default;
@@ -53,7 +53,9 @@ public:
     Library& operator = (const Library&);
     
     Q_INVOKABLE void probe();
-
+    Q_INVOKABLE bool addMedia(QString);
+    Q_INVOKABLE bool removeMedia(QString);
+    Q_INVOKABLE QMap<MD5, MediaPointer> medias(MD5 = "") const;
 
     QUuid id() const;
     void setId(QUuid);
@@ -76,6 +78,7 @@ signals:
     void isSharedChanged(bool);
     void lastProbedChanged(QDateTime);
     void sourceDirChanged(QSet<QString>);
+    void mediasChanged();
 };
 Q_DECLARE_METATYPE(Library)
 #endif // LIBRARY_H

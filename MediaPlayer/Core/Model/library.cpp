@@ -89,3 +89,18 @@ bool Library::removeSourceDir(QString source)
     emit sourceDirChanged(t);
     return ret;;
 }
+
+bool Library::addMedia(QString path)
+{
+    return false;        
+}
+
+bool Library::removeMedia(QString path)
+{
+    return false;
+}
+
+QMap<MD5, MediaPointer> Library::medias(MD5 id) const
+{
+    return QMap<MD5, MediaPointer>();
+}
