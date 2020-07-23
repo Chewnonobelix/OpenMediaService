@@ -10,12 +10,12 @@ class LibraryTest : public QObject
     Library model1, model2;
     QUuid id = QUuid::createUuid();
     QString name = "Name1";
-    MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::MediaRole::Audio;
+    MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::MediaRole::Video;
     bool shared = true;
     QDateTime lastprobed = QDateTime::currentDateTime().addDays(-6);
     QString source = "Source1";
     QSet<QString> sourceDir = QSet<QString>({source});
-    QString media = "MediaSource1";
+    QString media = "molecule.ts";
     
 public:
     LibraryTest();
