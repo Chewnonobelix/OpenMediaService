@@ -10,11 +10,12 @@ class LibraryTest : public QObject
     Library model1, model2;
     QUuid id = QUuid::createUuid();
     QString name = "Name1";
-    MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::MediaRole::Audio;
+    MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::MediaRole::Video;
     bool shared = true;
     QDateTime lastprobed = QDateTime::currentDateTime().addDays(-6);
     QString source = "Source1";
     QSet<QString> sourceDir = QSet<QString>({source});
+    QString media = "molecule.ts";
     
 public:
     LibraryTest();
@@ -31,6 +32,9 @@ private slots:
     void test_addSourceDir();
     void test_sourceDir();
     void test_removeSourceDir();
+    void test_addMedias();
+    void test_medias();
+    void test_removeMedias();
     void test_copy();    
 };
 
@@ -121,6 +125,27 @@ void LibraryTest::test_copy()
     QVERIFY(model2.id() != id);
     model2 = model1;
     QCOMPARE(model2.id(), model1.id());    
+}
+
+void LibraryTest::test_addMedias()
+{
+    QVERIFY(model1.medias().isEmpty());
+    QSignalSpy spy(&model1, SIGNAL(mediasChanged()));
+    QCOMPARE(model1.addMedia(media), true);
+    QCOMPARE(spy.count(), 1);
+}
+
+void LibraryTest::test_medias()
+{
+    QCOMPARE(model1.medias().size(), 1);
+}
+
+void LibraryTest::test_removeMedias()
+{
+    QVERIFY(!model1.medias().isEmpty());
+    QSignalSpy spy(&model1, SIGNAL(mediasChanged()));
+    QCOMPARE(model1.removeMedia(media), true);    
+    QCOMPARE(spy.count(), 1);
 }
 
 QTEST_APPLESS_MAIN(LibraryTest)

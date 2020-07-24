@@ -139,7 +139,11 @@ int Media::nbPath() const
 
 bool Media::isAvailable() const
 {
-    return !m_path.isEmpty();
+    bool ret = !m_path.isEmpty();
+    for(auto it = m_path.begin(); ret && it != m_path.end(); it++)
+        ret &= QFile::exists(*it);
+    
+    return ret;
 }
 
 Media& Media::operator =(const Media& other)
