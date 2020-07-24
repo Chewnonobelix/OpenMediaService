@@ -9,7 +9,7 @@ class MediaTest : public QObject
 
     Media model1, model2;
     const MD5 id = "testid";
-    const QString path = "path1";
+    const QString path = "molecule.ts";
     const int count = 1;
     const MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::MediaRole::Game;
     const QDate added = QDate::currentDate();
