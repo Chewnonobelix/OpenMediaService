@@ -12,7 +12,7 @@ class PlaylistTest : public QObject
     MediaPointer m1, m2, m3;
     QUuid id = QUuid::createUuid();
     QString name = "Name1";
-    int count = 3;
+    int count = 2;
     
 public:
     PlaylistTest();
@@ -64,7 +64,7 @@ void PlaylistTest::test_get()
 
 void PlaylistTest::test_remove()
 {
-    QVERIFY(model1.isEmpty());
+    QVERIFY(!model1.isEmpty());
     QSignalSpy spy(&model1, SIGNAL(countChanged()));
     model1.remove(2);    
     QCOMPARE(spy.count(), 1);}
@@ -84,7 +84,9 @@ void PlaylistTest::test_copy()
 void PlaylistTest::test_swap()
 {
     QVERIFY(model1.at(0) == m1);
+    QSignalSpy spy(&model1, SIGNAL(countChanged()));
     model1.swap(0,1);
+    QCOMPARE(spy.count(), 1);    
     QCOMPARE(model1.at(0), m2);
 }
 
