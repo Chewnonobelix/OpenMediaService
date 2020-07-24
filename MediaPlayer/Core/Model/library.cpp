@@ -90,17 +90,21 @@ bool Library::removeSourceDir(QString source)
     return ret;;
 }
 
-bool Library::addMedia(QString path)
+bool Library::addMedia(QString path, MD5 md)
 {
-    QFile f(path);
-    if(!f.open(QIODevice::ReadOnly))
-        return false;
-    
-    QCryptographicHash ch(QCryptographicHash::Md5);
-    if(!ch.addData(&f))
-        return false;
-    
-    auto md = ch.result();
+    if(md.isEmpty())
+    {
+        QFile f(path);
+        if(!f.open(QIODevice::ReadOnly))
+            return false;
+        
+        QCryptographicHash ch(QCryptographicHash::Md5);
+        if(!ch.addData(&f))
+            return false;
+        
+        md = ch.result();
+        f.close();
+    }   
     
     if(m_medias.contains(md))
         m_medias[md]->setPath(path);

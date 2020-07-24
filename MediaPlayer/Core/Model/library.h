@@ -67,7 +67,7 @@ public:
     
 public slots:
     Q_INVOKABLE void probe();
-    Q_INVOKABLE bool addMedia(QString);
+    Q_INVOKABLE bool addMedia(QString, MD5 = "");
     Q_INVOKABLE bool removeMedia(QString);
     Q_INVOKABLE QMap<MD5, MediaPointer> medias(MD5 = "") const;
     Q_INVOKABLE bool addSourceDir(QString);
