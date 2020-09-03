@@ -1,6 +1,6 @@
-#include <QtTest>
+#include "Model/media.h"
 #include <QSignalSpy>
-#include "media.h"
+#include <QtTest>
 // add necessary includes here
 
 class MediaTest : public QObject

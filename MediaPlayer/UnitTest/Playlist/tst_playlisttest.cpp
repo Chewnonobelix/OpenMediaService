@@ -1,6 +1,6 @@
-#include <QtTest>
+#include "Model/playlist.h"
 #include <QSignalSpy>
-#include "playlist.h"
+#include <QtTest>
 
 // add necessary includes here
 

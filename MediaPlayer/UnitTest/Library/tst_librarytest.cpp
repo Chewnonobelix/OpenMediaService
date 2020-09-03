@@ -1,6 +1,6 @@
-#include <QtTest>
+#include "Model/library.h"
 #include <QSignalSpy>
-#include "library.h"
+#include <QtTest>
 
 // add necessary includes here
 
