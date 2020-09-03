@@ -3,4 +3,5 @@ TEMPLATE = subdirs
 SUBDIRS += \
     Library \
     Media \
-    Playlist
+    Playlist \
+    TestXml
