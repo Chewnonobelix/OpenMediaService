@@ -1,7 +1,11 @@
 #ifndef DATAXML_HPP
 #define DATAXML_HPP
 
+#include "../Model/library.h"
 #include "interfacesaver.h"
+#include <QDir>
+#include <QDomDocument>
+#include <QDomElement>
 #include <QtCore/qglobal.h>
 
 class DataXml : public InterfaceSaver
@@ -17,6 +21,9 @@ public slots:
     LibraryPointer createLibrary(QString);
     bool removeLibrary(LibraryPointer);
     bool updateLibrary(LibraryPointer);
+
+private:
+    LibraryPointer openLibrary(QString) const;
 };
 
 #endif // DATAXML_HPP
