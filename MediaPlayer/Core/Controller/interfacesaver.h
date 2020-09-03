@@ -16,15 +16,13 @@ public:
     InterfaceSaver(const InterfaceSaver&) = default;
     virtual ~InterfaceSaver() = default;
 
-    QMap<QUuid, LibraryPointer> selectLibrary(QUuid = QUuid()) const;
-    LibraryPointer createLibrary(QString);
-    bool removeLibrary(LibraryPointer);
-    bool updateLibrary(LibraryPointer);
-    
     virtual void init() = 0;
 
-public slots:    
-    
+public slots:
+    virtual QMap<QUuid, LibraryPointer> selectLibrary(QUuid = QUuid()) const = 0;
+    virtual LibraryPointer createLibrary(QString) = 0;
+    virtual bool removeLibrary(LibraryPointer) = 0;
+    virtual bool updateLibrary(LibraryPointer) = 0;
 };
 
 #endif // INTERFACESAVER_H
