@@ -17,7 +17,7 @@ public:
     virtual ~InterfaceSaver() = default;
 
     QMap<QUuid, LibraryPointer> selectLibrary(QUuid = QUuid()) const;
-    LibraryPointer createLibrary();
+    LibraryPointer createLibrary(QString);
     bool removeLibrary(LibraryPointer);
     bool updateLibrary(LibraryPointer);
     
