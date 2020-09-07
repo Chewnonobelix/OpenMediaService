@@ -1,6 +1,7 @@
 #ifndef DATAXML_HPP
 #define DATAXML_HPP
 
+#include "../Model/global.h"
 #include "../Model/library.h"
 #include "interfacesaver.h"
 #include <QDir>
@@ -18,7 +19,7 @@ public:
 
 public slots:
     QMap<QUuid, LibraryPointer> selectLibrary(QUuid = QUuid()) const;
-    LibraryPointer createLibrary(QString);
+    LibraryPointer createLibrary(QString, MediaPlayerGlobal::MediaRole);
     bool removeLibrary(LibraryPointer);
     bool updateLibrary(LibraryPointer);
 
