@@ -1,19 +1,18 @@
 #include "controllermain.h"
 
-ControllerMain::ControllerMain(const ControllerMain &) : AbstractController() {}
+ControllerMain::ControllerMain()
+    : AbstractController(), m_engine(this, QStringLiteral(QML_SOURCE) + "/View")
+{}
 
 void ControllerMain::exec()
 {
     auto *context = engine().rootContext();
     context->setContextProperty("_main", this);
 
-    engine().load(QUrl("qrc:/Main.qml"));
-
-    auto *root = engine().rootObjects().first();
-    QMetaObject::invokeMethod(root, "show");
+    m_engine.createWindow(QUrl("/Main.qml"));
 }
 
 QQmlApplicationEngine &ControllerMain::engine()
 {
-    return m_engine;
+    return m_engine.qmlEngine();
 }
