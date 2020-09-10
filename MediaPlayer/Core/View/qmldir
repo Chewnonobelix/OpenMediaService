@@ -1,0 +1,2 @@
+module MediaPlayer.Core
+singleton CoreModel 1.0 CoreModel.qml
