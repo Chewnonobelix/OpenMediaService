@@ -9,6 +9,7 @@ class TestXml : public QObject
 
     DataXml model;
     const QString name1 = "name1", name2 = "name2";
+    const MediaPlayerGlobal::MediaRole role1 = MediaPlayerGlobal::MediaRole::Video;
     QUuid id;
 
 public:
@@ -35,29 +36,28 @@ TestXml::~TestXml()
 void TestXml::test_add_library()
 {
     QVERIFY(model.selectLibrary().isEmpty());
-    auto l = model.createLibrary(name1);
-    id = l->id();
-    QCOMPARE(!id.isNull() && !l.isNull(), true);
+    auto l = model.createLibrary(name1, role1);
+
+    QCOMPARE(l, true);
 }
 
 void TestXml::test_select_library()
 {
     QCOMPARE(model.selectLibrary().first()->id(), id);
-    QCOMPARE(model.selectLibrary(id).first()->id(), id);
 }
 
 void TestXml::test_update_library()
 {
-    auto l = model.selectLibrary(id).first();
+    auto l = model.selectLibrary().first();
     l->setName(name2);
     QCOMPARE(model.updateLibrary(l), true);
 }
 
 void TestXml::test_remove_library()
 {
-    auto l = model.selectLibrary(id).first();
+    auto l = model.selectLibrary().first();
     QCOMPARE(model.removeLibrary(l), true);
-    QVERIFY(model.selectLibrary(id).isEmpty());
+    QVERIFY(model.selectLibrary().isEmpty());
 }
 
 QTEST_APPLESS_MAIN(TestXml)

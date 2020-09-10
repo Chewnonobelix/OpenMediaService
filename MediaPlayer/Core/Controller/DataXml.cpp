@@ -17,7 +17,7 @@ LibraryPointer DataXml::openLibrary(QString file) const
 
     return ret;
 }
-QMap<QUuid, LibraryPointer> DataXml::selectLibrary(QUuid id) const
+QMap<QUuid, LibraryPointer> DataXml::selectLibrary() const
 {
     QDir dir;
     dir.mkdir("Library");
@@ -26,13 +26,12 @@ QMap<QUuid, LibraryPointer> DataXml::selectLibrary(QUuid id) const
     auto list = dir.entryInfoList(QStringList("*.xml"));
 
     for (auto it : list) {
-        if (id.isNull() || id == QUuid::fromString(it.baseName()))
             ret[it.baseName()] = openLibrary(it.absoluteFilePath());
     }
     return ret;
 }
 
-LibraryPointer DataXml::createLibrary(QString name, MediaPlayerGlobal::MediaRole role)
+bool DataXml::createLibrary(QString name, MediaPlayerGlobal::MediaRole role)
 {
     QDir dir;
     dir.mkdir("Library");
@@ -56,7 +55,9 @@ LibraryPointer DataXml::createLibrary(QString name, MediaPlayerGlobal::MediaRole
     el.setAttribute("name", ret->name());
     f.write(doc.toString().toLatin1());
     f.close();
-    return ret;
+
+    emit addLibrary(ret);
+    return !ret.isNull();
 }
 
 bool DataXml::removeLibrary(LibraryPointer l)

@@ -12,19 +12,22 @@
 class DataXml : public InterfaceSaver
 {
     Q_OBJECT
+
 public:
     DataXml() = default;
-
+    DataXml(const DataXml &) = default;
     void init();
 
 public slots:
-    QMap<QUuid, LibraryPointer> selectLibrary(QUuid = QUuid()) const;
-    LibraryPointer createLibrary(QString, MediaPlayerGlobal::MediaRole);
+    QMap<QUuid, LibraryPointer> selectLibrary() const;
+    bool createLibrary(QString, MediaPlayerGlobal::MediaRole);
     bool removeLibrary(LibraryPointer);
     bool updateLibrary(LibraryPointer);
 
 private:
     LibraryPointer openLibrary(QString) const;
 };
+
+Q_DECLARE_METATYPE(DataXml)
 
 #endif // DATAXML_HPP
