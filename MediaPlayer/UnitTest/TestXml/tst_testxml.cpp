@@ -36,7 +36,7 @@ TestXml::~TestXml()
 void TestXml::test_add_library()
 {
     QVERIFY(model.selectLibrary().isEmpty());
-    auto l = model.createLibrary(name1, role1);
+    auto l = model.createLibrary(name1, (int) role1);
 
     QCOMPARE(l, true);
 }
@@ -50,13 +50,13 @@ void TestXml::test_update_library()
 {
     auto l = model.selectLibrary().first();
     l->setName(name2);
-    QCOMPARE(model.updateLibrary(l), true);
+    QCOMPARE(model.updateLibrary(l->id()), true);
 }
 
 void TestXml::test_remove_library()
 {
     auto l = model.selectLibrary().first();
-    QCOMPARE(model.removeLibrary(l), true);
+    QCOMPARE(model.removeLibrary(l->id()), true);
     QVERIFY(model.selectLibrary().isEmpty());
 }
 

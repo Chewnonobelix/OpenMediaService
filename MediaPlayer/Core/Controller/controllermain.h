@@ -21,6 +21,12 @@ public:
     ~ControllerMain() = default;
 
     void exec();
+
+public slots:
+    void onAddLibrary(LibraryPointer = LibraryPointer());
+
+signals:
+    void libraryModelChanged(QList<Library *>);
 };
 
 

@@ -20,9 +20,9 @@ public:
 
 public slots:
     virtual QMap<QUuid, LibraryPointer> selectLibrary() const = 0;
-    virtual bool createLibrary(QString, MediaPlayerGlobal::MediaRole) = 0;
-    virtual bool removeLibrary(LibraryPointer) = 0;
-    virtual bool updateLibrary(LibraryPointer) = 0;
+    virtual bool createLibrary(QString, int) = 0;
+    virtual bool removeLibrary(QUuid) = 0;
+    virtual bool updateLibrary(QUuid) = 0;
 
 signals:
     void addLibrary(LibraryPointer);

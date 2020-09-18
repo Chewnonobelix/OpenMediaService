@@ -20,9 +20,9 @@ public:
 
 public slots:
     QMap<QUuid, LibraryPointer> selectLibrary() const;
-    bool createLibrary(QString, MediaPlayerGlobal::MediaRole);
-    bool removeLibrary(LibraryPointer);
-    bool updateLibrary(LibraryPointer);
+    bool createLibrary(QString, int);
+    bool removeLibrary(QUuid);
+    bool updateLibrary(QUuid);
 
 private:
     LibraryPointer openLibrary(QString) const;

@@ -14,6 +14,7 @@ LibraryPointer DataXml::openLibrary(QString file) const
     QDomElement el = doc.documentElement();
     ret->setId(QUuid::fromString(el.attribute("id")));
     ret->setName(el.attribute("name"));
+    ret->setRole((MediaPlayerGlobal::MediaRole) el.attribute("role").toInt());
 
     return ret;
 }
@@ -31,7 +32,7 @@ QMap<QUuid, LibraryPointer> DataXml::selectLibrary() const
     return ret;
 }
 
-bool DataXml::createLibrary(QString name, MediaPlayerGlobal::MediaRole role)
+bool DataXml::createLibrary(QString name, int role)
 {
     QDir dir;
     dir.mkdir("Library");
@@ -41,7 +42,7 @@ bool DataXml::createLibrary(QString name, MediaPlayerGlobal::MediaRole role)
     auto ret = LibraryPointer::create();
     ret->setId(QUuid::createUuid());
     ret->setName(name);
-    ret->setRole(role);
+    ret->setRole((MediaPlayerGlobal::MediaRole) role);
     if (dir.exists(ret->id().toString() + ".xml"))
         return LibraryPointer();
 
@@ -53,6 +54,7 @@ bool DataXml::createLibrary(QString name, MediaPlayerGlobal::MediaRole role)
     ;
     el.setAttribute("id", ret->id().toString());
     el.setAttribute("name", ret->name());
+    el.setAttribute("role", QString::number((int) ret->role()));
     f.write(doc.toString().toLatin1());
     f.close();
 
@@ -60,16 +62,17 @@ bool DataXml::createLibrary(QString name, MediaPlayerGlobal::MediaRole role)
     return !ret.isNull();
 }
 
-bool DataXml::removeLibrary(LibraryPointer l)
+bool DataXml::removeLibrary(QUuid l)
 {
     QDir dir;
     dir.cd("Library");
 
-    return dir.remove(l->id().toString() + ".xml");
+    return dir.remove(l.toString() + ".xml");
 }
 
-bool DataXml::updateLibrary(LibraryPointer l)
+bool DataXml::updateLibrary(QUuid lid)
 {
+    auto l = selectLibrary()[lid];
     QFile f("Library/" + l->id().toString() + ".xml");
     bool ret = f.open(QIODevice::ReadWrite);
     QDomDocument doc;

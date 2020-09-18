@@ -2,10 +2,15 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
+import MediaPlayer 1.0
+
 ApplicationWindow {
     id: root
 
-    Component.onCompleted: show()
+    Component.onCompleted: {
+        _main.onAddLibrary()
+        show()
+    }
 
     width: 600
     height: 400
@@ -39,6 +44,7 @@ ApplicationWindow {
                 text: "Close"
                 onClicked: {
                     addLibraryPop.close()
+                    _main.onAddLibrary()
                 }
             }
         }
@@ -46,6 +52,13 @@ ApplicationWindow {
 
     GridLayout {
         anchors.fill: parent
+        Connections {
+            target: _main
+
+            function onLibraryModelChanged(model) {
+                libraryView.model = model
+            }
+        }
             ListView {
                 id: libraryView
                 Layout.preferredWidth: root.width * 0.20
@@ -56,16 +69,40 @@ ApplicationWindow {
                 Layout.columnSpan: 2
 
                 model: []
+                onModelChanged: console.log(model, model.length)
+                property Library currentModel: null
+
+                onCurrentIndexChanged: {
+                    console.log(model.length, currentIndex)
+//                    console.log("index", currentIndex, model.length)
+//                    currentModel = model[currentIndex]
+                }
+
+//                onCurrentModelChanged: console.log(currentModel, "model")
                 section {
                     delegate: Label {
-                        text: modelData.name
+                        text: modelData.role
                     }
 
-                    property: "name"
+                    property: "role"
                 }
-                delegate: ItemDelegate {
-                    text: modelData.playlist
+                delegate: Rectangle {
+                    color: ListView.isCurrentItem ? "lightblue" : "white"
+                    width: libraryView.width
+                    height: libraryView.height * 0.10
+                    Label {
+                        anchors.fill: parent
+                        text: modelData.name + " " + modelData.role
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Qt.AlignVCenter
+                    }
 
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            libraryView.currentIndex = index
+                        }
+                    }
                 }
             }
 
@@ -85,6 +122,12 @@ ApplicationWindow {
                 Layout.rowSpan: 1
                 Layout.columnSpan: 1
                 text: qsTr("Remove")
+
+                enabled: libraryView.currentIndex !== -1
+
+                onClicked: {
+                    _db.removeLibrary(libraryView.currentModel.id)
+                }
             }
 
         TabBar {
