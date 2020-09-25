@@ -19,10 +19,11 @@ DEFINES += QT_DEPRECATED_WARNINGS QML_SOURCE=\\\"$$PWD\\\"
 
 SOURCES += \
         Controller/Core/abstractcontroller.cpp \
-        Controller/abstractcontroller.cpp \
+        Controller/Core/controllerlibrary.cpp \
         Controller/Core/controllermain.cpp \
         Controller/Data/dataxml.cpp \
         Controller/Data/interfacesaver.cpp \
+        Controller/DataModel/librarydatamodel.cpp \
         Model/smartplaylist.cpp \
         Model\global.cpp \
         Model\library.cpp \
@@ -45,10 +46,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     Controller/Core/abstractcontroller.h \
-    Controller/abstractcontroller.h \
+    Controller/Core/controllerlibrary.h \
     Controller/Core/controllermain.h \
     Controller/Data/dataxml.h \
     Controller/Data/interfacesaver.h \
+    Controller/DataModel/librarydatamodel.h \
     Model/smartplaylist.h \
     Model\global.h \
     Model\library.h \

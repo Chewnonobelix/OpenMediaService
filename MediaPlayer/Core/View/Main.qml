@@ -8,7 +8,7 @@ ApplicationWindow {
     id: root
 
     Component.onCompleted: {
-        _main.onAddLibrary()
+        //        _main.onAddLibrary()
         show()
     }
 
@@ -52,83 +52,89 @@ ApplicationWindow {
 
     GridLayout {
         anchors.fill: parent
-        Connections {
-            target: _main
+        //        Connections {
+        //            target: _main
 
-            function onLibraryModelChanged(model) {
-                libraryView.model = model
+        //            function onLibraryModelChanged(model) {
+        //                libraryView.model = model
+        //            }
+        //        }
+        ListView {
+            id: libraryView
+            Layout.preferredWidth: root.width * 0.20
+            Layout.fillHeight: true
+            Layout.row: 0
+            Layout.column: 0
+            Layout.rowSpan: 2
+            Layout.columnSpan: 2
+            model: _libraryModel
+
+            property Library currentModel: null
+
+            onCurrentIndexChanged: {
+                currentModel = model.at(currentIndex)
             }
-        }
-            ListView {
-                id: libraryView
-                Layout.preferredWidth: root.width * 0.20
-                Layout.fillHeight: true
-                Layout.row: 0
-                Layout.column: 0
-                Layout.rowSpan: 2
-                Layout.columnSpan: 2
 
-                model: []
-                onModelChanged: console.log(model, model.length)
-                property Library currentModel: null
+            section {
+                delegate: Label {
+                    Component.onCompleted: {
+                        console.log("section")
 
-                onCurrentIndexChanged: {
-                    console.log(model.length, currentIndex)
-//                    console.log("index", currentIndex, model.length)
-//                    currentModel = model[currentIndex]
-                }
-
-//                onCurrentModelChanged: console.log(currentModel, "model")
-                section {
-                    delegate: Label {
-                        text: modelData.role
-                    }
-
-                    property: "role"
-                }
-                delegate: Rectangle {
-                    color: ListView.isCurrentItem ? "lightblue" : "white"
-                    width: libraryView.width
-                    height: libraryView.height * 0.10
-                    Label {
-                        anchors.fill: parent
-                        text: modelData.name + " " + modelData.role
-                        horizontalAlignment: Qt.AlignHCenter
-                        verticalAlignment: Qt.AlignVCenter
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            libraryView.currentIndex = index
+                        for(var it in this) {
+                            console.log(it, this[it])
                         }
                     }
                 }
+
+                property: "role"
             }
+            delegate: Rectangle {
+                color: ListView.isCurrentItem ? "lightblue" : "white"
+                width: libraryView.width
+                height: libraryView.height * 0.10
 
-            Button {
-                Layout.row: 2
-                Layout.column: 0
-                Layout.rowSpan: 1
-                Layout.columnSpan: 1
-                text: qsTr("Add")
+                required property string name
+                required property string role
+                required property int index
+                Label {
+                    anchors.fill: parent
+                    text: name + " " + role
+                    horizontalAlignment: Qt.AlignHCenter
+                    verticalAlignment: Qt.AlignVCenter
+                }
 
-                onClicked: addLibraryPop.open()
-            }
-
-            Button {
-                Layout.row: 2
-                Layout.column: 1
-                Layout.rowSpan: 1
-                Layout.columnSpan: 1
-                text: qsTr("Remove")
-
-                enabled: libraryView.currentIndex !== -1
-
-                onClicked: {
-                    _db.removeLibrary(libraryView.currentModel.id)
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        libraryView.currentIndex = index
+                    }
                 }
             }
+        }
+
+        Button {
+            Layout.row: 2
+            Layout.column: 0
+            Layout.rowSpan: 1
+            Layout.columnSpan: 1
+            text: qsTr("Add")
+
+            onClicked: addLibraryPop.open()
+        }
+
+        Button {
+            Layout.row: 2
+            Layout.column: 1
+            Layout.rowSpan: 1
+            Layout.columnSpan: 1
+            text: qsTr("Remove")
+
+            enabled: libraryView.currentIndex !== -1
+
+            onClicked: {
+                _db.removeLibrary(libraryView.currentModel.id)
+            }
+        }
 
         TabBar {
             id: viewBar
