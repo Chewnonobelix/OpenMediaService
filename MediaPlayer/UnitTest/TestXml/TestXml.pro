@@ -8,4 +8,4 @@ TEMPLATE = app
 
 SOURCES +=  tst_testxml.cpp
 
-include(../config.pro)
+include(../config.pri)

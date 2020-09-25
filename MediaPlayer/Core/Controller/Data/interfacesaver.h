@@ -1,8 +1,8 @@
 #ifndef INTERFACESAVER_H
 #define INTERFACESAVER_H
 
+#include "../../Model/library.h"
 #include <QObject>
-#include "Model/library.h"
 
 class InterfaceSaver: public QObject
 {

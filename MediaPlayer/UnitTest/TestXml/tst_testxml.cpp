@@ -1,4 +1,4 @@
-#include "Controller/DataXml.h"
+#include "Controller/Data/DataXml.h"
 #include <QtTest>
 
 // add necessary includes here
@@ -39,6 +39,7 @@ void TestXml::test_add_library()
     auto l = model.createLibrary(name1, (int) role1);
 
     QCOMPARE(l, true);
+    id = model.selectLibrary().firstKey();
 }
 
 void TestXml::test_select_library()

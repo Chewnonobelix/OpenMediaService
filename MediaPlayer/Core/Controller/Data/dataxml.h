@@ -1,8 +1,8 @@
 #ifndef DATAXML_HPP
 #define DATAXML_HPP
 
-#include "../Model/global.h"
-#include "../Model/library.h"
+#include "../../Model/global.h"
+#include "../../Model/library.h"
 #include "interfacesaver.h"
 #include <QDir>
 #include <QDomDocument>

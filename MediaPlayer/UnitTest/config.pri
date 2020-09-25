@@ -10,3 +10,5 @@ INCLUDEPATH += ../../DesignLibrary/DesignPattern ../../ExpressionLibrary/LibExpr
 LIBS += -L$$OUT_PWD/../../DesignLibrary/DesignPattern/debug -lDesignPattern
 LIBS += -L$$OUT_PWD/../../ExpressionLibrary/LibExpression/debug -lLibExpression
 LIBS += -L$$OUT_PWD/../../Core/debug -lLibMediaPlayerCore
+
+DEFINES += TESTDATA=\\\"$${PWD}/Data\\\"

@@ -1,4 +1,4 @@
-#include "Controller/controllermain.h"
+#include "Controller/Core/controllermain.h"
 #include <QGuiApplication>
 
 int main (int argc, char** argv)

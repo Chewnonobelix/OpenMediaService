@@ -10,13 +10,13 @@ class LibraryTest : public QObject
     Library model1, model2;
     QUuid id = QUuid::createUuid();
     QString name = "Name1";
-    MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::MediaRole::Video;
+    MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::MediaRole::Image;
     bool shared = true;
     QDateTime lastprobed = QDateTime::currentDateTime().addDays(-6);
     QString source = "Source1";
     QSet<QString> sourceDir = QSet<QString>({source});
-    QString media = "molecule.ts";
-    
+    QString media = QStringLiteral(TESTDATA) + "/porte_d_eternite.jpg";
+
 public:
     LibraryTest();
     ~LibraryTest();
@@ -131,6 +131,7 @@ void LibraryTest::test_addMedias()
 {
     QVERIFY(model1.medias().isEmpty());
     QSignalSpy spy(&model1, SIGNAL(mediasChanged()));
+    qDebug() << media;
     QCOMPARE(model1.addMedia(media), true);
     QCOMPARE(spy.count(), 1);
 }

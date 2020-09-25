@@ -39,8 +39,8 @@ class Library: public QObject, public MetaData
     Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role CONSTANT)
     Q_PROPERTY(bool isShared READ isShared WRITE setShared NOTIFY isSharedChanged)
     Q_PROPERTY(QDateTime lastProbed READ lastProbed WRITE setLastProbed NOTIFY lastProbedChanged)
-    Q_PROPERTY(QSet<QString> sourceDir READ sourceDir NOTIFY sourceDirChanged CONSTANT)
-    
+    Q_PROPERTY(QSet<QString> sourceDir READ sourceDir NOTIFY sourceDirChanged)
+
 private:
     LibraryProbe m_probe;
     QMap<MD5, MediaPointer> m_medias;

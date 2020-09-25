@@ -1,7 +1,7 @@
 #ifndef CONTROLLERMAIN_H
 #define CONTROLLERMAIN_H
 
-#include "DataXml.h"
+#include "..\Data\DataXml.h"
 #include "abstractcontroller.h"
 #include "liveqmlengine.h"
 #include <QCoreApplication>
