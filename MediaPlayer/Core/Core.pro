@@ -18,10 +18,11 @@ DEFINES += QT_DEPRECATED_WARNINGS QML_SOURCE=\\\"$$PWD\\\"
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        Controller/DataXml.cpp \
+        Controller/Core/abstractcontroller.cpp \
         Controller/abstractcontroller.cpp \
-        Controller/controllermain.cpp \
-        Controller/interfacesaver.cpp \
+        Controller/Core/controllermain.cpp \
+        Controller/Data/dataxml.cpp \
+        Controller/Data/interfacesaver.cpp \
         Model/smartplaylist.cpp \
         Model\global.cpp \
         Model\library.cpp \
@@ -43,10 +44,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    Controller/DataXml.h \
+    Controller/Core/abstractcontroller.h \
     Controller/abstractcontroller.h \
-    Controller/controllermain.h \
-    Controller/interfacesaver.h \
+    Controller/Core/controllermain.h \
+    Controller/Data/dataxml.h \
+    Controller/Data/interfacesaver.h \
     Model/smartplaylist.h \
     Model\global.h \
     Model\library.h \
