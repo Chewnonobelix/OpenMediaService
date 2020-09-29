@@ -77,13 +77,7 @@ ApplicationWindow {
 
             section {
                 delegate: Label {
-                    Component.onCompleted: {
-                        console.log("section")
-
-                        for(var it in this) {
-                            console.log(it, this[it])
-                        }
-                    }
+                    text: section
                 }
 
                 property: "role"
