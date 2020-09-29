@@ -8,8 +8,9 @@
 class ControllerLibrary : public AbstractController
 {
     Q_OBJECT
+
 private:
-    LibraryDataModel ldm;
+    LibraryDataModel m_ldm;
 
 public:
     ControllerLibrary(QQmlEngine &);
@@ -19,10 +20,7 @@ public:
     void exec() override;
 
 public slots:
-    void onAddLibrary(LibraryPointer = LibraryPointer());
-
-signals:
-    void libraryModelChanged(QList<Library *>);
+    void onLibrariesChanged();
 };
 
 #endif // CONTROLLERLIBRARY_HPP

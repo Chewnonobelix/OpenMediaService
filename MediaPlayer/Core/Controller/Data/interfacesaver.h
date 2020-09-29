@@ -25,7 +25,7 @@ public slots:
     virtual bool updateLibrary(QUuid) = 0;
 
 signals:
-    void addLibrary(LibraryPointer);
+    void librariesChanged();
 };
 
 #endif // INTERFACESAVER_H

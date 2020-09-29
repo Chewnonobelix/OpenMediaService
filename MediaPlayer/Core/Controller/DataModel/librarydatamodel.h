@@ -23,12 +23,17 @@ public:
     LibraryDataModel(const LibraryDataModel &);
     ~LibraryDataModel() = default;
 
+    LibraryDataModel &operator=(const LibraryDataModel &);
+
+    friend bool operator!=(const LibraryDataModel &, const LibraryDataModel &);
+
     QVariant data(const QModelIndex &index, int role) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
     void insertData(LibraryPointer);
     void sort(int, Qt::SortOrder) override;
     Q_INVOKABLE Library *at(int);
+    Q_INVOKABLE void clear();
 };
 
 Q_DECLARE_METATYPE(LibraryDataModel)

@@ -42,21 +42,51 @@ void LibraryDataModel::insertData(LibraryPointer l)
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_libraries << l;
     endInsertRows();
-    sort(0, Qt::DescendingOrder);
 }
 
 Library *LibraryDataModel::at(int index)
 {
+    if (index >= rowCount())
+        return nullptr;
+
     return m_libraries[index].data();
 }
 
 void LibraryDataModel::sort(int, Qt::SortOrder order)
 {
-    std::sort(m_libraries.begin(), m_libraries.end(), [order](LibraryPointer l1, LibraryPointer l2) {
+    auto l = m_libraries;
+
+    std::sort(l.begin(), l.end(), [order](LibraryPointer l1, LibraryPointer l2) {
         if (order == Qt::DescendingOrder) {
             return !(l1 < l2);
         } else {
             return l1 < l2;
         }
     });
+
+    clear();
+    for (auto it : l)
+        insertData(it);
+}
+
+void LibraryDataModel::clear()
+{
+    qDebug() << "Clear" << rowCount();
+    removeRows(0, rowCount());
+    m_libraries.clear();
+    qDebug() << rowCount();
+}
+
+LibraryDataModel &LibraryDataModel::operator=(const LibraryDataModel &ldm)
+{
+    for (auto it : ldm.m_libraries)
+        insertData(it);
+    m_currentIndex = ldm.m_currentIndex;
+
+    return *this;
+}
+
+bool operator!=(const LibraryDataModel &l1, const LibraryDataModel &l2)
+{
+    return l1.m_libraries != l2.m_libraries;
 }

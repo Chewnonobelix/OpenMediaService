@@ -58,7 +58,7 @@ bool DataXml::createLibrary(QString name, int role)
     f.write(doc.toString().toLatin1());
     f.close();
 
-    emit addLibrary(ret);
+    emit librariesChanged();
     return !ret.isNull();
 }
 
@@ -66,8 +66,11 @@ bool DataXml::removeLibrary(QUuid l)
 {
     QDir dir;
     dir.cd("Library");
+    auto ret = dir.remove(l.toString() + ".xml");
 
-    return dir.remove(l.toString() + ".xml");
+    emit librariesChanged();
+
+    return ret;
 }
 
 bool DataXml::updateLibrary(QUuid lid)
@@ -85,5 +88,7 @@ bool DataXml::updateLibrary(QUuid lid)
     el.setAttribute("name", l->name());
     f.write(doc.toByteArray());
     f.close();
+
+    emit librariesChanged();
     return true;
 }

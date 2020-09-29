@@ -34,7 +34,6 @@ ApplicationWindow {
             Button {
                 text: "Add"
                 onClicked: {
-                    console.log(libraryName.text, libraryType.currentValue)
                     _db.createLibrary(libraryName.text, libraryType.currentValue)
                 }
             }
@@ -46,6 +45,10 @@ ApplicationWindow {
                 }
             }
         }
+    }
+
+    Connections {
+        target: _libraries
     }
 
     GridLayout {
@@ -93,6 +96,7 @@ ApplicationWindow {
                     anchors.fill: parent
                     onClicked: {
                         libraryView.currentIndex = index
+                        console.log(libraryView.count, _libraryModel.rowCount())
                     }
                 }
             }
