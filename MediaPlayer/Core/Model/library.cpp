@@ -147,3 +147,8 @@ QMap<MD5, MediaPointer> Library::medias(MD5 id) const
     
     return ret;
 }
+
+bool operator<(LibraryPointer l1, LibraryPointer l2)
+{
+    return (l1->name() < l2->name()) || (l1->role() < l2->role());
+}

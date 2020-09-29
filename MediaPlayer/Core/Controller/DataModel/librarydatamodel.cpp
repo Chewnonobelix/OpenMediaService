@@ -2,7 +2,9 @@
 
 LibraryDataModel::LibraryDataModel(const LibraryDataModel &l)
     : QAbstractListModel(), m_libraries(l.m_libraries)
-{}
+{
+    sort(0, Qt::AscendingOrder);
+}
 
 int LibraryDataModel::rowCount(const QModelIndex &) const
 {
@@ -40,9 +42,21 @@ void LibraryDataModel::insertData(LibraryPointer l)
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_libraries << l;
     endInsertRows();
+    sort(0, Qt::DescendingOrder);
 }
 
 Library *LibraryDataModel::at(int index)
 {
     return m_libraries[index].data();
+}
+
+void LibraryDataModel::sort(int, Qt::SortOrder order)
+{
+    std::sort(m_libraries.begin(), m_libraries.end(), [order](LibraryPointer l1, LibraryPointer l2) {
+        if (order == Qt::DescendingOrder) {
+            return !(l1 < l2);
+        } else {
+            return l1 < l2;
+        }
+    });
 }

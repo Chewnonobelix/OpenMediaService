@@ -92,7 +92,7 @@ ApplicationWindow {
                 required property int index
                 Label {
                     anchors.fill: parent
-                    text: name + " " + role
+                    text: name
                     horizontalAlignment: Qt.AlignHCenter
                     verticalAlignment: Qt.AlignVCenter
                 }

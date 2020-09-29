@@ -51,7 +51,8 @@ public:
     ~Library() = default;
 
     Library& operator = (const Library&);
-    
+
+    bool friend operator<(LibraryPointer, LibraryPointer);
 
     QUuid id() const;
     void setId(QUuid);

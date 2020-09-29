@@ -27,6 +27,7 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
     void insertData(LibraryPointer);
+    void sort(int, Qt::SortOrder) override;
     Q_INVOKABLE Library *at(int);
 };
 
