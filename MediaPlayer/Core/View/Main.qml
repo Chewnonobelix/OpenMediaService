@@ -8,7 +8,6 @@ ApplicationWindow {
     id: root
 
     Component.onCompleted: {
-        //        _main.onAddLibrary()
         show()
     }
 
@@ -27,7 +26,6 @@ ApplicationWindow {
             ComboBox {
                 id: libraryType
 
-                onDownChanged: console.log(CoreModel.typeModel.count)
                 model: CoreModel.typeModel
                 textRole: "name"
                 valueRole: "role"
@@ -52,13 +50,7 @@ ApplicationWindow {
 
     GridLayout {
         anchors.fill: parent
-        //        Connections {
-        //            target: _main
 
-        //            function onLibraryModelChanged(model) {
-        //                libraryView.model = model
-        //            }
-        //        }
         ListView {
             id: libraryView
             Layout.preferredWidth: root.width * 0.20

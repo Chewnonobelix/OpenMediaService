@@ -4,6 +4,7 @@
 #include "../DataModel/librarydatamodel.h"
 #include "..\Data\DataXml.h"
 #include "abstractcontroller.h"
+#include "controllerlibrary.h"
 #include "liveqmlengine.h"
 #include <QCoreApplication>
 #include <QObject>
@@ -15,7 +16,7 @@ class ControllerMain : public AbstractController
     Q_DISABLE_COPY(ControllerMain)
 private:
     LiveQmlEngine m_engine;
-    LibraryDataModel ldm;
+    ControllerLibrary m_libraries;
 
     QQmlApplicationEngine &engine();
 
@@ -25,11 +26,6 @@ public:
 
     void exec();
 
-public slots:
-    void onAddLibrary(LibraryPointer = LibraryPointer());
-
-signals:
-    void libraryModelChanged(QList<Library *>);
 };
 
 
