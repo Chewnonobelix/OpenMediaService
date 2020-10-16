@@ -8,20 +8,22 @@ ControllerMain::ControllerMain()
 void ControllerMain::exec()
 {
     qDebug() << "DataXml" << qRegisterMetaType<DataXml>();
-    qDebug() << "Library" << qmlRegisterType<Library>("MediaPlayer", 1, 0, "Library");
-    qDebug() << "LibraryDataModel"
-             << qmlRegisterType<LibraryDataModel>("MediaPlayer.Model", 1, 0, "LibraryDataModel");
-    qDebug() << "MediaRole QML"
-             << qmlRegisterUncreatableMetaObject(MediaPlayerGlobal::staticMetaObject,
-                                                 "MediaPlayer",
-                                                 1,
-                                                 0,
-                                                 "MediaPlayer",
+	qDebug() << "MediaPlayer::MediaRole" << qRegisterMetaType<MediaPlayerGlobal::MediaRole>();
 
-                                                 "Media PLayer global");
+	qDebug() << "Library" << qmlRegisterType<Library>("MediaPlayer", 1, 0, "Library");
+	qDebug() << "LibraryDataModel"
+			 << qmlRegisterType<LibraryDataModel>("MediaPlayer.Model", 1, 0, "LibraryDataModel");
+	qDebug() << "MediaRole QML"
+			 << qmlRegisterUncreatableMetaObject(MediaPlayerGlobal::staticMetaObject,
+												 "MediaPlayer",
+												 1,
+												 0,
+												 "MediaPlayer",
 
-    setDb("DataXml");
-    auto *context = engine().rootContext();
+												 "Media Player global");
+
+	setDb("DataXml");
+	auto *context = engine().rootContext();
     context->setContextProperty("_main", this);
     context->setContextProperty("_db", db());
 

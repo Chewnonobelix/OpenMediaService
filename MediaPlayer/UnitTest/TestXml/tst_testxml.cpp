@@ -36,9 +36,9 @@ TestXml::~TestXml()
 void TestXml::test_add_library()
 {
     QVERIFY(model.selectLibrary().isEmpty());
-    auto l = model.createLibrary(name1, (int) role1);
+	auto l = model.createLibrary(name1, role1);
 
-    QCOMPARE(l, true);
+	QCOMPARE(l, true);
     id = model.selectLibrary().firstKey();
 }
 

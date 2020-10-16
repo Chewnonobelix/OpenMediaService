@@ -32,8 +32,10 @@ QVariant LibraryDataModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(lib->role());
     else if (role == NameRole)
         return lib->name();
+	else if (role == IndexRole)
+	 return index.row();
 
-    return QVariant::fromValue(lib.data());
+	return QVariant::fromValue(lib.data());
 }
 
 QHash<int, QByteArray> LibraryDataModel::roleNames() const
@@ -41,7 +43,8 @@ QHash<int, QByteArray> LibraryDataModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[MediaRole] = "role";
     roles[NameRole] = "name";
-    return roles;
+	roles[IndexRole] = "index";
+	return roles;
 }
 
 void LibraryDataModel::insertData(LibraryPointer l)

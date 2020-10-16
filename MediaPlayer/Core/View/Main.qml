@@ -15,14 +15,27 @@ ApplicationWindow {
 
     width: 600
     height: 400
+
+    Shortcut {
+        sequence: "Ctrl+Q"
+        onActivated: root.close()
+    }
+
     Popup {
         id: addLibraryPop
 
+        onOpened: libraryName.clear()
         GridLayout {
             anchors.fill: parent
             rows: 2
+
             TextField {
                 id: libraryName
+                width: addLibraryPop.width* 0.40
+
+                validator: RegExpValidator{
+                    regExp: /.+/
+                }
             }
 
             ComboBox {
@@ -34,6 +47,7 @@ ApplicationWindow {
             }
 
             Button {
+                enabled: libraryName.acceptableInput
                 text: "Add"
                 onClicked: {
                     _db.createLibrary(libraryName.text, libraryType.currentValue)
@@ -103,7 +117,7 @@ ApplicationWindow {
 
                 property: "role"
             }
-            delegate: ItemDelegate {
+            delegate: Rectangle {
                 color: ListView.isCurrentItem ? "lightblue" : "white"
                 width: libraryView.width
                 height: libraryView.height * 0.10
@@ -112,11 +126,20 @@ ApplicationWindow {
 
                 required property string name
                 required property string role
+                required property int index
 
-                text: name
+                Label {
+                    anchors.fill: parent
+                    text: name
+                    horizontalAlignment: Qt.AlignHCenter
+                    verticalAlignment: Qt.AlignVCenter
+                }
 
-                onClicked: {
-                    libraryView.currentIndex = index
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        libraryView.currentIndex = index
+                    }
                 }
             }
         }

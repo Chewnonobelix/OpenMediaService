@@ -32,7 +32,7 @@ QMap<QUuid, LibraryPointer> DataXml::selectLibrary() const
     return ret;
 }
 
-bool DataXml::createLibrary(QString name, int role)
+bool DataXml::createLibrary(QString name, MediaRole role)
 {
     QDir dir;
     dir.mkdir("Library");
@@ -42,8 +42,8 @@ bool DataXml::createLibrary(QString name, int role)
     auto ret = LibraryPointer::create();
     ret->setId(QUuid::createUuid());
     ret->setName(name);
-    ret->setRole((MediaPlayerGlobal::MediaRole) role);
-    if (dir.exists(ret->id().toString() + ".xml"))
+	ret->setRole(role);
+	if (dir.exists(ret->id().toString() + ".xml"))
         return LibraryPointer();
 
     QFile f("Library/" + ret->id().toString() + ".xml");
