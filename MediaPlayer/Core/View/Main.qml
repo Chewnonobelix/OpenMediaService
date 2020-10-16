@@ -1,8 +1,10 @@
 import QtQuick 2.15
+import QtQuick.Controls 1.4
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 import MediaPlayer 1.0
+import MediaPlayer.Model 1.0
 
 ApplicationWindow {
     id: root
@@ -41,7 +43,6 @@ ApplicationWindow {
                 text: "Close"
                 onClicked: {
                     addLibraryPop.close()
-                    _main.onAddLibrary()
                 }
             }
         }
@@ -55,14 +56,23 @@ ApplicationWindow {
         anchors.fill: parent
 
         ListView {
+            Connections {
+                target: libraryView.model
+
+                function onCurrentIndexChanged() {
+                    libraryView.currentIndex = libraryView.model.currentIndex
+                }
+            }
+
             id: libraryView
             Layout.preferredWidth: root.width * 0.20
             Layout.fillHeight: true
-            Layout.row: 0
+            Layout.row: 1
             Layout.column: 0
-            Layout.rowSpan: 2
+            Layout.rowSpan: 1
             Layout.columnSpan: 2
-            model: _libraryModel
+            model: LibraryDataModel {
+            }
 
             property Library currentModel: null
 
@@ -70,40 +80,49 @@ ApplicationWindow {
                 currentModel = model.at(currentIndex)
             }
 
+            headerPositioning: ListView.OverlayHeader
+            header: Rectangle {
+                id: librariesHeader
+                color: "lightgreen"
+                width: libraryView.width
+                height: libraryView.height * 0.1
+                z: 3
+
+                Label {
+                    text: qsTr("Libraries")
+                }
+            }
+
+            clip: true
+
             section {
                 delegate: Label {
+                    clip: true
                     text: section
                 }
 
                 property: "role"
             }
-            delegate: Rectangle {
+            delegate: ItemDelegate {
                 color: ListView.isCurrentItem ? "lightblue" : "white"
                 width: libraryView.width
                 height: libraryView.height * 0.10
 
+                clip: true
+
                 required property string name
                 required property string role
-                required property int index
-                Label {
-                    anchors.fill: parent
-                    text: name
-                    horizontalAlignment: Qt.AlignHCenter
-                    verticalAlignment: Qt.AlignVCenter
-                }
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        libraryView.currentIndex = index
-                        console.log(libraryView.count, _libraryModel.rowCount())
-                    }
+                text: name
+
+                onClicked: {
+                    libraryView.currentIndex = index
                 }
             }
         }
 
         Button {
-            Layout.row: 2
+            Layout.row: 0
             Layout.column: 0
             Layout.rowSpan: 1
             Layout.columnSpan: 1
@@ -113,7 +132,7 @@ ApplicationWindow {
         }
 
         Button {
-            Layout.row: 2
+            Layout.row: 0
             Layout.column: 1
             Layout.rowSpan: 1
             Layout.columnSpan: 1
@@ -125,6 +144,7 @@ ApplicationWindow {
                 _db.removeLibrary(libraryView.currentModel.id)
             }
         }
+
 
         TabBar {
             id: viewBar

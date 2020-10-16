@@ -10,7 +10,7 @@ void ControllerMain::exec()
     qDebug() << "DataXml" << qRegisterMetaType<DataXml>();
     qDebug() << "Library" << qmlRegisterType<Library>("MediaPlayer", 1, 0, "Library");
     qDebug() << "LibraryDataModel"
-             << qmlRegisterType<LibraryDataModel>("MediaPlayer", 1, 0, "LibraryDataModel");
+             << qmlRegisterType<LibraryDataModel>("MediaPlayer.Model", 1, 0, "LibraryDataModel");
     qDebug() << "MediaRole QML"
              << qmlRegisterUncreatableMetaObject(MediaPlayerGlobal::staticMetaObject,
                                                  "MediaPlayer",

@@ -10,7 +10,6 @@ class ControllerLibrary : public AbstractController
     Q_OBJECT
 
 private:
-    LibraryDataModel m_ldm;
 
 public:
     ControllerLibrary(QQmlEngine &);
