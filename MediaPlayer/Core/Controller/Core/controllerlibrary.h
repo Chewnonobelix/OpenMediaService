@@ -7,19 +7,25 @@
 #include <QtCore/qglobal.h>
 class ControllerLibrary : public AbstractController
 {
-    Q_OBJECT
+ Q_OBJECT
+ Q_PROPERTY(
+  Library *currentLibrary READ currentLibrary WRITE setCurrentLibrary NOTIFY currentLibraryChanged)
 
-private:
+ private:
+ Library *m_currentLibrary;
 
-public:
-    ControllerLibrary(QQmlEngine &);
-    ControllerLibrary(const ControllerLibrary &);
-    ~ControllerLibrary() = default;
+ public:
+ ControllerLibrary(QQmlEngine &);
+ ControllerLibrary(const ControllerLibrary &);
+ ~ControllerLibrary() = default;
 
-    void exec() override;
+ void exec() override;
 
-public slots:
-    void onLibrariesChanged();
+ Library *currentLibrary() const;
+ void setCurrentLibrary(Library *);
+
+ signals:
+ void currentLibraryChanged();
 };
 
 #endif // CONTROLLERLIBRARY_HPP

@@ -92,13 +92,13 @@ ApplicationWindow {
 
             onCurrentIndexChanged: {
                 currentModel = model.at(currentIndex)
+                _libraries.currentLibrary = currentModel
             }
 
             headerPositioning: ListView.OverlayHeader
-            header: Rectangle {
+            header:                Rectangle {
                 id: librariesHeader
                 color: "lightgreen"
-                width: libraryView.width
                 height: libraryView.height * 0.1
                 z: 3
 

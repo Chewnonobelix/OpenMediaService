@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>Main.qml</file>
         <file>CoreModel.qml</file>
+        <file>LibraryView.qml</file>
     </qresource>
 </RCC>

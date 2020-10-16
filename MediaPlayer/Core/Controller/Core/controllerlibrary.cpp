@@ -8,17 +8,18 @@ ControllerLibrary::ControllerLibrary(QQmlEngine &engine)
 
 ControllerLibrary::ControllerLibrary(const ControllerLibrary &) : AbstractController() {}
 
-void ControllerLibrary::onLibrariesChanged()
+void ControllerLibrary::exec()
 {
 }
 
-void ControllerLibrary::exec()
+Library *ControllerLibrary::currentLibrary() const
 {
-    onLibrariesChanged();
+ return m_currentLibrary;
+}
 
-    connect(db(),
-            &InterfaceSaver::librariesChanged,
-            this,
-            &ControllerLibrary::onLibrariesChanged,
-            Qt::UniqueConnection);
+void ControllerLibrary::setCurrentLibrary(Library *l)
+{
+ m_currentLibrary = l;
+
+ emit currentLibraryChanged();
 }
