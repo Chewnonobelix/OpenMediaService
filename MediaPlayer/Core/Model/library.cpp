@@ -152,3 +152,14 @@ bool operator<(LibraryPointer l1, LibraryPointer l2)
 {
     return (l1->name() < l2->name()) || (l1->role() < l2->role());
 }
+
+QDateTime Library::lastUpdate() const
+{
+    return metaData<QDateTime>("lastUpdate");
+}
+
+void Library::setLastUpdate(QDateTime lastUpdate)
+{
+    setMetadata("lastUpdate", lastUpdate);
+    emit lastUpdateChanged();
+}

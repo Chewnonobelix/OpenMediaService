@@ -1,8 +1,9 @@
 #include "controllerlibrary.h"
 
-ControllerLibrary::ControllerLibrary(QQmlEngine &engine)
+ControllerLibrary::ControllerLibrary()
 {
-    auto *context = engine.rootContext();
+    qDebug()<<m_engine;
+    auto *context = m_engine->qmlEngine().rootContext();
     context->setContextProperty("_libraries", this);
 }
 
@@ -21,5 +22,11 @@ void ControllerLibrary::setCurrentLibrary(Library *l)
 {
  m_currentLibrary = l;
 
+ qDebug()<<*m_currentLibrary;
  emit currentLibraryChanged();
+}
+
+void ControllerLibrary::open()
+{
+    m_engine->createWindow(QUrl(QStringLiteral("/LibraryView.qml")));
 }

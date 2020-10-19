@@ -32,7 +32,7 @@ Window {
                     text: "Role" + ": " + currentLibrary.role
                 }
                 Label {
-                    text: "Last update" + ": "
+                    text: "Last update" + ": " + currentLibrary.lastUpdate
                 }
                 Label {
                     text: "Media count" + ": " + currentLibrary.medias().size()

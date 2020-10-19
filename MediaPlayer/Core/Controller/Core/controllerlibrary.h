@@ -5,6 +5,8 @@
 #include "abstractcontroller.h"
 #include <QQmlContext>
 #include <QtCore/qglobal.h>
+#include "liveqmlengine.h"
+
 class ControllerLibrary : public AbstractController
 {
  Q_OBJECT
@@ -15,7 +17,7 @@ class ControllerLibrary : public AbstractController
  Library *m_currentLibrary;
 
  public:
- ControllerLibrary(QQmlEngine &);
+ ControllerLibrary();
  ControllerLibrary(const ControllerLibrary &);
  ~ControllerLibrary() = default;
 
@@ -23,6 +25,8 @@ class ControllerLibrary : public AbstractController
 
  Library *currentLibrary() const;
  void setCurrentLibrary(Library *);
+
+ Q_INVOKABLE void open();
 
  signals:
  void currentLibraryChanged();

@@ -1,8 +1,8 @@
 #include "controllermain.h"
 
 ControllerMain::ControllerMain()
-    : AbstractController(), m_engine(this, QStringLiteral(QML_SOURCE) + "/View"),
-      m_libraries(engine())
+    : AbstractController(),
+      m_libraries()
 {}
 
 void ControllerMain::exec()
@@ -28,10 +28,10 @@ void ControllerMain::exec()
     context->setContextProperty("_db", db());
 
     m_libraries.exec();
-    m_engine.createWindow(QUrl("/Main.qml"));
+    m_engine->createWindow(QUrl("/Main.qml"));
 }
 
 QQmlApplicationEngine &ControllerMain::engine()
 {
-    return m_engine.qmlEngine();
+    return m_engine->qmlEngine();
 }

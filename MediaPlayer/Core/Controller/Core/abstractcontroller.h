@@ -3,13 +3,13 @@
 
 #include "..\Data\interfacesaver.h"
 #include <QObject>
-#include <QQmlApplicationEngine>
+#include <liveqmlengine.h>
 
 class AbstractController : public QObject
 {
     Q_OBJECT
 public:
-    AbstractController() = default;
+    AbstractController();
     AbstractController(const AbstractController &);
     ~AbstractController() = default;
 
@@ -18,6 +18,9 @@ public:
     static InterfaceSaver *db();
     static void setDb(QString);
 signals:
+
+protected:
+    static QPointer<LiveQmlEngine> m_engine;
 
 private:
     static InterfaceSaver *m_db;

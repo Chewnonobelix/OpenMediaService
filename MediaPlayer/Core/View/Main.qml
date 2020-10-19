@@ -140,6 +140,8 @@ ApplicationWindow {
                     onClicked: {
                         libraryView.currentIndex = index
                     }
+
+                    onDoubleClicked: _libraries.open()
                 }
             }
         }

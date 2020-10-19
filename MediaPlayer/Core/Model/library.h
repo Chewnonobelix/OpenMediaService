@@ -39,7 +39,9 @@ class Library: public QObject, public MetaData
     Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role CONSTANT)
     Q_PROPERTY(bool isShared READ isShared WRITE setShared NOTIFY isSharedChanged)
     Q_PROPERTY(QDateTime lastProbed READ lastProbed WRITE setLastProbed NOTIFY lastProbedChanged)
+    Q_PROPERTY(QDateTime lastUpdate READ lastUpdate WRITE setLastUpdate NOTIFY lastUpdateChanged)
     Q_PROPERTY(QSet<QString> sourceDir READ sourceDir NOTIFY sourceDirChanged)
+
 
 private:
     LibraryProbe m_probe;
@@ -65,6 +67,8 @@ public:
     QDateTime lastProbed() const;
     void setLastProbed(QDateTime);
     QSet<QString> sourceDir() const;
+    QDateTime lastUpdate() const;
+    void setLastUpdate(QDateTime);
     
 public slots:
     Q_INVOKABLE void probe();
@@ -80,6 +84,7 @@ signals:
     void lastProbedChanged(QDateTime);
     void sourceDirChanged(QSet<QString>);
     void mediasChanged();
+    void lastUpdateChanged();
 };
 Q_DECLARE_METATYPE(Library)
 #endif // LIBRARY_H

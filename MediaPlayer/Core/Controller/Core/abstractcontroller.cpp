@@ -2,8 +2,17 @@
 
 InterfaceSaver *AbstractController::m_db = nullptr;
 QThread *AbstractController::m_dbThread = new QThread();
+QPointer<LiveQmlEngine> AbstractController::m_engine = nullptr;
 
-AbstractController::AbstractController(const AbstractController &) : QObject() {}
+AbstractController::AbstractController() : QObject() {
+    if(m_engine.isNull())
+        m_engine = new LiveQmlEngine(nullptr, QStringLiteral(QML_SOURCE) + "/View");
+}
+
+AbstractController::AbstractController(const AbstractController &) : QObject() {
+    if(m_engine.isNull())
+        m_engine = new LiveQmlEngine(nullptr, QStringLiteral(QML_SOURCE) + "/View");
+}
 
 InterfaceSaver *AbstractController::db()
 {

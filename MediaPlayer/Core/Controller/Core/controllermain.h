@@ -2,10 +2,9 @@
 #define CONTROLLERMAIN_H
 
 #include "../DataModel/librarydatamodel.h"
-#include "..\Data\DataXml.h"
+#include "../Data/DataXml.h"
 #include "abstractcontroller.h"
 #include "controllerlibrary.h"
-#include "liveqmlengine.h"
 #include <QCoreApplication>
 #include <QObject>
 #include <QQmlContext>
@@ -15,7 +14,6 @@ class ControllerMain : public AbstractController
     Q_OBJECT
     Q_DISABLE_COPY(ControllerMain)
 private:
-    LiveQmlEngine m_engine;
     ControllerLibrary m_libraries;
 
     QQmlApplicationEngine &engine();
