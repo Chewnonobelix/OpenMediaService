@@ -14,7 +14,7 @@ class LibraryTest : public QObject
     bool shared = true;
     QDateTime lastprobed = QDateTime::currentDateTime().addDays(-6);
     QString source = "Source1";
-    QSet<QString> sourceDir = QSet<QString>({source});
+    QList<QString> sourceDir = QList<QString>({source});
     QString media = QStringLiteral(TESTDATA) + "/porte_d_eternite.jpg";
 
 public:
@@ -102,7 +102,7 @@ void LibraryTest::test_lastProbed()
 void LibraryTest::test_addSourceDir()
 {
     QVERIFY(model1.sourceDir().isEmpty());
-    QSignalSpy spy(&model1, SIGNAL(sourceDirChanged(QSet<QString>)));
+    QSignalSpy spy(&model1, SIGNAL(sourceDirChanged(QList<QString>)));
     QCOMPARE(model1.addSourceDir(source), true);
     QCOMPARE(spy.count(), 1);    
 }
@@ -115,7 +115,7 @@ void LibraryTest::test_sourceDir()
 void LibraryTest::test_removeSourceDir()
 {
     QVERIFY(!model1.sourceDir().isEmpty());
-     QSignalSpy spy(&model1, SIGNAL(sourceDirChanged(QSet<QString>)));
+     QSignalSpy spy(&model1, SIGNAL(sourceDirChanged(QList<QString>)));
      QCOMPARE(model1.removeSourceDir(source), true);
      QCOMPARE(spy.count(), 1);    
 }

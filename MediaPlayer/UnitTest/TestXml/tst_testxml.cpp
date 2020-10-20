@@ -51,7 +51,7 @@ void TestXml::test_update_library()
 {
     auto l = model.selectLibrary().first();
     l->setName(name2);
-    QCOMPARE(model.updateLibrary(l->id()), true);
+    QCOMPARE(model.updateLibrary(l), true);
 }
 
 void TestXml::test_remove_library()

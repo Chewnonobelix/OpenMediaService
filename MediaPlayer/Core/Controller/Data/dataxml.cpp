@@ -73,10 +73,9 @@ bool DataXml::removeLibrary(QUuid l)
     return ret;
 }
 
-bool DataXml::updateLibrary(QUuid lid)
+bool DataXml::updateLibrary(LibraryPointer lid)
 {
-    auto l = selectLibrary()[lid];
-    QFile f("Library/" + l->id().toString() + ".xml");
+    QFile f("Library/" + lid->id().toString() + ".xml");
     bool ret = f.open(QIODevice::ReadWrite);
     QDomDocument doc;
     ret &= doc.setContent(&f);
@@ -85,7 +84,7 @@ bool DataXml::updateLibrary(QUuid lid)
         return ret;
 
     QDomElement el = doc.documentElement();
-    el.setAttribute("name", l->name());
+    el.setAttribute("name", lid->name());
     f.write(doc.toByteArray());
     f.close();
 

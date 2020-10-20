@@ -10,8 +10,7 @@
 class ControllerLibrary : public AbstractController
 {
  Q_OBJECT
- Q_PROPERTY(
-  Library *currentLibrary READ currentLibrary WRITE setCurrentLibrary NOTIFY currentLibraryChanged)
+ Q_PROPERTY(Library *currentLibrary READ currentLibrary WRITE setCurrentLibrary NOTIFY currentLibraryChanged)
 
  private:
  Library *m_currentLibrary;

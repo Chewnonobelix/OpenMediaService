@@ -66,9 +66,9 @@ void Library::setLastProbed(QDateTime lp)
     emit lastProbedChanged(lp);
 }
 
-QSet<QString> Library::sourceDir() const
+QList<QString> Library::sourceDir() const
 {
-    return metaData<QSet<QString>>("sourceDir");
+    return metaData<QList<QString>>("sourceDir");
 }
 
 bool Library::addSourceDir(QString source)
@@ -76,6 +76,7 @@ bool Library::addSourceDir(QString source)
     auto t = sourceDir();
     bool ret = t.contains(source);
     t<<source;
+    t.removeDuplicates();
     setMetadata("sourceDir", t);
     emit sourceDirChanged(t);
     return !ret;;
@@ -84,7 +85,8 @@ bool Library::addSourceDir(QString source)
 bool Library::removeSourceDir(QString source)
 {
     auto t = sourceDir();
-    bool ret = t.remove(source);
+    bool ret = t.indexOf(source) > -1;
+    t.removeAt(t.indexOf(source));
     setMetadata("sourceDir", t);    
     emit sourceDirChanged(t);
     return ret;;
@@ -162,4 +164,9 @@ void Library::setLastUpdate(QDateTime lastUpdate)
 {
     setMetadata("lastUpdate", lastUpdate);
     emit lastUpdateChanged();
+}
+
+int Library::mediaCount() const
+{
+    return m_medias.count();
 }

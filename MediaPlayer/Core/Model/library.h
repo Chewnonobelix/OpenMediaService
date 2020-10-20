@@ -40,8 +40,8 @@ class Library: public QObject, public MetaData
     Q_PROPERTY(bool isShared READ isShared WRITE setShared NOTIFY isSharedChanged)
     Q_PROPERTY(QDateTime lastProbed READ lastProbed WRITE setLastProbed NOTIFY lastProbedChanged)
     Q_PROPERTY(QDateTime lastUpdate READ lastUpdate WRITE setLastUpdate NOTIFY lastUpdateChanged)
-    Q_PROPERTY(QSet<QString> sourceDir READ sourceDir NOTIFY sourceDirChanged)
-
+    Q_PROPERTY(QList<QString> sourceDir READ sourceDir NOTIFY sourceDirChanged)
+    Q_PROPERTY(int mediaCount READ mediaCount NOTIFY mediasChanged)
 
 private:
     LibraryProbe m_probe;
@@ -66,10 +66,11 @@ public:
     void setShared(bool);
     QDateTime lastProbed() const;
     void setLastProbed(QDateTime);
-    QSet<QString> sourceDir() const;
+    QList<QString> sourceDir() const;
     QDateTime lastUpdate() const;
     void setLastUpdate(QDateTime);
-    
+    int mediaCount() const;
+
 public slots:
     Q_INVOKABLE void probe();
     Q_INVOKABLE bool addMedia(QString, MD5 = "");
@@ -82,7 +83,7 @@ signals:
     void nameChanged(QString);
     void isSharedChanged(bool);
     void lastProbedChanged(QDateTime);
-    void sourceDirChanged(QSet<QString>);
+    void sourceDirChanged(QList<QString>);
     void mediasChanged();
     void lastUpdateChanged();
 };

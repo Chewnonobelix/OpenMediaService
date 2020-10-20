@@ -16,13 +16,13 @@ class DataXml : public InterfaceSaver
 public:
     DataXml() = default;
     DataXml(const DataXml &) = default;
-    void init();
+    void init() override;
 
 public slots:
-	QMap<QUuid, LibraryPointer> selectLibrary() const;
-	bool createLibrary(QString, MediaPlayerGlobal::MediaRole);
-	bool removeLibrary(QUuid);
-    bool updateLibrary(QUuid);
+    QMap<QUuid, LibraryPointer> selectLibrary() const override;
+    bool createLibrary(QString, MediaPlayerGlobal::MediaRole) override;
+    bool removeLibrary(QUuid) override;
+    bool updateLibrary(LibraryPointer) override;
 
 private:
     LibraryPointer openLibrary(QString) const;
