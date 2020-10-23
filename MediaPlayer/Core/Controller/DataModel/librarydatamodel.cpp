@@ -34,6 +34,8 @@ QVariant LibraryDataModel::data(const QModelIndex &index, int role) const
         return lib->name();
 	else if (role == IndexRole)
 	 return index.row();
+	else if (role == IdRole)
+	 return QVariant::fromValue(lib->id());
 
 	return QVariant::fromValue(lib.data());
 }
@@ -44,6 +46,7 @@ QHash<int, QByteArray> LibraryDataModel::roleNames() const
     roles[MediaRole] = "role";
     roles[NameRole] = "name";
 	roles[IndexRole] = "index";
+	roles[IdRole] = "id";
 	return roles;
 }
 

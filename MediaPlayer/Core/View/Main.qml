@@ -92,7 +92,7 @@ ApplicationWindow {
 
             onCurrentIndexChanged: {
                 currentModel = model.at(currentIndex)
-                _libraries.currentLibrary = currentModel
+                _libraries.setCurrentLibrary(currentModel.id)
             }
 
             headerPositioning: ListView.OverlayHeader

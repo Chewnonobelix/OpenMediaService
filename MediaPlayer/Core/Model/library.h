@@ -36,12 +36,12 @@ class Library: public QObject, public MetaData
     
     Q_PROPERTY(QUuid id READ id CONSTANT)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role CONSTANT)
-    Q_PROPERTY(bool isShared READ isShared WRITE setShared NOTIFY isSharedChanged)
-    Q_PROPERTY(QDateTime lastProbed READ lastProbed WRITE setLastProbed NOTIFY lastProbedChanged)
-    Q_PROPERTY(QDateTime lastUpdate READ lastUpdate WRITE setLastUpdate NOTIFY lastUpdateChanged)
-    Q_PROPERTY(QList<QString> sourceDir READ sourceDir NOTIFY sourceDirChanged)
-    Q_PROPERTY(int mediaCount READ mediaCount NOTIFY mediasChanged)
+	Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role CONSTANT)
+	Q_PROPERTY(bool isShared READ isShared WRITE setShared NOTIFY isSharedChanged)
+	Q_PROPERTY(QDateTime lastProbed READ lastProbed WRITE setLastProbed NOTIFY lastProbedChanged)
+	Q_PROPERTY(QDateTime lastUpdate READ lastUpdate WRITE setLastUpdate NOTIFY lastUpdateChanged)
+	Q_PROPERTY(QStringList sourceDir READ sourceDir NOTIFY sourceDirChanged)
+	Q_PROPERTY(int mediaCount READ mediaCount NOTIFY mediasChanged)
 
 private:
     LibraryProbe m_probe;
@@ -61,15 +61,15 @@ public:
     QString name() const;
     void setName(QString);
     MediaPlayerGlobal::MediaRole role() const;
-    void setRole(MediaPlayerGlobal::MediaRole);
-    bool isShared() const;
-    void setShared(bool);
-    QDateTime lastProbed() const;
-    void setLastProbed(QDateTime);
-    QList<QString> sourceDir() const;
-    QDateTime lastUpdate() const;
-    void setLastUpdate(QDateTime);
-    int mediaCount() const;
+	void setRole(MediaPlayerGlobal::MediaRole);
+	bool isShared() const;
+	void setShared(bool);
+	QDateTime lastProbed() const;
+	void setLastProbed(QDateTime);
+	Q_INVOKABLE QList<QString> sourceDir() const;
+	QDateTime lastUpdate() const;
+	void setLastUpdate(QDateTime);
+	int mediaCount() const;
 
 public slots:
     Q_INVOKABLE void probe();

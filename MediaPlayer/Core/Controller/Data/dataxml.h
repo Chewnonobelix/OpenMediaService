@@ -25,7 +25,11 @@ public slots:
     bool updateLibrary(LibraryPointer) override;
 
 private:
-    LibraryPointer openLibrary(QString) const;
+	LibraryPointer openLibrary(QString) const;
+	QDomDocument m_currentDoc;
+	void deleter(QDomElement &, QString);
+	void setter(QDomElement &, QString, QString, QMap<QString, QString> = QMap<QString, QString>());
+	void adder(QDomElement &, QString, QString, QMap<QString, QString> = QMap<QString, QString>());
 };
 
 Q_DECLARE_METATYPE(DataXml)

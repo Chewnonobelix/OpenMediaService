@@ -68,7 +68,7 @@ void Library::setLastProbed(QDateTime lp)
 
 QList<QString> Library::sourceDir() const
 {
-    return metaData<QList<QString>>("sourceDir");
+ return metaData<QList<QString>>("sourceDir");
 }
 
 bool Library::addSourceDir(QString source)

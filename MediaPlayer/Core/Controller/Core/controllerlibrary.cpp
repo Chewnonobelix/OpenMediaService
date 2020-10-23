@@ -14,12 +14,12 @@ void ControllerLibrary::exec()
 
 Library *ControllerLibrary::currentLibrary() const
 {
- return m_currentLibrary;
+ return m_currentLibrary.data();
 }
 
-void ControllerLibrary::setCurrentLibrary(Library *l)
+void ControllerLibrary::setCurrentLibrary(QString l)
 {
- m_currentLibrary = l;
+ m_currentLibrary = db()->selectLibrary()[QUuid::fromString(l)];
 
  emit currentLibraryChanged();
 }
@@ -27,4 +27,10 @@ void ControllerLibrary::setCurrentLibrary(Library *l)
 void ControllerLibrary::open()
 {
     m_engine->createWindow(QUrl(QStringLiteral("/LibraryView.qml")));
+}
+
+void ControllerLibrary::addSourceDir(QString source)
+{
+ m_currentLibrary->addSourceDir(source);
+ db()->updateLibrary(m_currentLibrary);
 }

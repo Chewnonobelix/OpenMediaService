@@ -10,10 +10,10 @@
 class ControllerLibrary : public AbstractController
 {
  Q_OBJECT
- Q_PROPERTY(Library *currentLibrary READ currentLibrary WRITE setCurrentLibrary NOTIFY currentLibraryChanged)
+ Q_PROPERTY(Library *currentLibrary READ currentLibrary NOTIFY currentLibraryChanged)
 
  private:
- Library *m_currentLibrary;
+ LibraryPointer m_currentLibrary;
 
  public:
  ControllerLibrary();
@@ -23,10 +23,11 @@ class ControllerLibrary : public AbstractController
  void exec() override;
 
  Library *currentLibrary() const;
- void setCurrentLibrary(Library *);
+ Q_INVOKABLE void setCurrentLibrary(QString);
 
  Q_INVOKABLE void open();
 
+ Q_INVOKABLE void addSourceDir(QString);
  signals:
  void currentLibraryChanged();
 };

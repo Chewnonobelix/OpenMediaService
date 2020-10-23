@@ -13,9 +13,9 @@ class LibraryDataModel : public QAbstractListModel
 
  Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
  private:
- enum LibraryRoles { MediaRole = Qt::UserRole + 1, NameRole, IndexRole };
- QList<LibraryPointer> m_libraries;
- int m_currentIndex = -1;
+	 enum LibraryRoles { MediaRole = Qt::UserRole + 1, NameRole, IndexRole, IdRole };
+	 QList<LibraryPointer> m_libraries;
+	 int m_currentIndex = -1;
 
  protected:
  QHash<int, QByteArray> roleNames() const override;

@@ -2,6 +2,32 @@
 
 void DataXml::init() {}
 
+void DataXml::adder(QDomElement &el, QString tagname, QString value, QMap<QString, QString> attr)
+{
+ QDomElement el3 = m_currentDoc.createElement(tagname);
+ QDomText txt = m_currentDoc.createTextNode(value);
+ el3.appendChild(txt);
+ el.appendChild(el3);
+
+ for (auto it = attr.begin(); it != attr.end(); it++)
+  el3.setAttribute(it.key(), it.value());
+}
+
+void DataXml::setter(QDomElement &el, QString tagname, QString value, QMap<QString, QString> attr)
+{
+ QDomElement child = el.elementsByTagName(tagname).at(0).toElement();
+
+ el.removeChild(child);
+ adder(el, tagname, value, attr);
+}
+
+void DataXml::deleter(QDomElement &el, QString tagname)
+{
+ auto old = el.elementsByTagName(tagname);
+ if (old.size() == 1)
+  el.removeChild(old.at(0));
+}
+
 LibraryPointer DataXml::openLibrary(QString file) const
 {
     LibraryPointer ret = LibraryPointer::create();
@@ -15,8 +41,14 @@ LibraryPointer DataXml::openLibrary(QString file) const
     ret->setId(QUuid::fromString(el.attribute("id")));
     ret->setName(el.attribute("name"));
     ret->setRole((MediaPlayerGlobal::MediaRole) el.attribute("role").toInt());
+	auto sources = el.elementsByTagName("sourceDir");
 
-    return ret;
+	for (auto i = 0; i < sources.size(); i++) {
+	 auto child = sources.at(i).toElement();
+	 ret->addSourceDir(child.text());
+	}
+
+	return ret;
 }
 QMap<QUuid, LibraryPointer> DataXml::selectLibrary() const
 {
@@ -27,9 +59,9 @@ QMap<QUuid, LibraryPointer> DataXml::selectLibrary() const
     auto list = dir.entryInfoList(QStringList("*.xml"));
 
     for (auto it : list) {
-            ret[it.baseName()] = openLibrary(it.absoluteFilePath());
-    }
-    return ret;
+	 ret[it.baseName()] = openLibrary(it.absoluteFilePath());
+	}
+	return ret;
 }
 
 bool DataXml::createLibrary(QString name, MediaRole role)
@@ -48,18 +80,19 @@ bool DataXml::createLibrary(QString name, MediaRole role)
 
     QFile f("Library/" + ret->id().toString() + ".xml");
     qDebug() << "Open" << f.fileName() << f.open(QIODevice::ReadWrite);
-    QDomDocument doc;
-    doc.setContent(QString("<library />"));
-    auto el = doc.documentElement();
-    ;
-    el.setAttribute("id", ret->id().toString());
-    el.setAttribute("name", ret->name());
-    el.setAttribute("role", QString::number((int) ret->role()));
-    f.write(doc.toString().toLatin1());
-    f.close();
+	QDomDocument doc;
+	doc.setContent(QString("<library />"));
+	auto el = doc.documentElement();
+	;
+	el.setAttribute("id", ret->id().toString());
+	el.setAttribute("name", ret->name());
+	el.setAttribute("role", QString::number((int) ret->role()));
 
-    emit librariesChanged();
-    return !ret.isNull();
+	f.write(doc.toString().toLatin1());
+	f.close();
+
+	emit librariesChanged();
+	return !ret.isNull();
 }
 
 bool DataXml::removeLibrary(QUuid l)
@@ -84,10 +117,19 @@ bool DataXml::updateLibrary(LibraryPointer lid)
         return ret;
 
     QDomElement el = doc.documentElement();
-    el.setAttribute("name", lid->name());
-    f.write(doc.toByteArray());
-    f.close();
+	m_currentDoc = doc;
+	el.setAttribute("name", lid->name());
+	auto sources = el.elementsByTagName("sourceDir");
+	while (sources.size() > 0)
+	 el.removeChild(sources.at(0));
 
-    emit librariesChanged();
-    return true;
+	for (auto it : lid->sourceDir())
+	 adder(el, "sourceDir", it);
+
+	f.seek(0);
+	f.write(doc.toByteArray());
+	f.close();
+
+	emit librariesChanged();
+	return true;
 }
