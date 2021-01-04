@@ -12,9 +12,17 @@ Window {
 
     width: 400
     height: 600
-    property Library currentLibrary: _libraries.currentLibrary
+//    property Library currentLibrary: _libraries.currentLibrary
 
-    title: currentLibrary.name
+    Connections {
+        target: _libraries.currentLibrary
+
+        function onSourceDirChanged() {
+            sourceDir.model = _libraries.currentLibrary.sourceDir
+        }
+    }
+
+    title: _libraries.currentLibrary.name
 
         FileDialog {
             id: sourceSelecter
@@ -23,33 +31,30 @@ Window {
             onAccepted: _libraries.addSourceDir(fileUrl)
         }
 
-    onCurrentLibraryChanged: sourceDir.model = currentLibrary.sourceDir
     Component.onCompleted: {
         visible = true
-        currentLibrary = Qt.binding(function() {
-            return _libraries.currentLibrary
-        }
-        )
     }
+
     GridLayout {
         anchors.fill: parent
         Label {
             Layout.column: 0
             Layout.row: 0
             Layout.preferredHeight: root.height * 0.10
-            text: "Role" + ": " + currentLibrary.role
+            property string role: _libraries.currentLibrary.role.toString()
+            text: "Role" + ": " + role
         }
         Label {
             Layout.column: 0
             Layout.row: 1
             Layout.preferredHeight: root.height * 0.10
-            text: "Last update" + ": " + currentLibrary.lastUpdate
+            text: "Last update" + ": " + _libraries.currentLibrary.lastUpdate
         }
         Label {
             Layout.column: 0
             Layout.row: 2
             Layout.preferredHeight: root.height * 0.10
-            text: "Media count" + ": " + currentLibrary.mediaCount
+            text: "Media count" + ": " + _libraries.currentLibrary.mediaCount
         }
         Label {
             Layout.column: 0
@@ -68,11 +73,14 @@ Window {
             Layout.row: 5
             Layout.column: 1
             text: "-"
+            enabled: sourceDir.currentIndex > -1
+            onClicked: _libraries.removeSourceDir(sourceDir.currentText)
         }
+
         ToolButton {
             Layout.row: 6
             Layout.column: 1
-            text: "Sync"
+            text: "Scan"
         }
 
         ListView {
@@ -86,15 +94,19 @@ Window {
                 text: "source directories"
             }
 
-            model: currentLibrary.sourceDir
+            readonly property string currentText: model[currentIndex]
 
-            onCountChanged: console.log(count)
-            //            model: ["dir1", "dir2"]
+            highlight: Rectangle {
+                color: "lightblue"
+            }
+
             clip:true
             delegate: ItemDelegate{
                 height: sourceDir.height * 0.10
                 width: sourceDir.width
                 text: modelData
+
+                onClicked: sourceDir.currentIndex = index
             }
         }
     }

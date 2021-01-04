@@ -45,6 +45,7 @@ class LibraryDataModel : public QAbstractListModel
 
  signals:
  void currentIndexChanged();
+ void currentModelChanged(LibraryPointer);
 };
 
 Q_DECLARE_METATYPE(LibraryDataModel)

@@ -65,3 +65,6 @@ INCLUDEPATH += ../DesignLibrary/DesignPattern ../ExpressionLibrary/LibExpression
 
 LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
 LIBS += -L$$OUT_PWD/../ExpressionLibrary/LibExpression/debug -lLibExpression
+LIBS += -L$$OUT_PWD/../Application/Ui -lUxComponents
+
+message($$OUT_PWD)

@@ -14,7 +14,7 @@ class ControllerMain : public AbstractController
     Q_OBJECT
     Q_DISABLE_COPY(ControllerMain)
 private:
-    ControllerLibrary m_libraries;
+    QPointer<ControllerLibrary> m_libraries;
 
     QQmlApplicationEngine &engine();
 

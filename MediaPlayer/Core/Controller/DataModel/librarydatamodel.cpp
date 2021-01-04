@@ -120,6 +120,8 @@ void LibraryDataModel::setCurrentIndex(int index)
 {
  m_currentIndex = index;
  emit currentIndexChanged();
+ if(index > -1)
+     emit currentModelChanged(m_libraries[index]);
 }
 
 int LibraryDataModel::currentIndex() const

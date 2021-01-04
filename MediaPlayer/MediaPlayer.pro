@@ -5,8 +5,9 @@ SUBDIRS = \
     Core \
     DesignLibrary \
     ExpressionLibrary \
-    UnitTest
+    UnitTest \
+    UxComponent
 
 Application.depends = Core
 UnitTest.depends = Core
-Core.depends = DesignLibrary ExpressionLibrary
+Core.depends = DesignLibrary ExpressionLibrary UxComponent

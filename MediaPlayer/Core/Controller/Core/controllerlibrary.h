@@ -14,6 +14,7 @@ class ControllerLibrary : public AbstractController
 
  private:
  LibraryPointer m_currentLibrary;
+ LibraryDataModel m_librariesModel;
 
  public:
  ControllerLibrary();
@@ -28,8 +29,13 @@ class ControllerLibrary : public AbstractController
  Q_INVOKABLE void open();
 
  Q_INVOKABLE void addSourceDir(QString);
+ Q_INVOKABLE void removeSourceDir(QString);
+
  signals:
  void currentLibraryChanged();
+
+ public slots:
+     void onCurrentModelChanged(LibraryPointer);
 };
 
 #endif // CONTROLLERLIBRARY_HPP

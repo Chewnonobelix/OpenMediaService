@@ -71,7 +71,7 @@ ApplicationWindow {
 
         ListView {
             Connections {
-                target: libraryView.model
+                target: _librariesModel
 
                 function onCurrentIndexChanged() {
                     libraryView.currentIndex = libraryView.model.currentIndex
@@ -85,14 +85,14 @@ ApplicationWindow {
             Layout.column: 0
             Layout.rowSpan: 1
             Layout.columnSpan: 2
-            model: LibraryDataModel {
-            }
+            model: _librariesModel
 
             property Library currentModel: null
 
             onCurrentIndexChanged: {
                 currentModel = model.at(currentIndex)
-                _libraries.setCurrentLibrary(currentModel.id)
+                _librariesModel.currentIndex = currentIndex
+//                _libraries.setCurrentLibrary(currentModel.id)
             }
 
             headerPositioning: ListView.OverlayHeader

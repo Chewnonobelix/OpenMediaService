@@ -54,7 +54,7 @@ public:
 
     Library& operator = (const Library&);
 
-    bool friend operator<(LibraryPointer, LibraryPointer);
+    friend bool operator<(LibraryPointer, LibraryPointer);
 
     QUuid id() const;
     void setId(QUuid);
@@ -66,7 +66,7 @@ public:
 	void setShared(bool);
 	QDateTime lastProbed() const;
 	void setLastProbed(QDateTime);
-	Q_INVOKABLE QList<QString> sourceDir() const;
+    Q_INVOKABLE QStringList sourceDir() const;
 	QDateTime lastUpdate() const;
 	void setLastUpdate(QDateTime);
 	int mediaCount() const;
@@ -80,10 +80,10 @@ public slots:
     Q_INVOKABLE bool removeSourceDir(QString);
      
 signals:
-    void nameChanged(QString);
-    void isSharedChanged(bool);
-    void lastProbedChanged(QDateTime);
-    void sourceDirChanged(QList<QString>);
+    void nameChanged();
+    void isSharedChanged();
+    void lastProbedChanged();
+    void sourceDirChanged();
     void mediasChanged();
     void lastUpdateChanged();
 };

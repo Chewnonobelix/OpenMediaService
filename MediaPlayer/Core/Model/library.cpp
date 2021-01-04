@@ -30,8 +30,8 @@ QString Library::name() const
 
 void Library::setName(QString name)
 {
-    setMetadata("name", name);  
-    emit nameChanged(name);
+    setMetadata("name", name);
+    emit nameChanged();
 }
 
 MediaPlayerGlobal::MediaRole Library::role() const
@@ -52,7 +52,7 @@ bool Library::isShared() const
 void Library::setShared(bool shared)
 {
     setMetadata("shared", shared);
-    emit isSharedChanged(shared);
+    emit isSharedChanged();
 }
 
 QDateTime Library::lastProbed() const
@@ -63,12 +63,12 @@ QDateTime Library::lastProbed() const
 void Library::setLastProbed(QDateTime lp)
 {
     setMetadata("lastProbed", lp);
-    emit lastProbedChanged(lp);
+    emit lastProbedChanged();
 }
 
-QList<QString> Library::sourceDir() const
+QStringList Library::sourceDir() const
 {
- return metaData<QList<QString>>("sourceDir");
+ return metaData<QStringList>("sourceDir");
 }
 
 bool Library::addSourceDir(QString source)
@@ -78,7 +78,7 @@ bool Library::addSourceDir(QString source)
     t<<source;
     t.removeDuplicates();
     setMetadata("sourceDir", t);
-    emit sourceDirChanged(t);
+    emit sourceDirChanged();
     return !ret;;
 }
 
@@ -88,7 +88,7 @@ bool Library::removeSourceDir(QString source)
     bool ret = t.indexOf(source) > -1;
     t.removeAt(t.indexOf(source));
     setMetadata("sourceDir", t);    
-    emit sourceDirChanged(t);
+    emit sourceDirChanged();
     return ret;;
 }
 
