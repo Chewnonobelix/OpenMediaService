@@ -1,11 +1,11 @@
-#ifndef LIBRARYDATAMODEL_HPP
-#define LIBRARYDATAMODEL_HPP
+#pragma once
+
+#include <QAbstractListModel>
+#include <QtCore/qglobal.h>
 
 #include "../Core/abstractcontroller.h"
 #include "Model/global.h"
 #include "Model/library.h"
-#include <QAbstractListModel>
-#include <QtCore/qglobal.h>
 
 class LibraryDataModel : public QAbstractListModel {
 	Q_OBJECT
@@ -55,5 +55,3 @@ signals:
 };
 
 Q_DECLARE_METATYPE(LibraryDataModel)
-
-#endif // LIBRARYDATAMODEL_HPP

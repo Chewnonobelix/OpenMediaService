@@ -1,27 +1,21 @@
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#pragma once
 
-#include <QObject>
 #include <QMap>
+#include <QObject>
 
 typedef QByteArray MD5;
 
 Q_DECLARE_METATYPE(MD5)
 
-namespace MediaPlayerGlobal
-{
-    Q_NAMESPACE
+namespace MediaPlayerGlobal {
+Q_NAMESPACE
 
-    enum class MediaRole {Undefined, Audio, Video, Comics, Books, Image, Game};
-    Q_ENUM_NS(MediaRole)
-    
-    MediaRole getRole(QString path);
+enum class MediaRole { Undefined, Audio, Video, Comics, Books, Image, Game };
+Q_ENUM_NS(MediaRole)
 
-    template<class T>
-    QSet<T> toSet(QList<T> l)
-    {
-        return QSet<T>(l.begin(), l.end());
-    }
+MediaRole getRole(QString path);
+
+template <class T> QSet<T> toSet(QList<T> l) {
+	return QSet<T>(l.begin(), l.end());
 }
-
-#endif // GLOBAL_H
+} // namespace MediaPlayerGlobal

@@ -1,30 +1,25 @@
-#ifndef CONTROLLERMAIN_H
-#define CONTROLLERMAIN_H
+#pragma once
 
-#include "../DataModel/librarydatamodel.h"
-#include "../Data/DataXml.h"
-#include "abstractcontroller.h"
-#include "controllerlibrary.h"
 #include <QCoreApplication>
 #include <QObject>
 #include <QQmlContext>
 
-class ControllerMain : public AbstractController
-{
-    Q_OBJECT
-    Q_DISABLE_COPY(ControllerMain)
-private:
-    QPointer<ControllerLibrary> m_libraries;
+#include "../Data/dataxml.h"
+#include "../DataModel/librarydatamodel.h"
+#include "abstractcontroller.h"
+#include "controllerlibrary.h"
 
-    QQmlApplicationEngine &engine();
+class ControllerMain : public AbstractController {
+	Q_OBJECT
+	Q_DISABLE_COPY(ControllerMain)
+private:
+	QPointer<ControllerLibrary> m_libraries;
+
+	QQmlApplicationEngine &engine();
 
 public:
-    ControllerMain();
-    ~ControllerMain() = default;
+	ControllerMain();
+	~ControllerMain() = default;
 
-    void exec();
-
+	void exec();
 };
-
-
-#endif // CONTROLLERMAIN_H
