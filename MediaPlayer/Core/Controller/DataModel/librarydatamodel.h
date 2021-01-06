@@ -7,45 +7,51 @@
 #include <QAbstractListModel>
 #include <QtCore/qglobal.h>
 
-class LibraryDataModel : public QAbstractListModel
-{
- Q_OBJECT
+class LibraryDataModel : public QAbstractListModel {
+	Q_OBJECT
 
- Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
- private:
-	 enum LibraryRoles { MediaRole = Qt::UserRole + 1, NameRole, IndexRole, IdRole };
-	 QList<LibraryPointer> m_libraries;
-	 int m_currentIndex = -1;
+	Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY
+								 currentIndexChanged)
 
- protected:
- QHash<int, QByteArray> roleNames() const override;
+private:
+	enum LibraryRoles {
+		MediaRole = Qt::UserRole + 1,
+		NameRole,
+		IndexRole,
+		IdRole
+	};
+	QList<LibraryPointer> m_libraries;
+	int m_currentIndex = -1;
 
- public:
- LibraryDataModel();
- LibraryDataModel(const LibraryDataModel &);
- ~LibraryDataModel() = default;
+protected:
+	QHash<int, QByteArray> roleNames() const override;
 
- LibraryDataModel &operator=(const LibraryDataModel &);
+public:
+	LibraryDataModel();
+	LibraryDataModel(const LibraryDataModel &);
+	~LibraryDataModel() = default;
 
- friend bool operator!=(const LibraryDataModel &, const LibraryDataModel &);
+	LibraryDataModel &operator=(const LibraryDataModel &);
 
- QVariant data(const QModelIndex &index, int role) const override;
- int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+	friend bool operator!=(const LibraryDataModel &, const LibraryDataModel &);
 
- void insertData(LibraryPointer);
- void sort(int, Qt::SortOrder) override;
+	QVariant data(const QModelIndex &index, int role) const override;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
- Q_INVOKABLE Library *at(int);
- Q_INVOKABLE void clear();
- void setCurrentIndex(int);
- int currentIndex() const;
+	void insertData(LibraryPointer);
+	void sort(int, Qt::SortOrder) override;
 
- public slots:
- void onUpdateLibraries();
+	Q_INVOKABLE Library *at(int);
+	Q_INVOKABLE void clear();
+	void setCurrentIndex(int);
+	int currentIndex() const;
 
- signals:
- void currentIndexChanged();
- void currentModelChanged(LibraryPointer);
+public slots:
+	void onUpdateLibraries();
+
+signals:
+	void currentIndexChanged();
+	void currentModelChanged(LibraryPointer);
 };
 
 Q_DECLARE_METATYPE(LibraryDataModel)

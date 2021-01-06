@@ -1,33 +1,28 @@
 #ifndef LIBRARYPROBE_H
 #define LIBRARYPROBE_H
 
-#include <QDebug>
 #include <QCryptographicHash>
-#include <QString>
+#include <QDebug>
 #include <QDir>
+#include <QElapsedTimer>
 #include <QFile>
 #include <QFileInfo>
 #include <QSet>
-#include <QTime>
+#include <QString>
 #include <QThread>
-#include <QElapsedTimer>
+#include <QTime>
 
-class LibraryProbe: public QThread
-{
-    Q_OBJECT
+class LibraryProbe : public QThread {
+	Q_OBJECT
 
 private:
-
 protected:
-
 public:
+	LibraryProbe() = default;
+	~LibraryProbe() = default;
 
-    LibraryProbe() = default;
-    ~LibraryProbe() = default;
-    
-    
 signals:
-    
+
 public slots:
 };
 

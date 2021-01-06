@@ -10,7 +10,6 @@ DLLDESTDIR = $$OUT_PWD/../Application/debug
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Refer to the documentation for the
 # deprecated API to know how to port your code away from it.
-DEFINES += QT_DEPRECATED_WARNINGS QML_SOURCE=\\\"$$PWD\\\"
 
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -34,10 +33,12 @@ SOURCES += \
 RESOURCES += View\qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
+QML_IMPORT_PATH = "$${OUT_PWD}/../Application/Ux"
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH =
+QML_DESIGNER_IMPORT_PATH = $$QML_IMPORT_PATH
+
+DEFINES += QT_DEPRECATED_WARNINGS QML_SOURCE=\\\"$$PWD\\\" QML_IMPORT_PATH=\\\"$$QML_IMPORT_PATH\\\"
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -60,11 +61,11 @@ HEADERS += \
     mediaplayercore_global.h
 
 
-INCLUDEPATH += ../DesignLibrary/DesignPattern ../ExpressionLibrary/LibExpression
+INCLUDEPATH += $$PWD/../DesignLibrary/DesignPattern $$PWD/../ExpressionLibrary/LibExpression $$PWD/../UxComponent
 
 
 LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
 LIBS += -L$$OUT_PWD/../ExpressionLibrary/LibExpression/debug -lLibExpression
-LIBS += -L$$OUT_PWD/../Application/Ui -lUxComponents
+LIBS += -L$$OUT_PWD/../Application/Ux -lUxComponents
 
 message($$OUT_PWD)
