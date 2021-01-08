@@ -18,10 +18,11 @@
 class LibraryProbe : public QThread {
 	Q_OBJECT
 
-	Q_PROPERTY(double current READ current NOTIFY currentChanged CONSTANT)
-	Q_PROPERTY(bool isRunning READ isRunning NOTIFY isRunningChanged CONSTANT)
+	Q_PROPERTY(double current READ current NOTIFY currentChanged)
+	Q_PROPERTY(bool isRunning READ isRunning NOTIFY isRunningChanged)
 
 private:
+	QSet<QString> m_paths;
 	QStringList m_sourceDir;
 	MediaPlayerGlobal::MediaRole m_role;
 	int m_total = 0, m_current = 0;
@@ -33,6 +34,7 @@ public:
 
 	void setSourceDir(QStringList);
 	void setRole(MediaPlayerGlobal::MediaRole);
+	void setPaths(QSet<QString>);
 
 	void probe();
 

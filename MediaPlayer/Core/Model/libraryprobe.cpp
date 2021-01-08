@@ -19,6 +19,8 @@ double LibraryProbe::current() const {
 	return (m_current * 10000 / m_total) / 100.0;
 }
 
+void LibraryProbe::setPaths(QSet<QString> paths) { m_paths = paths; }
+
 bool LibraryProbe::isRunning() const { return current() != 100.0; }
 
 void LibraryProbe::probe() {
@@ -58,20 +60,30 @@ void LibraryProbe::probe() {
 		QPointer<QThread> t(QThread::create(
 				[this](auto l, int number) {
 					for (auto it : l) {
-						QCryptographicHash hasher(QCryptographicHash::Sha256);
-						QFile file(it.absoluteFilePath());
-						file.open(QIODevice::ReadOnly);
-						hasher.addData(&file);
-						auto h = hasher.result();
-						file.close();
+						if (!m_paths.contains(it.absoluteFilePath())) {
+							QCryptographicHash hasher(QCryptographicHash::Sha256);
+							QFile file(it.absoluteFilePath());
+							file.open(QIODevice::ReadOnly);
+							hasher.addData(&file);
+							auto h = hasher.result();
+							file.close();
 
-						emit mediaFind(it.absoluteFilePath(), h);
+							emit mediaFind(it.absoluteFilePath(), h);
+
+							m_paths << it.absoluteFilePath();
+						}
 					}
 				},
 				infos.mid(
 						std::min(((int(infos.size() / 8) + 1) * it), int(infos.size())),
 						int(infos.size() / 8) + 1),
 				it));
+
+		connect(t, &QThread::finished, [t]() {
+			qDebug() << "Destroy";
+			t->deleteLater();
+		});
+
 		t->start();
 	}
 }

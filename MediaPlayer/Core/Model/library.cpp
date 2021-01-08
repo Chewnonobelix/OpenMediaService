@@ -15,6 +15,12 @@ Library &Library::operator=(const Library &l) {
 }
 
 void Library::scan() {
+	QSet<QString> paths;
+	for (auto it : m_medias)
+		for (auto it2 : it->paths())
+			paths << it2;
+
+	m_probe.setPaths(paths);
 	m_probe.setSourceDir(sourceDir());
 	m_probe.setRole(role());
 	m_probe.probe();
