@@ -26,5 +26,3 @@ private:
 	static InterfaceSaver *m_db;
 	static QThread *m_dbThread;
 };
-
-#endif // ABSTRACTCONTROLLER_H

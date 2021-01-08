@@ -80,7 +80,9 @@ Window {
 		ToolButton {
 			Layout.row: 6
 			Layout.column: 1
-			text: "Scan"
+			text: "Scan" + " (" + _libraries.currentLibrary.probe.current + "%)"
+			enabled: ! _libraries.currentLibrary.probe.isRunning
+			onClicked: _libraries.currentLibrary.scan()
 		}
 
 		ListView {

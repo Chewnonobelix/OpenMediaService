@@ -11,9 +11,13 @@ void ControllerMain::exec() {
 	qDebug() << "MediaPlayer::MediaRole"
 					 << qRegisterMetaType<MediaPlayerGlobal::MediaRole>();
 
+	qDebug() << "LibraryProbe"
+					 << qmlRegisterUncreatableType<LibraryProbe>(
+									"MediaPlayer", 1, 0, "LibraryProbe", "Cpp owner");
 	qDebug() << "Library"
 					 << qmlRegisterUncreatableType<Library>("MediaPlayer", 1, 0,
 																									"Library", "Cpp owner");
+
 	qDebug() << "LibraryDataModel"
 					 << qmlRegisterType<LibraryDataModel>("MediaPlayer.Model", 1, 0,
 																								"LibraryDataModel");
