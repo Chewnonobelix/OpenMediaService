@@ -6,6 +6,7 @@
 #include <QElapsedTimer>
 #include <QFile>
 #include <QFileInfo>
+#include <QMutex>
 #include <QPointer>
 #include <QQueue>
 #include <QSet>
@@ -26,10 +27,15 @@ private:
 	QStringList m_sourceDir;
 	MediaPlayerGlobal::MediaRole m_role;
 	int m_total = 0, m_current = 0;
+	QQueue<QFileInfo> m_infos;
+	QQueue<QString> m_queue;
+	QList<QPointer<QThread>> m_threads;
+
+	QMutex m_mutex;
 
 protected:
 public:
-	LibraryProbe() = default;
+	LibraryProbe();
 	~LibraryProbe() = default;
 
 	void setSourceDir(QStringList);

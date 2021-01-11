@@ -67,6 +67,9 @@ QStringList Library::sourceDir() const {
 
 bool Library::addSourceDir(QString source) {
 	auto t = sourceDir();
+	if (source.startsWith("file:///"))
+		source.remove(0, 8);
+
 	bool ret = t.contains(source);
 	t << source;
 	t.removeDuplicates();

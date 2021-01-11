@@ -1,5 +1,7 @@
 #include "libraryprobe.h"
 
+LibraryProbe::LibraryProbe() {}
+
 void LibraryProbe::setSourceDir(QStringList list) { m_sourceDir = list; }
 
 void LibraryProbe::setRole(MediaPlayerGlobal::MediaRole role) { m_role = role; }
@@ -28,62 +30,75 @@ void LibraryProbe::probe() {
 					Qt::UniqueConnection);
 
 	m_current = 0;
-	QDir dir;
-	QQueue<QString> queue;
-	queue.append(m_sourceDir);
-	QQueue<QFileInfo> infos;
+	m_queue.append(m_sourceDir);
+	QList<QPointer<QThread>> list;
 
-	while (!queue.isEmpty()) {
-		auto it = queue.dequeue();
-		if (it.startsWith("file:///"))
-			it.remove("file:///");
+	for (auto i = 0; i < 16; i++) {
+		m_threads << (QThread::create([this]() {
+			sleep(10);
+			while (current() < 100.0 && !m_infos.isEmpty()) {
+				m_mutex.lock();
+				auto it = m_infos.dequeue();
+				m_mutex.unlock();
+				if (!m_paths.contains(it.absoluteFilePath())) {
+					QCryptographicHash hasher(QCryptographicHash::Sha256);
+					QFile file(it.absoluteFilePath());
+					file.open(QIODevice::ReadOnly);
+					hasher.addData(&file);
+					auto h = hasher.result();
+					file.close();
 
-		dir.cd(it);
-		auto files = dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+					emit mediaFind(it.absoluteFilePath(), h);
 
-		for (auto it2 : files) {
-			if (it2.isDir()) {
-				queue.enqueue(it2.absoluteFilePath());
-			} else {
-				if (MediaPlayerGlobal::getRole(it2.fileName()) == m_role) {
-					infos.enqueue(it2);
+					m_paths << it.absoluteFilePath();
 				}
 			}
-		}
+		}));
+
+		auto &last = m_threads.last();
+		connect(last, &QThread::finished, [last]() { last->deleteLater(); });
+		last->start();
 	}
 
-	qDebug() << "Infos" << infos.size();
-	m_total = infos.size();
-	for (auto it = 0; it < 8; it++) {
-		qDebug() << std::min((int(infos.size() / 8) * it), int(infos.size()))
-						 << int(infos.size() / 8);
-		QPointer<QThread> t(QThread::create(
-				[this](auto l, int number) {
-					for (auto it : l) {
-						if (!m_paths.contains(it.absoluteFilePath())) {
-							QCryptographicHash hasher(QCryptographicHash::Sha256);
-							QFile file(it.absoluteFilePath());
-							file.open(QIODevice::ReadOnly);
-							hasher.addData(&file);
-							auto h = hasher.result();
-							file.close();
+	for (auto i = 0; i < 8; i++) {
+		list << QThread::create([this]() {
+			QDir dir;
 
-							emit mediaFind(it.absoluteFilePath(), h);
+			for (auto i = 0; i < 10; i++) {
+				while (!m_queue.isEmpty()) {
+					m_mutex.lock();
+					if (m_queue.isEmpty()) {
+						m_mutex.unlock();
+						continue;
+					}
+					auto it = m_queue.dequeue();
+					m_mutex.unlock();
+					dir.cd(it);
 
-							m_paths << it.absoluteFilePath();
+					auto files =
+							dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+
+					for (auto it2 : files) {
+						if (it2.isDir()) {
+							m_mutex.lock();
+							m_queue.enqueue(it2.absoluteFilePath());
+							m_mutex.unlock();
+						} else {
+							if (MediaPlayerGlobal::getRole(it2.fileName()) == m_role) {
+								m_mutex.lock();
+								m_total++;
+								m_infos.enqueue(it2);
+								m_mutex.unlock();
+							}
 						}
 					}
-				},
-				infos.mid(
-						std::min(((int(infos.size() / 8) + 1) * it), int(infos.size())),
-						int(infos.size() / 8) + 1),
-				it));
-
-		connect(t, &QThread::finished, [t]() {
-			qDebug() << "Destroy";
-			t->deleteLater();
+				}
+			}
 		});
 
-		t->start();
+		auto &last = list.last();
+		connect(last, &QThread::finished, [last]() { last->deleteLater(); });
+
+		last->start();
 	}
 }
