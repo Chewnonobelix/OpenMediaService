@@ -1,4 +1,4 @@
 
-include(../config.pro)
+include(../config.pri)
 
 SOURCES +=  tst_mediatest.cpp

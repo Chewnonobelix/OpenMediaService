@@ -1,6 +1,6 @@
-#include <QtTest>
+#include "Model/media.h"
 #include <QSignalSpy>
-#include "media.h"
+#include <QtTest>
 // add necessary includes here
 
 class MediaTest : public QObject
@@ -9,9 +9,9 @@ class MediaTest : public QObject
 
     Media model1, model2;
     const MD5 id = "testid";
-    const QString path = "path1";
+    const QString path = QStringLiteral(TESTDATA) + "/porte_d_eternite.jpg";
     const int count = 1;
-    const MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::MediaRole::Game;
+    const MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::MediaRole::Image;
     const QDate added = QDate::currentDate();
     const QDateTime lastFinish = QDateTime::currentDateTime();
     const QDateTime lastProbed = QDateTime::currentDateTime().addDays(5);

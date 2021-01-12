@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>MediaButton.qml</file>
+    </qresource>
+</RCC>

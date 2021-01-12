@@ -1,34 +1,57 @@
-#ifndef LIBRARYPROBE_H
-#define LIBRARYPROBE_H
+#pragma once
 
-#include <QDebug>
 #include <QCryptographicHash>
-#include <QString>
+#include <QDebug>
 #include <QDir>
+#include <QElapsedTimer>
 #include <QFile>
 #include <QFileInfo>
+#include <QMutex>
+#include <QPointer>
+#include <QQueue>
 #include <QSet>
-#include <QTime>
+#include <QString>
 #include <QThread>
-#include <QElapsedTimer>
+#include <QTime>
 
-class LibraryProbe: public QThread
-{
-    Q_OBJECT
+#include "Model/global.h"
+
+class LibraryProbe : public QThread {
+	Q_OBJECT
+
+	Q_PROPERTY(double current READ current NOTIFY currentChanged)
+	Q_PROPERTY(bool isRunning READ isRunning NOTIFY isRunningChanged)
 
 private:
+	QSet<QString> m_paths;
+	QStringList m_sourceDir;
+	MediaPlayerGlobal::MediaRole m_role;
+	int m_total = 0, m_current = 0;
+	QQueue<QFileInfo> m_infos;
+	QQueue<QString> m_queue;
+	QList<QPointer<QThread>> m_threads;
+
+	QMutex m_mutex;
 
 protected:
-
 public:
+	LibraryProbe();
+	~LibraryProbe() = default;
 
-    LibraryProbe() = default;
-    ~LibraryProbe() = default;
-    
-    
+	void setSourceDir(QStringList);
+	void setRole(MediaPlayerGlobal::MediaRole);
+	void setPaths(QSet<QString>);
+
+	void probe();
+
+	double current() const;
+	bool isRunning() const;
+
 signals:
-    
-public slots:
-};
+	void mediaFind(QString, MD5);
+	void currentChanged();
+	void isRunningChanged();
 
-#endif // LIBRARYPROBE_H
+public slots:
+	void onMediaFind(QString, MD5);
+};

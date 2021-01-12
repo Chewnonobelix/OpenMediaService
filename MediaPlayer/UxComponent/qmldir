@@ -1,0 +1,4 @@
+module MediaPlayer.Components
+MediaButton 1.0 qrc:/MediaButton.qml
+plugin UxComponents
+typeinfo plugin.qmltypes
