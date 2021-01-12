@@ -35,10 +35,13 @@ private:
 
 public:
 	Library();
+	using MetaData::MetaData;
 	Library(const Library &);
+	Library(QJsonObject &);
 	~Library() = default;
 
 	Library &operator=(const Library &);
+	operator QJsonObject() const override;
 
 	friend bool operator<(LibraryPointer, LibraryPointer);
 
@@ -65,6 +68,7 @@ public slots:
 	Q_INVOKABLE QMap<MD5, MediaPointer> medias(MD5 = "") const;
 	Q_INVOKABLE bool addSourceDir(QString);
 	Q_INVOKABLE bool removeSourceDir(QString);
+	void onProbedChanged();
 
 signals:
 	void nameChanged();

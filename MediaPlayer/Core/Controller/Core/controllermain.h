@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QQmlContext>
 
+#include "../Data/datajson.h"
 #include "../Data/dataxml.h"
 #include "../DataModel/librarydatamodel.h"
 #include "abstractcontroller.h"

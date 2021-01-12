@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QFile>
+#include <QJsonArray>
 #include <QMap>
 #include <QObject>
 #include <QSet>
@@ -41,9 +42,12 @@ private:
 public:
 	Media(MD5 = "", QString = "");
 	Media(const Media &other);
+	using MetaData::MetaData;
+	Media(QJsonObject &);
 	~Media() = default;
 
 	Media &operator=(const Media &other);
+	operator QJsonObject() const override;
 
 	MD5 id() const;
 	void setId(MD5 id);

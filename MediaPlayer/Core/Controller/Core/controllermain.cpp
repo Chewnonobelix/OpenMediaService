@@ -8,6 +8,7 @@ ControllerMain::ControllerMain() : AbstractController(), m_libraries() {
 
 void ControllerMain::exec() {
 	qDebug() << "DataXml" << qRegisterMetaType<DataXml>();
+	qDebug() << "DataJson" << qRegisterMetaType<DataJson>();
 	qDebug() << "MediaPlayer::MediaRole"
 					 << qRegisterMetaType<MediaPlayerGlobal::MediaRole>();
 
@@ -28,7 +29,7 @@ void ControllerMain::exec() {
 
 									"Media Player global");
 
-	setDb("DataXml");
+	setDb("DataJson");
 	auto *context = engine().rootContext();
 	context->setContextProperty("_main", this);
 	context->setContextProperty("_db", db());

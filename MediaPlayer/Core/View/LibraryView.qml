@@ -93,7 +93,7 @@ Window {
 			Layout.preferredHeight: root.height
 			Layout.preferredWidth: root.width * 0.75
 			header: Label{
-				text: "source directories"
+				text: "source directories (last probed: " + Qt.formatDateTime(_libraries.currentLibrary.lastProbed, "dd-MM-yyyy hh:mm:ss") + ")"
 			}
 
 			model: _libraries.currentLibrary.sourceDir

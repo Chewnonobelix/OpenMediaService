@@ -1,11 +1,50 @@
 #include "library.h"
 
 Library::Library() {
-	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia);
+	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia,
+					Qt::QueuedConnection);
+	connect(&m_probe, &LibraryProbe::currentChanged, this,
+					&Library::onProbedChanged);
 }
 
 Library::Library(const Library &l) : QObject(nullptr), MetaData(l) {
-	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia);
+	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia,
+					Qt::QueuedConnection);
+	connect(&m_probe, &LibraryProbe::currentChanged, this,
+					&Library::onProbedChanged);
+}
+
+Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l) {
+	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia,
+					Qt::QueuedConnection);
+	connect(&m_probe, &LibraryProbe::currentChanged, this,
+					&Library::onProbedChanged);
+	auto dirs = l["sourceDir"].toArray();
+	auto ms = l["medias"].toArray();
+
+	for (auto it : dirs)
+		addSourceDir(it.toString());
+
+	for (auto it : ms) {
+		auto m = factory<Media>(it.toObject());
+		m_medias[m->id()] = m;
+	}
+}
+
+Library::operator QJsonObject() const {
+	auto ret = MetaData::operator QJsonObject();
+
+	QJsonArray ms, sources;
+	for (auto it : m_medias)
+		ms << QJsonObject(*it);
+
+	for (auto it : sourceDir())
+		sources << it;
+
+	ret["medias"] = ms;
+	ret["sourceDir"] = sources;
+
+	return ret;
 }
 
 Library &Library::operator=(const Library &l) {
@@ -110,7 +149,6 @@ bool Library::addMedia(QString path, MD5 md) {
 	else
 		return false;
 
-	emit mediasChanged();
 	qDebug() << "Wesh" << path;
 	return m_medias[md]->paths().contains(path);
 }
@@ -159,3 +197,9 @@ void Library::setLastUpdate(QDateTime lastUpdate) {
 int Library::mediaCount() const { return m_medias.count(); }
 
 LibraryProbe *Library::probe() { return &m_probe; }
+
+void Library::onProbedChanged() {
+	setLastProbed(QDateTime::currentDateTime());
+	if (m_probe.current() == 100.0)
+		emit mediasChanged();
+}

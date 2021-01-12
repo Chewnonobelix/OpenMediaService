@@ -56,7 +56,10 @@ void LibraryProbe::probe() {
 		}));
 
 		auto &last = m_threads.last();
-		connect(last, &QThread::finished, [last]() { last->deleteLater(); });
+		connect(last, &QThread::finished, [last, this]() {
+			m_threads.remove(m_threads.lastIndexOf(last));
+			last->deleteLater();
+		});
 		last->start();
 	}
 

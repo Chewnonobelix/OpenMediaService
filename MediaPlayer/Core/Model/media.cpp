@@ -1,159 +1,136 @@
 #include "media.h"
 
-Media::Media(MD5 id, QString path): QObject(nullptr)
-{
-    setId(id);
-    if(!path.isEmpty())
-        m_path<<path;
+Media::Media(MD5 id, QString path) : QObject(nullptr) {
+	setId(id);
+	if (!path.isEmpty())
+		m_path << path;
 }
 
+Media::Media(const Media &other)
+		: QObject(nullptr), MetaData(other),
+			m_path(other.paths().begin(), other.paths().end()) {}
 
-Media::Media(const Media &other): QObject(nullptr), MetaData(other), m_path(other.paths().begin(), other.paths().end())
-{
+Media::Media(QJsonObject &obj) : MetaData(obj) {
+	auto sources = obj["sources"].toArray();
 
+	for (auto it : sources)
+		m_path << it.toString();
 }
 
-MD5 Media::id() const
-{
-    return metaData<MD5>("id");
+Media::operator QJsonObject() const {
+	auto ret = MetaData::operator QJsonObject();
+
+	QJsonArray sources;
+
+	for (auto it : m_path)
+		sources << it;
+
+	ret["sources"] = sources;
+
+	return ret;
 }
 
-void Media::setId(MD5 id)
-{
-    setMetadata("id", id);
+MD5 Media::id() const { return metaData<MD5>("id"); }
+
+void Media::setId(MD5 id) { setMetadata("id", id); }
+
+MediaPlayerGlobal::MediaRole Media::role() const {
+	return metaData<MediaPlayerGlobal::MediaRole>("role");
 }
 
-MediaPlayerGlobal::MediaRole Media::role() const
-{
-    return metaData<MediaPlayerGlobal::MediaRole>("role");
+void Media::setRole(MediaPlayerGlobal::MediaRole role) {
+	setMetadata("role", role);
 }
 
-void Media::setRole(MediaPlayerGlobal::MediaRole role)
-{
-    setMetadata("role", role);
+QString Media::path() const { return *m_path.begin(); }
+
+QList<QString> Media::paths() const { return m_path.values(); }
+
+void Media::setPath(QString path) {
+	if (path.isEmpty())
+		return;
+
+	m_path << path;
+	emit isAvailableChanged(!m_path.isEmpty());
 }
 
-QString Media::path() const
-{
-    return *m_path.begin();
+void Media::removePath(QString path) {
+	m_path.remove(path);
+	emit isAvailableChanged(!m_path.isEmpty());
 }
 
-QList<QString> Media::paths() const
-{
-    return m_path.values();
+int Media::count() const {
+	return hasMetadata("count") ? metaData<int>("count") : 0;
 }
 
-void Media::setPath(QString path)
-{
-    if(path.isEmpty())
-        return;
- 
-    m_path<<path;
-    emit isAvailableChanged(!m_path.isEmpty());
+void Media::setCount(int count) {
+	setMetadata("count", count);
+	emit countChanged(count);
 }
 
-void Media::removePath(QString path)
-{
-    m_path.remove(path);   
-    emit isAvailableChanged(!m_path.isEmpty());
+int Media::rating() const {
+	return hasMetadata("rating") ? metaData<int>("rating") : 0;
 }
 
-int Media::count() const
-{
-    return hasMetadata("count") ? metaData<int>("count") : 0;
+void Media::setRating(int rate) {
+	setMetadata("rating", rate);
+	emit ratingChanged(rate);
 }
 
-void Media::setCount(int count)
-{
-    setMetadata("count", count);
-    emit countChanged(count);
+QDate Media::added() const { return metaData<QDate>("added"); }
+
+void Media::setAdded(QDate added) { setMetadata("added", added); }
+
+QDateTime Media::lastFinish() const {
+	return metaData<QDateTime>("lastFinish");
 }
 
-int Media::rating() const
-{
-    return hasMetadata("rating") ? metaData<int>("rating") : 0;
+void Media::setLastFinish(QDateTime lastFinish) {
+	setMetadata("lastFinish", lastFinish);
+	emit lastFinishChanged(lastFinish);
 }
 
-void Media::setRating(int rate)
-{
-    setMetadata("rating", rate);
-    emit ratingChanged(rate);
+QDateTime Media::lastProbed() const {
+	return metaData<QDateTime>("lastProbed");
 }
 
-QDate Media::added() const
-{
-    return metaData<QDate>("added");
+void Media::setLastProbed(QDateTime lastProbed) {
+	setMetadata("lastProbed", lastProbed);
+	emit lastProbedChanged(lastProbed);
 }
 
-void Media::setAdded(QDate added)
-{
-    setMetadata("added", added);
+double Media::currentRead() const { return metaData<double>("currentRead"); }
+
+void Media::setCurrentRead(double currentRead) {
+	setMetadata("currentRead", currentRead);
+	emit currentReadChanged(currentRead);
 }
 
-QDateTime Media::lastFinish() const
-{
-    return metaData<QDateTime>("lastFinish");
+MediaPointer Media::createMedia(MD5 id, QString path) {
+	MediaPointer ret = factory<Media>(id, path);
+	ret->setAdded(QDate::currentDate());
+	ret->setRole(MediaPlayerGlobal::getRole(path));
+
+	return ret;
 }
 
-void Media::setLastFinish(QDateTime lastFinish)
-{
-    setMetadata("lastFinish", lastFinish);
-    emit lastFinishChanged(lastFinish);
+int Media::nbPath() const { return m_path.size(); }
+
+bool Media::isAvailable() const {
+	bool ret = !m_path.isEmpty();
+	for (auto it = m_path.begin(); ret && it != m_path.end(); it++)
+		ret &= QFile::exists(*it);
+
+	return ret;
 }
 
-QDateTime Media::lastProbed() const
-{
-    return metaData<QDateTime>("lastProbed");
-}
+Media &Media::operator=(const Media &other) {
 
-void Media::setLastProbed(QDateTime lastProbed)
-{
-    setMetadata("lastProbed", lastProbed);
-    emit lastProbedChanged(lastProbed);
-}
+	m_path.clear();
+	for (auto it : other.paths())
+		m_path << it;
 
-double Media::currentRead() const
-{
-    return metaData<double>("currentRead");
-}
-
-void Media::setCurrentRead(double currentRead)
-{
-    setMetadata("currentRead", currentRead);
-    emit currentReadChanged(currentRead);
-}
-
-MediaPointer Media::createMedia(MD5 id, QString path)
-{
-    MediaPointer ret = factory<Media>(id, path);
-    ret->setAdded(QDate::currentDate());
-    ret->setRole(MediaPlayerGlobal::getRole(path));
-    
-    return ret;
-}
-
-int Media::nbPath() const
-{
-    return m_path.size();
-}
-
-bool Media::isAvailable() const
-{
-    bool ret = !m_path.isEmpty();
-    for(auto it = m_path.begin(); ret && it != m_path.end(); it++)
-        ret &= QFile::exists(*it);
-    
-    return ret;
-}
-
-Media& Media::operator =(const Media& other)
-{
-
-    m_path.clear();
-    for(auto it: other.paths())
-        m_path<<it;
-
-    MetaData& mt = *this;
-    mt = other;
-    return *this;
+	MetaData &mt = *this;
+	mt = other;
+	return *this;
 }

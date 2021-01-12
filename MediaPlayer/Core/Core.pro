@@ -20,6 +20,7 @@ SOURCES += \
         Controller/Core/abstractcontroller.cpp \
         Controller/Core/controllerlibrary.cpp \
         Controller/Core/controllermain.cpp \
+        Controller/Data/datajson.cpp \
         Controller/Data/dataxml.cpp \
         Controller/Data/interfacesaver.cpp \
         Controller/DataModel/librarydatamodel.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     Controller/Core/abstractcontroller.h \
     Controller/Core/controllerlibrary.h \
     Controller/Core/controllermain.h \
+    Controller/Data/datajson.h \
     Controller/Data/dataxml.h \
     Controller/Data/interfacesaver.h \
     Controller/DataModel/librarydatamodel.h \
