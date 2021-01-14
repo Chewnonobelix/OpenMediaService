@@ -18,4 +18,6 @@ public:
 	QString libraryView() const override;
 	void setLibrary(LibraryPointer) override;
 	void setMedia(MediaPointer) override;
+
+	MediaRole role() const override;
 };

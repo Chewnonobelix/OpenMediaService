@@ -11,12 +11,14 @@
 #include "../DataModel/librarydatamodel.h"
 #include "abstractcontroller.h"
 #include "controllerlibrary.h"
+#include <Controller/Plugins/PluginManager.hpp>
 
 class MEDIAPLAYERCORE_EXPORT ControllerMain : public AbstractController {
 	Q_OBJECT
 	Q_DISABLE_COPY(ControllerMain)
 private:
 	QPointer<ControllerLibrary> m_libraries;
+	PluginManager m_manager;
 
 	QQmlApplicationEngine &engine();
 

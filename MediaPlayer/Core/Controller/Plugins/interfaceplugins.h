@@ -17,6 +17,8 @@ public:
 	virtual QString libraryView() const = 0;
 	virtual void setLibrary(LibraryPointer) = 0;
 	virtual void setMedia(MediaPointer) = 0;
+
+	virtual MediaRole role() const = 0;
 };
 
 Q_DECLARE_INTERFACE(InterfacePlugins, "InterfacePlugins/1.0")

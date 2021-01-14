@@ -4,6 +4,7 @@ ControllerMain::ControllerMain() : AbstractController(), m_libraries() {
 	engine().addImportPath(QStringLiteral(QML_IMPORT_PATH));
 	qDebug() << QStringLiteral(QML_IMPORT_PATH) << "Wesh"
 					 << engine().importPathList();
+	m_manager.init();
 }
 
 void ControllerMain::exec() {
