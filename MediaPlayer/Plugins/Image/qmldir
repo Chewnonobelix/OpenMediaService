@@ -1,0 +1,3 @@
+module MediaPlayer.Image
+ImagePlaylist 1.0 qrc:/image/ImagePlaylist.qml
+plugin Image

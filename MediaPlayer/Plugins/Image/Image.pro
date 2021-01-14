@@ -13,3 +13,6 @@ HEADERS += \
 
 # Default rules for deployment.
 include(../global.pri)
+
+RESOURCES += \
+	image.qrc
