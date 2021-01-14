@@ -3,10 +3,12 @@
 void ControllerImage::exec() {}
 
 QString ControllerImage::playerView() const {
-	return "qrc:/image/ImagePlaylist.qml";
+	return "qrc:/image/ImagePlayer.qml";
 }
 
-QString ControllerImage::libraryView() const { return ""; }
+QString ControllerImage::libraryView() const {
+	return "qrc:/image/ImagePlaylist.qml";
+}
 
 void ControllerImage::setLibrary(LibraryPointer) {}
 

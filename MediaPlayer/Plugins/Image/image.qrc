@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/image">
         <file>ImagePlaylist.qml</file>
+        <file>ImagePlayer.qml</file>
     </qresource>
 </RCC>
