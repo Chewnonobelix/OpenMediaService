@@ -9,7 +9,6 @@ uri = MediaPlayer.Components
 QML_IMPORT_NAME = MediaPlayer.Components
 QML_IMPORT_MAJOR_VERSION = 1
 
-message($$uri)
 # Input
 SOURCES += \
         UxComponent_plugin.cpp
