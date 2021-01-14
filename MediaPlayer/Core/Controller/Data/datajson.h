@@ -4,9 +4,11 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#include <mediaplayercore_global.h>
+
 #include "interfacesaver.h"
 
-class DataJson : public InterfaceSaver {
+class MEDIAPLAYERCORE_EXPORT DataJson : public InterfaceSaver {
 	Q_OBJECT
 
 private:

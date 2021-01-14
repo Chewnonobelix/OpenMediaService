@@ -37,3 +37,15 @@ unix {
 		target.path = $$installPath
 		INSTALLS += target qmldir
 }
+
+INCLUDEPATH = $$PWD/../Core
+DEPENDPATH = $$OUT_PWD/../../Application
+LIBS = -L$$OUT_PWD/../../Application -lLibMediaPlayerCore
+
+INCLUDEPATH += $$PWD/../DesignLibrary/DesignPattern $$PWD/../ExpressionLibrary/LibExpression $$PWD/../UxComponent
+
+
+LIBS += -L$$OUT_PWD/../../DesignLibrary/DesignPattern/debug -lDesignPattern
+LIBS += -L$$OUT_PWD/../../ExpressionLibrary/LibExpression/debug -lLibExpression
+LIBS += -L$$OUT_PWD/../../Application/Ux -lUxComponents
+

@@ -4,13 +4,15 @@
 #include <QObject>
 #include <QQmlContext>
 
+#include <mediaplayercore_global.h>
+
 #include "../Data/datajson.h"
 #include "../Data/dataxml.h"
 #include "../DataModel/librarydatamodel.h"
 #include "abstractcontroller.h"
 #include "controllerlibrary.h"
 
-class ControllerMain : public AbstractController {
+class MEDIAPLAYERCORE_EXPORT ControllerMain : public AbstractController {
 	Q_OBJECT
 	Q_DISABLE_COPY(ControllerMain)
 private:

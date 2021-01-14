@@ -4,9 +4,11 @@
 
 #include <liveqmlengine.h>
 
+#include <mediaplayercore_global.h>
+
 #include "..\Data\interfacesaver.h"
 
-class AbstractController : public QObject {
+class MEDIAPLAYERCORE_EXPORT AbstractController : public QObject {
 	Q_OBJECT
 public:
 	AbstractController();

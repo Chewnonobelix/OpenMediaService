@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QSharedPointer>
 
+#include <mediaplayercore_global.h>
+
 #include "libraryprobe.h"
 #include "media.h"
 #include "metadata.h"
@@ -16,7 +18,7 @@ class Library;
 
 typedef QSharedPointer<Library> LibraryPointer;
 
-class Library : public QObject, public MetaData {
+class MEDIAPLAYERCORE_EXPORT Library : public QObject, public MetaData {
 	Q_OBJECT
 
 	Q_PROPERTY(QUuid id READ id CONSTANT)

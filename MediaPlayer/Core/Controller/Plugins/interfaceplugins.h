@@ -2,14 +2,16 @@
 
 #include <QObject>
 
+#include <mediaplayercore_global.h>
+
 #include <Model/library.h>
 #include <Model/media.h>
 
-class InterfacePlugins {
+class MEDIAPLAYERCORE_EXPORT InterfacePlugins {
 public:
 	InterfacePlugins() = default;
 	InterfacePlugins(const InterfacePlugins &) = default;
-	virtual ~InterfacePlugins();
+	virtual ~InterfacePlugins() = default;
 
 	virtual QString playerView() const = 0;
 	virtual QString libraryView() const = 0;

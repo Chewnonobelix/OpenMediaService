@@ -5,11 +5,13 @@
 #include <QDomElement>
 #include <QtCore/qglobal.h>
 
+#include <mediaplayercore_global.h>
+
 #include "../../Model/global.h"
 #include "../../Model/library.h"
 #include "interfacesaver.h"
 
-class DataXml : public InterfaceSaver {
+class MEDIAPLAYERCORE_EXPORT DataXml : public InterfaceSaver {
 	Q_OBJECT
 
 public:

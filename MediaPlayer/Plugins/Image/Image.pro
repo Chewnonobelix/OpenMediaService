@@ -2,10 +2,14 @@ DEFINES += IMAGE_LIBRARY
 TARGET = Image
 TARGET = $$qtLibraryTarget($$TARGET)
 NAME = Image
-SOURCES +=
+SOURCES += \
+	ControllerImage.cpp \
+	Image_plugin.cpp
 
 HEADERS += \
-    Image_global.hpp
+    ControllerImage.hpp \
+    Image_global.hpp \
+    Image_plugin.hpp
 
 # Default rules for deployment.
 include(../global.pri)

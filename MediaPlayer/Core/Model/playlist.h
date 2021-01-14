@@ -5,6 +5,8 @@
 #include <QUuid>
 #include <QVariant>
 
+#include <mediaplayercore_global.h>
+
 #include "global.h"
 #include "media.h"
 
@@ -12,7 +14,9 @@ class PlayList;
 
 typedef QSharedPointer<PlayList> PlaylistPointer;
 
-class PlayList : public QObject, public MetaData, private QList<MediaPointer> {
+class MEDIAPLAYERCORE_EXPORT PlayList : public QObject,
+																				public MetaData,
+																				private QList<MediaPointer> {
 	Q_OBJECT
 
 	Q_PROPERTY(QUuid id READ id CONSTANT)
