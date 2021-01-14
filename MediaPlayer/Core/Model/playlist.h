@@ -10,7 +10,7 @@
 
 class PlayList;
 
-typedef QSharedPointer<PlayList> PlayListPointer;
+typedef QSharedPointer<PlayList> PlaylistPointer;
 
 class PlayList : public QObject, public MetaData, private QList<MediaPointer> {
 	Q_OBJECT
@@ -22,6 +22,7 @@ class PlayList : public QObject, public MetaData, private QList<MediaPointer> {
 private:
 public:
 	PlayList() = default;
+	using MetaData::MetaData;
 	PlayList(const PlayList &);
 	~PlayList() = default;
 
@@ -29,6 +30,7 @@ public:
 
 	using QList<MediaPointer>::count;
 	using QList<MediaPointer>::isEmpty;
+	using QList<MediaPointer>::operator[];
 
 	QUuid id() const;
 	void setId(QUuid);
@@ -40,7 +42,7 @@ signals:
 	void countChanged();
 
 public slots:
-	Q_INVOKABLE void append(MediaPointer, int = -1);
+	Q_INVOKABLE virtual void append(MediaPointer, int = -1);
 	Q_INVOKABLE void remove(int);
 	Q_INVOKABLE MediaPointer at(int i) const;
 	Q_INVOKABLE void swap(int, int);

@@ -107,7 +107,7 @@ void LibraryTest::test_addMedias() {
 	QVERIFY(model1.medias().isEmpty());
 	QSignalSpy spy(&model1, SIGNAL(mediasChanged()));
 	qDebug() << media;
-	QCOMPARE(model1.addMedia(media), true);
+	QCOMPARE(model1.addNMedia(media), true);
 	QCOMPARE(spy.count(), 1);
 }
 

@@ -1,12 +1,14 @@
 #pragma once
 
+#include <QMap>
+#include <QObject>
+#include <QSharedPointer>
+
 #include "libraryprobe.h"
 #include "media.h"
 #include "metadata.h"
 #include "playlist.h"
-#include <QMap>
-#include <QObject>
-#include <QSharedPointer>
+#include "smartplaylist.h"
 
 using namespace MediaPlayerGlobal;
 
@@ -28,10 +30,12 @@ class Library : public QObject, public MetaData {
 	Q_PROPERTY(QStringList sourceDir READ sourceDir NOTIFY sourceDirChanged)
 	Q_PROPERTY(int mediaCount READ mediaCount NOTIFY mediasChanged)
 	Q_PROPERTY(LibraryProbe *probe READ probe CONSTANT)
-
+	Q_PROPERTY(int playlistCount READ playlistCount NOTIFY playlistCountChanged)
 private:
 	LibraryProbe m_probe;
 	QMap<MD5, MediaPointer> m_medias;
+	QMap<QUuid, SmartPlaylistPointer> m_smartPlaylist;
+	QMap<QUuid, PlaylistPointer> m_playlist;
 
 public:
 	Library();
@@ -60,14 +64,26 @@ public:
 	void setLastUpdate(QDateTime);
 	int mediaCount() const;
 	LibraryProbe *probe();
+	int playlistCount() const;
 
 public slots:
 	Q_INVOKABLE void scan();
-	Q_INVOKABLE bool addMedia(QString, MD5 = "");
+	Q_INVOKABLE bool addNMedia(QString, MD5 = "");
+	Q_INVOKABLE bool addMedia(MediaPointer);
 	Q_INVOKABLE bool removeMedia(QString);
 	Q_INVOKABLE QMap<MD5, MediaPointer> medias(MD5 = "") const;
+
 	Q_INVOKABLE bool addSourceDir(QString);
 	Q_INVOKABLE bool removeSourceDir(QString);
+
+	Q_INVOKABLE bool addSmartPlaylist(SmartPlaylistPointer);
+	Q_INVOKABLE bool removeSmartPlaylist(QString);
+	Q_INVOKABLE QMap<QUuid, SmartPlaylistPointer> smartPlaylist(QString = "");
+
+	Q_INVOKABLE bool addPlaylist(PlaylistPointer);
+	Q_INVOKABLE bool removePlaylist(QString);
+	Q_INVOKABLE QMap<QUuid, PlaylistPointer> playlist(QString = "");
+
 	void onProbedChanged();
 
 signals:
@@ -75,8 +91,9 @@ signals:
 	void isSharedChanged();
 	void lastProbedChanged();
 	void sourceDirChanged();
-	void mediasChanged();
+	void mediasChanged(MediaPointer = MediaPointer());
 	void lastUpdateChanged();
+	void playlistCountChanged();
 };
 
 Q_DECLARE_METATYPE(Library)

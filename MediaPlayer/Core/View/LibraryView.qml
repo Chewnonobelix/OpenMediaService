@@ -60,7 +60,7 @@ Window {
 			Layout.column: 0
 			Layout.row: 3
 			Layout.preferredHeight: root.height * 0.10
-			text: "Playlist count" + ": "
+			text: "Playlist count" + ": " + _libraries.currentLibrary.playlistCount
 		}
 
 		ToolButton {

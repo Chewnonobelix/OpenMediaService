@@ -1,48 +1,71 @@
 #include "library.h"
 
 Library::Library() {
-	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia,
+	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addNMedia,
 					Qt::QueuedConnection);
 	connect(&m_probe, &LibraryProbe::currentChanged, this,
 					&Library::onProbedChanged);
 }
 
 Library::Library(const Library &l) : QObject(nullptr), MetaData(l) {
-	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia,
+	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addNMedia,
 					Qt::QueuedConnection);
 	connect(&m_probe, &LibraryProbe::currentChanged, this,
 					&Library::onProbedChanged);
 }
 
 Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l) {
-	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia,
+	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addNMedia,
 					Qt::QueuedConnection);
 	connect(&m_probe, &LibraryProbe::currentChanged, this,
 					&Library::onProbedChanged);
+
 	auto dirs = l["sourceDir"].toArray();
 	auto ms = l["medias"].toArray();
+	auto smarts = l["smartPlaylist"].toArray();
+	auto plays = l["playlist"].toArray();
 
 	for (auto it : dirs)
 		addSourceDir(it.toString());
 
+	for (auto it : smarts) {
+		auto s = factory<SmartPlaylist>(it.toObject());
+		addSmartPlaylist(s);
+	}
+
+	for (auto it : plays) {
+		auto s = factory<PlayList>(it.toObject());
+		addPlaylist(s);
+	}
+
 	for (auto it : ms) {
 		auto m = factory<Media>(it.toObject());
-		m_medias[m->id()] = m;
+		addMedia(m);
 	}
 }
 
 Library::operator QJsonObject() const {
 	auto ret = MetaData::operator QJsonObject();
 
-	QJsonArray ms, sources;
-	for (auto it : m_medias)
-		ms << QJsonObject(*it);
+	QJsonArray ms, sources, smarts, plays;
+
+	auto appender = [](auto container, auto &list) {
+		for (auto it : container) {
+			list << QJsonObject(*it);
+		}
+	};
 
 	for (auto it : sourceDir())
 		sources << it;
 
+	appender(m_medias, ms);
+	appender(m_smartPlaylist, smarts);
+	appender(m_playlist, plays);
+
 	ret["medias"] = ms;
 	ret["sourceDir"] = sources;
+	ret["smartPlaylist"] = smarts;
+	ret["playlist"] = plays;
 
 	return ret;
 }
@@ -128,7 +151,13 @@ bool Library::removeSourceDir(QString source) {
 	;
 }
 
-bool Library::addMedia(QString path, MD5 md) {
+bool Library::addMedia(MediaPointer p) {
+	m_medias[p->id()] = p;
+	emit mediasChanged(p);
+	return true;
+}
+
+bool Library::addNMedia(QString path, MD5 md) {
 	if (md.isEmpty()) {
 		QFile f(path);
 		if (!f.open(QIODevice::ReadOnly))
@@ -167,7 +196,7 @@ bool Library::removeMedia(QString path) {
 		return false;
 
 	m_medias[md]->removePath(path);
-	emit mediasChanged();
+	emit mediasChanged(m_medias[md]);
 	return !m_medias[md]->paths().contains(path);
 }
 
@@ -202,4 +231,71 @@ void Library::onProbedChanged() {
 	setLastProbed(QDateTime::currentDateTime());
 	if (m_probe.current() == 100.0)
 		emit mediasChanged();
+}
+
+bool Library::addSmartPlaylist(SmartPlaylistPointer smart) {
+	if (smart->id().isNull())
+		smart->setId(QUuid::createUuid());
+
+	auto ret = m_smartPlaylist.contains(smart->id());
+	if (!ret) {
+		connect(this, &Library::mediasChanged, smart.data(),
+						&SmartPlaylist::onMediaChanged);
+		m_smartPlaylist[smart->id()] = smart;
+	}
+
+	emit playlistCountChanged();
+	return !ret;
+}
+
+bool Library::removeSmartPlaylist(QString id) {
+	auto ret = m_smartPlaylist.remove(QUuid::fromString(id)) > 0;
+	emit playlistCountChanged();
+	return ret;
+}
+
+QMap<QUuid, SmartPlaylistPointer> Library::smartPlaylist(QString id) {
+	QMap<QUuid, SmartPlaylistPointer> ret;
+
+	if (QUuid::fromString(id).isNull())
+		ret = m_smartPlaylist;
+	else
+		ret[QUuid::fromString(id)] = m_smartPlaylist[QUuid::fromString(id)];
+
+	return ret;
+}
+
+bool Library::addPlaylist(PlaylistPointer play) {
+	if (play->id().isNull())
+		play->setId(QUuid::createUuid());
+
+	auto ret = m_playlist.contains(play->id());
+	if (!ret) {
+		m_playlist[play->id()] = play;
+	}
+
+	emit playlistCountChanged();
+	return !ret;
+}
+
+bool Library::removePlaylist(QString id) {
+	auto ret = m_playlist.remove(QUuid::fromString(id)) > 0;
+	emit playlistCountChanged();
+	return ret;
+	;
+}
+
+QMap<QUuid, PlaylistPointer> Library::playlist(QString id) {
+	QMap<QUuid, PlaylistPointer> ret;
+
+	if (QUuid::fromString(id).isNull())
+		ret = m_playlist;
+	else
+		ret[QUuid::fromString(id)] = m_playlist[QUuid::fromString(id)];
+
+	return ret;
+}
+
+int Library::playlistCount() const {
+	return m_playlist.count() + m_smartPlaylist.count();
 }

@@ -22,6 +22,9 @@ bool DataJson::createLibrary(QString name, MediaPlayerGlobal::MediaRole role) {
 	l->setId(QUuid::createUuid());
 	l->setRole(role);
 	l->setName(name);
+	SmartPlaylistPointer all = factory<SmartPlaylist>();
+	all->setName("All");
+	l->addSmartPlaylist(all);
 
 	write(l);
 	emit librariesChanged();
