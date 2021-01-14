@@ -92,6 +92,27 @@ ApplicationWindow {
 	GridLayout {
 		anchors.fill: parent
 
+		Loader {
+			id: _plLoader
+			Connections {
+				target: _main
+
+				function onPlaylistDisplay(name) {
+					console.log("display", name)
+					_plLoader.source = name
+					_plLoader.active = true
+				}
+			}
+
+			Layout.preferredWidth: root.width * 0.20
+			Layout.fillHeight: true
+			Layout.row: 2
+			Layout.column: 0
+			Layout.rowSpan: 1
+			Layout.columnSpan: 2
+			active: false;
+		}
+
 		ListView {
 			Connections {
 				target: _librariesModel
@@ -103,7 +124,7 @@ ApplicationWindow {
 
 			id: libraryView
 			Layout.preferredWidth: root.width * 0.20
-			Layout.fillHeight: true
+			Layout.preferredHeight: root.height * 0.20
 			Layout.row: 1
 			Layout.column: 0
 			Layout.rowSpan: 1

@@ -27,4 +27,10 @@ public:
 	~ControllerMain() = default;
 
 	void exec();
+
+public slots:
+	void onLibraryChanged();
+
+signals:
+	void playlistDisplay(QString);
 };
