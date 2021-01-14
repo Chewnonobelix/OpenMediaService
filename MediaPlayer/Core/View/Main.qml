@@ -98,9 +98,8 @@ ApplicationWindow {
 				target: _main
 
 				function onPlaylistDisplay(name) {
-					console.log("display", name)
 					_plLoader.source = name
-					_plLoader.active = true
+					_plLoader.active = name !== ""
 				}
 			}
 
@@ -238,8 +237,18 @@ ApplicationWindow {
 			Layout.column: 2
 			Layout.rowSpan: 2
 
-			Rectangle {
-				color: "Yellow"
+			Loader {
+				id: _playerLoader
+				active: false
+
+				Connections {
+					target: _main
+
+					function onPlayerDisplay(name) {
+						_playerLoader.source = name
+						_playerLoader.active = name !== ""
+					}
+				}
 			}
 		}
 	}

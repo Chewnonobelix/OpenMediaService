@@ -33,4 +33,5 @@ public slots:
 
 signals:
 	void playlistDisplay(QString);
+	void playerDisplay(QString);
 };

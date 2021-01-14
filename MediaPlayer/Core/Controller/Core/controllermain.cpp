@@ -50,6 +50,10 @@ QQmlApplicationEngine &ControllerMain::engine() {
 void ControllerMain::onLibraryChanged() {
 	auto role = m_libraries->currentLibrary()->role();
 	if (m_manager[role]) {
-		emit playlistDisplay(m_manager[role]->playerView());
+		emit playlistDisplay(m_manager[role]->libraryView());
+		emit playerDisplay(m_manager[role]->playerView());
+	} else {
+		emit playlistDisplay("");
+		emit playerDisplay("");
 	}
 }
