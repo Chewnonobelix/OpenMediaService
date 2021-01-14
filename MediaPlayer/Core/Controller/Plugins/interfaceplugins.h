@@ -1,9 +1,20 @@
 #pragma once
 
+#include <QObject>
 
-class InterfacePlugins
-{
-	public:
-		InterfacePlugins();
+#include <Model/library.h>
+#include <Model/media.h>
+
+class InterfacePlugins {
+public:
+	InterfacePlugins() = default;
+	InterfacePlugins(const InterfacePlugins &) = default;
+	virtual ~InterfacePlugins();
+
+	virtual QString playerView() const = 0;
+	virtual QString libraryView() const = 0;
+	virtual void setLibrary(LibraryPointer) = 0;
+	virtual void setMedia(MediaPointer) = 0;
 };
 
+Q_DECLARE_INTERFACE(InterfacePlugins, "InterfacePlugins/1.0")
