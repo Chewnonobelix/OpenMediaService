@@ -11,6 +11,7 @@ void PluginManager::init() {
 		QSharedPointer<InterfacePlugins> p(obj);
 
 		m_plugins[p->role()] = p;
+		p->exec();
 	}
 }
 

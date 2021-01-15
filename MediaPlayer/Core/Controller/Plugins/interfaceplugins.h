@@ -19,6 +19,8 @@ public:
 	virtual void setMedia(MediaPointer) = 0;
 
 	virtual MediaRole role() const = 0;
+
+	virtual void exec() = 0;
 };
 
 Q_DECLARE_INTERFACE(InterfacePlugins, "InterfacePlugins/1.0")

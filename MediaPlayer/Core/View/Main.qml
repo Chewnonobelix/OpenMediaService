@@ -72,6 +72,10 @@ ApplicationWindow {
 		Drawer {
 			id: _drawPlay
 			edge: Qt.TopEdge
+
+			height: root.height * .60
+			width: root.width
+
 			Loader {
 				Connections {
 					target: _main

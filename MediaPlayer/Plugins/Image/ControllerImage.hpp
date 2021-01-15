@@ -3,6 +3,8 @@
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/Plugins/interfaceplugins.h>
 
+#include "ImageModel.hpp"
+
 class ControllerImage : public AbstractController, public InterfacePlugins {
 	Q_OBJECT
 	Q_INTERFACES(InterfacePlugins)
@@ -10,6 +12,7 @@ class ControllerImage : public AbstractController, public InterfacePlugins {
 
 private:
 	PlaylistPointer m_current;
+	ImageModel m_model;
 
 public:
 	ControllerImage() = default;
@@ -24,4 +27,10 @@ public:
 	void setMedia(MediaPointer) override;
 
 	MediaRole role() const override;
+
+public slots:
+	void onCurrentIndexChanged(int);
+
+signals:
+	void play(QString);
 };

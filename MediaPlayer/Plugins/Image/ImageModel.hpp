@@ -8,12 +8,17 @@
 class ImageModel : public QAbstractTableModel {
 	Q_OBJECT
 
+	Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY
+								 currentIndexChanged)
+
 private:
-	enum class ImageRole { PathRole = Qt::UserRole + 1, CountRole };
+	enum class ImageRole { PathRole = Qt::UserRole + 1, CountRole, DisplayRole };
 
 	PlaylistPointer m_playlist;
 
 	QQueue<MediaPointer> m_reading;
+
+	int m_currentIndex = -1;
 
 public:
 	ImageModel() = default;
@@ -21,6 +26,11 @@ public:
 	~ImageModel() = default;
 
 	void setPlaylist(PlaylistPointer);
+	int currentIndex() const;
+	void setCurrentIndex(int);
+
+signals:
+	void currentIndexChanged(int);
 
 public:
 	QVariant data(const QModelIndex &index, int role) const override;

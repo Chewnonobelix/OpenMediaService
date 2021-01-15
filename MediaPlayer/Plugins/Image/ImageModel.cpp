@@ -35,16 +35,24 @@ QVariant ImageModel::data(const QModelIndex &index, int role) const {
 }
 
 int ImageModel::rowCount(const QModelIndex &) const {
-	return m_playlist->count();
+	return m_playlist ? m_playlist->count() : 0;
 }
 
 int ImageModel::columnCount(const QModelIndex &) const { return 2; }
 
 QHash<int, QByteArray> ImageModel::roleNames() const {
 	static QHash<int, QByteArray> ret{{int(ImageRole::CountRole), "count"},
-																		{int(ImageRole::PathRole), "path"}};
+																		{int(ImageRole::PathRole), "path"},
+																		{int(ImageRole::DisplayRole), "display"}};
 
 	return ret;
 }
 
 void ImageModel::sort(int, Qt::SortOrder) {}
+
+void ImageModel::setCurrentIndex(int i) {
+	m_currentIndex = i;
+	emit currentIndexChanged(i);
+}
+
+int ImageModel::currentIndex() const { return m_currentIndex; }
