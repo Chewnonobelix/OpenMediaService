@@ -11,7 +11,6 @@ ApplicationWindow {
 
 	Component.onCompleted: {
 		show()
-		console.log(CoreModel.typeModel)
 	}
 
 	width: 600
@@ -92,16 +91,9 @@ ApplicationWindow {
 	GridLayout {
 		anchors.fill: parent
 
-		Loader {
-			id: _plLoader
-			Connections {
-				target: _main
-
-				function onPlaylistDisplay(name) {
-					_plLoader.source = name
-					_plLoader.active = name !== ""
-				}
-			}
+		ListView {
+			id: _playlist
+			model: _playlistModel
 
 			Layout.preferredWidth: root.width * 0.20
 			Layout.fillHeight: true
@@ -109,7 +101,14 @@ ApplicationWindow {
 			Layout.column: 0
 			Layout.rowSpan: 1
 			Layout.columnSpan: 2
-			active: false;
+
+			header: Label {
+				text: "Playlist: " + libraryView.currentItem.name
+			}
+
+			delegate: Label {
+				text: (smart ? "*" : "") + name
+			}
 		}
 
 		ListView {

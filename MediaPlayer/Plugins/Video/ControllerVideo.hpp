@@ -15,8 +15,8 @@ public:
 	void exec() override;
 
 	QString playerView() const override;
-	QString libraryView() const override;
-	void setLibrary(LibraryPointer) override;
+	QString playlistView() const override;
+	void setPlaylist(PlaylistPointer) override;
 	void setMedia(MediaPointer) override;
 
 	MediaRole role() const override;

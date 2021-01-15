@@ -4,10 +4,12 @@ TARGET = $$qtLibraryTarget($$TARGET)
 NAME = Image
 SOURCES += \
 	ControllerImage.cpp \
+	ImagePlayerModel.cpp \
 	Image_plugin.cpp
 
 HEADERS += \
     ControllerImage.hpp \
+    ImagePlayerModel.hpp \
     Image_global.hpp \
     Image_plugin.hpp
 

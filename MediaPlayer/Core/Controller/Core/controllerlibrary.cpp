@@ -4,6 +4,7 @@ ControllerLibrary::ControllerLibrary() {
 	auto *context = m_engine->qmlEngine().rootContext();
 	context->setContextProperty("_libraries", this);
 	context->setContextProperty("_librariesModel", &m_librariesModel);
+	context->setContextProperty("_playlistModel", &m_playlistModel);
 
 	connect(&m_librariesModel, &LibraryDataModel::currentModelChanged, this,
 					&ControllerLibrary::onCurrentModelChanged, Qt::UniqueConnection);
@@ -46,6 +47,9 @@ void ControllerLibrary::onCurrentModelChanged(LibraryPointer p) {
 	connect(m_currentLibrary.data(), &Library::mediasChanged, this,
 					&ControllerLibrary::onMediaChanged, Qt::UniqueConnection);
 	emit currentLibraryChanged();
+
+	m_playlistModel.setSmart(m_currentLibrary->smartPlaylist().values());
+	m_playlistModel.setNormal(m_currentLibrary->playlist().values());
 }
 
 void ControllerLibrary::onMediaChanged() {

@@ -2,7 +2,9 @@
 #include <QQmlContext>
 #include <QtCore/qglobal.h>
 
+#include "../DataModel/PlaylistModel.hpp"
 #include "../DataModel/librarydatamodel.h"
+
 #include "abstractcontroller.h"
 #include "liveqmlengine.h"
 
@@ -14,6 +16,7 @@ class ControllerLibrary : public AbstractController {
 private:
 	LibraryPointer m_currentLibrary;
 	LibraryDataModel m_librariesModel;
+	PlaylistModel m_playlistModel;
 
 public:
 	ControllerLibrary();

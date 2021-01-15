@@ -15,7 +15,6 @@ unix {
 
 DESTDIR += $$OUT_PWD/../../Application/Ux/MediaPlayer/$$NAME
 
-message($$DESTDIR)
 !equals(_PRO_FILE_PWD_, $$OUT_PWD) {
 		copy_qmldir.target = $$DESTDIR/qmldir
 		copy_qmldir.depends = $$_PRO_FILE_PWD_/qmldir

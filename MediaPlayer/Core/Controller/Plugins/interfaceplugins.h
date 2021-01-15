@@ -14,8 +14,8 @@ public:
 	virtual ~InterfacePlugins() = default;
 
 	virtual QString playerView() const = 0;
-	virtual QString libraryView() const = 0;
-	virtual void setLibrary(LibraryPointer) = 0;
+	virtual QString playlistView() const = 0;
+	virtual void setPlaylist(PlaylistPointer) = 0;
 	virtual void setMedia(MediaPointer) = 0;
 
 	virtual MediaRole role() const = 0;

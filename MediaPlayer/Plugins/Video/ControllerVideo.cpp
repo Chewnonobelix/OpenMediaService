@@ -6,11 +6,11 @@ QString ControllerVideo::playerView() const {
 	return "qrc:/video/VideoPlayer.qml";
 }
 
-QString ControllerVideo::libraryView() const {
+QString ControllerVideo::playlistView() const {
 	return "qrc:/video/VideoPlaylist.qml";
 }
 
-void ControllerVideo::setLibrary(LibraryPointer) {}
+void ControllerVideo::setPlaylist(PlaylistPointer) {}
 
 void ControllerVideo::setMedia(MediaPointer) {}
 
