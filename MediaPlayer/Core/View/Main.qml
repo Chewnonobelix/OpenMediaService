@@ -66,15 +66,20 @@ ApplicationWindow {
 		target: _libraries
 	}
 
+
 	GridLayout {
 		anchors.fill: parent
 
-		Drawer {
+		Rectangle {
 			id: _drawPlay
-			edge: Qt.TopEdge
 
-			height: root.height * .60
-			width: root.width
+			Layout.preferredHeight: open ? root.height * .40 : 0
+			Layout.fillWidth: root.width
+			Layout.row: 3
+			Layout.column: 0
+			Layout.columnSpan: 3
+
+			property bool open: _playlist.currentIndex !== -1
 
 			Loader {
 				Connections {
@@ -103,19 +108,26 @@ ApplicationWindow {
 			Layout.rowSpan: 1
 			Layout.columnSpan: 2
 
-			onCurrentIndexChanged:  {currentIndex !== -1 ? _drawPlay.open() : _drawPlay.close()
+			onCurrentIndexChanged:  {
 				_playlistModel.currentIndex = currentIndex
 			}
+
 			header: Label {
 				text: "Playlist: " + libraryView.currentItem.name
 			}
 
-			delegate: Label {
-				text: (smart ? "*" : "") + name
 
-				MouseArea {
+			delegate: Rectangle {
+				width: libraryView.width
+				height: libraryView.height * 0.10
+				color: ListView.isCurrentItem ? "lightblue" : "white"
+				Label {
 					anchors.fill: parent
-					onClicked: _playlist.currentIndex = _playlist.currentIndex === index ? -1 : index
+					text: (smart ? "*" : "") + name
+					MouseArea {
+						anchors.fill: parent
+						onClicked: _playlist.currentIndex =  _playlist.currentIndex === index ? -1 : index
+					}
 				}
 			}
 		}
@@ -141,6 +153,11 @@ ApplicationWindow {
 
 			onCurrentIndexChanged: {
 				_librariesModel.currentIndex = currentIndex
+
+				if(_playlist.currentIndex !== -1) {
+					_playlist.currentIndex = -1
+					_playlist.currentIndex = 0
+				}
 			}
 
 			headerPositioning: ListView.OverlayHeader
@@ -239,8 +256,8 @@ ApplicationWindow {
 			id: view
 			currentIndex: viewBar.currentIndex
 			Layout.fillWidth: true
-
-			Layout.preferredHeight: root.height * 0.80
+			Layout.fillHeight: true
+			//			Layout.preferredHeight: root.height * 0.80
 			Layout.row: 1
 			Layout.column: 2
 			Layout.rowSpan: 2

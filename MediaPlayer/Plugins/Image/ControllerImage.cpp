@@ -19,7 +19,6 @@ QString ControllerImage::playlistView() const {
 }
 
 void ControllerImage::setPlaylist(PlaylistPointer p) {
-	qDebug() << "Dsiplay " << p->name() << p->count();
 	m_current = p;
 	m_model.setPlaylist(p);
 }
