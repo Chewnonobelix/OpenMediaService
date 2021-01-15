@@ -39,4 +39,5 @@ signals:
 public slots:
 	void onCurrentModelChanged(LibraryPointer);
 	void onMediaChanged();
+	void onCurrentPlaylistChanged();
 };

@@ -7,6 +7,10 @@ class ControllerImage : public AbstractController, public InterfacePlugins {
 	Q_OBJECT
 	Q_INTERFACES(InterfacePlugins)
 	Q_PLUGIN_METADATA(IID "com.chewnonobelix.MediaPlayer.Image")
+
+private:
+	PlaylistPointer m_current;
+
 public:
 	ControllerImage() = default;
 	ControllerImage(const ControllerImage &) = default;

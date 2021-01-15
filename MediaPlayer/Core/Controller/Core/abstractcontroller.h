@@ -7,6 +7,7 @@
 #include <mediaplayercore_global.h>
 
 #include "..\Data\interfacesaver.h"
+#include <Controller/Plugins/PluginManager.hpp>
 
 class MEDIAPLAYERCORE_EXPORT AbstractController : public QObject {
 	Q_OBJECT
@@ -19,6 +20,8 @@ public:
 
 	static InterfaceSaver *db();
 	static void setDb(QString);
+	static PluginManager m_manager;
+
 signals:
 
 protected:

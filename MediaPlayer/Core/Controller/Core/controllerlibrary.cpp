@@ -8,6 +8,8 @@ ControllerLibrary::ControllerLibrary() {
 
 	connect(&m_librariesModel, &LibraryDataModel::currentModelChanged, this,
 					&ControllerLibrary::onCurrentModelChanged, Qt::UniqueConnection);
+	connect(&m_playlistModel, &PlaylistModel::currentIndexChanged, this,
+					&ControllerLibrary::onCurrentPlaylistChanged);
 }
 
 ControllerLibrary::ControllerLibrary(const ControllerLibrary &)
@@ -53,6 +55,11 @@ void ControllerLibrary::onCurrentModelChanged(LibraryPointer p) {
 }
 
 void ControllerLibrary::onMediaChanged() {
-	qDebug() << "Prout";
 	db()->updateLibrary(m_currentLibrary);
+}
+
+void ControllerLibrary::onCurrentPlaylistChanged() {
+	auto p = m_playlistModel.current();
+	if (!p.isNull() && m_manager[m_currentLibrary->role()])
+		m_manager[m_currentLibrary->role()]->setPlaylist(p);
 }

@@ -18,7 +18,6 @@ class MEDIAPLAYERCORE_EXPORT ControllerMain : public AbstractController {
 	Q_DISABLE_COPY(ControllerMain)
 private:
 	QPointer<ControllerLibrary> m_libraries;
-	PluginManager m_manager;
 
 	QQmlApplicationEngine &engine();
 

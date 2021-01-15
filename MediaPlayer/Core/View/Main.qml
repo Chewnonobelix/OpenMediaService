@@ -41,29 +41,7 @@ ApplicationWindow {
 			ComboBox {
 				id: libraryType
 
-				model: ListModel {
-					id: _typeModel
-					ListElement {
-							name: "Video"
-							role: MediaPlayer.MediaRole.Video
-					}
-					ListElement {
-							name: "Audio"
-							role: MediaPlayer.MediaRole.Audio
-					}
-					ListElement {
-							name: "Books"
-							role: MediaPlayer.MediaRole.Books
-					}
-					ListElement {
-							name: "Comics"
-							role: MediaPlayer.MediaRole.Comics
-					}
-					ListElement {
-							name: "Image"
-							role: MediaPlayer.MediaRole.Image
-					}
-			}
+				model: CoreModel.typeModel
 				textRole: "name"
 				valueRole: "role"
 			}
@@ -91,6 +69,25 @@ ApplicationWindow {
 	GridLayout {
 		anchors.fill: parent
 
+		Drawer {
+			id: _drawPlay
+			edge: Qt.TopEdge
+			Loader {
+				Connections {
+					target: _main
+
+					function onPlaylistDisplay(path) {
+						_playLoad.source = path
+						_playLoad.active = path !== ""
+					}
+				}
+
+				id: _playLoad
+				anchors.fill: parent
+				active: false
+			}
+		}
+
 		ListView {
 			id: _playlist
 			model: _playlistModel
@@ -102,12 +99,20 @@ ApplicationWindow {
 			Layout.rowSpan: 1
 			Layout.columnSpan: 2
 
+			onCurrentIndexChanged:  {currentIndex !== -1 ? _drawPlay.open() : _drawPlay.close()
+				_playlistModel.currentIndex = currentIndex
+			}
 			header: Label {
 				text: "Playlist: " + libraryView.currentItem.name
 			}
 
 			delegate: Label {
 				text: (smart ? "*" : "") + name
+
+				MouseArea {
+					anchors.fill: parent
+					onClicked: _playlist.currentIndex = _playlist.currentIndex === index ? -1 : index
+				}
 			}
 		}
 
