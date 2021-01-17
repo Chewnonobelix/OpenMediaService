@@ -112,23 +112,15 @@ ApplicationWindow {
 				_playlistModel.currentIndex = currentIndex
 			}
 
-			header: Label {
+			header: MediaLabel {
 				text: "Playlist: " + libraryView.currentItem.name
 			}
 
 
-			delegate: Rectangle {
+			delegate: MediaListItem {
 				width: libraryView.width
 				height: libraryView.height * 0.10
-				color: ListView.isCurrentItem ? "lightblue" : "white"
-				Label {
-					anchors.fill: parent
-					text: (smart ? "*" : "") + name
-					MouseArea {
-						anchors.fill: parent
-						onClicked: _playlist.currentIndex =  _playlist.currentIndex === index ? -1 : index
-					}
-				}
+				text: (smart ? "*" : "") + name
 			}
 		}
 
@@ -167,7 +159,7 @@ ApplicationWindow {
 				height: libraryView.height * 0.1
 				z: 3
 
-				Label {
+				MediaLabel {
 					text: qsTr("Libraries")
 				}
 			}
@@ -175,15 +167,15 @@ ApplicationWindow {
 			clip: true
 
 			section {
-				delegate: Label {
+				delegate: MediaLabel {
 					clip: true
 					text: section
 				}
 
 				property: "role"
 			}
-			delegate: Rectangle {
-				color: ListView.isCurrentItem ? "lightblue" : "white"
+
+			delegate: MediaListItem {
 				width: libraryView.width
 				height: libraryView.height * 0.10
 
@@ -193,20 +185,13 @@ ApplicationWindow {
 				required property string role
 				required property int index
 
-				Label {
-					anchors.fill: parent
-					text: name
-					horizontalAlignment: Qt.AlignHCenter
-					verticalAlignment: Qt.AlignVCenter
-				}
+				text: name
+//				horizontalAlignment: Qt.AlignHCenter
+//				verticalAlignment: Qt.AlignVCenter
 
-				MouseArea {
-					anchors.fill: parent
-					onClicked: {
-						libraryView.currentIndex = index
-					}
-
-					onDoubleClicked: _libraries.open()
+				onDoubleClicked:  {
+					ListView.view.currentIndex = index
+					_libraries.open()
 				}
 			}
 		}

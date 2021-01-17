@@ -5,6 +5,7 @@ import QtQuick.Window 2.15
 import Qt.labs.platform 1.1
 
 import MediaPlayer 1.0
+import MediaPlayer.Components 1.0
 
 Window {
 	id: root
@@ -18,7 +19,6 @@ Window {
 		target: _libraries.currentLibrary
 
 		function onSourceDirChanged() {
-			console.log("youpi", _libraries.currentLibrary.sourceDir)
 			sourceDir.model = _libraries.currentLibrary.sourceDir
 		}
 	}
@@ -37,26 +37,26 @@ Window {
 
 	GridLayout {
 		anchors.fill: parent
-		Label {
+		MediaLabel {
 			Layout.column: 0
 			Layout.row: 0
 			Layout.preferredHeight: root.height * 0.10
 			property string role: _libraries.currentLibrary.role.toString()
 			text: "Role" + ": " + role
 		}
-		Label {
+		MediaLabel {
 			Layout.column: 0
 			Layout.row: 1
 			Layout.preferredHeight: root.height * 0.10
 			text: "Last update" + ": " + _libraries.currentLibrary.lastUpdate
 		}
-		Label {
+		MediaLabel {
 			Layout.column: 0
 			Layout.row: 2
 			Layout.preferredHeight: root.height * 0.10
 			text: "Media count" + ": " + _libraries.currentLibrary.mediaCount
 		}
-		Label {
+		MediaLabel {
 			Layout.column: 0
 			Layout.row: 3
 			Layout.preferredHeight: root.height * 0.10
@@ -104,12 +104,10 @@ Window {
 			}
 
 			clip:true
-			delegate: ItemDelegate{
+			delegate: MediaListItem{
 				height: sourceDir.height * 0.10
 				width: sourceDir.width
 				text: modelData
-
-				onClicked: sourceDir.currentIndex = index
 			}
 		}
 	}

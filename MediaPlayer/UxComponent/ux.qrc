@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>MediaButton.qml</file>
+        <file>MediaLabel.qml</file>
+        <file>MediaHeader.qml</file>
+        <file>MediaListItem.qml</file>
+        <file>MediaBackground.qml</file>
     </qresource>
 </RCC>
