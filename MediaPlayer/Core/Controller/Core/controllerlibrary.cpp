@@ -46,12 +46,14 @@ void ControllerLibrary::removeSourceDir(QString path) {
 void ControllerLibrary::onCurrentModelChanged(LibraryPointer p) {
 	m_currentLibrary = p;
 
-	connect(m_currentLibrary.data(), &Library::mediasChanged, this,
-					&ControllerLibrary::onMediaChanged, Qt::UniqueConnection);
-	emit currentLibraryChanged();
+	if (p) {
+		connect(m_currentLibrary.data(), &Library::mediasChanged, this,
+						&ControllerLibrary::onMediaChanged, Qt::UniqueConnection);
+		emit currentLibraryChanged();
 
-	m_playlistModel.setSmart(m_currentLibrary->smartPlaylist().values());
-	m_playlistModel.setNormal(m_currentLibrary->playlist().values());
+		m_playlistModel.setSmart(m_currentLibrary->smartPlaylist().values());
+		m_playlistModel.setNormal(m_currentLibrary->playlist().values());
+	}
 }
 
 void ControllerLibrary::onMediaChanged() {
@@ -60,6 +62,6 @@ void ControllerLibrary::onMediaChanged() {
 
 void ControllerLibrary::onCurrentPlaylistChanged() {
 	auto p = m_playlistModel.current();
-	if (!p.isNull() && m_manager[m_currentLibrary->role()])
+	if (m_currentLibrary && !p.isNull() && m_manager[m_currentLibrary->role()])
 		m_manager[m_currentLibrary->role()]->setPlaylist(p);
 }
