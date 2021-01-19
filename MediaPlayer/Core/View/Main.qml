@@ -116,11 +116,51 @@ ApplicationWindow {
 				text: "Playlist: " + libraryView.currentItem.name
 			}
 
+			Menu {
+				id: menu1
+				MenuItem {
+					text: "Add smart playlist"
+					onClicked: _libraries.addPlaylist(true)
+				}
+				MenuItem {
+					text: "Add playlist"
+					onClicked: _libraries.addPlaylist()
+				}
+				MenuItem {
+					text: "Remove playlist"
+				}
+			}
+
+			Menu {
+				id: menu2
+				MenuItem {
+					text: "Add smart playlist"
+					onClicked: _libraries.addPlaylist(true)
+				}
+				MenuItem {
+					text: "Add playlist"
+					onClicked: _libraries.addPlaylist()
+				}
+			}
+
+			MouseArea {
+				anchors.fill: parent
+				acceptedButtons:  Qt.RightButton
+
+				onClicked: {
+					if(_playlist.indexAt(mouseX, mouseY) !== -1) {
+						menu1.popup(mouseX, mouseY)
+					}
+					else {
+						menu2.popup(mouseX, mouseY)
+					}
+				}
+			}
 
 			delegate: MediaListItem {
-				width: libraryView.width
-				height: libraryView.height * 0.10
-				text: (smart ? "*" : "") + name
+				width: _playlist.width
+				height: _playlist.height * 0.10
+				text: (smart ? "*" : "") + (name === "" ? id : name)
 			}
 		}
 
@@ -186,8 +226,6 @@ ApplicationWindow {
 				required property int index
 
 				text: name
-//				horizontalAlignment: Qt.AlignHCenter
-//				verticalAlignment: Qt.AlignVCenter
 
 				onDoubleClicked:  {
 					ListView.view.currentIndex = index

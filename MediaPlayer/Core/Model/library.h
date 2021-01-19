@@ -33,6 +33,7 @@ class MEDIAPLAYERCORE_EXPORT Library : public QObject, public MetaData {
 	Q_PROPERTY(int mediaCount READ mediaCount NOTIFY mediasChanged)
 	Q_PROPERTY(LibraryProbe *probe READ probe CONSTANT)
 	Q_PROPERTY(int playlistCount READ playlistCount NOTIFY playlistCountChanged)
+
 private:
 	LibraryProbe m_probe;
 	QMap<MD5, MediaPointer> m_medias;

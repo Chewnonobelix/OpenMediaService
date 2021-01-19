@@ -49,6 +49,8 @@ void ControllerLibrary::onCurrentModelChanged(LibraryPointer p) {
 	if (p) {
 		connect(m_currentLibrary.data(), &Library::mediasChanged, this,
 						&ControllerLibrary::onMediaChanged, Qt::UniqueConnection);
+		connect(m_currentLibrary.data(), &Library::playlistCountChanged, this,
+						&ControllerLibrary::onPlaylistChanged, Qt::UniqueConnection);
 		emit currentLibraryChanged();
 
 		m_playlistModel.setSmart(m_currentLibrary->smartPlaylist().values());
@@ -64,4 +66,23 @@ void ControllerLibrary::onCurrentPlaylistChanged() {
 	auto p = m_playlistModel.current();
 	if (m_currentLibrary && !p.isNull() && m_manager[m_currentLibrary->role()])
 		m_manager[m_currentLibrary->role()]->setPlaylist(p);
+}
+
+void ControllerLibrary::addPlaylist(bool smart) {
+	if (smart) {
+		auto pl = factory<SmartPlaylist>();
+		m_currentLibrary->addSmartPlaylist(pl);
+	} else {
+		auto pl = factory<PlayList>();
+		m_currentLibrary->addPlaylist(pl);
+	}
+}
+
+void ControllerLibrary::removePlaylist(QString id) {
+	m_currentLibrary->removePlaylist(id);
+	m_currentLibrary->removeSmartPlaylist(id);
+}
+
+void ControllerLibrary::onPlaylistChanged() {
+	db()->updateLibrary(m_currentLibrary);
 }
