@@ -12,7 +12,7 @@ class PlaylistModel : public QAbstractListModel {
 								 currentIndexChanged)
 
 private:
-	enum class PlaylistRole { NameRole = Qt::UserRole + 1, SmartRole };
+	enum class PlaylistRole { NameRole = Qt::UserRole + 1, SmartRole, IdRole };
 	QList<SmartPlaylistPointer> m_smarts;
 	QList<PlaylistPointer> m_normals;
 	int m_currentIndex = -1;
