@@ -17,13 +17,22 @@ TableView {
 		}
 	}
 
-	delegate: Label {
+	delegate:Rectangle {
+		color: row === _imageModel.currentIndex ? "lightblue" : "white"
+		clip: true
+
+		height: root.height * .10
+		width: root.width * .30
+
+		MediaLabel {
 			text: display
+			anchors.fill: parent
 
 			MouseArea {
 				anchors.fill: parent
 
 				onClicked: _imageModel.currentIndex = row
 			}
+		}
 	}
 }

@@ -15,6 +15,22 @@ Item {
 		}
 	}
 
+	MouseArea {
+		anchors.fill: parent
+		acceptedButtons: Qt.NoButton
+
+		onWheel: {
+			console.log(wheel.angleDelta)
+			if(wheel.angleDelta.y > 0) {
+				_imageModel.currentIndex = _imageModel.currentIndex-1
+			}
+			if(wheel.angleDelta.y < 0) {
+				_imageModel.currentIndex = _imageModel.currentIndex+1
+			}
+
+		}
+	}
+
 	Image {
 		id: _display
 		anchors.fill: parent
