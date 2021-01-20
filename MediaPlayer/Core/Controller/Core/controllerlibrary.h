@@ -2,7 +2,7 @@
 #include <QQmlContext>
 #include <QtCore/qglobal.h>
 
-#include "../DataModel/PlaylistModel.hpp"
+#include "../DataModel/playlistmodel.h"
 #include "../DataModel/librarydatamodel.h"
 
 #include "abstractcontroller.h"

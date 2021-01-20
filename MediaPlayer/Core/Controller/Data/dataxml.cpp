@@ -126,6 +126,5 @@ bool DataXml::updateLibrary(LibraryPointer lid) {
 	f.write(doc.toByteArray());
 	f.close();
 
-	emit librariesChanged();
 	return true;
 }

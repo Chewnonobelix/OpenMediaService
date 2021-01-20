@@ -3,7 +3,7 @@
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/Plugins/interfaceplugins.h>
 
-#include "ImageModel.hpp"
+#include "imagemodel.h"
 
 class ControllerImage : public AbstractController, public InterfacePlugins {
 	Q_OBJECT

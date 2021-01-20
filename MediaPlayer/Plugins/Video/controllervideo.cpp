@@ -1,4 +1,4 @@
-#include "ControllerVideo.hpp"
+#include "controllervideo.h"
 
 void ControllerVideo::exec() {}
 

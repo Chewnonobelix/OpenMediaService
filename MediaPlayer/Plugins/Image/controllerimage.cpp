@@ -1,4 +1,4 @@
-#include "ControllerImage.hpp"
+#include "controllerimage.h"
 
 void ControllerImage::exec() {
 	auto context = m_engine->qmlEngine().rootContext();

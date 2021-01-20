@@ -1,4 +1,4 @@
-#include "Image_plugin.hpp"
+#include "image_plugin.h"
 
 #include <qqml.h>
 

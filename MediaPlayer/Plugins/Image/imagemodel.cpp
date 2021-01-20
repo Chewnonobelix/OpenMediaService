@@ -1,4 +1,4 @@
-#include "ImageModel.hpp"
+#include "imagemodel.h"
 
 void ImageModel::setPlaylist(PlaylistPointer p) {
 	beginRemoveRows(QModelIndex(), 0, rowCount());

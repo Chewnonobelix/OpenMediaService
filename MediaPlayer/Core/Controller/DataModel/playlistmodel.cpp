@@ -1,4 +1,4 @@
-#include "PlaylistModel.hpp"
+#include "playlistmodel.h"
 
 PlaylistModel::PlaylistModel(const PlaylistModel &) : QAbstractListModel() {}
 

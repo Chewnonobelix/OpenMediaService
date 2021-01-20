@@ -7,7 +7,7 @@
 #include <mediaplayercore_global.h>
 
 #include "..\Data\interfacesaver.h"
-#include <Controller/Plugins/PluginManager.hpp>
+#include <Controller/Plugins/pluginmanager.h>
 
 class MEDIAPLAYERCORE_EXPORT AbstractController : public QObject {
 	Q_OBJECT
