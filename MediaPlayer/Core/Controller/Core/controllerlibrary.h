@@ -2,7 +2,9 @@
 #include <QQmlContext>
 #include <QtCore/qglobal.h>
 
+#include "../DataModel/PlaylistModel.hpp"
 #include "../DataModel/librarydatamodel.h"
+
 #include "abstractcontroller.h"
 #include "liveqmlengine.h"
 
@@ -14,6 +16,7 @@ class ControllerLibrary : public AbstractController {
 private:
 	LibraryPointer m_currentLibrary;
 	LibraryDataModel m_librariesModel;
+	PlaylistModel m_playlistModel;
 
 public:
 	ControllerLibrary();
@@ -29,6 +32,8 @@ public:
 
 	Q_INVOKABLE void addSourceDir(QString);
 	Q_INVOKABLE void removeSourceDir(QString);
+	Q_INVOKABLE void addPlaylist(bool = false);
+	Q_INVOKABLE void removePlaylist(QString);
 
 signals:
 	void currentLibraryChanged();
@@ -36,4 +41,6 @@ signals:
 public slots:
 	void onCurrentModelChanged(LibraryPointer);
 	void onMediaChanged();
+	void onCurrentPlaylistChanged();
+	void onPlaylistChanged();
 };

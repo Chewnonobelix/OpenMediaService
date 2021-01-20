@@ -1,10 +1,10 @@
-#include "Controller/Core/controllermain.h"
 #include <QGuiApplication>
 
-int main (int argc, char** argv)
-{
-    QGuiApplication app(argc, argv);
-    ControllerMain cm;
-    cm.exec();
-    return app.exec();
+#include "Controller/Core/controllermain.h"
+
+int main(int argc, char **argv) {
+	QGuiApplication app(argc, argv);
+	ControllerMain cm;
+	cm.exec();
+	return app.exec();
 }

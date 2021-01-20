@@ -11,7 +11,6 @@ ApplicationWindow {
 
 	Component.onCompleted: {
 		show()
-		console.log(CoreModel.typeModel)
 	}
 
 	width: 600
@@ -42,29 +41,7 @@ ApplicationWindow {
 			ComboBox {
 				id: libraryType
 
-				model: ListModel {
-					id: _typeModel
-					ListElement {
-							name: "Video"
-							role: MediaPlayer.MediaRole.Video
-					}
-					ListElement {
-							name: "Audio"
-							role: MediaPlayer.MediaRole.Audio
-					}
-					ListElement {
-							name: "Books"
-							role: MediaPlayer.MediaRole.Books
-					}
-					ListElement {
-							name: "Comics"
-							role: MediaPlayer.MediaRole.Comics
-					}
-					ListElement {
-							name: "Image"
-							role: MediaPlayer.MediaRole.Image
-					}
-			}
+				model: CoreModel.typeModel
 				textRole: "name"
 				valueRole: "role"
 			}
@@ -89,8 +66,103 @@ ApplicationWindow {
 		target: _libraries
 	}
 
+
 	GridLayout {
 		anchors.fill: parent
+
+		Rectangle {
+			id: _drawPlay
+
+			Layout.preferredHeight: open ? root.height * .40 : 0
+			Layout.fillWidth: root.width
+			Layout.row: 3
+			Layout.column: 0
+			Layout.columnSpan: 3
+
+			property bool open: _playlist.currentIndex !== -1
+
+			Loader {
+				Connections {
+					target: _main
+
+					function onPlaylistDisplay(path) {
+						_playLoad.source = path
+						_playLoad.active = path !== ""
+					}
+				}
+
+				id: _playLoad
+				anchors.fill: parent
+				active: false
+			}
+		}
+
+		ListView {
+			id: _playlist
+			model: _playlistModel
+
+			Layout.preferredWidth: root.width * 0.20
+			Layout.fillHeight: true
+			Layout.row: 2
+			Layout.column: 0
+			Layout.rowSpan: 1
+			Layout.columnSpan: 2
+
+			onCurrentIndexChanged:  {
+				_playlistModel.currentIndex = currentIndex
+			}
+
+			header: MediaLabel {
+				text: "Playlist: " + libraryView.currentItem.name
+			}
+
+			Menu {
+				id: menu1
+				MenuItem {
+					text: "Add smart playlist"
+					onClicked: _libraries.addPlaylist(true)
+				}
+				MenuItem {
+					text: "Add playlist"
+					onClicked: _libraries.addPlaylist()
+				}
+				MenuItem {
+					text: "Remove playlist"
+				}
+			}
+
+			Menu {
+				id: menu2
+				MenuItem {
+					text: "Add smart playlist"
+					onClicked: _libraries.addPlaylist(true)
+				}
+				MenuItem {
+					text: "Add playlist"
+					onClicked: _libraries.addPlaylist()
+				}
+			}
+
+			MouseArea {
+				anchors.fill: parent
+				acceptedButtons:  Qt.RightButton
+
+				onClicked: {
+					if(_playlist.indexAt(mouseX, mouseY) !== -1) {
+						menu1.popup(mouseX, mouseY)
+					}
+					else {
+						menu2.popup(mouseX, mouseY)
+					}
+				}
+			}
+
+			delegate: MediaListItem {
+				width: _playlist.width
+				height: _playlist.height * 0.10
+				text: (smart ? "*" : "") + (name === "" ? id : name)
+			}
+		}
 
 		ListView {
 			Connections {
@@ -103,7 +175,7 @@ ApplicationWindow {
 
 			id: libraryView
 			Layout.preferredWidth: root.width * 0.20
-			Layout.fillHeight: true
+			Layout.preferredHeight: root.height * 0.20
 			Layout.row: 1
 			Layout.column: 0
 			Layout.rowSpan: 1
@@ -113,6 +185,11 @@ ApplicationWindow {
 
 			onCurrentIndexChanged: {
 				_librariesModel.currentIndex = currentIndex
+
+				if(_playlist.currentIndex !== -1) {
+					_playlist.currentIndex = -1
+					_playlist.currentIndex = 0
+				}
 			}
 
 			headerPositioning: ListView.OverlayHeader
@@ -122,7 +199,7 @@ ApplicationWindow {
 				height: libraryView.height * 0.1
 				z: 3
 
-				Label {
+				MediaLabel {
 					text: qsTr("Libraries")
 				}
 			}
@@ -130,15 +207,15 @@ ApplicationWindow {
 			clip: true
 
 			section {
-				delegate: Label {
+				delegate: MediaLabel {
 					clip: true
 					text: section
 				}
 
 				property: "role"
 			}
-			delegate: Rectangle {
-				color: ListView.isCurrentItem ? "lightblue" : "white"
+
+			delegate: MediaListItem {
 				width: libraryView.width
 				height: libraryView.height * 0.10
 
@@ -148,20 +225,11 @@ ApplicationWindow {
 				required property string role
 				required property int index
 
-				Label {
-					anchors.fill: parent
-					text: name
-					horizontalAlignment: Qt.AlignHCenter
-					verticalAlignment: Qt.AlignVCenter
-				}
+				text: name
 
-				MouseArea {
-					anchors.fill: parent
-					onClicked: {
-						libraryView.currentIndex = index
-					}
-
-					onDoubleClicked: _libraries.open()
+				onDoubleClicked:  {
+					ListView.view.currentIndex = index
+					_libraries.open()
 				}
 			}
 		}
@@ -211,14 +279,24 @@ ApplicationWindow {
 			id: view
 			currentIndex: viewBar.currentIndex
 			Layout.fillWidth: true
-
-			Layout.preferredHeight: root.height * 0.80
+			Layout.fillHeight: true
+			//			Layout.preferredHeight: root.height * 0.80
 			Layout.row: 1
 			Layout.column: 2
 			Layout.rowSpan: 2
 
-			Rectangle {
-				color: "Yellow"
+			Loader {
+				id: _playerLoader
+				active: false
+
+				Connections {
+					target: _main
+
+					function onPlayerDisplay(name) {
+						_playerLoader.source = name
+						_playerLoader.active = name !== ""
+					}
+				}
 			}
 		}
 	}

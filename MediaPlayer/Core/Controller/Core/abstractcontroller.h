@@ -4,9 +4,12 @@
 
 #include <liveqmlengine.h>
 
-#include "..\Data\interfacesaver.h"
+#include <mediaplayercore_global.h>
 
-class AbstractController : public QObject {
+#include "..\Data\interfacesaver.h"
+#include <Controller/Plugins/PluginManager.hpp>
+
+class MEDIAPLAYERCORE_EXPORT AbstractController : public QObject {
 	Q_OBJECT
 public:
 	AbstractController();
@@ -17,6 +20,8 @@ public:
 
 	static InterfaceSaver *db();
 	static void setDb(QString);
+	static PluginManager m_manager;
+
 signals:
 
 protected:

@@ -1,21 +1,22 @@
-QT -= gui
-
-TEMPLATE = lib
 DEFINES += IMAGE_LIBRARY
-
-CONFIG += c++11
-
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-
-SOURCES +=
+TARGET = Image
+TARGET = $$qtLibraryTarget($$TARGET)
+NAME = Image
+SOURCES += \
+	ControllerImage.cpp \
+	ImageModel.cpp \
+	ImagePlayerModel.cpp \
+	Image_plugin.cpp
 
 HEADERS += \
-    Image_global.hpp
+    ControllerImage.hpp \
+    ImageModel.hpp \
+    ImagePlayerModel.hpp \
+    Image_global.hpp \
+    Image_plugin.hpp
 
 # Default rules for deployment.
-unix {
-    target.path = /usr/lib
-}
-!isEmpty(target.path): INSTALLS += target
+include(../global.pri)
+
+RESOURCES += \
+	image.qrc

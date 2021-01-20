@@ -1,0 +1,4 @@
+module MediaPlayer.Video
+VideoPlaylist 1.0 qrc:/video/VideoPlaylist.qml
+VideoPlayer 1.0 qrc:/video/VideoPlayer.qml
+plugin Video

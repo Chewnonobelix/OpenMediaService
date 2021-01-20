@@ -50,7 +50,9 @@ void LibraryProbe::probe() {
 
 					emit mediaFind(it.absoluteFilePath(), h);
 
+					m_mutex.lock();
 					m_paths << it.absoluteFilePath();
+					m_mutex.unlock();
 				}
 			}
 		}));
