@@ -14,9 +14,11 @@
 #include <QThread>
 #include <QTime>
 
+#include <mediaplayercore_global.h>
+
 #include "Model/global.h"
 
-class LibraryProbe : public QThread {
+class MEDIAPLAYERCORE_EXPORT LibraryProbe : public QThread {
 	Q_OBJECT
 
 	Q_PROPERTY(double current READ current NOTIFY currentChanged)

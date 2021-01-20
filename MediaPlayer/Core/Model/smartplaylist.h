@@ -6,7 +6,7 @@ class SmartPlaylist;
 
 typedef QSharedPointer<SmartPlaylist> SmartPlaylistPointer;
 
-class SmartPlaylist : public PlayList {
+class MEDIAPLAYERCORE_EXPORT SmartPlaylist : public PlayList {
 	Q_OBJECT
 
 private:

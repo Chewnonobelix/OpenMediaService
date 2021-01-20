@@ -4,6 +4,7 @@ ControllerMain::ControllerMain() : AbstractController(), m_libraries() {
 	engine().addImportPath(QStringLiteral(QML_IMPORT_PATH));
 	qDebug() << QStringLiteral(QML_IMPORT_PATH) << "Wesh"
 					 << engine().importPathList();
+	m_manager.init();
 }
 
 void ControllerMain::exec() {
@@ -35,9 +36,24 @@ void ControllerMain::exec() {
 	context->setContextProperty("_db", db());
 	m_libraries = new ControllerLibrary;
 	m_libraries->exec();
+
+	connect(m_libraries, &ControllerLibrary::currentLibraryChanged, this,
+					&ControllerMain::onLibraryChanged);
+
 	m_engine->createWindow(QUrl("/Main.qml"));
 }
 
 QQmlApplicationEngine &ControllerMain::engine() {
 	return m_engine->qmlEngine();
+}
+
+void ControllerMain::onLibraryChanged() {
+	auto role = m_libraries->currentLibrary()->role();
+	if (m_manager[role]) {
+		emit playlistDisplay(m_manager[role]->playlistView());
+		emit playerDisplay(m_manager[role]->playerView());
+	} else {
+		emit playlistDisplay("");
+		emit playerDisplay("");
+	}
 }

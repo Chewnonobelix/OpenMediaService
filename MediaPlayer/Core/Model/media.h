@@ -12,6 +12,8 @@
 #include <QString>
 #include <QVariant>
 
+#include <mediaplayercore_global.h>
+
 #include "designpattern.h"
 #include "global.h"
 #include "metadata.h"
@@ -22,7 +24,7 @@ class Media;
 
 typedef QSharedPointer<Media> MediaPointer;
 
-class Media : public QObject, public MetaData {
+class MEDIAPLAYERCORE_EXPORT Media : public QObject, public MetaData {
 	Q_OBJECT
 
 	Q_PROPERTY(MD5 id READ id CONSTANT)
@@ -81,6 +83,8 @@ signals:
 	void lastFinishChanged(QDateTime);
 	void isAvailableChanged(bool);
 	void lastProbedChanged(QDateTime);
+
+	void mediaChanged();
 };
 
 Q_DECLARE_METATYPE(Media)

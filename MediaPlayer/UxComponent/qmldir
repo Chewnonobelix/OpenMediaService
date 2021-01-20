@@ -1,4 +1,8 @@
 module MediaPlayer.Components
 MediaButton 1.0 qrc:/MediaButton.qml
+MediaLabel 1.0 qrc:/MediaLabel.qml
+MediaHeader 1.0 qrc:/MediaHeader.qml
+MediaListItem 1.0 qrc:/MediaListItem.qml
+MediaBackground 1.0 qrc:/MediaBackground.qml
 plugin UxComponents
 typeinfo plugin.qmltypes

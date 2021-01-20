@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QSharedPointer>
 
+#include <mediaplayercore_global.h>
+
 #include "libraryprobe.h"
 #include "media.h"
 #include "metadata.h"
@@ -16,7 +18,7 @@ class Library;
 
 typedef QSharedPointer<Library> LibraryPointer;
 
-class Library : public QObject, public MetaData {
+class MEDIAPLAYERCORE_EXPORT Library : public QObject, public MetaData {
 	Q_OBJECT
 
 	Q_PROPERTY(QUuid id READ id CONSTANT)
@@ -31,6 +33,7 @@ class Library : public QObject, public MetaData {
 	Q_PROPERTY(int mediaCount READ mediaCount NOTIFY mediasChanged)
 	Q_PROPERTY(LibraryProbe *probe READ probe CONSTANT)
 	Q_PROPERTY(int playlistCount READ playlistCount NOTIFY playlistCountChanged)
+
 private:
 	LibraryProbe m_probe;
 	QMap<MD5, MediaPointer> m_medias;
@@ -85,6 +88,7 @@ public slots:
 	Q_INVOKABLE QMap<QUuid, PlaylistPointer> playlist(QString = "");
 
 	void onProbedChanged();
+	void onMediaChanged();
 
 signals:
 	void nameChanged();

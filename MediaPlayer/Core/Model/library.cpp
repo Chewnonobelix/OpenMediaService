@@ -153,6 +153,7 @@ bool Library::removeSourceDir(QString source) {
 
 bool Library::addMedia(MediaPointer p) {
 	m_medias[p->id()] = p;
+	connect(p.data(), &Media::mediaChanged, this, &Library::onMediaChanged);
 	emit mediasChanged(p);
 	return true;
 }
@@ -298,4 +299,8 @@ QMap<QUuid, PlaylistPointer> Library::playlist(QString id) {
 
 int Library::playlistCount() const {
 	return m_playlist.count() + m_smartPlaylist.count();
+}
+
+void Library::onMediaChanged() {
+	emit mediasChanged();
 }

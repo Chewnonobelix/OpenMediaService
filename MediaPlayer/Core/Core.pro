@@ -5,7 +5,7 @@ CONFIG += c++17
 TEMPLATE = lib
 DEFINES += MEDIAPLAYERCORE_LIBRARY
 TARGET = LibMediaPlayerCore
-DLLDESTDIR = $$OUT_PWD/../Application/debug
+DLLDESTDIR = $$OUT_PWD/../Application/
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Refer to the documentation for the
@@ -23,7 +23,9 @@ SOURCES += \
         Controller/Data/datajson.cpp \
         Controller/Data/dataxml.cpp \
         Controller/Data/interfacesaver.cpp \
+        Controller/DataModel/PlaylistModel.cpp \
         Controller/DataModel/librarydatamodel.cpp \
+        Controller/Plugins/PluginManager.cpp \
         Controller/Plugins/interfaceplugins.cpp \
         Model/smartplaylist.cpp \
         Model\global.cpp \
@@ -54,7 +56,9 @@ HEADERS += \
     Controller/Data/datajson.h \
     Controller/Data/dataxml.h \
     Controller/Data/interfacesaver.h \
+    Controller/DataModel/PlaylistModel.hpp \
     Controller/DataModel/librarydatamodel.h \
+    Controller/Plugins/PluginManager.hpp \
     Controller/Plugins/interfaceplugins.h \
     Model/smartplaylist.h \
     Model\global.h \
@@ -72,4 +76,3 @@ LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
 LIBS += -L$$OUT_PWD/../ExpressionLibrary/LibExpression/debug -lLibExpression
 LIBS += -L$$OUT_PWD/../Application/Ux -lUxComponents
 
-message($$OUT_PWD)

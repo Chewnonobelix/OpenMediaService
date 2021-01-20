@@ -52,11 +52,13 @@ void Media::setPath(QString path) {
 
 	m_path << path;
 	emit isAvailableChanged(!m_path.isEmpty());
+	emit mediaChanged();
 }
 
 void Media::removePath(QString path) {
 	m_path.remove(path);
 	emit isAvailableChanged(!m_path.isEmpty());
+	emit mediaChanged();
 }
 
 int Media::count() const {
@@ -66,6 +68,7 @@ int Media::count() const {
 void Media::setCount(int count) {
 	setMetadata("count", count);
 	emit countChanged(count);
+	emit mediaChanged();
 }
 
 int Media::rating() const {
@@ -75,6 +78,7 @@ int Media::rating() const {
 void Media::setRating(int rate) {
 	setMetadata("rating", rate);
 	emit ratingChanged(rate);
+	emit mediaChanged();
 }
 
 QDate Media::added() const { return metaData<QDate>("added"); }
@@ -88,6 +92,7 @@ QDateTime Media::lastFinish() const {
 void Media::setLastFinish(QDateTime lastFinish) {
 	setMetadata("lastFinish", lastFinish);
 	emit lastFinishChanged(lastFinish);
+	emit mediaChanged();
 }
 
 QDateTime Media::lastProbed() const {
@@ -97,6 +102,7 @@ QDateTime Media::lastProbed() const {
 void Media::setLastProbed(QDateTime lastProbed) {
 	setMetadata("lastProbed", lastProbed);
 	emit lastProbedChanged(lastProbed);
+	emit mediaChanged();
 }
 
 double Media::currentRead() const { return metaData<double>("currentRead"); }
@@ -104,6 +110,7 @@ double Media::currentRead() const { return metaData<double>("currentRead"); }
 void Media::setCurrentRead(double currentRead) {
 	setMetadata("currentRead", currentRead);
 	emit currentReadChanged(currentRead);
+	emit mediaChanged();
 }
 
 MediaPointer Media::createMedia(MD5 id, QString path) {

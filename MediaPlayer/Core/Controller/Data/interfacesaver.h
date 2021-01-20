@@ -4,7 +4,7 @@
 
 #include "../../Model/library.h"
 
-class InterfaceSaver : public QObject {
+class MEDIAPLAYERCORE_EXPORT InterfaceSaver : public QObject {
 
 	Q_OBJECT
 
