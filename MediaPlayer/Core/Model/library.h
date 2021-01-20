@@ -88,6 +88,7 @@ public slots:
 	Q_INVOKABLE QMap<QUuid, PlaylistPointer> playlist(QString = "");
 
 	void onProbedChanged();
+	void onMediaChanged();
 
 signals:
 	void nameChanged();

@@ -44,7 +44,6 @@ bool DataJson::removeLibrary(QUuid id) {
 
 bool DataJson::updateLibrary(LibraryPointer l) {
 	write(l);
-	emit librariesChanged();
 	return true;
 }
 
@@ -62,8 +61,7 @@ LibraryPointer DataJson::open(QString path) const {
 void DataJson::write(LibraryPointer l) const {
 	QDir dir;
 	dir.mkdir("Library");
-	qDebug() << dir.cd("Library");
-	qDebug() << l->id();
+	dir.cd("Library");
 	QFile f("Library/" + l->id().toString() + ".json");
 	f.open(QIODevice::WriteOnly);
 	QJsonObject obj(*l);

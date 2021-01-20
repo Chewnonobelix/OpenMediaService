@@ -23,7 +23,10 @@ void ControllerImage::setPlaylist(PlaylistPointer p) {
 	m_model.setPlaylist(p);
 }
 
-void ControllerImage::setMedia(MediaPointer m) { emit play(m->path()); }
+void ControllerImage::setMedia(MediaPointer m) {
+	emit play(m->path());
+	m->setCount(m->count() + 1);
+}
 
 MediaRole ControllerImage::role() const { return MediaRole::Image; }
 

@@ -83,6 +83,8 @@ signals:
 	void lastFinishChanged(QDateTime);
 	void isAvailableChanged(bool);
 	void lastProbedChanged(QDateTime);
+
+	void mediaChanged();
 };
 
 Q_DECLARE_METATYPE(Media)

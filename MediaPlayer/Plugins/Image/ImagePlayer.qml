@@ -20,7 +20,6 @@ Item {
 		acceptedButtons: Qt.NoButton
 
 		onWheel: {
-			console.log(wheel.angleDelta)
 			if(wheel.angleDelta.y > 0) {
 				_imageModel.currentIndex = _imageModel.currentIndex-1
 			}
