@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QList>
+#include <QQueue>
+#include <QRandomGenerator>
 #include <QSharedPointer>
 #include <QUuid>
 #include <QVariant>
@@ -22,8 +24,12 @@ class MEDIAPLAYERCORE_EXPORT PlayList : public QObject,
 	Q_PROPERTY(QUuid id READ id CONSTANT)
 	Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
 	Q_PROPERTY(int count READ count NOTIFY countChanged)
+	Q_PROPERTY(
+			bool isShuffle READ isShuffle WRITE setShuffle NOTIFY isShuffleChanged)
 
 private:
+	QQueue<int> m_readOrder;
+
 public:
 	PlayList() = default;
 	using MetaData::MetaData;
@@ -40,10 +46,17 @@ public:
 	void setId(QUuid);
 	QString name() const;
 	void setName(QString);
+	bool isShuffle() const;
+	void setShuffle(bool);
+
+	Q_INVOKABLE void play(int = 0);
+	Q_INVOKABLE MediaPointer next();
 
 signals:
-	void nameChanged(QString);
+	void nameChanged();
 	void countChanged();
+	void isShuffleChanged();
+	void play(MediaPointer);
 
 public slots:
 	Q_INVOKABLE virtual void append(MediaPointer, int = -1);
