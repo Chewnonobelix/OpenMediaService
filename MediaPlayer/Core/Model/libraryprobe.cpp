@@ -9,6 +9,8 @@ void LibraryProbe::setRole(MediaPlayerGlobal::MediaRole role) { m_role = role; }
 void LibraryProbe::onMediaFind(QString, MD5) {
 	m_current++;
 	qDebug() << m_total << m_current << double(m_current) / m_total * 100;
+	setLastProbed(QDateTime::currentDateTime());
+
 	emit currentChanged();
 
 	emit isRunningChanged();
@@ -106,4 +108,11 @@ void LibraryProbe::probe() {
 
 		last->start();
 	}
+}
+
+QDateTime LibraryProbe::lastProbed() const { return m_lastProbed; }
+
+void LibraryProbe::setLastProbed(QDateTime lp) {
+	m_lastProbed = lp;
+	emit lastProbedChanged();
 }

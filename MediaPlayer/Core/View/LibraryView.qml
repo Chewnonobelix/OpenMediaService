@@ -46,12 +46,6 @@ Window {
 		}
 		MediaLabel {
 			Layout.column: 0
-			Layout.row: 1
-			Layout.preferredHeight: root.height * 0.10
-			text: "Last update" + ": " + _libraries.currentLibrary.lastUpdate
-		}
-		MediaLabel {
-			Layout.column: 0
 			Layout.row: 2
 			Layout.preferredHeight: root.height * 0.10
 			text: "Media count" + ": " + _libraries.currentLibrary.mediaCount
@@ -93,7 +87,7 @@ Window {
 			Layout.preferredHeight: root.height
 			Layout.preferredWidth: root.width * 0.75
 			header: Label{
-				text: "source directories (last probed: " + Qt.formatDateTime(_libraries.currentLibrary.lastProbed, "dd-MM-yyyy hh:mm:ss") + ")"
+				text: "source directories (last probed: " + Qt.formatDateTime(_libraries.currentLibrary.probe.lastProbed, "dd-MM-yyyy hh:mm:ss") + ")"
 			}
 
 			model: _libraries.currentLibrary.sourceDir

@@ -25,10 +25,6 @@ class MEDIAPLAYERCORE_EXPORT Library : public QObject, public MetaData {
 	Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
 	Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role CONSTANT)
 	Q_PROPERTY(bool isShared READ isShared WRITE setShared NOTIFY isSharedChanged)
-	Q_PROPERTY(QDateTime lastProbed READ lastProbed WRITE setLastProbed NOTIFY
-								 lastProbedChanged)
-	Q_PROPERTY(QDateTime lastUpdate READ lastUpdate WRITE setLastUpdate NOTIFY
-								 lastUpdateChanged)
 	Q_PROPERTY(QStringList sourceDir READ sourceDir NOTIFY sourceDirChanged)
 	Q_PROPERTY(int mediaCount READ mediaCount NOTIFY mediasChanged)
 	Q_PROPERTY(LibraryProbe *probe READ probe CONSTANT)
@@ -39,6 +35,8 @@ private:
 	QMap<MD5, MediaPointer> m_medias;
 	QMap<QUuid, SmartPlaylistPointer> m_smartPlaylist;
 	QMap<QUuid, PlaylistPointer> m_playlist;
+
+	void set();
 
 public:
 	Library();
@@ -60,21 +58,17 @@ public:
 	void setRole(MediaPlayerGlobal::MediaRole);
 	bool isShared() const;
 	void setShared(bool);
-	QDateTime lastProbed() const;
-	void setLastProbed(QDateTime);
 	Q_INVOKABLE QStringList sourceDir() const;
-	QDateTime lastUpdate() const;
-	void setLastUpdate(QDateTime);
 	int mediaCount() const;
 	LibraryProbe *probe();
 	int playlistCount() const;
 
 public slots:
 	Q_INVOKABLE void scan();
+
 	Q_INVOKABLE bool addNMedia(QString, MD5 = "");
 	Q_INVOKABLE bool addMedia(MediaPointer);
 	Q_INVOKABLE bool removeMedia(QString);
-	Q_INVOKABLE QMap<MD5, MediaPointer> medias(MD5 = "") const;
 
 	Q_INVOKABLE bool addSourceDir(QString);
 	Q_INVOKABLE bool removeSourceDir(QString);
@@ -93,11 +87,12 @@ public slots:
 signals:
 	void nameChanged();
 	void isSharedChanged();
-	void lastProbedChanged();
 	void sourceDirChanged();
 	void mediasChanged(MediaPointer = MediaPointer());
 	void lastUpdateChanged();
 	void playlistCountChanged();
+
+	void libraryChanged();
 };
 
 Q_DECLARE_METATYPE(Library)

@@ -31,9 +31,6 @@ private slots:
 	void test_addSourceDir();
 	void test_sourceDir();
 	void test_removeSourceDir();
-	void test_addMedias();
-	void test_medias();
-	void test_removeMedias();
 	void test_copy();
 };
 
@@ -74,11 +71,11 @@ void LibraryTest::test_isShared() {
 }
 
 void LibraryTest::test_lastProbed() {
-	QVERIFY(model1.lastProbed() != lastprobed);
-	QSignalSpy spy(&model1, SIGNAL(lastProbedChanged()));
-	model1.setLastProbed(lastprobed);
+	QVERIFY(model1.probe()->lastProbed() != lastprobed);
+	QSignalSpy spy(model1.probe(), SIGNAL(lastProbedChanged()));
+	model1.probe()->setLastProbed(lastprobed);
 	QCOMPARE(spy.count(), 1);
-	QCOMPARE(model1.lastProbed(), lastprobed);
+	QCOMPARE(model1.probe()->lastProbed(), lastprobed);
 }
 
 void LibraryTest::test_addSourceDir() {
@@ -101,23 +98,6 @@ void LibraryTest::test_copy() {
 	QVERIFY(model2.id() != id);
 	model2 = model1;
 	QCOMPARE(model2.id(), model1.id());
-}
-
-void LibraryTest::test_addMedias() {
-	QVERIFY(model1.medias().isEmpty());
-	QSignalSpy spy(&model1, SIGNAL(mediasChanged()));
-	qDebug() << media;
-	QCOMPARE(model1.addNMedia(media), true);
-	QCOMPARE(spy.count(), 1);
-}
-
-void LibraryTest::test_medias() { QCOMPARE(model1.medias().size(), 1); }
-
-void LibraryTest::test_removeMedias() {
-	QVERIFY(!model1.medias().isEmpty());
-	QSignalSpy spy(&model1, SIGNAL(mediasChanged()));
-	QCOMPARE(model1.removeMedia(media), true);
-	QCOMPARE(spy.count(), 1);
 }
 
 QTEST_APPLESS_MAIN(LibraryTest)
