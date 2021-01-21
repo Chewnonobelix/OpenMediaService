@@ -179,7 +179,6 @@ bool Library::addNMedia(QString path, MD5 md) {
 	else
 		return false;
 
-	qDebug() << "Wesh" << path;
 	return m_medias[md]->paths().contains(path);
 }
 
@@ -301,6 +300,4 @@ int Library::playlistCount() const {
 	return m_playlist.count() + m_smartPlaylist.count();
 }
 
-void Library::onMediaChanged() {
-	emit mediasChanged();
-}
+void Library::onMediaChanged() { emit mediasChanged(); }
