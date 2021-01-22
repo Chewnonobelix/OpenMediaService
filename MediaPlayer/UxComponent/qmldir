@@ -4,5 +4,12 @@ MediaLabel 1.0 qrc:/MediaLabel.qml
 MediaHeader 1.0 qrc:/MediaHeader.qml
 MediaListItem 1.0 qrc:/MediaListItem.qml
 MediaBackground 1.0 qrc:/MediaBackground.qml
+MediaCheckbox 1.0 qrc:/MediaCheckbox.qml
+MediaCombobox 1.0 qrc:/MediaCombobox.qml
+MediaList 1.0 qrc:/MediaList.qml
+MediaProgressBar 1.0 qrc:/MediaProgressBar.qml
+MediaRadioButton 1.0 qrc:/MediaRadioButton.qml
+MediaTextEdit 1.0 qrc:/MediaTextEdit.qml
+MediaWindow 1.0 qrc:/MediaWindow.qml
 plugin UxComponents
 typeinfo plugin.qmltypes
