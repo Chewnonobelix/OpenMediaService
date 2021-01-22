@@ -12,5 +12,6 @@
         <file>MediaTextEdit.qml</file>
         <file>MediaProgressBar.qml</file>
         <file>MediaRadioButton.qml</file>
+        <file>MediaTabButton.qml</file>
     </qresource>
 </RCC>

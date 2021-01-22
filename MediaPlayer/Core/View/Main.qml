@@ -9,6 +9,10 @@ import MediaPlayer.Components 1.0
 ApplicationWindow {
 	id: root
 
+	background: Rectangle {
+		color: "black"
+	}
+
 	Component.onCompleted: {
 		show()
 	}
@@ -69,7 +73,7 @@ ApplicationWindow {
 
 	GridLayout {
 		anchors.fill: parent
-
+		columnSpacing: 0
 		Rectangle {
 			id: _drawPlay
 
@@ -101,6 +105,7 @@ ApplicationWindow {
 			id: _playlist
 			model: _playlistModel
 
+			currentIndex: -1
 			Layout.preferredWidth: root.width * 0.20
 			Layout.fillHeight: true
 			Layout.row: 2
@@ -174,6 +179,7 @@ ApplicationWindow {
 			}
 
 			id: libraryView
+			currentIndex: -1
 			Layout.preferredWidth: root.width * 0.20
 			Layout.preferredHeight: root.height * 0.20
 			Layout.row: 1
@@ -239,6 +245,9 @@ ApplicationWindow {
 			Layout.column: 0
 			Layout.rowSpan: 1
 			Layout.columnSpan: 1
+			Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+			Layout.preferredWidth: root.width * .10
+			Layout.rightMargin: 0
 			text: qsTr("Add")
 
 			onClicked: addLibraryPop.open()
@@ -249,6 +258,9 @@ ApplicationWindow {
 			Layout.column: 1
 			Layout.rowSpan: 1
 			Layout.columnSpan: 1
+			Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+			Layout.preferredWidth: root.width * .10
+			Layout.leftMargin: 0
 			text: qsTr("Remove")
 
 			enabled: libraryView.currentIndex !== -1
@@ -267,10 +279,10 @@ ApplicationWindow {
 			Layout.row: 0
 			Layout.column: 2
 
-			TabButton {
+			MediaTabButton {
 				text: qsTr("View1")
 			}
-			TabButton {
+			MediaTabButton {
 				text: "+"
 			}
 		}
