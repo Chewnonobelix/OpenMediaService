@@ -19,6 +19,7 @@ public:
 	virtual void setMedia(MediaPointer) = 0;
 
 	virtual MediaRole role() const = 0;
+	virtual QStringList filters() const = 0;
 
 	virtual void exec() = 0;
 };

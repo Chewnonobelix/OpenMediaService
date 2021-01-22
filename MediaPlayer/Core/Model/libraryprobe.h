@@ -30,6 +30,8 @@ class MEDIAPLAYERCORE_EXPORT LibraryProbe : public QThread {
 
 private:
 	QSet<QString> m_paths;
+	QStringList m_filters;
+
 	QStringList m_sourceDir;
 	MediaPlayerGlobal::MediaRole m_role;
 	int m_total = 0, m_current = 0;
@@ -55,6 +57,9 @@ public:
 
 	double current() const;
 	bool isRunning() const;
+
+	bool isValid(QString path) const;
+	void setFilters(QStringList);
 
 signals:
 	void mediaFind(QString, MD5);

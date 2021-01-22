@@ -169,10 +169,10 @@ bool Library::addNMedia(QString path, MD5 md) {
 
 	if (m_medias.contains(md))
 		m_medias[md]->setPath(path);
-	else if (MediaPlayerGlobal::getRole(path) == role())
+	else {
 		m_medias[md] = Media::createMedia(md, path);
-	else
-		return false;
+		m_medias[md]->setRole(role());
+	}
 
 	connect(m_medias[md].data(), &Media::mediaChanged, this,
 					&Library::libraryChanged);

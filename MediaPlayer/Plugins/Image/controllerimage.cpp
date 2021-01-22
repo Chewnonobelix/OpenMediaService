@@ -33,3 +33,7 @@ MediaRole ControllerImage::role() const { return MediaRole::Image; }
 void ControllerImage::onCurrentIndexChanged(int i) {
 	setMedia((*m_current)[i]);
 }
+
+QStringList ControllerImage::filters() const {
+	return {"jpg", "jpeg", "bmp", "png"};
+}

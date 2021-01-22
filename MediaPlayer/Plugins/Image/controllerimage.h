@@ -27,6 +27,7 @@ public:
 	void setMedia(MediaPointer) override;
 
 	MediaRole role() const override;
+	QStringList filters() const override;
 
 public slots:
 	void onCurrentIndexChanged(int);

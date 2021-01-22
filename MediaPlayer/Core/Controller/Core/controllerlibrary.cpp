@@ -53,6 +53,7 @@ void ControllerLibrary::onCurrentModelChanged(LibraryPointer p) {
 						&ControllerLibrary::onPlaylistChanged, Qt::UniqueConnection);
 		emit currentLibraryChanged();
 
+		p->probe()->setFilters(m_manager[p->role()]->filters());
 		m_playlistModel.setSmart(m_currentLibrary->smartPlaylist().values());
 		m_playlistModel.setNormal(m_currentLibrary->playlist().values());
 	}
