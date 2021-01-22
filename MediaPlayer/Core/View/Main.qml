@@ -29,7 +29,7 @@ ApplicationWindow {
 			anchors.fill: parent
 			rows: 2
 
-			TextField {
+			MediaTextEdit {
 				id: libraryName
 				width: addLibraryPop.width* 0.40
 
@@ -38,7 +38,7 @@ ApplicationWindow {
 				}
 			}
 
-			ComboBox {
+			MediaCombobox {
 				id: libraryType
 
 				model: CoreModel.typeModel
@@ -97,7 +97,7 @@ ApplicationWindow {
 			}
 		}
 
-		ListView {
+		MediaList {
 			id: _playlist
 			model: _playlistModel
 
@@ -164,7 +164,7 @@ ApplicationWindow {
 			}
 		}
 
-		ListView {
+		MediaList {
 			Connections {
 				target: _librariesModel
 
