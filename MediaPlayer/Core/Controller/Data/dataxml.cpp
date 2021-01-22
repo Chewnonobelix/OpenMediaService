@@ -93,10 +93,10 @@ bool DataXml::createLibrary(QString name, MediaRole role) {
 	return !ret.isNull();
 }
 
-bool DataXml::removeLibrary(QUuid l) {
+bool DataXml::removeLibrary(QString l) {
 	QDir dir;
 	dir.cd("Library");
-	auto ret = dir.remove(l.toString() + ".xml");
+	auto ret = dir.remove(l + ".xml");
 
 	emit librariesChanged();
 

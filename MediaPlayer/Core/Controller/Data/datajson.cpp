@@ -32,11 +32,11 @@ bool DataJson::createLibrary(QString name, MediaPlayerGlobal::MediaRole role) {
 	return true;
 }
 
-bool DataJson::removeLibrary(QUuid id) {
+bool DataJson::removeLibrary(QString id) {
 	QDir dir;
 	dir.cd("Library");
 
-	auto ret = QFile::remove(id.toString() + ".json");
+	auto ret = QFile::remove("Library/" + id + ".json");
 	emit librariesChanged();
 
 	return ret;
