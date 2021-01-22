@@ -18,7 +18,7 @@ void ImageModel::setPlaylist(PlaylistPointer p) {
 	endInsertColumns();
 }
 
-QVariant ImageModel::data(const QModelIndex &index, int role) const {
+QVariant ImageModel::data(const QModelIndex &index, int) const {
 	if (index.row() >= rowCount() || index.column() >= columnCount() ||
 			index.row() < 0 || index.column() < 0)
 		return QVariant();
