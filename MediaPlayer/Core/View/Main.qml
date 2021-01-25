@@ -51,6 +51,8 @@ ApplicationWindow {
 			}
 
 			MediaButton {
+				Layout.preferredHeight: addLibraryPop.height * .95
+				Layout.preferredWidth: addLibraryPop.width * .19
 				enabled: libraryName.acceptableInput
 				text: "Add"
 				onClicked: {
@@ -58,6 +60,8 @@ ApplicationWindow {
 				}
 			}
 			MediaButton {
+				Layout.preferredHeight: addLibraryPop.height * .95
+				Layout.preferredWidth: addLibraryPop.width * .19
 				text: "Close"
 				onClicked: {
 					addLibraryPop.close()
@@ -73,31 +77,134 @@ ApplicationWindow {
 
 	GridLayout {
 		anchors.fill: parent
-		columnSpacing: 0
-		Rectangle {
-			id: _drawPlay
+		columnSpacing: root.width * 0.01
+		rowSpacing: root.height * 0.01
 
-			Layout.preferredHeight: open ? root.height * .40 : 0
-			Layout.fillWidth: root.width
-			Layout.row: 3
+		MediaButton {
+			Layout.row: 0
 			Layout.column: 0
-			Layout.columnSpan: 3
+			Layout.rowSpan: 1
+			Layout.columnSpan: 1
+			Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+			Layout.preferredWidth: root.width * .09
+			Layout.preferredHeight: root.height * .05
+			Layout.rightMargin: 0
+			text: qsTr("Add")
 
-			property bool open: _playlist.currentIndex !== -1
+			onClicked: addLibraryPop.open()
+		}
 
-			Loader {
-				Connections {
-					target: _main
+		MediaButton {
+			Layout.row: 0
+			Layout.column: 1
+			Layout.rowSpan: 1
+			Layout.columnSpan: 1
+			Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
+			Layout.preferredWidth: root.width * .09
+			Layout.preferredHeight: root.height * .05
+			Layout.leftMargin: 0
+			text: qsTr("Remove")
 
-					function onPlaylistDisplay(path) {
-						_playLoad.source = path
-						_playLoad.active = path !== ""
+			enabled: libraryView.currentIndex !== -1
+
+			onClicked: {
+				_db.removeLibrary(_libraries.currentLibrary.id)
+			}
+		}
+
+		MediaList {
+			Connections {
+				target: _librariesModel
+
+				function onCurrentIndexChanged() {
+					libraryView.currentIndex = libraryView.model.currentIndex
+				}
+			}
+
+			id: libraryView
+			currentIndex: -1
+			Layout.preferredWidth: root.width * 0.20
+			Layout.preferredHeight: root.height * 0.20
+			z:1
+			Layout.row: 1
+			Layout.column: 0
+			Layout.rowSpan: 1
+			Layout.columnSpan: 2
+			model: _librariesModel
+
+
+			onCurrentIndexChanged: {
+				_librariesModel.currentIndex = currentIndex
+
+				if(_playlist.currentIndex !== -1) {
+					_playlist.currentIndex = -1
+					_playlist.currentIndex = 0
+				}
+			}
+
+			headerPositioning: ListView.OverlayHeader
+			header: Rectangle {
+				id: librariesHeader
+				color: "lightgreen"
+				height: libraryView.height * 0.1
+				width: libraryView.width
+				z: 3
+
+				MediaLabel {
+					anchors.fill: parent
+					text: qsTr("Libraries")
+
+					color: "white"
+					verticalAlignment: Qt.AlignVCenter
+					horizontalAlignment: Qt.AlignHCenter
+					fontSizeMode: Text.Fit
+
+					background: Rectangle {
+						gradient: Gradient {
+							GradientStop {
+								color: "navy"
+								position: 0.0
+							}
+							GradientStop {
+								color: "darkslateblue"
+								position: 0.5
+							}
+							GradientStop {
+								color: "deepskyblue"
+								position: 1.0
+							}
+						}
 					}
 				}
+			}
 
-				id: _playLoad
-				anchors.fill: parent
-				active: false
+			clip: true
+
+			section {
+				delegate: MediaLabel {
+					clip: true
+					text: section
+				}
+
+				property: "role"
+			}
+
+			delegate: MediaListItem {
+				width: libraryView.width
+				height: libraryView.height * 0.10
+
+				clip: true
+
+				required property string name
+				required property string role
+				required property int index
+
+				text: name
+
+				onDoubleClicked:  {
+					ListView.view.currentIndex = index
+					_libraries.open()
+				}
 			}
 		}
 
@@ -169,107 +276,32 @@ ApplicationWindow {
 			}
 		}
 
-		MediaList {
-			Connections {
-				target: _librariesModel
+		Rectangle {
+			id: _drawPlay
 
-				function onCurrentIndexChanged() {
-					libraryView.currentIndex = libraryView.model.currentIndex
-				}
-			}
-
-			id: libraryView
-			currentIndex: -1
-			Layout.preferredWidth: root.width * 0.20
-			Layout.preferredHeight: root.height * 0.20
-			Layout.row: 1
+			Layout.preferredHeight: open ? root.height * .40 : 0
+			Layout.fillWidth: root.width
+			Layout.row: 3
 			Layout.column: 0
-			Layout.rowSpan: 1
-			Layout.columnSpan: 2
-			model: _librariesModel
+			Layout.columnSpan: 3
 
+			property bool open: _playlist.currentIndex !== -1
 
-			onCurrentIndexChanged: {
-				_librariesModel.currentIndex = currentIndex
+			Loader {
+				Connections {
+					target: _main
 
-				if(_playlist.currentIndex !== -1) {
-					_playlist.currentIndex = -1
-					_playlist.currentIndex = 0
-				}
-			}
-
-			headerPositioning: ListView.OverlayHeader
-			header: Rectangle {
-				id: librariesHeader
-				color: "lightgreen"
-				height: libraryView.height * 0.1
-				z: 3
-
-				MediaLabel {
-					text: qsTr("Libraries")
-				}
-			}
-
-			clip: true
-
-			section {
-				delegate: MediaLabel {
-					clip: true
-					text: section
+					function onPlaylistDisplay(path) {
+						_playLoad.source = path
+						_playLoad.active = path !== ""
+					}
 				}
 
-				property: "role"
-			}
-
-			delegate: MediaListItem {
-				width: libraryView.width
-				height: libraryView.height * 0.10
-
-				clip: true
-
-				required property string name
-				required property string role
-				required property int index
-
-				text: name
-
-				onDoubleClicked:  {
-					ListView.view.currentIndex = index
-					_libraries.open()
-				}
+				id: _playLoad
+				anchors.fill: parent
+				active: false
 			}
 		}
-
-		MediaButton {
-			Layout.row: 0
-			Layout.column: 0
-			Layout.rowSpan: 1
-			Layout.columnSpan: 1
-			Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
-			Layout.preferredWidth: root.width * .10
-			Layout.rightMargin: 0
-			text: qsTr("Add")
-
-			onClicked: addLibraryPop.open()
-		}
-
-		MediaButton {
-			Layout.row: 0
-			Layout.column: 1
-			Layout.rowSpan: 1
-			Layout.columnSpan: 1
-			Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
-			Layout.preferredWidth: root.width * .10
-			Layout.leftMargin: 0
-			text: qsTr("Remove")
-
-			enabled: libraryView.currentIndex !== -1
-
-			onClicked: {
-				_db.removeLibrary(_libraries.currentLibrary.id)
-			}
-		}
-
 
 		TabBar {
 			id: viewBar
