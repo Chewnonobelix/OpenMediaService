@@ -15,7 +15,6 @@ MediaWindow {
 	height: 600
 	//    property Library currentLibrary: _libraries.currentLibrary
 
-	color: "black"
 	Connections {
 		target: _libraries.currentLibrary
 

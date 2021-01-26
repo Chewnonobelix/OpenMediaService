@@ -13,5 +13,6 @@
         <file>MediaProgressBar.qml</file>
         <file>MediaRadioButton.qml</file>
         <file>MediaTabButton.qml</file>
+        <file>qtquickcontrols2.conf</file>
     </qresource>
 </RCC>

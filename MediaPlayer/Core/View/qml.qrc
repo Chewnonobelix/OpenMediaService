@@ -3,5 +3,6 @@
         <file>Main.qml</file>
         <file>CoreModel.qml</file>
         <file>LibraryView.qml</file>
+        <file>qtquickcontrols2.conf</file>
     </qresource>
 </RCC>

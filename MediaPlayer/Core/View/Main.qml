@@ -9,10 +9,6 @@ import MediaPlayer.Components 1.0
 ApplicationWindow {
 	id: root
 
-	background: Rectangle {
-		color: "black"
-	}
-
 	Component.onCompleted: {
 		show()
 	}
@@ -146,7 +142,6 @@ ApplicationWindow {
 			headerPositioning: ListView.OverlayHeader
 			header: Rectangle {
 				id: librariesHeader
-				color: "lightgreen"
 				height: libraryView.height * 0.1
 				width: libraryView.width
 				z: 3
