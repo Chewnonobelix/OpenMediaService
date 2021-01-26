@@ -213,8 +213,28 @@ ApplicationWindow {
 				_playlistModel.currentIndex = currentIndex
 			}
 
-			header: MediaLabel {
-				text: "Playlist: " + libraryView.currentIndex > -1 ? libraryView.currentItem.name : ""
+
+			headerPositioning: ListView.OverlayHeader
+			header: Rectangle {
+				height: _playlist.height * 0.05
+				width: _playlist.width
+				z:3
+				gradient: Gradient {
+					GradientStop {
+						color: "darkred"
+						position: 0.0
+					}
+					GradientStop {
+						color: "orangered"
+						position: 1.0
+					}
+				}
+
+				MediaLabel {
+					id: playlistHeader
+					anchors.fill: parent
+					text: "Playlist: " + (libraryView.currentIndex > -1 ? libraryView.currentItem.name : "")
+				}
 			}
 
 			Menu {
