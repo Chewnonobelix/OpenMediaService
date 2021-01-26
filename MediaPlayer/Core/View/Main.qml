@@ -150,11 +150,6 @@ ApplicationWindow {
 					anchors.fill: parent
 					text: qsTr("Libraries")
 
-					color: "white"
-					verticalAlignment: Qt.AlignVCenter
-					horizontalAlignment: Qt.AlignHCenter
-					fontSizeMode: Text.Fit
-
 					background: Rectangle {
 						gradient: Gradient {
 							GradientStop {
