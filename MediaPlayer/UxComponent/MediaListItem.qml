@@ -2,13 +2,26 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 ItemDelegate {
+	id: root
+
 	function isCurrentIndex() {
 		return ListView.view.currentIndex === index
 	}
 
+	property bool lock: false
+
 	onClicked: {
 		ListView.view.currentIndex = isCurrentIndex() ? -1 : index
 	}
+
+	onDoubleClicked: {
+		if(!lock) {
+			console.log("Edit")
+		}
+	}
+
+
+
 
 	background: Rectangle {
 		property Gradient selected: Gradient {
