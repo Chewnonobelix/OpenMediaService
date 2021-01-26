@@ -15,6 +15,7 @@ MediaWindow {
 	height: 600
 	//    property Library currentLibrary: _libraries.currentLibrary
 
+	color: "black"
 	Connections {
 		target: _libraries.currentLibrary
 
@@ -64,6 +65,9 @@ MediaWindow {
 			Layout.column: 1
 			text: "+"
 			onClicked: sourceSelecter.open()
+
+			Layout.preferredHeight: root.height * 0.10
+			Layout.preferredWidth: root.width * 0.10
 		}
 
 		MediaButton {
@@ -72,6 +76,9 @@ MediaWindow {
 			text: "-"
 			enabled: sourceDir.currentIndex > -1
 			onClicked: _libraries.removeSourceDir(sourceDir.currentText)
+
+			Layout.preferredHeight: root.height * 0.10
+			Layout.preferredWidth: root.width * 0.10
 		}
 
 		MediaButton {
@@ -80,6 +87,9 @@ MediaWindow {
 			text: "Scan" + " (" + _libraries.currentLibrary.probe.current + "%)"
 			enabled: ! _libraries.currentLibrary.probe.isRunning
 			onClicked: _libraries.currentLibrary.scan()
+
+			Layout.preferredHeight: root.height * 0.10
+			Layout.preferredWidth: root.width * 0.10
 		}
 
 		MediaList {
@@ -100,7 +110,6 @@ MediaWindow {
 				color: "lightblue"
 			}
 
-			clip:true
 			delegate: MediaListItem{
 				height: sourceDir.height * 0.10
 				width: sourceDir.width

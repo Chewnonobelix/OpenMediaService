@@ -121,11 +121,12 @@ ApplicationWindow {
 				}
 			}
 
+
 			id: libraryView
 			currentIndex: -1
 			Layout.preferredWidth: root.width * 0.20
 			Layout.preferredHeight: root.height * 0.20
-			z:1
+
 			Layout.row: 1
 			Layout.column: 0
 			Layout.rowSpan: 1
@@ -178,8 +179,6 @@ ApplicationWindow {
 				}
 			}
 
-			clip: true
-
 			section {
 				delegate: MediaLabel {
 					clip: true
@@ -225,7 +224,7 @@ ApplicationWindow {
 			}
 
 			header: MediaLabel {
-				text: "Playlist: " + libraryView.currentItem.name
+				text: "Playlist: " + libraryView.currentIndex > -1 ? libraryView.currentItem.name : ""
 			}
 
 			Menu {
