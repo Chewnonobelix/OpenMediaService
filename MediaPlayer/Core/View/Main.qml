@@ -182,6 +182,7 @@ ApplicationWindow {
 				width: libraryView.width
 				height: libraryView.height * 0.10
 
+				lock: true
 				clip: true
 
 				required property string name
@@ -282,19 +283,17 @@ ApplicationWindow {
 				width: _playlist.width
 				height: _playlist.height * 0.10
 				text: (smart ? "*" : "") + (name === "" ? id : name)
+
+				onDoubleClicked: _drawPlay.open()
 			}
 		}
 
-		Rectangle {
+		Drawer {
 			id: _drawPlay
 
-			Layout.preferredHeight: open ? root.height * .40 : 0
-			Layout.fillWidth: root.width
-			Layout.row: 3
-			Layout.column: 0
-			Layout.columnSpan: 3
-
-			property bool open: _playlist.currentIndex !== -1
+			edge: Qt.BottomEdge
+			height: root.height * .40
+			width: root.width
 
 			Loader {
 				Connections {
