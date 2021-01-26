@@ -1,8 +1,11 @@
 import QtQuick 2.15
+import QtQuick.Controls.Material 2.12
 
 Rectangle {
 	id: root
-	color: Qt.darker("dimgrey", 3.0)
+
+	color: "#404040"
+
 	Rectangle {
 		gradient: Gradient {
 			GradientStop {
