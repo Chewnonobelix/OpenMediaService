@@ -11,6 +11,6 @@ ItemDelegate {
 	}
 
 	background: Rectangle {
-		color: isCurrentIndex() ? "lightblue" : "white"
+		color: isCurrentIndex() ? "lightblue" : "transparent"
 	}
 }
