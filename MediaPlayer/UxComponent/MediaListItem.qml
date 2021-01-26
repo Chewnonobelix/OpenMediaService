@@ -11,6 +11,39 @@ ItemDelegate {
 	}
 
 	background: Rectangle {
-		color: isCurrentIndex() ? "lightblue" : "transparent"
+		property Gradient selected: Gradient {
+			GradientStop {
+				color: "black"
+				position: 0.0
+			}
+
+			GradientStop {
+				color: "darkblue"
+				position: 0.40
+			}
+
+			GradientStop {
+				color: "aqua"
+				position: 0.5
+			}
+
+			GradientStop {
+				color: "darkblue"
+				position: 0.60
+			}
+
+			GradientStop {
+				color: "black"
+				position: 1.0
+			}
+		}
+
+		property Gradient unselected: Gradient {
+			GradientStop {
+				color: "transparent"
+			}
+		}
+
+		gradient: isCurrentIndex() ? selected : unselected
 	}
 }
