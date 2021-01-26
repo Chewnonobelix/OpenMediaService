@@ -18,7 +18,7 @@ TableView {
 	}
 
 	delegate:Rectangle {
-		color: row === _imageModel.currentIndex ? "lightblue" : "white"
+		color: row === _imageModel.currentIndex ? "lightblue" : "#303030"
 		clip: true
 
 		height: root.height * .10
@@ -30,7 +30,6 @@ TableView {
 
 			MouseArea {
 				anchors.fill: parent
-
 				onClicked: _imageModel.currentIndex = row
 			}
 		}
