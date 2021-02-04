@@ -5,8 +5,8 @@ void ControllerImage::exec() {
 	context->setContextProperty("_imageModel", &m_model);
 	context->setContextProperty("_image", this);
 
-	connect(&m_model, &ImageModel::currentIndexChanged, this,
-					&ControllerImage::onCurrentIndexChanged);
+	// connect(&m_model, &ImageModel::currentIndexChanged, this,
+	//																				&ControllerImage::onCurrentIndexChanged);
 }
 
 QString ControllerImage::playerView() const {

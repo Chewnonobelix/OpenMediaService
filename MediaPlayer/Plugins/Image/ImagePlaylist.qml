@@ -3,35 +3,85 @@ import QtQuick.Controls 2.15
 
 import MediaPlayer.Components 1.0
 
-TableView {
-	id: root
-	model: _imageModel
+Frame {
+	Connections {
+		target: _imageModel
 
-	HorizontalHeaderView {
-		width: root.width
-		height: root.height * .20
-		model: ["Path", "Count"]
-
-		delegate: Label {
-			text: modelData
+		function onSizeChanged() {
+			_rep.model = _imageModel.size
 		}
 	}
 
-	delegate:Rectangle {
-		color: row === _imageModel.currentIndex ? "lightblue" : "#303030"
-		clip: true
+	property string path
 
-		height: root.height * .10
-		width: root.width * .30
+	Row {
+		Repeater {
+			id: _rep
 
-		MediaLabel {
-			text: display
-			anchors.fill: parent
+			Tumbler {
+				id: _tumb
 
-			MouseArea {
-				anchors.fill: parent
-				onClicked: _imageModel.currentIndex = row
+				Connections {
+					target: _imageModel
+
+					function onIndexesChanged(index, list) {
+						if(modelData === index) {
+							_tumb.model = list
+						}
+					}
+
+					function onCurrentIndexChanged(i, j) {
+						if(modelData === i) {
+							_tumb.currentIndex = j
+						}
+					}
+				}
+
+				model: _imageModel.modelAt(modelData)
+
+//				property string currentModel: model[currentIndex]
+
+				onCurrentIndexChanged: {
+					_imageModel.setIndexes(modelData, currentIndex)
+				}
 			}
+		}
+
+		Tumbler {
+
 		}
 	}
 }
+
+//TableView {
+//	id: root
+//	model: _imageModel
+
+//	HorizontalHeaderView {
+//		width: root.width
+//		height: root.height * .20
+//		model: ["Path", "Count"]
+
+//		delegate: Label {
+//			text: modelData
+//		}
+//	}
+
+//	delegate:Rectangle {
+//		color: row === _imageModel.currentIndex ? "lightblue" : "#303030"
+//		clip: true
+
+//		height: root.height * .10
+//		width: root.width * .30
+
+//		MediaLabel {
+//			text: display
+//			anchors.fill: parent
+
+//			MouseArea {
+//				anchors.fill: parent
+//				onClicked: _imageModel.currentIndex = row
+//			}
+//		}
+//	}
+//}

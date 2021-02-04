@@ -4,32 +4,42 @@ void ImageModel::setPlaylist(PlaylistPointer p) {
 	beginRemoveRows(QModelIndex(), 0, rowCount());
 	removeRows(0, rowCount());
 	endRemoveRows();
-	beginRemoveColumns(QModelIndex(), 0, columnCount());
-	removeColumns(0, columnCount());
-	endRemoveColumns();
 
 	m_playlist = p;
 
 	beginInsertRows(QModelIndex(), 0, rowCount());
 	insertRows(0, rowCount());
 	endInsertRows();
-	beginInsertColumns(QModelIndex(), 0, columnCount());
-	insertColumns(0, columnCount());
-	endInsertColumns();
+
+	m_model.clear();
+	QTime timer = QTime::currentTime();
+	for (auto it = 0; it < p->count(); it++) {
+		auto path = (*p)[it]->path();
+		auto list = path.split('/');
+		if (m_model.size() < list.size() - 1)
+			m_model.resize(list.size() - 1, {{"All", {"*"}}});
+
+		for (auto it2 = 0; it2 < list.size() - 1; it2++) {
+			m_model[it2].insert(list[it2], path);
+		}
+	}
+
+	qDebug() << "Elapsed" << timer.msecsTo(QTime::currentTime()) << p->count();
+	m_indexes.resize(m_model.size(), 0);
+
+	emit sizeChanged();
+
+	for (auto it = 0; it < m_model.size(); it++) {
+		setIndexes(it, m_model[it].uniqueKeys().indexOf("All"));
+	}
+
+	for (auto it = 0; it < m_indexes.size(); it++)
+		emit currentIndexChanged(it, m_indexes[it]);
 }
 
 QVariant ImageModel::data(const QModelIndex &index, int) const {
-	if (index.row() >= rowCount() || index.column() >= columnCount() ||
-			index.row() < 0 || index.column() < 0)
+	if (index.row() >= rowCount() || index.row() < 0)
 		return QVariant();
-
-	int row = index.row(), column = index.column();
-	switch (column) {
-	case 0:
-		return (*m_playlist)[row]->paths().first();
-	case 1:
-		return (*m_playlist)[row]->count();
-	}
 
 	return QVariant();
 }
@@ -37,8 +47,6 @@ QVariant ImageModel::data(const QModelIndex &index, int) const {
 int ImageModel::rowCount(const QModelIndex &) const {
 	return m_playlist ? m_playlist->count() : 0;
 }
-
-int ImageModel::columnCount(const QModelIndex &) const { return 2; }
 
 QHash<int, QByteArray> ImageModel::roleNames() const {
 	static QHash<int, QByteArray> ret{{int(ImageRole::CountRole), "count"},
@@ -50,9 +58,17 @@ QHash<int, QByteArray> ImageModel::roleNames() const {
 
 void ImageModel::sort(int, Qt::SortOrder) {}
 
-void ImageModel::setCurrentIndex(int i) {
-	m_currentIndex = i;
-	emit currentIndexChanged(i);
+int ImageModel::size() const { return m_model.size(); }
+
+void ImageModel::modelAt(int index) {
+	auto m = m_model[index].uniqueKeys();
+
+	emit indexesChanged(index, m);
 }
 
-int ImageModel::currentIndex() const { return m_currentIndex; }
+void ImageModel::setIndexes(int t, int i) {
+	m_indexes[t] = i;
+
+	for (auto it = t + 1; it < m_model.size(); it++)
+		modelAt(it);
+}

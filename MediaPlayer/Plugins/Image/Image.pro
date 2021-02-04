@@ -5,15 +5,13 @@ NAME = Image
 SOURCES += \
 	controllerimage.cpp \
 	image_plugin.cpp \
-	imagemodel.cpp \
-	imageplayerodel.cpp
+	imagemodel.cpp
 
 HEADERS += \
     controllerimage.h \
     image_global.h \
     image_plugin.h \
-    imagemodel.h \
-    imageplayermodel.h
+    imagemodel.h
 
 # Default rules for deployment.
 include(../global.pri)
