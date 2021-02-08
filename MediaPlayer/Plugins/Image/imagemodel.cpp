@@ -29,6 +29,7 @@ void ImageModel::setPlaylist(PlaylistPointer p) {
 
 	emit sizeChanged();
 
+	modelAt(0);
 	for (auto it = 0; it < m_model.size(); it++) {
 		setIndexes(it, m_model[it].uniqueKeys().indexOf("All"));
 	}
@@ -85,12 +86,14 @@ void ImageModel::modelAt(int index) {
 	}
 
 	emit indexesChanged(index, ret);
+	emit currentIndexChanged(index, ret.indexOf("All"));
 }
 
 void ImageModel::setIndexes(int t, int i) {
 
 	m_indexes[t] = i;
 
-	for (auto it = t; it < m_model.size(); it++)
+	for (auto it = t + 1; it < m_model.size(); it++) {
 		modelAt(it);
+	}
 }
