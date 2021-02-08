@@ -12,19 +12,19 @@ void ImageModel::setPlaylist(PlaylistPointer p) {
 	endInsertRows();
 
 	m_model.clear();
-	QTime timer = QTime::currentTime();
+
 	for (auto it = 0; it < p->count(); it++) {
 		auto path = (*p)[it]->path();
 		auto list = path.split('/');
-		if (m_model.size() < list.size() - 1)
-			m_model.resize(list.size() - 1, {{"All", {"*"}}});
+		if (m_model.size() < list.size())
+			m_model.resize(list.size(), {{"All", {}}});
 
 		for (auto it2 = 0; it2 < list.size() - 1; it2++) {
 			m_model[it2].insert(list[it2], path);
+			m_model[it2].insert("All", path);
 		}
 	}
 
-	qDebug() << "Elapsed" << timer.msecsTo(QTime::currentTime()) << p->count();
 	m_indexes.resize(m_model.size(), 0);
 
 	emit sizeChanged();
@@ -61,14 +61,36 @@ void ImageModel::sort(int, Qt::SortOrder) {}
 int ImageModel::size() const { return m_model.size(); }
 
 void ImageModel::modelAt(int index) {
-	auto m = m_model[index].uniqueKeys();
 
-	emit indexesChanged(index, m);
+	QStringList ret;
+	if (index == 0)
+		ret = m_model[0].uniqueKeys();
+	else {
+		// ret = m_model[index].uniqueKeys();
+		auto ti = m_indexes[index - 1];
+		auto vals =
+				ti >= 0 ? m_model[index - 1].values(m_model[index - 1].uniqueKeys()[ti])
+								: QStringList();
+
+		QMultiMap<QString, QString> temp;
+		for (auto it : vals) {
+			auto split = it.split("/");
+			if (index < split.size() - 1) {
+				temp.insert(split[index], it);
+				temp.insert("All", it);
+			}
+		}
+
+		ret = temp.uniqueKeys();
+	}
+
+	emit indexesChanged(index, ret);
 }
 
 void ImageModel::setIndexes(int t, int i) {
+
 	m_indexes[t] = i;
 
-	for (auto it = t + 1; it < m_model.size(); it++)
+	for (auto it = t; it < m_model.size(); it++)
 		modelAt(it);
 }
