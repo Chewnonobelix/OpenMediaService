@@ -2,11 +2,11 @@
 
 void ControllerImage::exec() {
 	auto context = m_engine->qmlEngine().rootContext();
-	context->setContextProperty("_imageModel", &m_model);
+	context->setContextProperty("_imageLibrairyModel", &m_model);
 	context->setContextProperty("_image", this);
 
-	// connect(&m_model, &ImageModel::currentIndexChanged, this,
-	//																				&ControllerImage::onCurrentIndexChanged);
+	connect(&m_model, &LibrairyImageModel::imageChanged, this,
+					&ControllerImage::setMedia);
 }
 
 QString ControllerImage::playerView() const {

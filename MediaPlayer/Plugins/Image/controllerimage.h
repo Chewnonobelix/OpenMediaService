@@ -3,7 +3,7 @@
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/Plugins/interfaceplugins.h>
 
-#include "imagemodel.h"
+#include "librairyimagemodel.h"
 
 class ControllerImage : public AbstractController, public InterfacePlugins {
 	Q_OBJECT
@@ -12,7 +12,7 @@ class ControllerImage : public AbstractController, public InterfacePlugins {
 
 private:
 	PlaylistPointer m_current;
-	ImageModel m_model;
+	LibrairyImageModel m_model;
 
 public:
 	ControllerImage() = default;

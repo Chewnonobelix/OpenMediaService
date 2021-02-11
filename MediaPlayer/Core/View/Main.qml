@@ -241,6 +241,11 @@ ApplicationWindow {
 			Menu {
 				id: menu1
 				MenuItem {
+					text: "Open"
+					onClicked: _drawPlay.open()
+				}
+
+				MenuItem {
 					text: "Add smart playlist"
 					onClicked: _libraries.addPlaylist(true)
 				}
