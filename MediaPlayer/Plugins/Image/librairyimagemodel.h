@@ -5,6 +5,7 @@
 #include <QMutex>
 #include <QQueue>
 #include <QThread>
+#include <QTimer>
 
 #include <Model/smartplaylist.h>
 
@@ -19,6 +20,8 @@ private:
 		CountRole,
 		NameRole,
 	};
+
+	int m_currentIndex = 0;
 
 	PlaylistPointer m_playlist;
 
@@ -51,4 +54,6 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	QHash<int, QByteArray> roleNames() const override;
 	void sort(int, Qt::SortOrder) override;
+
+public slots:
 };

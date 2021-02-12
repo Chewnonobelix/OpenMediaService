@@ -131,8 +131,17 @@ void LibrairyImageModel::setIndexes(int t, int i) {
 
 void LibrairyImageModel::onDoubleClicked(int i) {
 	QList<int> read;
+	m_currentIndex = i;
 	for (auto it = i; it < m_currentDisplay.count(); it++)
 		read << (m_playlist->indexOf(m_currentDisplay[it]));
+
+	if (m_playlist->isShuffle()) {
+		QRandomGenerator generator;
+		for (auto it = 0; it < read.count(); it++) {
+			auto r = generator.bounded(it, int(read.count()));
+			read.swapItemsAt(it, r);
+		}
+	}
 
 	m_playlist->setReadOrder(read);
 	m_playlist->next();

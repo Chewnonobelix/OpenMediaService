@@ -13,6 +13,7 @@ class ControllerImage : public AbstractController, public InterfacePlugins {
 private:
 	PlaylistPointer m_current;
 	LibrairyImageModel m_model;
+	QTimer m_timer;
 
 public:
 	ControllerImage() = default;
@@ -31,6 +32,8 @@ public:
 
 public slots:
 	void onCurrentIndexChanged(int);
+	void playing();
+	void onTimeout();
 
 signals:
 	void play(QString);

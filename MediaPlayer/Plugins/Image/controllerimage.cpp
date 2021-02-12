@@ -7,6 +7,8 @@ void ControllerImage::exec() {
 
 	connect(&m_model, &LibrairyImageModel::imageChanged, this,
 					&ControllerImage::setMedia);
+	connect(&m_timer, &QTimer::timeout, this, &ControllerImage::onTimeout);
+	m_timer.setInterval(2000);
 }
 
 QString ControllerImage::playerView() const {
@@ -29,6 +31,8 @@ void ControllerImage::setMedia(MediaPointer m) {
 	if (m) {
 		emit play(m->path());
 		m->setCount(m->count() + 1);
+	} else {
+		m_timer.stop();
 	}
 }
 
@@ -44,3 +48,11 @@ void ControllerImage::onCurrentIndexChanged(int i) {
 QStringList ControllerImage::filters() const {
 	return {"jpg", "jpeg", "bmp", "png"};
 }
+
+void ControllerImage::playing() {
+	m_timer.stop();
+	m_current->setCurrentIndex(0);
+	m_timer.start();
+}
+
+void ControllerImage::onTimeout() { m_current->next(); }

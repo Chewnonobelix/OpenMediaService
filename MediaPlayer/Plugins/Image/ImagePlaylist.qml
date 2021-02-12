@@ -1,13 +1,53 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-
+import QtQuick.Layouts 1.15
 import MediaPlayer.Components 1.0
 
-Frame {
-	StackView {
-		anchors.fill: parent
-		ImageLibrairyPlaylist {
+Item {
+	id: root
+
+		MediaBackground {
+		id: toolbar
+		anchors {
+			left: root.left
+			top: root.top
+		}
+		width: root.width
+		height: root.height * .10
+		RowLayout {
 			anchors.fill: parent
+
+			MediaCombobox {
+				model: ["Librairy"]
+
+				Layout.preferredHeight: toolbar.height
+			}
+
+			MediaButton {
+				text: "play"
+				Layout.preferredHeight: toolbar.height
+
+				onClicked: _image.playing()
+			}
+
+			MediaCheckbox {
+				text: "random"
+				Layout.preferredHeight: toolbar.height
+			}
+		}
+	}
+	MediaBackground {
+		anchors {
+			top: toolbar.bottom
+			left: root.left
+			bottom: root.bottom
+		}
+		width: root.width
+		StackView {
+			anchors.fill: parent
+			ImageLibrairyPlaylist {
+				anchors.fill: parent
+			}
 		}
 	}
 }
