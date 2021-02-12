@@ -16,7 +16,6 @@ ItemDelegate {
 
 	onDoubleClicked: {
 		if(!lock) {
-			console.log("Edit")
 		}
 	}
 

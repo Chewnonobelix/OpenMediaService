@@ -21,17 +21,24 @@ QString ControllerImage::playlistView() const {
 void ControllerImage::setPlaylist(PlaylistPointer p) {
 	m_current = p;
 	m_model.setPlaylist(p);
+	connect(m_current.data(), &PlayList::play, this, &ControllerImage::setMedia,
+					Qt::UniqueConnection);
 }
 
 void ControllerImage::setMedia(MediaPointer m) {
-	emit play(m->path());
-	m->setCount(m->count() + 1);
+	if (m) {
+		emit play(m->path());
+		m->setCount(m->count() + 1);
+	}
 }
 
 MediaRole ControllerImage::role() const { return MediaRole::Image; }
 
 void ControllerImage::onCurrentIndexChanged(int i) {
-	setMedia((*m_current)[i]);
+	if (i > 0)
+		m_current->next();
+	else
+		m_current->prev();
 }
 
 QStringList ControllerImage::filters() const {

@@ -58,31 +58,56 @@ void PlayList::clear() {
 	emit countChanged();
 }
 
-void PlayList::play(int index) {
-	if (isShuffle()) {
-		QSet<int> temp;
-		QRandomGenerator random;
+// void PlayList::play(int index) {
+//	if (isShuffle()) {
+//		QSet<int> temp;
+//		QRandomGenerator random;
 
-		while (temp.count() != count()) {
-			int it = random.bounded(0, count());
-			if (temp.contains(it))
-				continue;
-			temp << it;
-			m_readOrder.enqueue(it);
-		}
-	} else {
-		for (auto it = index; it < count(); it++) {
-			m_readOrder.enqueue(it);
-		}
-	}
-}
+//		while (temp.count() != count()) {
+//			int it = random.bounded(0, count());
+//			if (temp.contains(it))
+//				continue;
+//			temp << it;
+//			m_readOrder << (it);
+//		}
+//	} else {
+//		for (auto it = index; it < count(); it++) {
+//			m_readOrder << (it);
+//		}
+//	}
+//}
 
 MediaPointer PlayList::next() {
 	MediaPointer ret;
-	if (!m_readOrder.isEmpty()) {
-		auto index = m_readOrder.dequeue();
+
+	if (currentIndex() < m_readOrder.count() - 1) {
+		setCurrentIndex(currentIndex() + 1);
+		auto index = m_readOrder[currentIndex()];
 		ret = at(index);
 	}
+
 	emit play(ret);
 	return ret;
+}
+
+MediaPointer PlayList::prev() {
+	MediaPointer ret;
+
+	if (currentIndex() > -1) {
+		setCurrentIndex(currentIndex() - 1);
+		auto index = m_readOrder[currentIndex()];
+		ret = at(index);
+	}
+
+	emit play(ret);
+	return ret;
+}
+
+void PlayList::setReadOrder(QList<int> order) { m_readOrder = order; }
+
+int PlayList::currentIndex() const { return m_currentIndex; }
+
+void PlayList::setCurrentIndex(int index) {
+	m_currentIndex = index;
+	emit currentIndexChanged();
 }

@@ -62,7 +62,7 @@ QHash<int, QByteArray> LibrairyImageModel::roleNames() const {
 
 void LibrairyImageModel::sort(int, Qt::SortOrder) {}
 
-int LibrairyImageModel::size() const { return m_model.size(); }
+int LibrairyImageModel::size() const { return m_model.size() - 1; }
 
 void LibrairyImageModel::modelAt(int index) {
 
@@ -124,11 +124,16 @@ void LibrairyImageModel::setIndexes(int t, int i) {
 		}
 	}
 
-	beginInsertRows(QModelIndex(), 0, rowCount());
-	insertRows(0, rowCount());
+	beginInsertRows(QModelIndex(), 0, rowCount() - 1);
+	insertRows(0, rowCount() - 1);
 	endInsertRows();
 }
 
 void LibrairyImageModel::onDoubleClicked(int i) {
-	emit imageChanged(m_currentDisplay[i]);
+	QList<int> read;
+	for (auto it = i; it < m_currentDisplay.count(); it++)
+		read << (m_playlist->indexOf(m_currentDisplay[it]));
+
+	m_playlist->setReadOrder(read);
+	m_playlist->next();
 }
