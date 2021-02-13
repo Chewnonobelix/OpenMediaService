@@ -22,13 +22,9 @@ private:
 	};
 
 	int m_currentIndex = 0;
-
 	PlaylistPointer m_playlist;
-
 	QQueue<MediaPointer> m_reading;
-
 	QList<QMultiMap<QString, MediaPointer>> m_model;
-
 	QList<int> m_indexes;
 	QList<MediaPointer> m_currentDisplay;
 

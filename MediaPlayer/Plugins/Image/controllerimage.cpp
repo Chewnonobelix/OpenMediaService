@@ -39,6 +39,7 @@ void ControllerImage::setMedia(MediaPointer m) {
 MediaRole ControllerImage::role() const { return MediaRole::Image; }
 
 void ControllerImage::onCurrentIndexChanged(int i) {
+	m_timer.stop();
 	if (i > 0)
 		m_current->next();
 	else
