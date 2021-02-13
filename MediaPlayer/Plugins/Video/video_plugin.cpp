@@ -1,4 +1,4 @@
-#include "Video_plugin.hpp"
+#include "video_plugin.h"
 
 #include <qqml.h>
 

@@ -25,7 +25,7 @@ public:
 public slots:
 	virtual QMap<QUuid, LibraryPointer> selectLibrary() const override;
 	virtual bool createLibrary(QString, MediaPlayerGlobal::MediaRole) override;
-	virtual bool removeLibrary(QUuid) override;
+	virtual bool removeLibrary(QString) override;
 	virtual bool updateLibrary(LibraryPointer) override;
 };
 

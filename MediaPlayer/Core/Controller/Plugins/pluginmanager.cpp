@@ -1,4 +1,4 @@
-#include "PluginManager.hpp"
+#include "pluginmanager.h"
 
 void PluginManager::init() {
 	QDir dir;

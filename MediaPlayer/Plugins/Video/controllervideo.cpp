@@ -1,4 +1,4 @@
-#include "ControllerVideo.hpp"
+#include "controllervideo.h"
 
 void ControllerVideo::exec() {}
 
@@ -15,3 +15,7 @@ void ControllerVideo::setPlaylist(PlaylistPointer) {}
 void ControllerVideo::setMedia(MediaPointer) {}
 
 MediaRole ControllerVideo::role() const { return MediaRole::Video; }
+
+QStringList ControllerVideo::filters() const {
+	return {"ts", "mp4", "mkv", "avi"};
+}

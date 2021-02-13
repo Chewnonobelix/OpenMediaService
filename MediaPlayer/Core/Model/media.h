@@ -41,6 +41,8 @@ class MEDIAPLAYERCORE_EXPORT Media : public QObject, public MetaData {
 private:
 	QSet<QString> m_path;
 
+	void set();
+
 public:
 	Media(MD5 = "", QString = "");
 	Media(const Media &other);
@@ -77,12 +79,12 @@ public:
 	static MediaPointer createMedia(MD5, QString path = "");
 
 signals:
-	void countChanged(int);
-	void ratingChanged(int);
-	void currentReadChanged(double);
-	void lastFinishChanged(QDateTime);
-	void isAvailableChanged(bool);
-	void lastProbedChanged(QDateTime);
+	void countChanged();
+	void ratingChanged();
+	void currentReadChanged();
+	void lastFinishChanged();
+	void isAvailableChanged();
+	void lastProbedChanged();
 
 	void mediaChanged();
 };

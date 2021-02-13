@@ -21,10 +21,10 @@ Item {
 
 		onWheel: {
 			if(wheel.angleDelta.y > 0) {
-				_imageModel.currentIndex = _imageModel.currentIndex-1
+				_image.onCurrentIndexChanged(-1)
 			}
 			if(wheel.angleDelta.y < 0) {
-				_imageModel.currentIndex = _imageModel.currentIndex+1
+				_image.onCurrentIndexChanged(1)
 			}
 
 		}

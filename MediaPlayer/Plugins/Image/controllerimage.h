@@ -3,7 +3,7 @@
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/Plugins/interfaceplugins.h>
 
-#include "ImageModel.hpp"
+#include "librairyimagemodel.h"
 
 class ControllerImage : public AbstractController, public InterfacePlugins {
 	Q_OBJECT
@@ -12,7 +12,8 @@ class ControllerImage : public AbstractController, public InterfacePlugins {
 
 private:
 	PlaylistPointer m_current;
-	ImageModel m_model;
+	LibrairyImageModel m_model;
+	QTimer m_timer;
 
 public:
 	ControllerImage() = default;
@@ -27,9 +28,12 @@ public:
 	void setMedia(MediaPointer) override;
 
 	MediaRole role() const override;
+	QStringList filters() const override;
 
 public slots:
 	void onCurrentIndexChanged(int);
+	void playing();
+	void onTimeout();
 
 signals:
 	void play(QString);

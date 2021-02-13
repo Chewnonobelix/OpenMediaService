@@ -23,10 +23,10 @@ SOURCES += \
         Controller/Data/datajson.cpp \
         Controller/Data/dataxml.cpp \
         Controller/Data/interfacesaver.cpp \
-        Controller/DataModel/PlaylistModel.cpp \
         Controller/DataModel/librarydatamodel.cpp \
-        Controller/Plugins/PluginManager.cpp \
+        Controller/DataModel/playlistmodel.cpp \
         Controller/Plugins/interfaceplugins.cpp \
+        Controller/Plugins/pluginmanager.cpp \
         Model/smartplaylist.cpp \
         Model\global.cpp \
         Model\library.cpp \
@@ -56,10 +56,10 @@ HEADERS += \
     Controller/Data/datajson.h \
     Controller/Data/dataxml.h \
     Controller/Data/interfacesaver.h \
-    Controller/DataModel/PlaylistModel.hpp \
     Controller/DataModel/librarydatamodel.h \
-    Controller/Plugins/PluginManager.hpp \
+    Controller/DataModel/playlistmodel.h \
     Controller/Plugins/interfaceplugins.h \
+    Controller/Plugins/pluginmanager.h \
     Model/smartplaylist.h \
     Model\global.h \
     Model\library.h \

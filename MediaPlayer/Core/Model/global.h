@@ -16,8 +16,6 @@ Q_NAMESPACE_EXPORT(MEDIAPLAYERCORE_EXPORT)
 enum class MediaRole { Undefined, Audio, Video, Comics, Books, Image, Game };
 Q_ENUM_NS(MediaRole)
 
-MediaRole getRole(QString path);
-
 template <class T> QSet<T> toSet(QList<T> l) {
 	return QSet<T>(l.begin(), l.end());
 }

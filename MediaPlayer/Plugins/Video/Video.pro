@@ -3,13 +3,13 @@ TARGET = Video
 TARGET = $$qtLibraryTarget($$TARGET)
 NAME = Video
 SOURCES += \
-	ControllerVideo.cpp \
-	Video_plugin.cpp
+	controllervideo.cpp \
+	video_plugin.cpp
 
 HEADERS += \
-		ControllerVideo.hpp \
-		Video_global.hpp \
-		Video_plugin.hpp
+		controllervideo.h \
+		video_global.h \
+		video_plugin.h
 
 # Default rules for deployment.
 include(../global.pri)

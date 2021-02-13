@@ -5,5 +5,14 @@
         <file>MediaHeader.qml</file>
         <file>MediaListItem.qml</file>
         <file>MediaBackground.qml</file>
+        <file>MediaWindow.qml</file>
+        <file>MediaList.qml</file>
+        <file>MediaCheckbox.qml</file>
+        <file>MediaCombobox.qml</file>
+        <file>MediaTextEdit.qml</file>
+        <file>MediaProgressBar.qml</file>
+        <file>MediaRadioButton.qml</file>
+        <file>MediaTabButton.qml</file>
+        <file>qtquickcontrols2.conf</file>
     </qresource>
 </RCC>

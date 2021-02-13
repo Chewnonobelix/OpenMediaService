@@ -7,7 +7,7 @@ import Qt.labs.platform 1.1
 import MediaPlayer 1.0
 import MediaPlayer.Components 1.0
 
-Window {
+MediaWindow {
 	id: root
 	flags: Qt.Dialog
 
@@ -44,18 +44,14 @@ Window {
 			property string role: _libraries.currentLibrary.role.toString()
 			text: "Role" + ": " + role
 		}
-		MediaLabel {
-			Layout.column: 0
-			Layout.row: 1
-			Layout.preferredHeight: root.height * 0.10
-			text: "Last update" + ": " + _libraries.currentLibrary.lastUpdate
-		}
+
 		MediaLabel {
 			Layout.column: 0
 			Layout.row: 2
 			Layout.preferredHeight: root.height * 0.10
 			text: "Media count" + ": " + _libraries.currentLibrary.mediaCount
 		}
+
 		MediaLabel {
 			Layout.column: 0
 			Layout.row: 3
@@ -63,29 +59,39 @@ Window {
 			text: "Playlist count" + ": " + _libraries.currentLibrary.playlistCount
 		}
 
-		ToolButton {
+		MediaButton {
 			Layout.row: 4
 			Layout.column: 1
 			text: "+"
 			onClicked: sourceSelecter.open()
+
+			Layout.preferredHeight: root.height * 0.10
+			Layout.preferredWidth: root.width * 0.10
 		}
-		ToolButton {
+
+		MediaButton {
 			Layout.row: 5
 			Layout.column: 1
 			text: "-"
 			enabled: sourceDir.currentIndex > -1
 			onClicked: _libraries.removeSourceDir(sourceDir.currentText)
+
+			Layout.preferredHeight: root.height * 0.10
+			Layout.preferredWidth: root.width * 0.10
 		}
 
-		ToolButton {
+		MediaButton {
 			Layout.row: 6
 			Layout.column: 1
 			text: "Scan" + " (" + _libraries.currentLibrary.probe.current + "%)"
 			enabled: ! _libraries.currentLibrary.probe.isRunning
 			onClicked: _libraries.currentLibrary.scan()
+
+			Layout.preferredHeight: root.height * 0.10
+			Layout.preferredWidth: root.width * 0.10
 		}
 
-		ListView {
+		MediaList {
 			id: sourceDir
 			Layout.column: 0
 			Layout.row: 4
@@ -93,7 +99,7 @@ Window {
 			Layout.preferredHeight: root.height
 			Layout.preferredWidth: root.width * 0.75
 			header: Label{
-				text: "source directories (last probed: " + Qt.formatDateTime(_libraries.currentLibrary.lastProbed, "dd-MM-yyyy hh:mm:ss") + ")"
+				text: "source directories (last probed: " + Qt.formatDateTime(_libraries.currentLibrary.probe.lastProbed, "dd-MM-yyyy hh:mm:ss") + ")"
 			}
 
 			model: _libraries.currentLibrary.sourceDir
@@ -103,7 +109,6 @@ Window {
 				color: "lightblue"
 			}
 
-			clip:true
 			delegate: MediaListItem{
 				height: sourceDir.height * 0.10
 				width: sourceDir.width

@@ -3,17 +3,15 @@ TARGET = Image
 TARGET = $$qtLibraryTarget($$TARGET)
 NAME = Image
 SOURCES += \
-	ControllerImage.cpp \
-	ImageModel.cpp \
-	ImagePlayerModel.cpp \
-	Image_plugin.cpp
+	controllerimage.cpp \
+	image_plugin.cpp \
+	librairyimagemodel.cpp
 
 HEADERS += \
-    ControllerImage.hpp \
-    ImageModel.hpp \
-    ImagePlayerModel.hpp \
-    Image_global.hpp \
-    Image_plugin.hpp
+    controllerimage.h \
+    image_global.h \
+    image_plugin.h \
+    librairyimagemodel.h
 
 # Default rules for deployment.
 include(../global.pri)

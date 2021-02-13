@@ -1,4 +1,4 @@
-#include "PlaylistModel.hpp"
+#include "playlistmodel.h"
 
 PlaylistModel::PlaylistModel(const PlaylistModel &) : QAbstractListModel() {}
 
@@ -41,28 +41,28 @@ QHash<int, QByteArray> PlaylistModel::roleNames() const {
 void PlaylistModel::sort(int, Qt::SortOrder) {}
 
 void PlaylistModel::setSmart(QList<SmartPlaylistPointer> s) {
-	beginRemoveRows(QModelIndex(), 0, m_smarts.size());
-	removeRows(0, m_smarts.size());
+	beginRemoveRows(QModelIndex(), 0, m_smarts.size() - 1);
+	removeRows(0, m_smarts.size() - 1);
 	endRemoveRows();
 
 	m_smarts.clear();
 	m_smarts = s;
 
-	beginInsertRows(QModelIndex(), 0, m_smarts.size());
-	removeRows(0, m_smarts.size());
+	beginInsertRows(QModelIndex(), 0, m_smarts.size() - 1);
+	insertRows(0, m_smarts.size() - 1);
 	endInsertRows();
 }
 
 void PlaylistModel::setNormal(QList<PlaylistPointer> n) {
-	beginRemoveRows(QModelIndex(), m_smarts.size(), m_normals.size());
-	removeRows(m_smarts.size(), m_normals.size());
+	beginRemoveRows(QModelIndex(), m_smarts.size() - 1, m_normals.size() - 1);
+	removeRows(m_smarts.size() - 1, m_normals.size() - 1);
 	endRemoveRows();
 
 	m_normals.clear();
 	m_normals = n;
 
-	beginInsertRows(QModelIndex(), m_smarts.size(), m_normals.size());
-	removeRows(m_smarts.size(), m_normals.size());
+	beginInsertRows(QModelIndex(), m_smarts.size() - 1, m_normals.size() - 1);
+	insertRows(m_smarts.size() - 1, m_normals.size() - 1);
 	endInsertRows();
 }
 

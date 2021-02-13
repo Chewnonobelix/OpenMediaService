@@ -22,7 +22,7 @@ public:
 public slots:
 	QMap<QUuid, LibraryPointer> selectLibrary() const override;
 	bool createLibrary(QString, MediaPlayerGlobal::MediaRole) override;
-	bool removeLibrary(QUuid) override;
+	bool removeLibrary(QString) override;
 	bool updateLibrary(LibraryPointer) override;
 
 private:

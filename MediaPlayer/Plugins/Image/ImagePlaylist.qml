@@ -1,38 +1,86 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-
+import QtQuick.Layouts 1.15
 import MediaPlayer.Components 1.0
 
-TableView {
+Item {
 	id: root
-	model: _imageModel
 
-	HorizontalHeaderView {
-		width: root.width
-		height: root.height * .20
-		model: ["Path", "Count"]
-
-		delegate: Label {
-			text: modelData
+		MediaBackground {
+		id: toolbar
+		anchors {
+			left: root.left
+			top: root.top
 		}
-	}
-
-	delegate:Rectangle {
-		color: row === _imageModel.currentIndex ? "lightblue" : "white"
-		clip: true
-
+		width: root.width
 		height: root.height * .10
-		width: root.width * .30
-
-		MediaLabel {
-			text: display
+		RowLayout {
 			anchors.fill: parent
 
-			MouseArea {
-				anchors.fill: parent
+			MediaCombobox {
+				model: ["Librairy"]
 
-				onClicked: _imageModel.currentIndex = row
+				Layout.preferredHeight: toolbar.height
+			}
+
+			MediaButton {
+				text: "play"
+				Layout.preferredHeight: toolbar.height
+
+				onClicked: _image.playing()
+			}
+
+			MediaCheckbox {
+				text: "random"
+				Layout.preferredHeight: toolbar.height
+			}
+		}
+	}
+	MediaBackground {
+		anchors {
+			top: toolbar.bottom
+			left: root.left
+			bottom: root.bottom
+		}
+		width: root.width
+		StackView {
+			anchors.fill: parent
+			ImageLibrairyPlaylist {
+				anchors.fill: parent
 			}
 		}
 	}
 }
+
+//TableView {
+//	id: root
+//	model: _imageLibrairyModel
+
+//	HorizontalHeaderView {
+//		width: root.width
+//		height: root.height * .20
+//		model: ["Path", "Count"]
+
+//		delegate: Label {
+//			text: modelData
+//		}
+//	}
+
+//	delegate:Rectangle {
+//		color: row === _imageLibrairyModel.currentIndex ? "lightblue" : "#303030"
+//		clip: true
+
+//		height: root.height * .10
+//		width: root.width * .30
+
+//		MediaLabel {
+//			text: display
+//			anchors.fill: parent
+
+//			MouseArea {
+//				anchors.fill: parent
+//				onClicked: _imageLibrairyModel.currentIndex = row
+//			}
+//		}
+//	}
+//}

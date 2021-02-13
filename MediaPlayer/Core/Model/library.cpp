@@ -1,24 +1,10 @@
 #include "library.h"
 
-Library::Library() {
-	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addNMedia,
-					Qt::QueuedConnection);
-	connect(&m_probe, &LibraryProbe::currentChanged, this,
-					&Library::onProbedChanged);
-}
+Library::Library() { set(); }
 
-Library::Library(const Library &l) : QObject(nullptr), MetaData(l) {
-	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addNMedia,
-					Qt::QueuedConnection);
-	connect(&m_probe, &LibraryProbe::currentChanged, this,
-					&Library::onProbedChanged);
-}
+Library::Library(const Library &l) : QObject(nullptr), MetaData(l) { set(); }
 
 Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l) {
-	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addNMedia,
-					Qt::QueuedConnection);
-	connect(&m_probe, &LibraryProbe::currentChanged, this,
-					&Library::onProbedChanged);
 
 	auto dirs = l["sourceDir"].toArray();
 	auto ms = l["medias"].toArray();
@@ -42,6 +28,23 @@ Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l) {
 		auto m = factory<Media>(it.toObject());
 		addMedia(m);
 	}
+
+	m_probe.setLastProbed(
+			QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
+
+	set();
+}
+
+void Library::set() {
+	connect(this, &Library::nameChanged, this, &Library::libraryChanged);
+	connect(this, &Library::isSharedChanged, this, &Library::libraryChanged);
+	connect(this, &Library::sourceDirChanged, this, &Library::libraryChanged);
+	connect(this, &Library::lastUpdateChanged, this, &Library::libraryChanged);
+	connect(this, &Library::playlistCountChanged, this, &Library::libraryChanged);
+	connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addNMedia,
+					Qt::QueuedConnection);
+	connect(&m_probe, &LibraryProbe::currentChanged, this,
+					&Library::onProbedChanged);
 }
 
 Library::operator QJsonObject() const {
@@ -66,6 +69,7 @@ Library::operator QJsonObject() const {
 	ret["sourceDir"] = sources;
 	ret["smartPlaylist"] = smarts;
 	ret["playlist"] = plays;
+	ret["lastProbe"] = m_probe.lastProbed().toString("dd-MM-yyyy hh:mm:ss");
 
 	return ret;
 }
@@ -114,15 +118,6 @@ void Library::setShared(bool shared) {
 	emit isSharedChanged();
 }
 
-QDateTime Library::lastProbed() const {
-	return metaData<QDateTime>("lastProbed");
-}
-
-void Library::setLastProbed(QDateTime lp) {
-	setMetadata("lastProbed", lp);
-	emit lastProbedChanged();
-}
-
 QStringList Library::sourceDir() const {
 	return metaData<QStringList>("sourceDir");
 }
@@ -153,7 +148,7 @@ bool Library::removeSourceDir(QString source) {
 
 bool Library::addMedia(MediaPointer p) {
 	m_medias[p->id()] = p;
-	connect(p.data(), &Media::mediaChanged, this, &Library::onMediaChanged);
+	connect(p.data(), &Media::mediaChanged, this, &Library::libraryChanged);
 	emit mediasChanged(p);
 	return true;
 }
@@ -174,12 +169,14 @@ bool Library::addNMedia(QString path, MD5 md) {
 
 	if (m_medias.contains(md))
 		m_medias[md]->setPath(path);
-	else if (MediaPlayerGlobal::getRole(path) == role())
+	else {
 		m_medias[md] = Media::createMedia(md, path);
-	else
-		return false;
+		m_medias[md]->setRole(role());
+	}
 
-	qDebug() << "Wesh" << path;
+	connect(m_medias[md].data(), &Media::mediaChanged, this,
+					&Library::libraryChanged);
+
 	return m_medias[md]->paths().contains(path);
 }
 
@@ -201,27 +198,8 @@ bool Library::removeMedia(QString path) {
 	return !m_medias[md]->paths().contains(path);
 }
 
-QMap<MD5, MediaPointer> Library::medias(MD5 id) const {
-	QMap<MD5, MediaPointer> ret;
-	if (id.isEmpty())
-		ret = m_medias;
-	else
-		ret[id] = m_medias[id];
-
-	return ret;
-}
-
 bool operator<(LibraryPointer l1, LibraryPointer l2) {
 	return (l1->name() < l2->name()) || (l1->role() < l2->role());
-}
-
-QDateTime Library::lastUpdate() const {
-	return metaData<QDateTime>("lastUpdate");
-}
-
-void Library::setLastUpdate(QDateTime lastUpdate) {
-	setMetadata("lastUpdate", lastUpdate);
-	emit lastUpdateChanged();
 }
 
 int Library::mediaCount() const { return m_medias.count(); }
@@ -229,7 +207,6 @@ int Library::mediaCount() const { return m_medias.count(); }
 LibraryProbe *Library::probe() { return &m_probe; }
 
 void Library::onProbedChanged() {
-	setLastProbed(QDateTime::currentDateTime());
 	if (m_probe.current() == 100.0)
 		emit mediasChanged();
 }
@@ -301,6 +278,4 @@ int Library::playlistCount() const {
 	return m_playlist.count() + m_smartPlaylist.count();
 }
 
-void Library::onMediaChanged() {
-	emit mediasChanged();
-}
+void Library::onMediaChanged() { emit mediasChanged(); }

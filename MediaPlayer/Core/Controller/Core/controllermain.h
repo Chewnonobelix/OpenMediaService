@@ -11,7 +11,7 @@
 #include "../DataModel/librarydatamodel.h"
 #include "abstractcontroller.h"
 #include "controllerlibrary.h"
-#include <Controller/Plugins/PluginManager.hpp>
+#include <Controller/Plugins/pluginmanager.h>
 
 class MEDIAPLAYERCORE_EXPORT ControllerMain : public AbstractController {
 	Q_OBJECT

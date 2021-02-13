@@ -2,8 +2,8 @@
 #include <QQmlContext>
 #include <QtCore/qglobal.h>
 
-#include "../DataModel/PlaylistModel.hpp"
 #include "../DataModel/librarydatamodel.h"
+#include "../DataModel/playlistmodel.h"
 
 #include "abstractcontroller.h"
 #include "liveqmlengine.h"
@@ -26,7 +26,6 @@ public:
 	void exec() override;
 
 	Library *currentLibrary() const;
-	Q_INVOKABLE void setCurrentLibrary(QString);
 
 	Q_INVOKABLE void open();
 
@@ -40,7 +39,6 @@ signals:
 
 public slots:
 	void onCurrentModelChanged(LibraryPointer);
-	void onMediaChanged();
 	void onCurrentPlaylistChanged();
-	void onPlaylistChanged();
+	void onLibraryChanged();
 };
