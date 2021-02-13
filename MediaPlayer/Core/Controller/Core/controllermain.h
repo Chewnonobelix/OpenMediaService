@@ -17,7 +17,7 @@ class MEDIAPLAYERCORE_EXPORT ControllerMain : public AbstractController {
 	Q_OBJECT
 	Q_DISABLE_COPY(ControllerMain)
 private:
-	QPointer<ControllerLibrary> m_libraries;
+	QList<QPointer<ControllerLibrary>> m_libraries;
 
 	QQmlApplicationEngine &engine();
 
@@ -29,6 +29,8 @@ public:
 
 public slots:
 	void onLibraryChanged();
+	void addSplit(int, int);
+	void removeSplit(int, int);
 
 signals:
 	void playlistDisplay(QString);

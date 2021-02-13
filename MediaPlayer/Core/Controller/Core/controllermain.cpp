@@ -23,6 +23,9 @@ void ControllerMain::exec() {
 	qDebug() << "LibraryDataModel"
 					 << qmlRegisterType<LibraryDataModel>("MediaPlayer.Model", 1, 0,
 																								"LibraryDataModel");
+	qDebug() << "ControllerLibrairy"
+					 << qmlRegisterType<ControllerLibrary>("MediaPlayer.Model", 1, 0,
+																								 "ControllerLibrairy");
 	qDebug() << "MediaRole QML"
 					 << qmlRegisterUncreatableMetaObject(
 									MediaPlayerGlobal::staticMetaObject, "MediaPlayer", 1, 0,
@@ -34,10 +37,10 @@ void ControllerMain::exec() {
 	auto *context = engine().rootContext();
 	context->setContextProperty("_main", this);
 	context->setContextProperty("_db", db());
-	m_libraries = new ControllerLibrary;
-	m_libraries->exec();
+	m_libraries << new ControllerLibrary;
+	m_libraries.first()->exec();
 
-	connect(m_libraries, &ControllerLibrary::currentLibraryChanged, this,
+	connect(m_libraries.first(), &ControllerLibrary::currentLibraryChanged, this,
 					&ControllerMain::onLibraryChanged);
 
 	m_engine->createWindow(QUrl("/Main.qml"));
@@ -48,7 +51,7 @@ QQmlApplicationEngine &ControllerMain::engine() {
 }
 
 void ControllerMain::onLibraryChanged() {
-	auto role = m_libraries->currentLibrary()->role();
+	auto role = m_libraries.first()->currentLibrary()->role();
 	if (m_manager[role]) {
 		emit playlistDisplay(m_manager[role]->playlistView());
 		emit playerDisplay(m_manager[role]->playerView());
@@ -57,3 +60,11 @@ void ControllerMain::onLibraryChanged() {
 		emit playerDisplay("");
 	}
 }
+
+void ControllerMain::addSplit(int i, int) {
+	QPointer<ControllerLibrary> t = new ControllerLibrary;
+	m_libraries.resize(m_libraries.size() + 1);
+	m_libraries.insert(i, t);
+}
+
+void ControllerMain::removeSplit(int i, int) { m_libraries.removeAt(i); }
