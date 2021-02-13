@@ -1,12 +1,13 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+
 import MediaPlayer.Components 1.0
 
 Item {
 	id: root
 
-		MediaBackground {
+	MediaBackground {
 		id: toolbar
 		anchors {
 			left: root.left
@@ -23,13 +24,27 @@ Item {
 				Layout.preferredHeight: toolbar.height
 			}
 
-			MediaButton {
-				text: "play"
+
+			StackLayout {
 				Layout.preferredHeight: toolbar.height
+				id: playLayout
+				MediaButton {
+					text: "play"
 
-				onClicked: _image.playing()
+					onClicked:  {
+						_image.playing()
+						playLayout.currentIndex = 1
+					}
+				}
+				MediaButton {
+					text: "stop"
+
+					onClicked:{
+						_image.stop()
+						playLayout.currentIndex = 0
+					}
+				}
 			}
-
 			MediaCheckbox {
 				text: "random"
 				Layout.preferredHeight: toolbar.height
