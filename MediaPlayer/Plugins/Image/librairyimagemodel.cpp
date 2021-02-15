@@ -3,6 +3,7 @@
 void LibrairyImageModel::setPlaylist(PlaylistPointer p) {
 	m_playlist = p;
 	m_model.clear();
+	m_indexes.clear();
 
 	for (auto it = 0; it < p->count(); it++) {
 		auto path = (*p)[it]->path();
