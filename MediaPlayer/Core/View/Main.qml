@@ -324,11 +324,21 @@ ApplicationWindow {
 			Layout.row: 0
 			Layout.column: 2
 
-			MediaTabButton {
-				text: qsTr("View1")
+			Repeater {
+				id: tabRepeater
+				model: 3
+				MediaTabButton {
+					text: qsTr("Tab ") + modelData
+				}
 			}
+
 			MediaTabButton {
 				text: "+"
+
+				onClicked:  {
+					tabRepeater.model = viewBar.currentIndex + 1
+					viewBar.currentIndex = viewBar.currentIndex - 1
+				}
 			}
 		}
 
