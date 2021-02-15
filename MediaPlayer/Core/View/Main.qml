@@ -342,27 +342,32 @@ ApplicationWindow {
 			}
 		}
 
-		StackLayout {
+		SwipeView {
 			id: view
 			currentIndex: viewBar.currentIndex
 			Layout.fillWidth: true
 			Layout.fillHeight: true
-			//			Layout.preferredHeight: root.height * 0.80
+
 			Layout.row: 1
 			Layout.column: 2
 			Layout.rowSpan: 2
 
-			Loader {
-				id: _playerLoader
-				active: false
+			clip: true
 
-				Connections {
-					target: _main
+			Connections {
+				target: _main
 
-					function onPlayerDisplay(name) {
-						_playerLoader.source = name
-						_playerLoader.active = name !== ""
-					}
+				function onPlayerDisplay(name) {
+					view.currentItem.source = name
+					view.currentItem.active = name !== ""
+				}
+			}
+
+			Repeater {
+				model: tabRepeater.model
+				Loader {
+					id: _playerLoader
+					active: false
 				}
 			}
 		}
