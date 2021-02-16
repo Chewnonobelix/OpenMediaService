@@ -3,13 +3,6 @@
 ControllerLibrary::ControllerLibrary() {
 	auto *context = m_engine->qmlEngine().rootContext();
 	context->setContextProperty("_libraries", this);
-	context->setContextProperty("_librariesModel", &m_librariesModel);
-	context->setContextProperty("_playlistModel", &m_playlistModel);
-
-	connect(&m_librariesModel, &LibraryDataModel::currentModelChanged, this,
-					&ControllerLibrary::onCurrentModelChanged, Qt::UniqueConnection);
-	connect(&m_playlistModel, &PlaylistModel::currentIndexChanged, this,
-					&ControllerLibrary::onCurrentPlaylistChanged);
 }
 
 ControllerLibrary::ControllerLibrary(const ControllerLibrary &)
@@ -43,12 +36,10 @@ void ControllerLibrary::onCurrentModelChanged(LibraryPointer p) {
 		emit currentLibraryChanged();
 
 		p->probe()->setFilters(m_manager[p->role()]->filters());
-		m_playlistModel.setSmart(m_currentLibrary->smartPlaylist().values());
-		m_playlistModel.setNormal(m_currentLibrary->playlist().values());
 	}
 }
-void ControllerLibrary::onCurrentPlaylistChanged() {
-	auto p = m_playlistModel.current();
+void ControllerLibrary::onCurrentPlaylistChanged(PlaylistPointer p) {
+	//	auto p = m_playlistModel.current();
 	if (m_currentLibrary && !p.isNull() && m_manager[m_currentLibrary->role()])
 		m_manager[m_currentLibrary->role()]->setPlaylist(p);
 }

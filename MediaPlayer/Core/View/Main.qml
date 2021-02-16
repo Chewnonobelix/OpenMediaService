@@ -324,9 +324,13 @@ ApplicationWindow {
 			Layout.row: 0
 			Layout.column: 2
 
+			Component.onCompleted: {
+				currentIndex = 0
+			}
+
 			Repeater {
 				id: tabRepeater
-				model: 3
+				model: 1
 				MediaTabButton {
 					text: qsTr("Tab ") + modelData
 				}
@@ -338,6 +342,7 @@ ApplicationWindow {
 				onClicked:  {
 					tabRepeater.model = viewBar.currentIndex + 1
 					viewBar.currentIndex = viewBar.currentIndex - 1
+					_main.addTab()
 				}
 			}
 		}

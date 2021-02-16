@@ -9,6 +9,7 @@
 #include "../Data/datajson.h"
 #include "../Data/dataxml.h"
 #include "../DataModel/librarydatamodel.h"
+#include "../DataModel/playlistmodel.h"
 #include "abstractcontroller.h"
 #include "controllerlibrary.h"
 #include <Controller/Plugins/pluginmanager.h>
@@ -16,8 +17,12 @@
 class MEDIAPLAYERCORE_EXPORT ControllerMain : public AbstractController {
 	Q_OBJECT
 	Q_DISABLE_COPY(ControllerMain)
+
 private:
 	QList<QPointer<ControllerLibrary>> m_libraries;
+	LibraryDataModel m_librariesModel;
+	PlaylistModel m_playlistModel;
+	int m_currentTab = 0;
 
 	QQmlApplicationEngine &engine();
 
@@ -29,8 +34,7 @@ public:
 
 public slots:
 	void onLibraryChanged();
-	void addSplit(int, int);
-	void removeSplit(int, int);
+	void addTab();
 
 signals:
 	void playlistDisplay(QString);

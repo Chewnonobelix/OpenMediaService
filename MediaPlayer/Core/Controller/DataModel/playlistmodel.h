@@ -6,7 +6,7 @@
 
 #include <Controller/Core/abstractcontroller.h>
 
-class PlaylistModel : public QAbstractListModel {
+class MEDIAPLAYERCORE_EXPORT PlaylistModel : public QAbstractListModel {
 	Q_OBJECT
 	Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY
 								 currentIndexChanged)
@@ -36,6 +36,9 @@ public:
 	QHash<int, QByteArray> roleNames() const override;
 	void sort(int, Qt::SortOrder) override;
 
+public slots:
+	void onLibraryChanged(LibraryPointer);
+
 signals:
-	void currentIndexChanged();
+	void currentIndexChanged(PlaylistPointer);
 };

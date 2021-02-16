@@ -15,8 +15,7 @@ class ControllerLibrary : public AbstractController {
 
 private:
 	LibraryPointer m_currentLibrary;
-	LibraryDataModel m_librariesModel;
-	PlaylistModel m_playlistModel;
+	int m_modelIndex = -1;
 
 public:
 	ControllerLibrary();
@@ -39,6 +38,6 @@ signals:
 
 public slots:
 	void onCurrentModelChanged(LibraryPointer);
-	void onCurrentPlaylistChanged();
+	void onCurrentPlaylistChanged(PlaylistPointer);
 	void onLibraryChanged();
 };

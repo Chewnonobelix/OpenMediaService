@@ -3,11 +3,13 @@
 #include <QAbstractListModel>
 #include <QtCore/qglobal.h>
 
+#include "../../mediaplayercore_global.h"
+
 #include "../Core/abstractcontroller.h"
 #include "Model/global.h"
 #include "Model/library.h"
 
-class LibraryDataModel : public QAbstractListModel {
+class MEDIAPLAYERCORE_EXPORT LibraryDataModel : public QAbstractListModel {
 	Q_OBJECT
 
 	Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY

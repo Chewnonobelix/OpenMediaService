@@ -40,10 +40,27 @@ void ControllerMain::exec() {
 	m_libraries << new ControllerLibrary;
 	m_libraries.first()->exec();
 
+	context->setContextProperty("_librariesModel", &m_librariesModel);
+	context->setContextProperty("_playlistModel", &m_playlistModel);
+
+	connect(&m_librariesModel, &LibraryDataModel::currentModelChanged,
+					[this](LibraryPointer l) {
+						m_libraries[m_currentTab]->onCurrentModelChanged(l);
+					});
+
+	connect(&m_playlistModel, &PlaylistModel::currentIndexChanged,
+					[this](PlaylistPointer p) {
+						m_libraries[m_currentTab]->onCurrentPlaylistChanged(p);
+					});
+
+	connect(&m_librariesModel, &LibraryDataModel::currentModelChanged,
+					&m_playlistModel, &PlaylistModel::onLibraryChanged);
+
 	connect(m_libraries.first(), &ControllerLibrary::currentLibraryChanged, this,
 					&ControllerMain::onLibraryChanged);
 
 	m_engine->createWindow(QUrl("/Main.qml"));
+	m_librariesModel.onUpdateLibraries();
 }
 
 QQmlApplicationEngine &ControllerMain::engine() {
@@ -51,7 +68,8 @@ QQmlApplicationEngine &ControllerMain::engine() {
 }
 
 void ControllerMain::onLibraryChanged() {
-	auto role = m_libraries.first()->currentLibrary()->role();
+	auto s = (ControllerLibrary *)sender();
+	auto role = s->currentLibrary()->role();
 	if (m_manager[role]) {
 		emit playlistDisplay(m_manager[role]->playlistView());
 		emit playerDisplay(m_manager[role]->playerView());
@@ -61,10 +79,9 @@ void ControllerMain::onLibraryChanged() {
 	}
 }
 
-void ControllerMain::addSplit(int i, int) {
+void ControllerMain::addTab() {
 	QPointer<ControllerLibrary> t = new ControllerLibrary;
-	m_libraries.resize(m_libraries.size() + 1);
-	m_libraries.insert(i, t);
+	m_libraries << (t);
+	connect(m_libraries.last(), &ControllerLibrary::currentLibraryChanged, this,
+					&ControllerMain::onLibraryChanged);
 }
-
-void ControllerMain::removeSplit(int i, int) { m_libraries.removeAt(i); }
