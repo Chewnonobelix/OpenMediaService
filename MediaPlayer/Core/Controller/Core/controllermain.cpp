@@ -46,6 +46,8 @@ void ControllerMain::exec() {
 	connect(&m_librariesModel, &LibraryDataModel::currentModelChanged,
 					[this](LibraryPointer l) {
 						m_libraries[m_currentTab]->onCurrentModelChanged(l);
+						m_libraries[m_currentTab]->setModelIndex(
+								m_librariesModel.currentIndex());
 					});
 
 	connect(&m_playlistModel, &PlaylistModel::currentIndexChanged,
@@ -70,12 +72,13 @@ QQmlApplicationEngine &ControllerMain::engine() {
 void ControllerMain::onLibraryChanged() {
 	auto s = (ControllerLibrary *)sender();
 	auto role = s->currentLibrary()->role();
+
 	if (m_manager[role]) {
 		emit playlistDisplay(m_manager[role]->playlistView());
-		emit playerDisplay(m_manager[role]->playerView());
+		emit playerDisplay(m_manager[role]->playerView(), m_currentTab);
 	} else {
 		emit playlistDisplay("");
-		emit playerDisplay("");
+		emit playerDisplay("", m_currentTab);
 	}
 }
 
@@ -84,4 +87,10 @@ void ControllerMain::addTab() {
 	m_libraries << (t);
 	connect(m_libraries.last(), &ControllerLibrary::currentLibraryChanged, this,
 					&ControllerMain::onLibraryChanged);
+}
+
+void ControllerMain::onTabChanged(int index) {
+	qDebug() << index << m_libraries[index]->modelIndex();
+	m_currentTab = index;
+	m_librariesModel.setCurrentIndex(m_libraries[index]->modelIndex());
 }

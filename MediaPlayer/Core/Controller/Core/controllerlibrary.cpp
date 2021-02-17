@@ -62,3 +62,10 @@ void ControllerLibrary::removePlaylist(QString id) {
 void ControllerLibrary::onLibraryChanged() {
 	db()->updateLibrary(m_currentLibrary);
 }
+
+int ControllerLibrary::modelIndex() const { return m_modelIndex; }
+
+void ControllerLibrary::setModelIndex(int i) {
+	m_modelIndex = i;
+	emit modelIndexChanged();
+}

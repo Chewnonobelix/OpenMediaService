@@ -331,8 +331,12 @@ ApplicationWindow {
 			Repeater {
 				id: tabRepeater
 				model: 1
+
 				MediaTabButton {
 					text: qsTr("Tab ") + modelData
+					onClicked: {
+						_main.onTabChanged(modelData)
+					}
 				}
 			}
 
@@ -347,7 +351,7 @@ ApplicationWindow {
 			}
 		}
 
-		SwipeView {
+		StackLayout {
 			id: view
 			currentIndex: viewBar.currentIndex
 			Layout.fillWidth: true
@@ -358,19 +362,22 @@ ApplicationWindow {
 			Layout.rowSpan: 2
 
 			clip: true
-
 			Connections {
 				target: _main
 
-				function onPlayerDisplay(name) {
-					view.currentItem.source = name
+				function onPlayerDisplay(name, tab) {
+					var it = viewRep.itemAt(tab)
 					view.currentItem.active = name !== ""
+					it.source = name
+					it.active = name !== ""
 				}
 			}
 
 			Repeater {
+				id: viewRep
 				model: tabRepeater.model
 				Loader {
+
 					id: _playerLoader
 					active: false
 				}

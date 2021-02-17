@@ -12,6 +12,8 @@ class ControllerLibrary : public AbstractController {
 	Q_OBJECT
 	Q_PROPERTY(
 			Library *currentLibrary READ currentLibrary NOTIFY currentLibraryChanged)
+	Q_PROPERTY(int modelIndex READ modelIndex WRITE setModelIndex NOTIFY
+								 modelIndexChanged)
 
 private:
 	LibraryPointer m_currentLibrary;
@@ -33,8 +35,11 @@ public:
 	Q_INVOKABLE void addPlaylist(bool = false);
 	Q_INVOKABLE void removePlaylist(QString);
 
+	int modelIndex() const;
+	void setModelIndex(int);
 signals:
 	void currentLibraryChanged();
+	void modelIndexChanged();
 
 public slots:
 	void onCurrentModelChanged(LibraryPointer);

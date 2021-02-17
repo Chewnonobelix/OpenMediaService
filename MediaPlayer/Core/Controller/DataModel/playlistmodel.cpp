@@ -67,6 +67,7 @@ void PlaylistModel::setNormal(QList<PlaylistPointer> n) {
 }
 
 int PlaylistModel::currentIndex() const { return m_currentIndex; }
+
 void PlaylistModel::setCurrentIndex(int index) {
 	m_currentIndex = index;
 	emit currentIndexChanged(current());

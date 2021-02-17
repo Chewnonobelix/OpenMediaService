@@ -32,11 +32,13 @@ public:
 
 	void exec();
 
+	Q_INVOKABLE void onTabChanged(int);
+
 public slots:
 	void onLibraryChanged();
 	void addTab();
 
 signals:
 	void playlistDisplay(QString);
-	void playerDisplay(QString);
+	void playerDisplay(QString, int);
 };
