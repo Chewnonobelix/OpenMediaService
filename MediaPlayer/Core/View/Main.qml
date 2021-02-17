@@ -21,56 +21,14 @@ ApplicationWindow {
 		onActivated: root.close()
 	}
 
-	Popup {
-		id: addLibraryPop
-
-		onOpened: libraryName.clear()
-		GridLayout {
-			anchors.fill: parent
-			rows: 2
-
-			MediaTextEdit {
-				id: libraryName
-				width: addLibraryPop.width* 0.40
-
-				validator: RegularExpressionValidator {
-					regularExpression : /.+/
-				}
-			}
-
-			MediaCombobox {
-				id: libraryType
-
-				model: CoreModel.typeModel
-				textRole: "name"
-				valueRole: "role"
-			}
-
-			MediaButton {
-				Layout.preferredHeight: addLibraryPop.height * .5
-				Layout.preferredWidth: addLibraryPop.width * .19
-				enabled: libraryName.acceptableInput
-				text: "Add"
-				onClicked: {
-					_db.createLibrary(libraryName.text, libraryType.currentValue)
-					addLibraryPop.close()
-				}
-			}
-			MediaButton {
-				Layout.preferredHeight: addLibraryPop.height * .5
-				Layout.preferredWidth: addLibraryPop.width * .19
-				text: "Close"
-				onClicked: {
-					addLibraryPop.close()
-				}
-			}
-		}
-	}
 
 	Connections {
 		target: _libraries
 	}
 
+	LibraryPopup {
+		id: addLibraryPop
+	}
 
 	GridLayout {
 		anchors.fill: parent
@@ -317,72 +275,11 @@ ApplicationWindow {
 			}
 		}
 
-		TabBar {
-			id: viewBar
-
-			Layout.fillWidth: true
-			Layout.preferredHeight: root.height * 0.10
+		View {
 			Layout.row: 0
 			Layout.column: 2
-
-			Component.onCompleted: {
-				currentIndex = 0
-			}
-
-			Repeater {
-				id: tabRepeater
-				model: 1
-
-				MediaTabButton {
-					text: qsTr("Tab ") + modelData
-					onClicked: {
-						_main.onTabChanged(modelData)
-					}
-				}
-			}
-
-			MediaTabButton {
-				text: "+"
-
-				onClicked:  {
-					tabRepeater.model = viewBar.currentIndex + 1
-					viewBar.currentIndex = viewBar.currentIndex - 1
-					_main.addTab()
-				}
-			}
-		}
-
-		StackLayout {
-			id: view
-			currentIndex: viewBar.currentIndex
-			Layout.fillWidth: true
-			Layout.fillHeight: true
-
-			Layout.row: 1
-			Layout.column: 2
-			Layout.rowSpan: 2
-
-			clip: true
-			Connections {
-				target: _main
-
-				function onPlayerDisplay(name, tab) {
-					var it = viewRep.itemAt(tab)
-					view.currentItem.active = name !== ""
-					it.source = name
-					it.active = name !== ""
-				}
-			}
-
-			Repeater {
-				id: viewRep
-				model: tabRepeater.model
-				Loader {
-
-					id: _playerLoader
-					active: false
-				}
-			}
+			Layout.rowSpan: 3
+			Layout.columnSpan: 1
 		}
 	}
 }
