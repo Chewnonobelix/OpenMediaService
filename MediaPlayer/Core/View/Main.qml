@@ -47,16 +47,17 @@ ApplicationWindow {
 			}
 
 			MediaButton {
-				Layout.preferredHeight: addLibraryPop.height * .95
+				Layout.preferredHeight: addLibraryPop.height * .5
 				Layout.preferredWidth: addLibraryPop.width * .19
 				enabled: libraryName.acceptableInput
 				text: "Add"
 				onClicked: {
 					_db.createLibrary(libraryName.text, libraryType.currentValue)
+					addLibraryPop.close()
 				}
 			}
 			MediaButton {
-				Layout.preferredHeight: addLibraryPop.height * .95
+				Layout.preferredHeight: addLibraryPop.height * .5
 				Layout.preferredWidth: addLibraryPop.width * .19
 				text: "Close"
 				onClicked: {
