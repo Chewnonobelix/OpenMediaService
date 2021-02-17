@@ -51,9 +51,11 @@ QStringList ControllerImage::filters() const {
 }
 
 void ControllerImage::playing() {
-	m_timer.stop();
-	m_current->setCurrentIndex(0);
+	stop();
+	m_current->setCurrentIndex(-1);
 	m_timer.start();
 }
+
+void ControllerImage::stop() { m_timer.stop(); }
 
 void ControllerImage::onTimeout() { m_current->next(); }

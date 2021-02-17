@@ -33,6 +33,7 @@ public:
 public slots:
 	void onCurrentIndexChanged(int);
 	void playing();
+	void stop();
 	void onTimeout();
 
 signals:

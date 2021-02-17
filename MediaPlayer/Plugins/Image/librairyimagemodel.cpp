@@ -3,6 +3,7 @@
 void LibrairyImageModel::setPlaylist(PlaylistPointer p) {
 	m_playlist = p;
 	m_model.clear();
+	m_indexes.clear();
 
 	for (auto it = 0; it < p->count(); it++) {
 		auto path = (*p)[it]->path();
@@ -67,6 +68,9 @@ int LibrairyImageModel::size() const { return m_model.size() - 1; }
 void LibrairyImageModel::modelAt(int index) {
 
 	QStringList ret;
+	if (m_model.isEmpty())
+		return;
+
 	if (index == 0)
 		ret = m_model[0].uniqueKeys();
 	else {

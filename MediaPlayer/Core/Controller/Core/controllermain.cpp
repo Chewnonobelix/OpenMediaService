@@ -23,6 +23,9 @@ void ControllerMain::exec() {
 	qDebug() << "LibraryDataModel"
 					 << qmlRegisterType<LibraryDataModel>("MediaPlayer.Model", 1, 0,
 																								"LibraryDataModel");
+	qDebug() << "ControllerLibrairy"
+					 << qmlRegisterType<ControllerLibrary>("MediaPlayer.Model", 1, 0,
+																								 "ControllerLibrairy");
 	qDebug() << "MediaRole QML"
 					 << qmlRegisterUncreatableMetaObject(
 									MediaPlayerGlobal::staticMetaObject, "MediaPlayer", 1, 0,
@@ -34,13 +37,32 @@ void ControllerMain::exec() {
 	auto *context = engine().rootContext();
 	context->setContextProperty("_main", this);
 	context->setContextProperty("_db", db());
-	m_libraries = new ControllerLibrary;
-	m_libraries->exec();
+	m_libraries << new ControllerLibrary;
+	m_libraries.first()->exec();
 
-	connect(m_libraries, &ControllerLibrary::currentLibraryChanged, this,
+	context->setContextProperty("_librariesModel", &m_librariesModel);
+	context->setContextProperty("_playlistModel", &m_playlistModel);
+
+	connect(&m_librariesModel, &LibraryDataModel::currentModelChanged,
+					[this](LibraryPointer l) {
+						m_libraries[m_currentTab]->onCurrentModelChanged(l);
+						m_libraries[m_currentTab]->setModelIndex(
+								m_librariesModel.currentIndex());
+					});
+
+	connect(&m_playlistModel, &PlaylistModel::currentIndexChanged,
+					[this](PlaylistPointer p) {
+						m_libraries[m_currentTab]->onCurrentPlaylistChanged(p);
+					});
+
+	connect(&m_librariesModel, &LibraryDataModel::currentModelChanged,
+					&m_playlistModel, &PlaylistModel::onLibraryChanged);
+
+	connect(m_libraries.first(), &ControllerLibrary::currentLibraryChanged, this,
 					&ControllerMain::onLibraryChanged);
 
 	m_engine->createWindow(QUrl("/Main.qml"));
+	m_librariesModel.onUpdateLibraries();
 }
 
 QQmlApplicationEngine &ControllerMain::engine() {
@@ -48,12 +70,27 @@ QQmlApplicationEngine &ControllerMain::engine() {
 }
 
 void ControllerMain::onLibraryChanged() {
-	auto role = m_libraries->currentLibrary()->role();
+	auto s = (ControllerLibrary *)sender();
+	auto role = s->currentLibrary()->role();
+
 	if (m_manager[role]) {
 		emit playlistDisplay(m_manager[role]->playlistView());
-		emit playerDisplay(m_manager[role]->playerView());
+		emit playerDisplay(m_manager[role]->playerView(), m_currentTab);
 	} else {
 		emit playlistDisplay("");
-		emit playerDisplay("");
+		emit playerDisplay("", m_currentTab);
 	}
+}
+
+void ControllerMain::addTab() {
+	QPointer<ControllerLibrary> t = new ControllerLibrary;
+	m_libraries << (t);
+	connect(m_libraries.last(), &ControllerLibrary::currentLibraryChanged, this,
+					&ControllerMain::onLibraryChanged);
+}
+
+void ControllerMain::onTabChanged(int index) {
+	qDebug() << index << m_libraries[index]->modelIndex();
+	m_currentTab = index;
+	m_librariesModel.setCurrentIndex(m_libraries[index]->modelIndex());
 }

@@ -324,11 +324,30 @@ ApplicationWindow {
 			Layout.row: 0
 			Layout.column: 2
 
-			MediaTabButton {
-				text: qsTr("View1")
+			Component.onCompleted: {
+				currentIndex = 0
 			}
+
+			Repeater {
+				id: tabRepeater
+				model: 1
+
+				MediaTabButton {
+					text: qsTr("Tab ") + modelData
+					onClicked: {
+						_main.onTabChanged(modelData)
+					}
+				}
+			}
+
 			MediaTabButton {
 				text: "+"
+
+				onClicked:  {
+					tabRepeater.model = viewBar.currentIndex + 1
+					viewBar.currentIndex = viewBar.currentIndex - 1
+					_main.addTab()
+				}
 			}
 		}
 
@@ -337,22 +356,30 @@ ApplicationWindow {
 			currentIndex: viewBar.currentIndex
 			Layout.fillWidth: true
 			Layout.fillHeight: true
-			//			Layout.preferredHeight: root.height * 0.80
+
 			Layout.row: 1
 			Layout.column: 2
 			Layout.rowSpan: 2
 
-			Loader {
-				id: _playerLoader
-				active: false
+			clip: true
+			Connections {
+				target: _main
 
-				Connections {
-					target: _main
+				function onPlayerDisplay(name, tab) {
+					var it = viewRep.itemAt(tab)
+					view.currentItem.active = name !== ""
+					it.source = name
+					it.active = name !== ""
+				}
+			}
 
-					function onPlayerDisplay(name) {
-						_playerLoader.source = name
-						_playerLoader.active = name !== ""
-					}
+			Repeater {
+				id: viewRep
+				model: tabRepeater.model
+				Loader {
+
+					id: _playerLoader
+					active: false
 				}
 			}
 		}

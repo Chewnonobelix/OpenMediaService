@@ -99,6 +99,9 @@ void LibraryDataModel::onUpdateLibraries() {
 	clear();
 	setCurrentIndex(-1);
 
+	if (!AbstractController::db())
+		return;
+
 	for (auto it : AbstractController::db()->selectLibrary().values())
 		insertData(it);
 }

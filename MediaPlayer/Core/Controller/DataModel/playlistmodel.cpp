@@ -67,9 +67,10 @@ void PlaylistModel::setNormal(QList<PlaylistPointer> n) {
 }
 
 int PlaylistModel::currentIndex() const { return m_currentIndex; }
+
 void PlaylistModel::setCurrentIndex(int index) {
 	m_currentIndex = index;
-	emit currentIndexChanged();
+	emit currentIndexChanged(current());
 }
 
 PlaylistPointer PlaylistModel::current() const {
@@ -79,4 +80,12 @@ PlaylistPointer PlaylistModel::current() const {
 	return m_currentIndex < m_smarts.size()
 						 ? m_smarts[m_currentIndex]
 						 : m_normals[m_currentIndex - m_smarts.size()];
+}
+
+void PlaylistModel::onLibraryChanged(LibraryPointer l) {
+	if (l.isNull())
+		return;
+
+	setSmart(l->smartPlaylist().values());
+	setNormal(l->playlist().values());
 }
