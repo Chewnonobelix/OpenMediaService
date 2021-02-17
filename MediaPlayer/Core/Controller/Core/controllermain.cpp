@@ -39,30 +39,32 @@ void ControllerMain::exec() {
 	context->setContextProperty("_db", db());
 	m_libraries << new ControllerLibrary;
 	m_libraries.first()->exec();
+	m_librariesModel = new LibraryDataModel;
+	m_playlistModel = new PlaylistModel;
 
-	context->setContextProperty("_librariesModel", &m_librariesModel);
-	context->setContextProperty("_playlistModel", &m_playlistModel);
+	context->setContextProperty("_librariesModel", m_librariesModel);
+	context->setContextProperty("_playlistModel", m_playlistModel);
 
-	connect(&m_librariesModel, &LibraryDataModel::currentModelChanged,
+	connect(m_librariesModel, &LibraryDataModel::currentModelChanged,
 					[this](LibraryPointer l) {
 						m_libraries[m_currentTab]->onCurrentModelChanged(l);
 						m_libraries[m_currentTab]->setModelIndex(
-								m_librariesModel.currentIndex());
+								m_librariesModel->currentIndex());
 					});
 
-	connect(&m_playlistModel, &PlaylistModel::currentIndexChanged,
+	connect(m_playlistModel, &PlaylistModel::currentIndexChanged,
 					[this](PlaylistPointer p) {
 						m_libraries[m_currentTab]->onCurrentPlaylistChanged(p);
 					});
 
-	connect(&m_librariesModel, &LibraryDataModel::currentModelChanged,
-					&m_playlistModel, &PlaylistModel::onLibraryChanged);
+	connect(m_librariesModel, &LibraryDataModel::currentModelChanged,
+					m_playlistModel, &PlaylistModel::onLibraryChanged);
 
 	connect(m_libraries.first(), &ControllerLibrary::currentLibraryChanged, this,
 					&ControllerMain::onLibraryChanged);
 
 	m_engine->createWindow(QUrl("/Main.qml"));
-	m_librariesModel.onUpdateLibraries();
+	m_librariesModel->onUpdateLibraries();
 }
 
 QQmlApplicationEngine &ControllerMain::engine() {
@@ -92,5 +94,5 @@ void ControllerMain::addTab() {
 void ControllerMain::onTabChanged(int index) {
 	qDebug() << index << m_libraries[index]->modelIndex();
 	m_currentTab = index;
-	m_librariesModel.setCurrentIndex(m_libraries[index]->modelIndex());
+	m_librariesModel->setCurrentIndex(m_libraries[index]->modelIndex());
 }

@@ -20,8 +20,8 @@ class MEDIAPLAYERCORE_EXPORT ControllerMain : public AbstractController {
 
 private:
 	QList<QPointer<ControllerLibrary>> m_libraries;
-	LibraryDataModel m_librariesModel;
-	PlaylistModel m_playlistModel;
+	QPointer<LibraryDataModel> m_librariesModel;
+	QPointer<PlaylistModel> m_playlistModel;
 	int m_currentTab = 0;
 
 	QQmlApplicationEngine &engine();
