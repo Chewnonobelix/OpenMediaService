@@ -9,6 +9,19 @@ import MediaPlayer.Components 1.0
 ColumnLayout {
 	id: root
 
+	SplitView.fillHeight: SplitView.view.count === 1 || SplitView.view.orientation === Qt.Horizontal
+	SplitView.fillWidth: SplitView.view.count === 1 || SplitView.view.orientation === Qt.Vertical
+
+	SplitView.onFillWidthChanged: {
+		if(!SplitView.fillWidth)
+			SplitView.preferredWidth = SplitView.view.width / SplitView.view.count
+	}
+
+	SplitView.onFillHeightChanged: {
+		if(!SplitView.fillHeight)
+			SplitView.preferredHeight = SplitView.view.height / SplitView.view.count
+	}
+
 	TabBar {
 		id: viewBar
 
@@ -64,7 +77,6 @@ ColumnLayout {
 			id: viewRep
 			model: tabRepeater.model
 			Loader {
-
 				id: _playerLoader
 				active: false
 			}

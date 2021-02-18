@@ -31,6 +31,7 @@ ApplicationWindow {
 	}
 
 	GridLayout {
+		id: layout
 		anchors.fill: parent
 		columnSpacing: root.width * 0.01
 		rowSpacing: root.height * 0.01
@@ -275,11 +276,66 @@ ApplicationWindow {
 			}
 		}
 
-		View {
+		Menu {
+			id: splitMenu
+			MenuItem {
+				text: "Split1"
+				onClicked: splitView.addNew()
+			}
+		}
+
+		MouseArea {
+			z: 5
 			Layout.row: 0
 			Layout.column: 2
 			Layout.rowSpan: 3
 			Layout.columnSpan: 1
+			Layout.fillHeight: true
+			Layout.fillWidth: true
+			acceptedButtons: Qt.RightButton
+
+			onClicked: {
+				splitMenu.open()
+			}
+
+
+			SplitView {
+				id: splitView
+				anchors.fill: parent
+				orientation: Qt.Horizontal
+
+				property var component;
+				property var sprite;
+
+				function addNew() {
+					component = Qt.createComponent("View.qml");
+					if (component.status === Component.Ready)
+						finishCreation();
+					else
+						component.statusChanged.connect(finishCreation);
+				}
+
+				function finishCreation() {
+					if (component.status === Component.Ready) {
+						sprite = component.createObject(this, {});
+						if (sprite === null) {
+							// Error Handling
+							console.log("Error creating object");
+						}
+						else {
+							addItem(sprite)
+						}
+					} else if (component.status === Component.Error) {
+						// Error Handling
+						console.log("Error loading component:", component.errorString());
+					}
+				}
+
+
+				View {
+
+				}
+			}
 		}
 	}
 }
