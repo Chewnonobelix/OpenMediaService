@@ -1,6 +1,6 @@
 #include "controllermain.h"
 
-ControllerMain::ControllerMain() : AbstractController(), m_libraries() {
+ControllerMain::ControllerMain() : AbstractController() {
 	engine().addImportPath(QStringLiteral(QML_IMPORT_PATH));
 	qDebug() << QStringLiteral(QML_IMPORT_PATH) << "Wesh"
 					 << engine().importPathList();
@@ -37,34 +37,38 @@ void ControllerMain::exec() {
 	auto *context = engine().rootContext();
 	context->setContextProperty("_main", this);
 	context->setContextProperty("_db", db());
-	m_libraries << new ControllerLibrary;
-	m_libraries.first()->exec();
+	//	m_libraries << new ControllerLibrary;
+	//	m_libraries.first()->exec();
 	m_librariesModel = new LibraryDataModel;
 	m_playlistModel = new PlaylistModel;
 
 	context->setContextProperty("_librariesModel", m_librariesModel);
 	context->setContextProperty("_playlistModel", m_playlistModel);
 
-	connect(m_librariesModel, &LibraryDataModel::currentModelChanged,
-					[this](LibraryPointer l) {
-						m_libraries[m_currentTab]->onCurrentModelChanged(l);
-						m_libraries[m_currentTab]->setModelIndex(
-								m_librariesModel->currentIndex());
-					});
+	//	connect(m_librariesModel, &LibraryDataModel::currentModelChanged,
+	//					[this](LibraryPointer l) {
+	//						m_libraries[m_currentTab]->onCurrentModelChanged(l);
+	//						m_libraries[m_currentTab]->setModelIndex(
+	//								m_librariesModel->currentIndex());
+	//					});
 
-	connect(m_playlistModel, &PlaylistModel::currentIndexChanged,
-					[this](PlaylistPointer p) {
-						m_libraries[m_currentTab]->onCurrentPlaylistChanged(p);
-					});
+	//	connect(m_playlistModel, &PlaylistModel::currentIndexChanged,
+	//					[this](PlaylistPointer p) {
+	//						m_libraries[m_currentTab]->onCurrentPlaylistChanged(p);
+	//					});
+
+	connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
+					&LibraryDataModel::onUpdateLibraries);
 
 	connect(m_librariesModel, &LibraryDataModel::currentModelChanged,
 					m_playlistModel, &PlaylistModel::onLibraryChanged);
 
-	connect(m_libraries.first(), &ControllerLibrary::currentLibraryChanged, this,
-					&ControllerMain::onLibraryChanged);
+	//	connect(m_libraries.first(), &ControllerLibrary::currentLibraryChanged,
+	// this, &ControllerMain::onLibraryChanged);
 
 	m_engine->createWindow(QUrl("/Main.qml"));
-	m_librariesModel->onUpdateLibraries();
+
+	emit db()->librariesChanged();
 }
 
 QQmlApplicationEngine &ControllerMain::engine() {
@@ -86,13 +90,13 @@ void ControllerMain::onLibraryChanged() {
 
 void ControllerMain::addTab() {
 	QPointer<ControllerLibrary> t = new ControllerLibrary;
-	m_libraries << (t);
-	connect(m_libraries.last(), &ControllerLibrary::currentLibraryChanged, this,
-					&ControllerMain::onLibraryChanged);
+	//	m_libraries << (t);
+	//	connect(m_libraries.last(), &ControllerLibrary::currentLibraryChanged,
+	// this, &ControllerMain::onLibraryChanged);
 }
 
 void ControllerMain::onTabChanged(int index) {
-	qDebug() << index << m_libraries[index]->modelIndex();
+	//	qDebug() << index << m_libraries[index]->modelIndex();
 	m_currentTab = index;
-	m_librariesModel->setCurrentIndex(m_libraries[index]->modelIndex());
+	//	m_librariesModel->setCurrentIndex(m_libraries[index]->modelIndex());
 }

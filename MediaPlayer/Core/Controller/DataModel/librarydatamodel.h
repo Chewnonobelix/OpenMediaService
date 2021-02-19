@@ -5,7 +5,8 @@
 
 #include "../../mediaplayercore_global.h"
 
-#include "../Core/abstractcontroller.h"
+#include <Controller/Data/interfacesaver.h>
+
 #include "Model/global.h"
 #include "Model/library.h"
 

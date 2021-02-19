@@ -22,10 +22,6 @@ ApplicationWindow {
 	}
 
 
-	Connections {
-		target: _libraries
-	}
-
 	LibraryPopup {
 		id: addLibraryPop
 	}
@@ -148,8 +144,11 @@ ApplicationWindow {
 				required property string name
 				required property string role
 				required property int index
+				required property string id
 
 				text: name
+
+				onClicked: console.log("id", id)
 
 				onDoubleClicked:  {
 					ListView.view.currentIndex = index

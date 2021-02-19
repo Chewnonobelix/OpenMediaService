@@ -2,9 +2,8 @@
 
 #include <QAbstractListModel>
 
+#include <Model/library.h>
 #include <Model/smartplaylist.h>
-
-#include <Controller/Core/abstractcontroller.h>
 
 class MEDIAPLAYERCORE_EXPORT PlaylistModel : public QAbstractListModel {
 	Q_OBJECT
