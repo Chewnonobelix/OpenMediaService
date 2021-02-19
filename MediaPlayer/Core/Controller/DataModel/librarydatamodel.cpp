@@ -111,3 +111,17 @@ void LibraryDataModel::setCurrentIndex(int index) {
 }
 
 int LibraryDataModel::currentIndex() const { return m_currentIndex; }
+
+int LibraryDataModel::indexOf(LibraryPointer lp) const {
+	return m_libraries.indexOf(lp);
+}
+
+LibraryPointer LibraryDataModel::operator[](QUuid id) const {
+	LibraryPointer ret;
+
+	for (auto it : m_libraries)
+		if (it->id() == id)
+			ret = it;
+
+	return ret;
+}
