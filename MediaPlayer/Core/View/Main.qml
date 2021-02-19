@@ -87,8 +87,7 @@ ApplicationWindow {
 
 
 			onCurrentIndexChanged: {
-				_librariesModel.currentIndex = currentIndex
-
+//				_librariesModel.currentIndex = currentIndex
 				if(_playlist.currentIndex !== -1) {
 					_playlist.currentIndex = -1
 					_playlist.currentIndex = 0
@@ -148,7 +147,9 @@ ApplicationWindow {
 
 				text: name
 
-				onClicked: console.log("id", id)
+				onClicked: {
+					console.log("id", id)
+				}
 
 				onDoubleClicked:  {
 					ListView.view.currentIndex = index
@@ -331,9 +332,7 @@ ApplicationWindow {
 				}
 
 
-				View {
-
-				}
+				Component.onCompleted: addNew()
 			}
 		}
 	}
