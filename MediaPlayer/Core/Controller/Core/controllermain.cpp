@@ -88,13 +88,6 @@ void ControllerMain::onLibraryChanged() {
 	}
 }
 
-void ControllerMain::addTab() {
-	QPointer<ControllerLibrary> t = new ControllerLibrary;
-	//	m_libraries << (t);
-	//	connect(m_libraries.last(), &ControllerLibrary::currentLibraryChanged,
-	// this, &ControllerMain::onLibraryChanged);
-}
-
 void ControllerMain::onTabChanged(int index) {
 	//	qDebug() << index << m_libraries[index]->modelIndex();
 	m_currentTab = index;

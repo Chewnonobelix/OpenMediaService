@@ -31,7 +31,6 @@ public:
 
 public slots:
 	void onLibraryChanged();
-	void addTab();
 
 signals:
 	void playlistDisplay(QString);
