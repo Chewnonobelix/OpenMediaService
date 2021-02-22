@@ -150,6 +150,7 @@ ApplicationWindow {
 
 				onClicked: {
 					CoreModel.clStatic.setCurrentLibrary(id)
+					_librariesModel.currentIndex = index
 				}
 
 				onDoubleClicked:  {

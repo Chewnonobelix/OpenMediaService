@@ -45,13 +45,8 @@ void ControllerMain::exec() {
 	context->setContextProperty("_librariesModel", m_librariesModel);
 	context->setContextProperty("_playlistModel", m_playlistModel);
 
-	//	connect(m_librariesModel, &LibraryDataModel::currentModelChanged,
-	//					[this](LibraryPointer l) {
-	//						m_libraries[m_currentTab]->onCurrentModelChanged(l);
-	//						m_libraries[m_currentTab]->setModelIndex(
-	//								m_librariesModel->currentIndex());
-	//					});
-
+	connect(m_librariesModel, &LibraryDataModel::currentModelChanged, this,
+					&ControllerMain::onLibraryChanged);
 	//	connect(m_playlistModel, &PlaylistModel::currentIndexChanged,
 	//					[this](PlaylistPointer p) {
 	//						m_libraries[m_currentTab]->onCurrentPlaylistChanged(p);

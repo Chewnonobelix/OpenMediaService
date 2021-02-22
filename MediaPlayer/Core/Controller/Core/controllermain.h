@@ -28,7 +28,7 @@ public:
 	void exec();
 
 public slots:
-	void onLibraryChanged();
+	void onLibraryChanged(LibraryPointer p);
 
 signals:
 	void playlistDisplay(QString);
