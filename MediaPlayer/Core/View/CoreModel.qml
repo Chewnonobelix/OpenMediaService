@@ -1,8 +1,13 @@
 pragma Singleton
 import QtQuick 2.15
 import MediaPlayer 1.0
+import MediaPlayer.Model 1.0
 
 QtObject {
+		property ControllerLibrary clStatic: ControllerLibrary {
+		id: clStatic
+	}
+
     property ListModel typeModel: ListModel {
 				id: _typeModel
         ListElement {

@@ -23,9 +23,9 @@ void ControllerMain::exec() {
 	qDebug() << "LibraryDataModel"
 					 << qmlRegisterType<LibraryDataModel>("MediaPlayer.Model", 1, 0,
 																								"LibraryDataModel");
-	qDebug() << "ControllerLibrairy"
+	qDebug() << "ControllerLibrary"
 					 << qmlRegisterType<ControllerLibrary>("MediaPlayer.Model", 1, 0,
-																								 "ControllerLibrairy");
+																								 "ControllerLibrary");
 	qDebug() << "MediaRole QML"
 					 << qmlRegisterUncreatableMetaObject(
 									MediaPlayerGlobal::staticMetaObject, "MediaPlayer", 1, 0,
@@ -86,10 +86,4 @@ void ControllerMain::onLibraryChanged() {
 		emit playlistDisplay("");
 		emit playerDisplay("", m_currentTab);
 	}
-}
-
-void ControllerMain::onTabChanged(int index) {
-	//	qDebug() << index << m_libraries[index]->modelIndex();
-	m_currentTab = index;
-	//	m_librariesModel->setCurrentIndex(m_libraries[index]->modelIndex());
 }

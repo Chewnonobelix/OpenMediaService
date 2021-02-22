@@ -1,12 +1,20 @@
 #include "controllerlibrary.h"
 
+QMap<ControllerLibrary *, bool> ControllerLibrary::m_actives =
+		QMap<ControllerLibrary *, bool>();
+
 ControllerLibrary::ControllerLibrary() {
 	auto *context = m_engine->qmlEngine().rootContext();
 	context->setContextProperty("_libraries", this);
+	m_actives[this] = isActive();
 }
 
 ControllerLibrary::ControllerLibrary(const ControllerLibrary &)
-		: AbstractController() {}
+		: AbstractController() {
+	m_actives[this] = isActive();
+}
+
+ControllerLibrary::~ControllerLibrary() { m_actives.remove(this); }
 
 void ControllerLibrary::exec() {}
 
@@ -68,4 +76,24 @@ int ControllerLibrary::modelIndex() const { return m_modelIndex; }
 void ControllerLibrary::setModelIndex(int i) {
 	m_modelIndex = i;
 	emit modelIndexChanged();
+}
+
+void ControllerLibrary::setCurrentLibrary(QString id) {
+	qDebug() << "Set" << m_actives.key(true) << id << this;
+	auto p = (*m_librariesModel)[QUuid::fromString(id)];
+	m_actives.key(true)->onCurrentModelChanged(p);
+}
+
+bool ControllerLibrary::isActive() const { return m_isActive; }
+
+void ControllerLibrary::setActive(bool a) {
+	m_isActive = a;
+	emit isActiveChanged();
+
+	if (a) {
+		for (auto it : m_actives.keys())
+			m_actives[it] = false;
+
+		m_actives[this] = a;
+	}
 }

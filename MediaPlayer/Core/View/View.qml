@@ -39,7 +39,7 @@ ColumnLayout {
 			MediaTabButton {
 				text: qsTr("Tab ") + modelData
 				onClicked: {
-					_main.onTabChanged(modelData)
+					viewRep.itemAt(modelData).model.isActive = true
 				}
 			}
 		}
@@ -73,12 +73,18 @@ ColumnLayout {
 			}
 		}
 
+		onCurrentIndexChanged: {
+		}
+
 		Repeater {
 			id: viewRep
 			model: tabRepeater.model
 			Loader {
 				id: _playerLoader
 				active: false
+				property ControllerLibrary model: ControllerLibrary {
+					isActive: true
+				}
 			}
 		}
 	}

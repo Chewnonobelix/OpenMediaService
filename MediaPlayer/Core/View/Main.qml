@@ -91,6 +91,7 @@ ApplicationWindow {
 				if(_playlist.currentIndex !== -1) {
 					_playlist.currentIndex = -1
 					_playlist.currentIndex = 0
+
 				}
 			}
 
@@ -148,7 +149,7 @@ ApplicationWindow {
 				text: name
 
 				onClicked: {
-					console.log("id", id)
+					CoreModel.clStatic.setCurrentLibrary(id)
 				}
 
 				onDoubleClicked:  {

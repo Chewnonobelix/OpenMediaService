@@ -27,8 +27,6 @@ public:
 
 	void exec();
 
-	Q_INVOKABLE void onTabChanged(int);
-
 public slots:
 	void onLibraryChanged();
 
