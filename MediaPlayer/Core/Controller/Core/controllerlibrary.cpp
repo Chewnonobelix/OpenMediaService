@@ -79,7 +79,6 @@ void ControllerLibrary::setModelIndex(int i) {
 }
 
 void ControllerLibrary::setCurrentLibrary(QString id) {
-	qDebug() << "Set" << m_actives.key(true) << id << this;
 	auto p = (*m_librariesModel)[QUuid::fromString(id)];
 	m_actives.key(true)->onCurrentModelChanged(p);
 }
@@ -95,5 +94,8 @@ void ControllerLibrary::setActive(bool a) {
 			m_actives[it] = false;
 
 		m_actives[this] = a;
+
+		auto index = m_librariesModel->indexOf(m_currentLibrary);
+		m_librariesModel->setCurrentIndex(index);
 	}
 }
