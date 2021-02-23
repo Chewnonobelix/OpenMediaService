@@ -59,3 +59,7 @@ void ControllerImage::playing() {
 void ControllerImage::stop() { m_timer.stop(); }
 
 void ControllerImage::onTimeout() { m_current->next(); }
+
+QSharedPointer<InterfacePlugins> ControllerImage::clone() const {
+	return QSharedPointer<ControllerImage>::create();
+}

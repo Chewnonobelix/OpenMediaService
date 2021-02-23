@@ -2,6 +2,7 @@
 
 #include <QCoreApplication>
 #include <QObject>
+#include <QQmlComponent>
 #include <QQmlContext>
 
 #include <mediaplayercore_global.h>
@@ -28,9 +29,9 @@ public:
 	void exec();
 
 public slots:
-	void onLibraryChanged(LibraryPointer p);
+	void onLibraryChanged(LibraryPointer);
 
 signals:
 	void playlistDisplay(QString);
-	void playerDisplay(QString, int);
+	void componentChanged(QQmlComponent *);
 };

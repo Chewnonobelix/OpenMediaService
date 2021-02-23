@@ -19,3 +19,7 @@ MediaRole ControllerVideo::role() const { return MediaRole::Video; }
 QStringList ControllerVideo::filters() const {
 	return {"ts", "mp4", "mkv", "avi"};
 }
+
+QSharedPointer<InterfacePlugins> ControllerVideo::clone() const {
+	return QSharedPointer<ControllerVideo>::create();
+}

@@ -19,7 +19,7 @@ Item {
 			anchors.fill: parent
 
 			MediaCombobox {
-				model: ["Librairy"]
+				model: ["Library"]
 
 				Layout.preferredHeight: toolbar.height
 			}

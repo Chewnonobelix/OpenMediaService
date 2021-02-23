@@ -70,15 +70,15 @@ QQmlApplicationEngine &ControllerMain::engine() {
 	return m_engine->qmlEngine();
 }
 
-void ControllerMain::onLibraryChanged() {
-	auto s = (ControllerLibrary *)sender();
-	auto role = s->currentLibrary()->role();
-
-	if (m_manager[role]) {
-		emit playlistDisplay(m_manager[role]->playlistView());
-		emit playerDisplay(m_manager[role]->playerView(), m_currentTab);
-	} else {
-		emit playlistDisplay("");
-		emit playerDisplay("", m_currentTab);
+void ControllerMain::onLibraryChanged(LibraryPointer p) {
+	if (p) {
+		auto &eng = engine();
+		auto c = m_manager[p->role()]->clone();
+		QQmlContext context(eng.rootContext());
+		context.setContextProperty("_controller", QVariant::fromValue(c.data()));
+		auto player = c->playerView();
+		QQmlComponent comp(&eng, QUrl(player));
+		comp.create(&context);
+		emit componentChanged(&comp);
 	}
 }

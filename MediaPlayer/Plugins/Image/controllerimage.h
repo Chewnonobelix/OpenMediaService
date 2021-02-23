@@ -29,6 +29,7 @@ public:
 
 	MediaRole role() const override;
 	QStringList filters() const override;
+	QSharedPointer<InterfacePlugins> clone() const override;
 
 public slots:
 	void onCurrentIndexChanged(int);

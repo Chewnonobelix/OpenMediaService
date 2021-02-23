@@ -65,11 +65,12 @@ ColumnLayout {
 		Connections {
 			target: _main
 
-			function onPlayerDisplay(name, tab) {
+			function onComponentChanged(comp) {
+				var tab = viewBar.currentIndex
 				var it = viewRep.itemAt(tab)
 
-				it.source = name
-				it.active = name !== ""
+				it.sourceComponent = comp
+				it.active = comp !== null
 			}
 		}
 
