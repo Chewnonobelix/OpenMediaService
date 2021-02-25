@@ -99,3 +99,7 @@ void ControllerLibrary::setActive(bool a) {
 		m_librariesModel->setCurrentIndex(index);
 	}
 }
+
+PlaylistModel *ControllerLibrary::playlist() { return &m_playlist; }
+
+ControllerLibrary *ControllerLibrary::active() { return m_actives.key(true); }

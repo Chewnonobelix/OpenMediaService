@@ -17,12 +17,14 @@ class ControllerLibrary : public AbstractController {
 								 modelIndexChanged)
 
 	Q_PROPERTY(bool isActive READ isActive WRITE setActive NOTIFY isActiveChanged)
+	Q_PROPERTY(PlaylistModel *playlist READ playlist)
 
 private:
 	static QMap<ControllerLibrary *, bool> m_actives;
 	bool m_isActive = false;
 
 	LibraryPointer m_currentLibrary;
+	PlaylistModel m_playlist;
 	int m_modelIndex = -1;
 
 public:
@@ -33,6 +35,7 @@ public:
 	void exec() override;
 
 	Library *currentLibrary() const;
+	PlaylistModel *playlist();
 
 	Q_INVOKABLE void open();
 
@@ -48,6 +51,8 @@ public:
 
 	bool isActive() const;
 	void setActive(bool);
+
+	static ControllerLibrary *active();
 
 signals:
 	void currentLibraryChanged();
