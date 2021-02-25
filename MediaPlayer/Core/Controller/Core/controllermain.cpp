@@ -40,8 +40,10 @@ void ControllerMain::exec() {
 	//	m_libraries << new ControllerLibrary;
 	//	m_libraries.first()->exec();
 	m_librariesModel = new LibraryDataModel;
+	m_playlistModel = new PlaylistModel;
 
 	context->setContextProperty("_librariesModel", m_librariesModel);
+	context->setContextProperty("_playlistModel", m_playlistModel);
 
 	connect(m_librariesModel, &LibraryDataModel::currentModelChanged, this,
 					&ControllerMain::onLibraryChanged);
@@ -53,9 +55,8 @@ void ControllerMain::exec() {
 	connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
 					&LibraryDataModel::onUpdateLibraries);
 
-	//	connect(m_librariesModel, &LibraryDataModel::currentModelChanged,
-	//					m_playlistModel,
-	//&PlaylistModel::onLibraryChanged);
+	connect(m_librariesModel, &LibraryDataModel::currentModelChanged,
+					m_playlistModel, &PlaylistModel::onLibraryChanged);
 
 	//	connect(m_libraries.first(), &ControllerLibrary::currentLibraryChanged,
 	// this, &ControllerMain::onLibraryChanged);

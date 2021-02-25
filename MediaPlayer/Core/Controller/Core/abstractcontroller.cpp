@@ -4,6 +4,7 @@ InterfaceSaver *AbstractController::m_db = nullptr;
 QThread *AbstractController::m_dbThread = new QThread();
 QPointer<LiveQmlEngine> AbstractController::m_engine = nullptr;
 QPointer<LibraryDataModel> AbstractController::m_librariesModel = nullptr;
+QPointer<PlaylistModel> AbstractController::m_playlistModel = nullptr;
 PluginManager AbstractController::m_manager = PluginManager();
 
 AbstractController::AbstractController() : QObject() {
