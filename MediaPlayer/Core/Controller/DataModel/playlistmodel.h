@@ -2,6 +2,7 @@
 
 #include <QAbstractListModel>
 
+#include <Controller/Core/controllerlibrary.h>
 #include <Model/library.h>
 #include <Model/smartplaylist.h>
 
@@ -28,6 +29,7 @@ public:
 	void setCurrentIndex(int);
 
 	PlaylistPointer current() const;
+	PlaylistPointer operator[](int) const;
 
 public:
 	QVariant data(const QModelIndex &index, int role) const override;
