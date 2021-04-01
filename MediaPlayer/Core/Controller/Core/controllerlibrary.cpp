@@ -32,3 +32,11 @@ void ControllerLibrary::removePlaylist(QString id) {
 	m_current->removePlaylist(id);
 	m_current->removeSmartPlaylist(id);
 }
+
+Library *ControllerLibrary::library() const { return m_current.data(); }
+
+void ControllerLibrary::setCurrentLibrary(QString id) {
+	auto uid = QUuid::fromString(id);
+	m_current = (*m_librariesModel)[uid];
+	emit libraryChanged();
+}

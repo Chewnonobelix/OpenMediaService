@@ -149,6 +149,7 @@ ApplicationWindow {
 
 				onClicked: {
 					_librariesModel.currentIndex = index
+					splitView.currentLibrary.setCurrentLibrary(id)
 				}
 
 				onDoubleClicked:  {
