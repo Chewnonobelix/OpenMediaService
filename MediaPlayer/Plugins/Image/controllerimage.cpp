@@ -9,15 +9,19 @@ void ControllerImage::exec() {
 					&ControllerImage::setMedia);
 	connect(&m_timer, &QTimer::timeout, this, &ControllerImage::onTimeout);
 	m_timer.setInterval(2000);
+	m_playlist = new QQmlComponent(&(m_engine->qmlEngine()),
+																 QUrl("qrc:/image/ImagePlaylist.qml"));
+	m_playlist->create(context);
 }
 
 QString ControllerImage::playerView() const {
 	return "qrc:/image/ImagePlayer.qml";
 }
 
-QString ControllerImage::playlistView() const {
+QQmlComponent *ControllerImage::playlistView() {
 
-	return "qrc:/image/ImagePlaylist.qml";
+	return m_playlist;
+	//	return "qrc:/image/ImagePlaylist.qml";
 }
 
 void ControllerImage::setPlaylist(PlaylistPointer p) {

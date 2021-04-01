@@ -6,12 +6,23 @@ import MediaPlayer 1.0
 import MediaPlayer.Model 1.0
 import MediaPlayer.Components 1.0
 
-ColumnLayout {
+
+Item {
 	id: root
+
+	MouseArea {
+		anchors.fill: parent
+		propagateComposedEvents: true
+		onClicked: function(mouse) {
+			mouse.accepted = false
+			root.clicked(currentLibrary)
+		}
+	}
+
+	signal clicked (ControllerLibrary lib)
 
 	SplitView.fillHeight: SplitView.view.count === 1 || SplitView.view.orientation === Qt.Horizontal
 	SplitView.fillWidth: SplitView.view.count === 1 || SplitView.view.orientation === Qt.Vertical
-
 	SplitView.onFillWidthChanged: {
 		if(!SplitView.fillWidth)
 			SplitView.preferredWidth = SplitView.view.width / SplitView.view.count
@@ -22,69 +33,78 @@ ColumnLayout {
 			SplitView.preferredHeight = SplitView.view.height / SplitView.view.count
 	}
 
-	TabBar {
-		id: viewBar
+	property ControllerLibrary currentLibrary: viewRep.itemAt(0).model
 
-		Layout.fillWidth: true
-		Layout.preferredHeight: root.height * 0.10
+	onCurrentLibraryChanged: root.clicked(currentLibrary)
+	ColumnLayout {
+		anchors.fill: parent
 
-		Component.onCompleted: {
-			currentIndex = 0
-		}
+		TabBar {
+			id: viewBar
 
-		Repeater {
-			id: tabRepeater
-			model: 1
+			Layout.fillWidth: true
+			Layout.preferredHeight: root.height * 0.10
+
+			Component.onCompleted: {
+				currentIndex = 0
+			}
+
+			onCurrentIndexChanged: {
+				if(viewRep.itemAt(currentIndex))
+					currentLibrary = viewRep.itemAt(currentIndex).model
+			}
+
+			Repeater {
+				id: tabRepeater
+				model: 1
+
+				MediaTabButton {
+					text: qsTr("Tab ") + modelData
+					onClicked: {
+					}
+				}
+			}
 
 			MediaTabButton {
-				text: qsTr("Tab ") + modelData
-				onClicked: {
-					viewRep.itemAt(modelData).model.isActive = true
+				text: "+"
+
+				onClicked:  {
+					tabRepeater.model = viewBar.currentIndex + 1
+					viewBar.currentIndex = viewBar.currentIndex - 1
 				}
 			}
 		}
 
-		MediaTabButton {
-			text: "+"
+		StackLayout {
+			id: view
+			currentIndex: viewBar.currentIndex
+			Layout.fillWidth: true
+			Layout.fillHeight: true
 
-			onClicked:  {
-				tabRepeater.model = viewBar.currentIndex + 1
-				viewBar.currentIndex = viewBar.currentIndex - 1
-				_main.addTab()
+			clip: true
+			Connections {
+				target: _main
+
+				function onComponentChanged(comp) {
+					var tab = viewBar.currentIndex
+					var it = viewRep.itemAt(tab)
+
+					it.sourceComponent = comp
+					it.active = comp !== null
+				}
 			}
-		}
-	}
 
-	StackLayout {
-		id: view
-		currentIndex: viewBar.currentIndex
-		Layout.fillWidth: true
-		Layout.fillHeight: true
-
-		clip: true
-		Connections {
-			target: _main
-
-			function onComponentChanged(comp) {
-				var tab = viewBar.currentIndex
-				var it = viewRep.itemAt(tab)
-
-				it.sourceComponent = comp
-				it.active = comp !== null
+			onCurrentIndexChanged: {
 			}
-		}
 
-		onCurrentIndexChanged: {
-		}
-
-		Repeater {
-			id: viewRep
-			model: tabRepeater.model
-			Loader {
-				id: _playerLoader
-				active: false
-				property ControllerLibrary model: ControllerLibrary {
-					isActive: true
+			Repeater {
+				id: viewRep
+				model: tabRepeater.model
+				Loader {
+					id: _playerLoader
+					active: false
+					property ControllerLibrary model: ControllerLibrary {
+					}
 				}
 			}
 		}

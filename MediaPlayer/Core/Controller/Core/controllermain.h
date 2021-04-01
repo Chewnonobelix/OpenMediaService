@@ -32,6 +32,6 @@ public slots:
 	void onLibraryChanged(LibraryPointer);
 
 signals:
-	void playlistDisplay(QString);
+	void playlistDisplay(QQmlComponent *);
 	void componentChanged(QQmlComponent *);
 };

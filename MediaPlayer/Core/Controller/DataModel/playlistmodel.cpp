@@ -1,4 +1,5 @@
 #include "playlistmodel.h"
+#include <Controller/Core/controllerlibrary.h>
 
 PlaylistModel::PlaylistModel(const PlaylistModel &) : QAbstractListModel() {}
 
@@ -71,9 +72,11 @@ void PlaylistModel::setCurrentIndex(int index) {
 	m_currentIndex = index;
 	emit currentIndexChanged(current());
 
-	auto cl = ControllerLibrary::active();
-	auto plug = cl->plugins();
-	plug->setPlaylist((*this)[index]);
+	//	auto cl = ControllerLibrary::active();
+	//	auto plug = cl->plugins();
+
+	//	if (plug)
+	//		plug->setPlaylist((*this)[index < 0 ? 0 : index]);
 }
 
 PlaylistPointer PlaylistModel::current() const {
@@ -86,11 +89,15 @@ PlaylistPointer PlaylistModel::current() const {
 }
 
 void PlaylistModel::onLibraryChanged(LibraryPointer l) {
+	qDebug() << "Connard" << l;
 	if (l.isNull())
 		return;
 
 	setSmart(l->smartPlaylist().values());
 	setNormal(l->playlist().values());
+
+	//	auto view = ControllerLibrary::active()->plugins()->playlistView();
+	//	emit displayChanged(view);
 }
 
 PlaylistPointer PlaylistModel::operator[](int index) const {

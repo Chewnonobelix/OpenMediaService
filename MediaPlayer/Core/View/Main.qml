@@ -87,7 +87,6 @@ ApplicationWindow {
 
 
 			onCurrentIndexChanged: {
-//				_librariesModel.currentIndex = currentIndex
 				if(_playlist.currentIndex !== -1) {
 					_playlist.currentIndex = -1
 					_playlist.currentIndex = 0
@@ -149,7 +148,6 @@ ApplicationWindow {
 				text: name
 
 				onClicked: {
-					CoreModel.clStatic.setCurrentLibrary(id)
 					_librariesModel.currentIndex = index
 				}
 
@@ -162,7 +160,6 @@ ApplicationWindow {
 
 		MediaList {
 			id: _playlist
-			model: _playlistModel
 
 			currentIndex: -1
 			Layout.preferredWidth: root.width * 0.20
@@ -173,9 +170,13 @@ ApplicationWindow {
 			Layout.columnSpan: 2
 
 			onCurrentIndexChanged:  {
-				_playlistModel.currentIndex = currentIndex
+				if(model)
+					model.currentIndex = currentIndex
 			}
 
+			onModelChanged: {
+				forceLayout()
+			}
 
 			headerPositioning: ListView.OverlayHeader
 			header: Rectangle {
@@ -263,15 +264,6 @@ ApplicationWindow {
 			width: root.width
 
 			Loader {
-				Connections {
-					target: _main
-
-					function onPlaylistDisplay(path) {
-						_playLoad.source = path
-						_playLoad.active = path !== ""
-					}
-				}
-
 				id: _playLoad
 				anchors.fill: parent
 				active: false
@@ -306,6 +298,11 @@ ApplicationWindow {
 				anchors.fill: parent
 				orientation: Qt.Horizontal
 
+				function onClicked(lib) {
+					_playlist.model = lib.playlist
+				}
+
+				onCurrentIndexChanged: console.log(currentIndex)
 				property var component;
 				property var sprite;
 
@@ -326,6 +323,7 @@ ApplicationWindow {
 						}
 						else {
 							addItem(sprite)
+							sprite.onClicked.connect(onClicked)
 						}
 					} else if (component.status === Component.Error) {
 						// Error Handling

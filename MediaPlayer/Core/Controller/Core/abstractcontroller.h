@@ -25,7 +25,6 @@ public:
 	static void setDb(QString);
 	static PluginManager m_manager;
 	static QPointer<LibraryDataModel> m_librariesModel;
-	static QPointer<PlaylistModel> m_playlistModel;
 
 signals:
 

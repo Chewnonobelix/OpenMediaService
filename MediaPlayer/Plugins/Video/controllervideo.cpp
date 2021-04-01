@@ -6,8 +6,10 @@ QString ControllerVideo::playerView() const {
 	return "qrc:/video/VideoPlayer.qml";
 }
 
-QString ControllerVideo::playlistView() const {
-	return "qrc:/video/VideoPlaylist.qml";
+QQmlComponent *ControllerVideo::playlistView() {
+	static QQmlComponent ret;
+	return &ret;
+	//	return "qrc:/video/VideoPlaylist.qml";
 }
 
 void ControllerVideo::setPlaylist(PlaylistPointer) {}

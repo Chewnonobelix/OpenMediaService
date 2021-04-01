@@ -1,8 +1,9 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QQmlComponent>
 
-#include <Controller/Core/controllerlibrary.h>
+//#include <Controller/Core/controllerlibrary.h>
 #include <Model/library.h>
 #include <Model/smartplaylist.h>
 
@@ -42,4 +43,5 @@ public slots:
 
 signals:
 	void currentIndexChanged(PlaylistPointer);
+	void displayChanged(QQmlComponent *);
 };

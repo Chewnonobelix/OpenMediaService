@@ -37,29 +37,15 @@ void ControllerMain::exec() {
 	auto *context = engine().rootContext();
 	context->setContextProperty("_main", this);
 	context->setContextProperty("_db", db());
-	//	m_libraries << new ControllerLibrary;
-	//	m_libraries.first()->exec();
 	m_librariesModel = new LibraryDataModel;
-	m_playlistModel = new PlaylistModel;
 
 	context->setContextProperty("_librariesModel", m_librariesModel);
-	context->setContextProperty("_playlistModel", m_playlistModel);
 
 	connect(m_librariesModel, &LibraryDataModel::currentModelChanged, this,
 					&ControllerMain::onLibraryChanged);
-	//	connect(m_playlistModel, &PlaylistModel::currentIndexChanged,
-	//					[this](PlaylistPointer p) {
-	//						m_libraries[m_currentTab]->onCurrentPlaylistChanged(p);
-	//					});
 
 	connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
 					&LibraryDataModel::onUpdateLibraries);
-
-	connect(m_librariesModel, &LibraryDataModel::currentModelChanged,
-					m_playlistModel, &PlaylistModel::onLibraryChanged);
-
-	//	connect(m_libraries.first(), &ControllerLibrary::currentLibraryChanged,
-	// this, &ControllerMain::onLibraryChanged);
 
 	m_engine->createWindow(QUrl("/Main.qml"));
 
