@@ -153,7 +153,7 @@ ApplicationWindow {
 
 				onDoubleClicked:  {
 					ListView.view.currentIndex = index
-					_libraries.open()
+					splitView.currentLibrary.open()
 				}
 			}
 		}
@@ -298,11 +298,12 @@ ApplicationWindow {
 				anchors.fill: parent
 				orientation: Qt.Horizontal
 
+				property ControllerLibrary currentLibrary
 				function onClicked(lib) {
+					currentLibrary = lib
 					_playlist.model = lib.playlist
 				}
 
-				onCurrentIndexChanged: console.log(currentIndex)
 				property var component;
 				property var sprite;
 
@@ -332,7 +333,10 @@ ApplicationWindow {
 				}
 
 
-				Component.onCompleted: addNew()
+				Component.onCompleted:  {
+					addNew()
+					currentLibrary = itemAt(0).currentLibrary
+				}
 			}
 		}
 	}

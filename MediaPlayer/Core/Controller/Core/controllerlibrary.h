@@ -23,4 +23,11 @@ public:
 	void exec() override;
 
 	PlaylistModel *playlist() const;
+
+	Q_INVOKABLE void open();
+
+	Q_INVOKABLE void addSourceDir(QString);
+	Q_INVOKABLE void removeSourceDir(QString);
+	Q_INVOKABLE void addPlaylist(bool = false);
+	Q_INVOKABLE void removePlaylist(QString);
 };
