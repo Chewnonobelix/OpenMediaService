@@ -211,11 +211,11 @@ ApplicationWindow {
 
 				MenuItem {
 					text: "Add smart playlist"
-					onClicked: _libraries.addPlaylist(true)
+                    onClicked: splitView.currentLibrary.addPlaylist(true)
 				}
 				MenuItem {
 					text: "Add playlist"
-					onClicked: _libraries.addPlaylist()
+                    onClicked: splitView.currentLibrary.addPlaylist()
 				}
 				MenuItem {
 					text: "Remove playlist"
@@ -226,11 +226,11 @@ ApplicationWindow {
 				id: menu2
 				MenuItem {
 					text: "Add smart playlist"
-					onClicked: _libraries.addPlaylist(true)
+                    onClicked: splitView.currentLibrary.addPlaylist(true)
 				}
 				MenuItem {
 					text: "Add playlist"
-					onClicked: _libraries.addPlaylist()
+                    onClicked: splitView.currentLibrary.addPlaylist()
 				}
 			}
 
@@ -337,7 +337,8 @@ ApplicationWindow {
 				Component.onCompleted:  {
 					addNew()
 					currentLibrary = itemAt(0).currentLibrary
-				}
+                    _playlist.model = lib.playlist
+                }
 			}
 		}
 	}

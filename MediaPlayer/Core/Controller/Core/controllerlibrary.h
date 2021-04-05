@@ -36,6 +36,9 @@ public:
 	Q_INVOKABLE void addPlaylist(bool = false);
 	Q_INVOKABLE void removePlaylist(QString);
 
+public slots:
+    void onUpdateLibrary();
+
 signals:
 	void libraryChanged();
 };
