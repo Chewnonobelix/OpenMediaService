@@ -337,7 +337,7 @@ ApplicationWindow {
 				Component.onCompleted:  {
 					addNew()
 					currentLibrary = itemAt(0).currentLibrary
-                    _playlist.model = lib.playlist
+                    _playlist.model = currentLibrary.playlist
                 }
 			}
 		}
