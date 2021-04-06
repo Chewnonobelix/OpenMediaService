@@ -1,9 +1,12 @@
 #include "librairyimagemodel.h"
 
 void LibrairyImageModel::setPlaylist(PlaylistPointer p) {
-	m_playlist = p;
+
+    m_playlist = p;
 	m_model.clear();
 	m_indexes.clear();
+    if(!p)
+        return;
 
 	for (auto it = 0; it < p->count(); it++) {
 		auto path = (*p)[it]->path();
@@ -65,11 +68,11 @@ void LibrairyImageModel::sort(int, Qt::SortOrder) {}
 
 int LibrairyImageModel::size() const { return m_model.size() - 1; }
 
-void LibrairyImageModel::modelAt(int index) {
+QStringList LibrairyImageModel::modelAt(int index) {
 
 	QStringList ret;
 	if (m_model.isEmpty())
-		return;
+        return {};
 
 	if (index == 0)
 		ret = m_model[0].uniqueKeys();
@@ -97,6 +100,8 @@ void LibrairyImageModel::modelAt(int index) {
 
 	emit indexesChanged(index, ret);
 	emit currentIndexChanged(index, ret.indexOf("All"));
+
+    return ret;
 }
 
 void LibrairyImageModel::setIndexes(int t, int i) {
@@ -149,4 +154,9 @@ void LibrairyImageModel::onDoubleClicked(int i) {
 
 	m_playlist->setReadOrder(read);
 	m_playlist->next();
+}
+
+PlayList* LibrairyImageModel::playlist() const
+{
+    return m_playlist.data();
 }

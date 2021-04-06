@@ -13,7 +13,7 @@ class LibrairyImageModel : public QAbstractListModel {
 	Q_OBJECT
 
 	Q_PROPERTY(int size READ size NOTIFY sizeChanged)
-
+    Q_PROPERTY(PlayList* playlist READ playlist)
 private:
 	enum class ImageRole {
 		PathRole = Qt::UserRole + 1,
@@ -28,6 +28,7 @@ private:
 	QList<int> m_indexes;
 	QList<MediaPointer> m_currentDisplay;
 
+    PlayList* playlist() const;
 public:
 	LibrairyImageModel() = default;
 	LibrairyImageModel(const LibrairyImageModel &);
@@ -35,7 +36,7 @@ public:
 
 	void setPlaylist(PlaylistPointer);
 	int size() const;
-	Q_INVOKABLE void modelAt(int);
+    Q_INVOKABLE QStringList modelAt(int);
 	Q_INVOKABLE void setIndexes(int, int);
 	Q_INVOKABLE void onDoubleClicked(int);
 

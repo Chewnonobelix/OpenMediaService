@@ -6,72 +6,75 @@ import MediaPlayer.Components 1.0
 
 
 Frame {
-	id: root
-	Connections {
-		target: _imageLibrairyModel
+    id: root
 
-		function onSizeChanged() {
-			_rep.model = _imageLibrairyModel.size
-		}
-	}
+    Connections {
+        target: _imageLibrairyModel
 
-	property string path
+        function onSizeChanged() {
+            _rep.model = _imageLibrairyModel.size
+        }
+    }
 
-	RowLayout {
-		anchors.fill: parent
-		spacing: 0
-		ScrollView {
-			Layout.fillHeight: true
-			Layout.preferredWidth: root.width * .80
-			clip:true
-			Row {
-			Repeater {
-				id: _rep
+    RowLayout {
+        anchors.fill: parent
+        spacing: 0
+        ScrollView {
+            id: _scroll
+            clip:true
+            Layout.fillHeight: true
+            Layout.preferredWidth: root.width * .80
 
-				Tumbler {
-					id: _tumb
-					Layout.fillHeight: true
-					Layout.preferredWidth: root.width * .20
-					Connections {
-						target: _imageLibrairyModel
+            Row {
+                id: _row
+                Repeater {
+                    id: _rep
 
-						function onIndexesChanged(index, list) {
-							if(modelData === index) {
-								_tumb.model = list
-							}
-						}
+                    model: _imageLibrairyModel ? _imageLibrairyModel.size : 0
+                    Tumbler {
+                        id: _tumb
+                        Layout.fillHeight: true
+                        Layout.preferredWidth: root.width * .20
+                        Connections {
+                            target: _imageLibrairyModel
 
-						function onCurrentIndexChanged(i, j) {
-							if(modelData === i) {
-								_tumb.currentIndex = j
-							}
-						}
-					}
+//                            function onIndexesChanged(index, list) {
+//                                if(modelData === index) {
+//                                    _tumb.model = list
+//                                }
+//                            }
 
-					model: _imageLibrairyModel.modelAt(modelData)
+                            function onCurrentIndexChanged(i, j) {
+                                if(modelData === i) {
+                                    _tumb.currentIndex = j
+                                }
+                            }
+                        }
 
-					//				property string currentModel: model[currentIndex]
+                        model: if(_imageLibrairyModel) _imageLibrairyModel.modelAt(modelData)
 
-					onCurrentIndexChanged: {
-						_imageLibrairyModel.setIndexes(modelData, currentIndex)
-					}
-				}
-		}
-			}
-		}
-		MediaList {
-			model: _imageLibrairyModel
-			Layout.fillHeight: true
-			Layout.preferredWidth: root.width * .20
+                        onCurrentIndexChanged: {
+                            _imageLibrairyModel.setIndexes(modelData, currentIndex)
+                        }
+                    }
+                }
+            }
+        }
+        MediaList {
+            id: _media
+            model: _imageLibrairyModel
+            Layout.fillHeight: true
+            Layout.preferredWidth: root.width * .20
 
-			delegate: MediaListItem {
-				text: name + ": " + count
+            delegate: MediaListItem {
+                text: name + ": " + count
 
-				onDoubleClicked: {
-					_imageLibrairyModel.onDoubleClicked(index)
-				}
-			}
-		}
-	}
+                onClicked: root.init()
+                onDoubleClicked: {
+                    _imageLibrairyModel.onDoubleClicked(index)
+                }
+            }
+        }
+    }
 
 }

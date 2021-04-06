@@ -22,6 +22,7 @@ Item {
 				model: ["Library"]
 
 				Layout.preferredHeight: toolbar.height
+
 			}
 
 
@@ -58,10 +59,15 @@ Item {
 			bottom: root.bottom
 		}
 		width: root.width
+        height: root.height * .90
 		StackView {
-			anchors.fill: parent
+            anchors.fill: parent
+            implicitWidth: width
+            implicitHeight: height
+
 			ImageLibrairyPlaylist {
-				anchors.fill: parent
+                id: _libView
+                anchors.fill: parent
 			}
 		}
 	}
