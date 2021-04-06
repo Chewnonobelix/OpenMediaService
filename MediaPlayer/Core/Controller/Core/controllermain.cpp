@@ -32,7 +32,7 @@ void ControllerMain::exec() {
 									"MediaPlayer",
 
 									"Media Player global");
-
+    qDebug()<<"InterfacePLugin"<<qmlRegisterUncreatableType<InterfacePlugins>("InterfacePlugin", 1, 0, "InterfacePlugin", "Interface type");
 	setDb("DataJson");
 	auto *context = engine().rootContext();
 	context->setContextProperty("_main", this);

@@ -264,6 +264,11 @@ ApplicationWindow {
 			height: root.height * .40
 			width: root.width
 
+            onOpened: {
+                _playLoad.sourceComponent = splitView.currentLibrary.playlistComponent
+                _playLoad.active = splitView.currentLibrary.playlistComponent !== null
+            }
+
 			Loader {
 				id: _playLoad
 				anchors.fill: parent

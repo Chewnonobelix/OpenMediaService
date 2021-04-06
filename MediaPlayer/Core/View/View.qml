@@ -103,6 +103,7 @@ Item {
 				Loader {
 					id: _playerLoader
 					active: false
+                    Component.onCompleted: model.exec()
 					property ControllerLibrary model: ControllerLibrary {
 					}
 				}
