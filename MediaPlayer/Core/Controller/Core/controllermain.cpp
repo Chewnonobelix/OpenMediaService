@@ -58,13 +58,13 @@ QQmlApplicationEngine &ControllerMain::engine() {
 
 void ControllerMain::onLibraryChanged(LibraryPointer p) {
 	if (p) {
-		auto &eng = engine();
-		auto c = m_manager[p->role()]->clone();
-		QQmlContext context(eng.rootContext());
-		context.setContextProperty("_controller", QVariant::fromValue(c.data()));
-		auto player = c->playerView();
-		QQmlComponent comp(&eng, QUrl(player));
-		comp.create(&context);
-		emit componentChanged(&comp);
+//		auto &eng = engine();
+//		auto c = m_manager[p->role()]->clone();
+//		QQmlContext context(eng.rootContext());
+//		context.setContextProperty("_controller", QVariant::fromValue(c.data()));
+//		auto player = c->playerView();
+//		QQmlComponent comp(&eng, QUrl(player));
+//		comp.create(&context);
+//		emit componentChanged(&comp);
 	}
 }

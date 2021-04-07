@@ -2,8 +2,10 @@
 
 void ControllerVideo::exec() {}
 
-QString ControllerVideo::playerView() const {
-	return "qrc:/video/VideoPlayer.qml";
+QQmlComponent * ControllerVideo::playerView() const {
+    static QQmlComponent ret;
+    return &ret;
+//	return "qrc:/video/VideoPlayer.qml";
 }
 
 QQmlComponent *ControllerVideo::playlistView() {

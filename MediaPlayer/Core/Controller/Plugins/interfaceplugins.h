@@ -14,7 +14,7 @@ public:
 	InterfacePlugins(const InterfacePlugins &) = default;
 	virtual ~InterfacePlugins() = default;
 
-	virtual QString playerView() const = 0;
+    virtual QQmlComponent* playerView() const = 0;
 	virtual QQmlComponent *playlistView() = 0;
 	virtual void setPlaylist(PlaylistPointer) = 0;
 	virtual void setMedia(MediaPointer) = 0;

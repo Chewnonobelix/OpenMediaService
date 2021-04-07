@@ -13,10 +13,14 @@ void ControllerImage::exec() {
     m_playlist = new QQmlComponent(&(m_engine->qmlEngine()),
                                    QUrl("qrc:/image/ImagePlaylist.qml"));
     m_playlist->create(context);
+
+    m_player = new QQmlComponent(&(m_engine->qmlEngine()), QUrl("qrc:/image/ImagePlayer.qml"));
+    m_playlist->create(context);
 }
 
-QString ControllerImage::playerView() const {
-    return "qrc:/image/ImagePlayer.qml";
+QQmlComponent * ControllerImage::playerView() const {
+    return m_player;
+//    return "qrc:/image/ImagePlayer.qml";
 }
 
 QQmlComponent *ControllerImage::playlistView() {

@@ -15,6 +15,7 @@ private:
 	LibrairyImageModel m_model;
 	QTimer m_timer;
 	QPointer<QQmlComponent> m_playlist;
+    QPointer<QQmlComponent> m_player;
 
 public:
 	ControllerImage() = default;
@@ -23,7 +24,7 @@ public:
 
 	void exec() override;
 
-	QString playerView() const override;
+    QQmlComponent * playerView() const override;
 	QQmlComponent *playlistView() override;
 	void setPlaylist(PlaylistPointer) override;
 	void setMedia(MediaPointer) override;

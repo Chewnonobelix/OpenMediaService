@@ -54,7 +54,7 @@ Frame {
                         model: if(_imageLibrairyModel) _imageLibrairyModel.modelAt(modelData)
 
                         onCurrentIndexChanged: {
-                            _imageLibrairyModel.setIndexes(modelData, currentIndex)
+                            if(_imageLI_imageLibrairyModel) _imageLibrairyModel.setIndexes(modelData, currentIndex)
                         }
                     }
                 }
