@@ -38,12 +38,6 @@ Frame {
                         Connections {
                             target: _imageLibrairyModel
 
-//                            function onIndexesChanged(index, list) {
-//                                if(modelData === index) {
-//                                    _tumb.model = list
-//                                }
-//                            }
-
                             function onCurrentIndexChanged(i, j) {
                                 if(modelData === i) {
                                     _tumb.currentIndex = j
@@ -54,7 +48,7 @@ Frame {
                         model: if(_imageLibrairyModel) _imageLibrairyModel.modelAt(modelData)
 
                         onCurrentIndexChanged: {
-                            if(_imageLI_imageLibrairyModel) _imageLibrairyModel.setIndexes(modelData, currentIndex)
+                            if(_imageLibrairyModel) _imageLibrairyModel.setIndexes(modelData, currentIndex)
                         }
                     }
                 }
