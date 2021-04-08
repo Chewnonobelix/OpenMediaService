@@ -77,3 +77,14 @@ QQmlComponent* ControllerLibrary::playerComponent() const
 {
     return m_plugin ? m_plugin->playerView() : nullptr;
 }
+
+int ControllerLibrary::currentIndex() const
+{
+    return m_currentIndex;
+}
+
+void ControllerLibrary::setCurrentIndex(int index)
+{
+    m_currentIndex = index;
+    emit currentIndexChanged();
+}

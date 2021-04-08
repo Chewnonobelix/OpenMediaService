@@ -63,7 +63,7 @@ Frame {
             delegate: MediaListItem {
                 text: name + ": " + count
 
-                onClicked: root.init()
+//                onClicked: root.init()
                 onDoubleClicked: {
                     _imageLibrairyModel.onDoubleClicked(index)
                 }

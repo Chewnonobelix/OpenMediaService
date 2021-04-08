@@ -82,17 +82,6 @@ Item {
             Layout.fillHeight: true
 
             clip: true
-            Connections {
-                target: _main
-
-//                function onComponentChanged(comp) {
-//                    var tab = viewBar.currentIndex
-//                    var it = viewRep.itemAt(tab)
-
-////                    it.sourceComponent = comp
-////                    it.active = comp !== null
-//                }
-            }
 
             onCurrentIndexChanged: {
             }
@@ -103,7 +92,9 @@ Item {
                 Loader {
                     id: _playerLoader
                     active: false
-                    Component.onCompleted: model.exec()
+                    Component.onCompleted:  {
+                        model.exec()
+                    }
                     property ControllerLibrary model: ControllerLibrary {
                         onPlayerComponentChanged: {
                             _playerLoader.sourceComponent = playerComponent

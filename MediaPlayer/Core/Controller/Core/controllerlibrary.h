@@ -13,17 +13,21 @@ class ControllerLibrary : public AbstractController {
 	Q_PROPERTY(Library *currentLibrary READ library NOTIFY libraryChanged)
     Q_PROPERTY(QQmlComponent* playlistComponent READ playlistComponent NOTIFY playlistComponentChanged)
     Q_PROPERTY(QQmlComponent* playerComponent READ playerComponent NOTIFY playerComponentChanged)
+    Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
 
 private:
 	LibraryPointer m_current = nullptr;
 	QPointer<PlaylistModel> m_playlist = new PlaylistModel();
-	int m_currentIndex = -1;
+    int m_currentIndex = -1;
 
 	Library *library() const;
     PlaylistModel *playlist() const;
     QSharedPointer<InterfacePlugins> m_plugin;
     QQmlComponent* playlistComponent() const;
     QQmlComponent* playerComponent() const;
+
+    int currentIndex() const;
+    void setCurrentIndex(int);
 
 public:
 	ControllerLibrary() = default;
@@ -49,4 +53,5 @@ signals:
 	void libraryChanged();
     void playlistComponentChanged();
     void playerComponentChanged();
+    void currentIndexChanged();
 };

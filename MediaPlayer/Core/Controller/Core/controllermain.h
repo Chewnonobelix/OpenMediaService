@@ -29,7 +29,6 @@ public:
 	void exec();
 
 public slots:
-	void onLibraryChanged(LibraryPointer);
 
 signals:
 	void playlistDisplay(QQmlComponent *);

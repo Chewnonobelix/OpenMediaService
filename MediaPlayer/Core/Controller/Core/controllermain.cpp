@@ -2,7 +2,7 @@
 
 ControllerMain::ControllerMain() : AbstractController() {
 	engine().addImportPath(QStringLiteral(QML_IMPORT_PATH));
-	qDebug() << QStringLiteral(QML_IMPORT_PATH) << "Wesh"
+    qDebug() << QStringLiteral(QML_IMPORT_PATH)
 					 << engine().importPathList();
 	m_manager.init();
 }
@@ -41,9 +41,6 @@ void ControllerMain::exec() {
 
 	context->setContextProperty("_librariesModel", m_librariesModel);
 
-	connect(m_librariesModel, &LibraryDataModel::currentModelChanged, this,
-					&ControllerMain::onLibraryChanged);
-
 	connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
 					&LibraryDataModel::onUpdateLibraries);
 
@@ -54,17 +51,4 @@ void ControllerMain::exec() {
 
 QQmlApplicationEngine &ControllerMain::engine() {
 	return m_engine->qmlEngine();
-}
-
-void ControllerMain::onLibraryChanged(LibraryPointer p) {
-	if (p) {
-//		auto &eng = engine();
-//		auto c = m_manager[p->role()]->clone();
-//		QQmlContext context(eng.rootContext());
-//		context.setContextProperty("_controller", QVariant::fromValue(c.data()));
-//		auto player = c->playerView();
-//		QQmlComponent comp(&eng, QUrl(player));
-//		comp.create(&context);
-//		emit componentChanged(&comp);
-	}
 }

@@ -87,6 +87,7 @@ ApplicationWindow {
 
 
 			onCurrentIndexChanged: {
+                splitView.currentLibrary.currentIndex = currentIndex
 				if(_playlist.currentIndex !== -1) {
 					_playlist.currentIndex = -1
 					_playlist.currentIndex = 0
@@ -305,7 +306,12 @@ ApplicationWindow {
 				orientation: Qt.Horizontal
 
 				property ControllerLibrary currentLibrary
-				function onClicked(lib) {
+
+                onCurrentLibraryChanged: {
+                    libraryView.currentIndex = currentLibrary.currentIndex
+                }
+
+                function onClicked(lib) {
 					currentLibrary = lib
 					_playlist.model = lib.playlist
 				}
