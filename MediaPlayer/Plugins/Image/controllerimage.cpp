@@ -39,7 +39,9 @@ void ControllerImage::setPlaylist(PlaylistPointer p) {
     m_current = p;
     m_model.setPlaylist(p);
     m_listModel.setPLaylist(p);
-    connect(m_current.data(), &PlayList::play, this, &ControllerImage::setMedia,
+
+    if(p)
+        connect(m_current.data(), &PlayList::play, this, &ControllerImage::setMedia,
             Qt::UniqueConnection);
 }
 
