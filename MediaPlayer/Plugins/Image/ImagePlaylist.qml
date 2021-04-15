@@ -19,7 +19,8 @@ Item {
 			anchors.fill: parent
 
 			MediaCombobox {
-				model: ["Library"]
+                id: displayType
+                model: ["Library", "List"]
 
 				Layout.preferredHeight: toolbar.height
 
@@ -60,15 +61,19 @@ Item {
 		}
 		width: root.width
         height: root.height * .90
-		StackView {
+        StackLayout {
             anchors.fill: parent
 						implicitWidth: width
 						implicitHeight: height
 
+            currentIndex: displayType.currentIndex
 			ImageLibrairyPlaylist {
-                id: _libView
-								anchors.fill: parent
+//                anchors.fill: parent
 			}
+
+            ImageList {
+//                anchors.fill: parent
+            }
 		}
 	}
 }
