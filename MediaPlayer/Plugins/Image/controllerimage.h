@@ -4,6 +4,7 @@
 #include <Controller/Plugins/interfaceplugins.h>
 
 #include "librairyimagemodel.h"
+#include "imagelistmodel.h"
 
 class ControllerImage : public AbstractController, public InterfacePlugins {
 	Q_OBJECT
@@ -12,7 +13,10 @@ class ControllerImage : public AbstractController, public InterfacePlugins {
 
 private:
 	PlaylistPointer m_current;
-	LibrairyImageModel m_model;
+
+    LibrairyImageModel m_model;
+    ImageListModel m_listModel;
+
 	QTimer m_timer;
 	QPointer<QQmlComponent> m_playlist;
     QPointer<QQmlComponent> m_player;

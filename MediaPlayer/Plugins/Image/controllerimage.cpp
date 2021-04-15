@@ -1,9 +1,10 @@
 #include "controllerimage.h"
 
 void ControllerImage::exec() {
-	auto context = m_engine->qmlEngine().rootContext();
-	context->setContextProperty("_imageLibrairyModel", &m_model);
-	context->setContextProperty("_image", this);
+    auto context = m_engine->qmlEngine().rootContext();
+    context->setContextProperty("_imageLibrairyModel", &m_model);
+    context->setContextProperty("_imageListModel", &m_listModel);
+    context->setContextProperty("_image", this);
 
 	qDebug() << "Image context";
 	connect(&m_model, &LibrairyImageModel::imageChanged, this,
@@ -35,10 +36,11 @@ QQmlComponent *ControllerImage::playlistView() {
 }
 
 void ControllerImage::setPlaylist(PlaylistPointer p) {
-	m_current = p;
-	m_model.setPlaylist(p);
-	connect(m_current.data(), &PlayList::play, this, &ControllerImage::setMedia,
-					Qt::UniqueConnection);
+    m_current = p;
+    m_model.setPlaylist(p);
+    m_listModel.setPLaylist(p);
+    connect(m_current.data(), &PlayList::play, this, &ControllerImage::setMedia,
+            Qt::UniqueConnection);
 }
 
 void ControllerImage::setMedia(MediaPointer m) {
