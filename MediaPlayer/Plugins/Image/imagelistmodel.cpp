@@ -26,7 +26,7 @@ int ImageListModel::rowCount(const QModelIndex&) const
 }
 
 int ImageListModel::columnCount(const QModelIndex&) const {
-    return 6;
+    return m_columns.size();
 }
 
 QVariant ImageListModel::data(const QModelIndex& index, int) const {
@@ -36,29 +36,35 @@ QVariant ImageListModel::data(const QModelIndex& index, int) const {
         return QVariant();
 
     auto current = (*m_model)[row];
-    qDebug()<<row<<col<<current->path();
-    switch(col) {
-    case 0:
+    auto currentCol = m_columns[col];
+
+    switch(currentCol.second) {
+    case ImageListRole::FileRole:
         return current->path().split("/").last();
         break;
-    case 1: {
+    case ImageListRole::PathRole: {
         auto last = current->path().lastIndexOf("/");
         return current->path().mid(0, last);
     }
         break;
-    case 2:
+    case ImageListRole::CountRole:
         return current->count();
         break;
-    case 3:
+    case ImageListRole::AddedRole:
         return current->added();
         break;
-    case 4:
+    case ImageListRole::LastPlayRole:
         return current->lastFinish();
         break;
-    case 5: {
+    case ImageListRole::ExtensionRole: {
         auto last = current->path().lastIndexOf(".");
         return current->path().mid(last);
+        break;
     }
+    case ImageListRole::RatingRole:
+        return current->rating();
+        break;
+    default:
         break;
     }
 
@@ -68,6 +74,13 @@ void ImageListModel::sort(int , Qt::SortOrder) {}
 
 QHash<int, QByteArray> ImageListModel::roleNames() const
 {
-    static QHash<int, QByteArray> ret = {{int(ImageListRole::DisplayRole), "display"}};
+    static QHash<int, QByteArray> ret = {{int(ImageListRole::DisplayRole), "display"},
+                                         {int(ImageListRole::RatingRole), "rating"},
+                                         {int(ImageListRole::FileRole), "file"},
+                                         {int(ImageListRole::PathRole), "path"},
+                                         {int(ImageListRole::AddedRole), "added"},
+                                         {int(ImageListRole::LastPlayRole), "lastPlay"},
+                                         {int(ImageListRole::ExtensionRole), "extension"},
+                                         {int(ImageListRole::CountRole), "count"}};
     return ret;
 }
