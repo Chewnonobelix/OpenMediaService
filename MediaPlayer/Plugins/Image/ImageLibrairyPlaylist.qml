@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.15
 import MediaPlayer.Components 1.0
 
 
-Frame {
+Item {
     id: root
 
     Connections {
@@ -15,6 +15,9 @@ Frame {
             _rep.model = _imageLibrairyModel.size
         }
     }
+
+		Component.onCompleted: {
+		}
 
     RowLayout {
         anchors.fill: parent
@@ -63,7 +66,6 @@ Frame {
             delegate: MediaListItem {
                 text: name + ": " + count
 
-                onClicked: root.init()
                 onDoubleClicked: {
                     _imageLibrairyModel.onDoubleClicked(index)
                 }

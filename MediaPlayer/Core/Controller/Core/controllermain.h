@@ -11,6 +11,7 @@
 #include "../Data/dataxml.h"
 #include "abstractcontroller.h"
 #include "controllerlibrary.h"
+#include "tabmanager.h"
 #include <Controller/Plugins/pluginmanager.h>
 
 class MEDIAPLAYERCORE_EXPORT ControllerMain : public AbstractController {
@@ -21,6 +22,7 @@ private:
 	int m_currentTab = 0;
 
 	QQmlApplicationEngine &engine();
+	TabManager m_tabsManager;
 
 public:
 	ControllerMain();

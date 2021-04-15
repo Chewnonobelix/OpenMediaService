@@ -1,7 +1,8 @@
 #include "controllerlibrary.h"
 
 void ControllerLibrary::exec() {
-    connect(m_playlist, &PlaylistModel::currentIndexChanged, this, &ControllerLibrary::onCurrentPlaylistChanged);
+	connect(m_playlist, &PlaylistModel::currentIndexChanged, this,
+					&ControllerLibrary::onCurrentPlaylistChanged);
 }
 
 PlaylistModel *ControllerLibrary::playlist() const { return m_playlist; }
@@ -9,6 +10,7 @@ PlaylistModel *ControllerLibrary::playlist() const { return m_playlist; }
 void ControllerLibrary::open() {
 	auto context = m_engine->qmlEngine().rootContext();
 	context->setContextProperty("_libraries", this);
+	qDebug() << "Library context";
 	m_engine->createWindow(QUrl(QStringLiteral("/LibraryView.qml")));
 }
 
@@ -40,40 +42,38 @@ Library *ControllerLibrary::library() const { return m_current.data(); }
 void ControllerLibrary::setCurrentLibrary(QString id) {
 	auto uid = QUuid::fromString(id);
 	m_current = (*m_librariesModel)[uid];
-    connect(m_current.data(), &Library::libraryChanged, this, &ControllerLibrary::onUpdateLibrary, Qt::UniqueConnection);
-    m_plugin = m_manager[m_current->role()]->clone();
-    m_plugin->exec();
+	connect(m_current.data(), &Library::libraryChanged, this,
+					&ControllerLibrary::onUpdateLibrary, Qt::UniqueConnection);
+	m_plugin = m_manager[m_current->role()]->clone();
+	m_plugin->exec();
 
-    emit libraryChanged();
-    emit playerComponentChanged();
-    emit playlistComponentChanged();
+	emit libraryChanged();
+	emit playerComponentChanged();
+	emit playlistComponentChanged();
 
-    m_current->probe()->setFilters(m_plugin->filters());
-    m_playlist->setSmart(m_current->smartPlaylist().values());
-    m_playlist->setNormal(m_current->playlist().values());
-
+	m_current->probe()->setFilters(m_plugin->filters());
+	m_playlist->setSmart(m_current->smartPlaylist().values());
+	m_playlist->setNormal(m_current->playlist().values());
 }
 
-void ControllerLibrary::onUpdateLibrary()
-{
-    db()->updateLibrary(m_current);
-    m_playlist->setSmart(m_current->smartPlaylist().values());
-    m_playlist->setNormal(m_current->playlist().values());
+void ControllerLibrary::onUpdateLibrary() {
+	db()->updateLibrary(m_current);
+	m_playlist->setSmart(m_current->smartPlaylist().values());
+	m_playlist->setNormal(m_current->playlist().values());
 }
 
-void ControllerLibrary::onCurrentPlaylistChanged(PlaylistPointer p)
-{
-    if(m_plugin) {
-        m_plugin->setPlaylist(p);
-    }
+void ControllerLibrary::onCurrentPlaylistChanged(PlaylistPointer p) {
+	if (m_plugin) {
+		m_plugin->setPlaylist(p);
+	}
 }
 
-QQmlComponent* ControllerLibrary::playlistComponent() const
-{
-    return m_plugin ? m_plugin->playlistView() : nullptr;
+QQmlComponent *ControllerLibrary::playlistComponent() const {
+	return m_plugin ? m_plugin->playlistView() : nullptr;
 }
 
-QQmlComponent* ControllerLibrary::playerComponent() const
-{
-    return m_plugin ? m_plugin->playerView() : nullptr;
+QQmlComponent *ControllerLibrary::playerComponent() const {
+	return m_plugin ? m_plugin->playerView() : nullptr;
 }
+
+QString ControllerLibrary::id() const { return m_id.toString(); }
