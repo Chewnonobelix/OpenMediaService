@@ -31,7 +31,6 @@ public:
 	~TabManager() = default;
 
     Q_INVOKABLE void addTab();
-	void setTab(QString, QQmlComponent *, QQmlComponent *);
 	Q_INVOKABLE QQmlComponent *player(QString) const;
 	Q_INVOKABLE QQmlComponent *playlist(QString) const;
 

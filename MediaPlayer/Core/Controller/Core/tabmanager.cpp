@@ -1,8 +1,5 @@
 #include "tabmanager.h"
 
-void TabManager::setTab(QString id, QQmlComponent *player,
-                        QQmlComponent *playlist) {
-}
 
 void TabManager::addTab()
 {
