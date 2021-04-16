@@ -22,13 +22,10 @@ private:
 	QPointer<PlaylistModel> m_playlist = new PlaylistModel();
 	int m_currentIndex = -1;
 	QUuid m_id = QUuid::createUuid();
+    QSharedPointer<InterfacePlugins> m_plugin;
 
 	Library *library() const;
 	PlaylistModel *playlist() const;
-	QSharedPointer<InterfacePlugins> m_plugin;
-	QQmlComponent *playlistComponent() const;
-	QQmlComponent *playerComponent() const;
-	QString id() const;
 
     int currentIndex() const;
     void setCurrentIndex(int);
@@ -47,6 +44,10 @@ public:
 	Q_INVOKABLE void removeSourceDir(QString);
 	Q_INVOKABLE void addPlaylist(bool = false);
 	Q_INVOKABLE void removePlaylist(QString);
+
+    QQmlComponent *playlistComponent() const;
+    QQmlComponent *playerComponent() const;
+    QString id() const;
 
 public slots:
 	void onUpdateLibrary();

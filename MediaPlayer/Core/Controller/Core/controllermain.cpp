@@ -36,8 +36,8 @@ void ControllerMain::exec() {
 					 << qmlRegisterUncreatableType<InterfacePlugins>(
 									"InterfacePlugin", 1, 0, "InterfacePlugin", "Interface type");
 
-	qDebug() << qmlRegisterType<TabManager>("MediaPlayer.Model", 1, 0,
-																					"MediaPlayer");
+    qDebug() << qmlRegisterType<TabManager>("MediaPlayer.Model", 1, 0,
+                                                                                    "MediaPlayer");
 
 	setDb("DataJson");
 	auto *context = engine().rootContext();

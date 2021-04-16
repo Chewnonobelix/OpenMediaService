@@ -8,6 +8,8 @@
 
 #include "mediaplayercore_global.h"
 
+#include <Controller/Core/controllerlibrary.h>
+
 class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
 	Q_OBJECT
 	Q_DISABLE_COPY(TabManager)
@@ -21,12 +23,14 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
 	};
 
 	enum class TabRole { PlayerRole = Qt::UserRole + 1, PlaylistRole };
-	QMap<QUuid, Tab> m_tabs;
+    QMap<QUuid, QSharedPointer<ControllerLibrary>> m_tabs;
+    QList<QUuid> m_ids;
 
 public:
 	TabManager() = default;
 	~TabManager() = default;
 
+    Q_INVOKABLE void addTab();
 	void setTab(QString, QQmlComponent *, QQmlComponent *);
 	Q_INVOKABLE QQmlComponent *player(QString) const;
 	Q_INVOKABLE QQmlComponent *playlist(QString) const;
