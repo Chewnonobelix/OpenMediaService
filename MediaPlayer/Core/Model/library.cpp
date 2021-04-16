@@ -177,6 +177,7 @@ bool Library::addNMedia(QString path, MD5 md) {
 	connect(m_medias[md].data(), &Media::mediaChanged, this,
 					&Library::libraryChanged);
 
+    emit mediasChanged(m_medias[md]);
 	return m_medias[md]->paths().contains(path);
 }
 
@@ -208,7 +209,7 @@ LibraryProbe *Library::probe() { return &m_probe; }
 
 void Library::onProbedChanged() {
 	if (m_probe.current() == 100.0)
-		emit mediasChanged();
+        emit libraryChanged();
 }
 
 bool Library::addSmartPlaylist(SmartPlaylistPointer smart) {
