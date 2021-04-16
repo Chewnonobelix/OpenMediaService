@@ -68,6 +68,7 @@ Item {
 			MediaTabButton {
 				text: "+"
 
+                Component.onCompleted: onClicked()
 				onClicked:  {
 					tabRepeater.model = viewBar.currentIndex + 1
 					viewBar.currentIndex = viewBar.currentIndex - 1
