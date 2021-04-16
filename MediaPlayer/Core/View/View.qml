@@ -33,7 +33,7 @@ Item {
 			SplitView.preferredHeight = SplitView.view.height / SplitView.view.count
 	}
 
-	property ControllerLibrary currentLibrary: viewRep.itemAt(0).model
+    property ControllerLibrary currentLibrary: viewRep.model.at(0)
 
 	onCurrentLibraryChanged: root.clicked(currentLibrary)
 	ColumnLayout {
@@ -51,7 +51,7 @@ Item {
 
 			onCurrentIndexChanged: {
 				if(viewRep.itemAt(currentIndex))
-					currentLibrary = viewRep.itemAt(currentIndex).model
+                    currentLibrary = viewRep.model.at(currentIndex)
 			}
 
 			Repeater {
@@ -73,6 +73,7 @@ Item {
 					tabRepeater.model = viewBar.currentIndex + 1
 					viewBar.currentIndex = viewBar.currentIndex - 1
                     viewRep.model.addTab()
+                    root.currentLibrary = viewRep.model.at(viewBar.currentIndex +1)
 				}
 			}
 		}
@@ -86,8 +87,8 @@ Item {
 			clip: true
 
 			onCurrentIndexChanged: {
-				if(viewRep.itemAt(currentIndex))
-					console.log("Changed index", viewRep.itemAt(currentIndex).model.id)
+                if(viewRep.model.at(currentIndex))
+                    console.log("Changed index", viewRep.model.at(currentIndex).id)
 			}
 
 			Repeater {

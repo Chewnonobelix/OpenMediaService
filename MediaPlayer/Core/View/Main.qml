@@ -308,7 +308,6 @@ ApplicationWindow {
 				property ControllerLibrary currentLibrary
 
                 onCurrentLibraryChanged: {
-                    libraryView.currentIndex = currentLibrary.currentIndex
                 }
 
                 function onClicked(lib) {

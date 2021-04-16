@@ -29,15 +29,22 @@ QVariant TabManager::data(const QModelIndex &index, int role) const {
         return QVariant::fromValue(player(id.toString()));
     case TabRole::PlaylistRole:
         return QVariant::fromValue(playlist(id.toString()));
+    case TabRole::ModelRole:
+        return QVariant::fromValue(m_tabs[id].data());
     }
 
+}
+
+ControllerLibrary* TabManager::at(int index) const {
+    return rowCount() > 0 && index >= 0 ? m_tabs[m_ids[index]].data() : nullptr;
 }
 
 int TabManager::rowCount(const QModelIndex &) const { return m_tabs.size(); }
 
 QHash<int, QByteArray> TabManager::roleNames() const {
     static QHash<int, QByteArray> ret{{int(TabRole::PlaylistRole), "playlist"},
-                                      {int(TabRole::PlayerRole), "player"}};
+                                      {int(TabRole::PlayerRole), "player"},
+                                      {int(TabRole::ModelRole), "model"}};
 
     return ret;
 }
