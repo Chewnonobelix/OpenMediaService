@@ -21,6 +21,7 @@ SOURCES += \
         Controller/Core/controllerlibrary.cpp \
         Controller/Core/controllerlibrary_old.cpp \
         Controller/Core/controllermain.cpp \
+        Controller/Core/tabmanager.cpp \
         Controller/Data/datajson.cpp \
         Controller/Data/dataxml.cpp \
         Controller/Data/interfacesaver.cpp \
@@ -55,6 +56,7 @@ HEADERS += \
     Controller/Core/controllerlibrary.h \
     Controller/Core/controllerlibrary_old.h \
     Controller/Core/controllermain.h \
+    Controller/Core/tabmanager.h \
     Controller/Data/datajson.h \
     Controller/Data/dataxml.h \
     Controller/Data/interfacesaver.h \

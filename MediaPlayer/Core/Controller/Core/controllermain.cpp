@@ -32,7 +32,13 @@ void ControllerMain::exec() {
 									"MediaPlayer",
 
 									"Media Player global");
-    qDebug()<<"InterfacePLugin"<<qmlRegisterUncreatableType<InterfacePlugins>("InterfacePlugin", 1, 0, "InterfacePlugin", "Interface type");
+	qDebug() << "InterfacePLugin"
+					 << qmlRegisterUncreatableType<InterfacePlugins>(
+									"InterfacePlugin", 1, 0, "InterfacePlugin", "Interface type");
+
+	qDebug() << qmlRegisterType<TabManager>("MediaPlayer.Model", 1, 0,
+																					"MediaPlayer");
+
 	setDb("DataJson");
 	auto *context = engine().rootContext();
 	context->setContextProperty("_main", this);
@@ -40,6 +46,10 @@ void ControllerMain::exec() {
 	m_librariesModel = new LibraryDataModel;
 
 	context->setContextProperty("_librariesModel", m_librariesModel);
+
+	qDebug() << "Main context";
+	connect(m_librariesModel, &LibraryDataModel::currentModelChanged, this,
+					&ControllerMain::onLibraryChanged);
 
 	connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
 					&LibraryDataModel::onUpdateLibraries);
@@ -52,3 +62,5 @@ void ControllerMain::exec() {
 QQmlApplicationEngine &ControllerMain::engine() {
 	return m_engine->qmlEngine();
 }
+
+void ControllerMain::onLibraryChanged(LibraryPointer p) {}
