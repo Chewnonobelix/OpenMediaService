@@ -84,3 +84,16 @@ QHash<int, QByteArray> ImageListModel::roleNames() const
                                          {int(ImageListRole::CountRole), "count"}};
     return ret;
 }
+
+QStringList ImageListModel::columnModel() const {
+    QStringList ret;
+    for(auto it: m_columns)
+        ret<<it.first;
+
+    return ret;
+}
+
+QVariant ImageListModel::headerData(int section, Qt::Orientation, int) const
+{
+    return columnModel()[section];
+}

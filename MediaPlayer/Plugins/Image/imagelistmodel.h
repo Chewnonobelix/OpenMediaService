@@ -24,7 +24,9 @@ public:
     ImageListModel() = default;
 
     void setPLaylist(PlaylistPointer);
+    Q_INVOKABLE QStringList columnModel() const;
 
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     int rowCount(const QModelIndex& = QModelIndex()) const override;
     int columnCount(const QModelIndex& = QModelIndex()) const override;
 
