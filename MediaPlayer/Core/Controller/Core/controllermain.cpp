@@ -48,8 +48,6 @@ void ControllerMain::exec() {
 	context->setContextProperty("_librariesModel", m_librariesModel);
 
 	qDebug() << "Main context";
-	connect(m_librariesModel, &LibraryDataModel::currentModelChanged, this,
-					&ControllerMain::onLibraryChanged);
 
 	connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
 					&LibraryDataModel::onUpdateLibraries);
@@ -63,4 +61,3 @@ QQmlApplicationEngine &ControllerMain::engine() {
 	return m_engine->qmlEngine();
 }
 
-void ControllerMain::onLibraryChanged(LibraryPointer p) {}
