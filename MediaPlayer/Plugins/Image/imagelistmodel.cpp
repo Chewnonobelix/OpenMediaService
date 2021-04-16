@@ -51,10 +51,10 @@ QVariant ImageListModel::data(const QModelIndex& index, int) const {
         return current->count();
         break;
     case ImageListRole::AddedRole:
-        return current->added();
+        return current->added().toString("dd-MM-yyyy");
         break;
     case ImageListRole::LastPlayRole:
-        return current->lastFinish();
+        return current->lastFinish().toString("dd-MM-yyyy hh:mm:ss");
         break;
     case ImageListRole::ExtensionRole: {
         auto last = current->path().lastIndexOf(".");
