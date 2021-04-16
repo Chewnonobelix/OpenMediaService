@@ -4,6 +4,7 @@
 void TabManager::addTab()
 {
     auto p = QSharedPointer<ControllerLibrary>::create();
+    p->exec();
     m_tabs[QUuid::fromString(p->id())] = p;
     m_ids<<QUuid::fromString(p->id());
 }
