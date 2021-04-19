@@ -26,6 +26,9 @@ Item {
 
         delegate: MediaLabel {
             text: display
+            background: Rectangle {
+                color: row % 2 ? "grey" : Qt.lighter("grey", 0.5)
+            }
         }
     }
 }
