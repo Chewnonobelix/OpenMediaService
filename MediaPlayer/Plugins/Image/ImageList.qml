@@ -23,11 +23,53 @@ Item {
 
         model: _imageListModel
 
+        property int currentRow: -1
 
         delegate: MediaLabel {
             text: display
+
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: table.currentRow = row
+            }
+
             background: Rectangle {
-                color: row % 2 ? "grey" : Qt.lighter("grey", 0.5)
+                property Gradient selected: Gradient {
+                    GradientStop {
+                        color: "black"
+                        position: 0.0
+                    }
+
+                    GradientStop {
+                        color: "darkblue"
+                        position: 0.40
+                    }
+
+                    GradientStop {
+                        color: "aqua"
+                        position: 0.5
+                    }
+
+                    GradientStop {
+                        color: "darkblue"
+                        position: 0.60
+                    }
+
+                    GradientStop {
+                        color: "black"
+                        position: 1.0
+                    }
+                }
+
+                property Gradient unselected: Gradient {
+                    GradientStop {
+                        color: row % 2 ? "grey" : Qt.lighter("grey", 0.5)
+                    }
+                }
+
+                gradient: row === table.currentRow ? selected : unselected
+
             }
         }
     }
