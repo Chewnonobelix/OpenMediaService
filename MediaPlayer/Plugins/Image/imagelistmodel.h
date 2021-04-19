@@ -10,7 +10,7 @@ class ImageListModel: public QAbstractTableModel
     Q_DISABLE_COPY(ImageListModel)
 
 private:
-    enum class ImageListRole{DisplayRole = Qt::UserRole +1, RatingRole, FileRole, ExtensionRole, PathRole, CountRole, AddedRole, LastPlayRole};
+    enum class ImageListRole{DisplayRole = Qt::UserRole +1, RatingRole, FileRole, ExtensionRole, PathRole, CountRole, AddedRole, LastPlayRole, Fullpath, IndexRole};
 
     PlaylistPointer m_model;
     QList<QPair<QString, ImageListRole>> m_columns = {{"File", ImageListRole::FileRole},
@@ -25,6 +25,8 @@ public:
 
     void setPLaylist(PlaylistPointer);
     Q_INVOKABLE QStringList columnModel() const;
+
+    Q_INVOKABLE void play(int);
 
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     int rowCount(const QModelIndex& = QModelIndex()) const override;

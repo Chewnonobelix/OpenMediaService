@@ -85,7 +85,6 @@ MediaPointer PlayList::next() {
 		auto index = m_readOrder[currentIndex()];
 		ret = at(index);
 	}
-
 	emit play(ret);
 	return ret;
 }

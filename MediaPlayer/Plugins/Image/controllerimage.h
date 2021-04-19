@@ -39,7 +39,7 @@ public:
 
 public slots:
 	void onCurrentIndexChanged(int);
-	void playing();
+    void playing(int = -1);
 	void stop();
 	void onTimeout();
 

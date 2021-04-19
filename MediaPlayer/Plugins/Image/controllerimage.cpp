@@ -68,9 +68,9 @@ QStringList ControllerImage::filters() const {
 	return {"jpg", "jpeg", "bmp", "png"};
 }
 
-void ControllerImage::playing() {
+void ControllerImage::playing(int index) {
 	stop();
-	m_current->setCurrentIndex(-1);
+    m_current->setCurrentIndex(index);
 	m_timer.start();
 }
 

@@ -32,6 +32,8 @@ Item {
                 anchors.fill: parent
 
                 onClicked: table.currentRow = row
+
+                onDoubleClicked: _imageListModel.play(index)
             }
 
             background: Rectangle {
