@@ -18,11 +18,11 @@ void ControllerImage::exec() {
 	context->setContextProperty(id.toString() + "_playlist", &m_model);
 	m_playlist = new QQmlComponent(&(m_engine->qmlEngine()),
 																 QUrl("qrc:/image/ImagePlaylist.qml"));
-	m_playlist->create(context);
+//	m_playlist->create(context);
 
 	m_player = new QQmlComponent(&(m_engine->qmlEngine()),
 															 QUrl("qrc:/image/ImagePlayer.qml"));
-	m_player->create(context);
+//	m_player->create(context);
 }
 
 QQmlComponent *ControllerImage::playerView() const {

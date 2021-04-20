@@ -107,7 +107,7 @@ Item {
                         target: model
 
                         function onPlayerComponentChanged() {
-                            playerLoader.item = model.playerComponent
+                            playerLoader.sourceComponent = model.playerComponent
                         }
                     }
 
