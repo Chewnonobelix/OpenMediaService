@@ -7,6 +7,10 @@ void TabManager::addTab()
     p->exec();
     m_tabs[QUuid::fromString(p->id())] = p;
     m_ids<<QUuid::fromString(p->id());
+
+    beginInsertRows(QModelIndex(), rowCount() - 1, rowCount()-1);
+    insertRows(rowCount()- 1, 1);
+    endInsertRows();
 }
 
 QQmlComponent *TabManager::player(QString id) const {
@@ -37,7 +41,7 @@ QVariant TabManager::data(const QModelIndex &index, int role) const {
 }
 
 ControllerLibrary* TabManager::at(int index) const {
-    return rowCount() > 0 && index >= 0 ? m_tabs[m_ids[index]].data() : nullptr;
+    return index >= 0 && index < rowCount() ? m_tabs[m_ids[index]].data() : nullptr;
 }
 
 int TabManager::rowCount(const QModelIndex &) const { return m_tabs.size(); }
