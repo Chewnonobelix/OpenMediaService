@@ -33,7 +33,7 @@ Item {
             SplitView.preferredHeight = SplitView.view.height / SplitView.view.count
     }
 
-    property ControllerLibrary currentLibrary: viewRep.model.at(0)
+    property ControllerLibrary currentLibrary: repModel.at(0)
 
     onCurrentLibraryChanged: root.clicked(currentLibrary)
     ColumnLayout {
@@ -49,11 +49,6 @@ Item {
                 currentIndex = 0
             }
 
-            onCurrentIndexChanged: {
-                if(viewRep.itemAt(currentIndex))
-                    currentLibrary = viewRep.model.at(currentIndex)
-            }
-
             Repeater {
                 id: tabRepeater
                 model: 1
@@ -61,6 +56,7 @@ Item {
                 MediaTabButton {
                     text: qsTr("Tab ") + modelData
                     onClicked: {
+                        currentLibrary = repModel.at(modelData)
                     }
                 }
             }
@@ -72,15 +68,15 @@ Item {
                 onClicked:  {
                     tabRepeater.model = viewBar.currentIndex + 1
                     viewBar.currentIndex = viewBar.currentIndex - 1
-                    viewRep.model.addTab()
-                    root.currentLibrary = viewRep.model.at(viewBar.currentIndex +1)
+                    repModel.addTab()
+                    root.currentLibrary = repModel.at(viewBar.currentIndex +1)
                 }
             }
         }
 
         StackLayout {
             id: view
-            currentIndex: viewBar.currentIndex * 2 +1
+            currentIndex: viewBar.currentIndex
             Layout.fillWidth: true
             Layout.fillHeight: true
 
@@ -88,38 +84,34 @@ Item {
 
 
             onCurrentIndexChanged: {
-                if(viewRep.model.at(currentIndex)) {
-                }
             }
+
+
 
             Repeater {
                 id: viewRep
                 model: TabManager {
-
+                    id: repModel
                 }
 
-                delegate: Loader {
-                    id: playerLoader
-                    active: true
+                 Loader {
+                     id: playerLoader
+                     active: true
 
-                    visible: true
-                    Connections {
-                        target: model
+                     visible: true
 
-                        function onPlayerComponentChanged() {
-                            playerLoader.sourceComponent = model.playerComponent
-                        }
-                    }
+                     Connections {
+                         target: model
 
-                    onLoaded:
-                    {
-                        item.visible = true
-                    }
+                         function onPlayerComponentChanged() {
+                             sourceComponent = model.playerComponent
+                         }
+                     }
 
-                    Component.onCompleted: {
-                    }
-                }
-            }
-        }
-    }
-}
+                     Component.onCompleted: {
+                     }
+                 }
+             }
+         }
+     }
+ }

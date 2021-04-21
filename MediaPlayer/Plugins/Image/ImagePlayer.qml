@@ -14,8 +14,6 @@ Item {
 
 		function onPlay(path) {
             display.source = "file:///"+path
-            root.visible = true
-            console.log("image player", path, root.visible)
 		}
 	}
 
