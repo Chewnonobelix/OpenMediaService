@@ -129,6 +129,6 @@ void ImageListModel::play(int index)
     }
 
     m_model->setReadOrder(read);
-    m_model->setCurrentIndex(-1);
+    m_model->setCurrentIndex(index-1);
     m_model->next();
 }
