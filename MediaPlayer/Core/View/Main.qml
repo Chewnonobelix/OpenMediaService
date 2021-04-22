@@ -318,7 +318,6 @@ ApplicationWindow {
 					currentLibrary = lib
                     if(lib) {
                         playlist.model = lib.playlist
-                        console.log(lib, lib.currentIndex)
                         libraryView.currentIndex = currentLibrary.currentIndex
                     }
 				}
