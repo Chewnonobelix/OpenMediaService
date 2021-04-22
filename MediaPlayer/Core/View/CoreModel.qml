@@ -5,7 +5,7 @@ import MediaPlayer.Model 1.0
 
 QtObject {
     property ListModel typeModel: ListModel {
-				id: _typeModel
+                id: typeModel
         ListElement {
             name: "Video"
 						role: MediaPlayer.MediaRole.Video

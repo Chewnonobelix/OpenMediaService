@@ -88,9 +88,9 @@ ApplicationWindow {
 
 			onCurrentIndexChanged: {
                 splitView.currentLibrary.currentIndex = currentIndex
-				if(_playlist.currentIndex !== -1) {
-					_playlist.currentIndex = -1
-					_playlist.currentIndex = 0
+                if(playlist.currentIndex !== -1) {
+                    playlist.currentIndex = -1
+                    playlist.currentIndex = 0
 
 				}
 			}
@@ -269,12 +269,12 @@ ApplicationWindow {
 			width: root.width
 
             onOpened: {
-                _playLoad.sourceComponent = splitView.currentLibrary.playlistComponent
-                _playLoad.active = splitView.currentLibrary.playlistComponent !== null
+                playLoad.sourceComponent = splitView.currentLibrary.playlistComponent
+                playLoad.active = splitView.currentLibrary.playlistComponent !== null
             }
 
 			Loader {
-				id: _playLoad
+                id: playLoad
 				anchors.fill: parent
 				active: false
 			}

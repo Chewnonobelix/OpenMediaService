@@ -12,7 +12,7 @@ Item {
         target: _imageLibrairyModel
 
         function onSizeChanged() {
-            _rep.model = _imageLibrairyModel.size
+            rep.model = _imageLibrairyModel.size
         }
     }
 
@@ -23,19 +23,19 @@ Item {
         anchors.fill: parent
         spacing: 0
         ScrollView {
-            id: _scroll
+            id: scroll
             clip:true
             Layout.fillHeight: true
             Layout.preferredWidth: root.width * .80
 
             Row {
-                id: _row
+                id: row
                 Repeater {
-                    id: _rep
+                    id: rep
 
                     model: _imageLibrairyModel ? _imageLibrairyModel.size : 0
                     Tumbler {
-                        id: _tumb
+                        id: tumb
                         Layout.fillHeight: true
                         Layout.preferredWidth: root.width * .20
                         Connections {
@@ -43,7 +43,7 @@ Item {
 
                             function onCurrentIndexChanged(i, j) {
                                 if(modelData === i) {
-                                    _tumb.currentIndex = j
+                                    tumb.currentIndex = j
                                 }
                             }
                         }
@@ -58,7 +58,7 @@ Item {
             }
         }
         MediaList {
-            id: _media
+            id: media
             model: _imageLibrairyModel
             Layout.fillHeight: true
             Layout.preferredWidth: root.width * .20
