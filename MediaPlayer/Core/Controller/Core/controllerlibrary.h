@@ -17,6 +17,7 @@ class ControllerLibrary : public AbstractController {
 								 playerComponentChanged)
 	Q_PROPERTY(QString id READ id CONSTANT)
 
+    Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
 private:
 	LibraryPointer m_current = nullptr;
 	QPointer<PlaylistModel> m_playlist = new PlaylistModel();
@@ -57,4 +58,5 @@ signals:
 	void libraryChanged();
 	void playlistComponentChanged();
 	void playerComponentChanged();
+    void currentIndexChanged();
 };

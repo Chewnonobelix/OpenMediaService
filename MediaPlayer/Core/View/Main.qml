@@ -151,6 +151,7 @@ ApplicationWindow {
 				onClicked: {
 					_librariesModel.currentIndex = index
 					splitView.currentLibrary.setCurrentLibrary(id)
+                    splitView.currentLibrary.currentIndex = index
 				}
 
 				onDoubleClicked:  {
@@ -315,8 +316,11 @@ ApplicationWindow {
 
                 function onClicked(lib) {
 					currentLibrary = lib
-                    if(lib)
+                    if(lib) {
                         playlist.model = lib.playlist
+                        console.log(lib, lib.currentIndex)
+                        libraryView.currentIndex = currentLibrary.currentIndex
+                    }
 				}
 
 				property var component;

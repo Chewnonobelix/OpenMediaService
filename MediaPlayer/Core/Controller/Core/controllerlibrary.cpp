@@ -77,3 +77,14 @@ QQmlComponent *ControllerLibrary::playerComponent() const {
 }
 
 QString ControllerLibrary::id() const { return m_id.toString(); }
+
+int ControllerLibrary::currentIndex() const
+{
+    return m_currentIndex;
+}
+
+void ControllerLibrary::setCurrentIndex(int index)
+{
+    m_currentIndex = index;
+    emit currentIndexChanged();
+}
