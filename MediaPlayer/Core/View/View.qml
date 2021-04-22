@@ -35,7 +35,9 @@ Item {
 
     property ControllerLibrary currentLibrary: repModel.at(0)
 
-    onCurrentLibraryChanged: root.clicked(currentLibrary)
+    onCurrentLibraryChanged:  {
+        root.clicked(currentLibrary)
+    }
     ColumnLayout {
         anchors.fill: parent
 
@@ -66,11 +68,11 @@ Item {
 
                 Component.onCompleted: onClicked()
                 onClicked:  {
-                    tabRepeater.model = viewBar.currentIndex + 1
+                             tabRepeater.model = viewBar.currentIndex + 1
                     viewBar.currentIndex = viewBar.currentIndex - 1
                     repModel.addTab()
-                    root.currentLibrary = repModel.at(viewBar.currentIndex +1)
-                }
+                    root.currentLibrary = repModel.at(viewBar.currentIndex)
+                    }
             }
         }
 
