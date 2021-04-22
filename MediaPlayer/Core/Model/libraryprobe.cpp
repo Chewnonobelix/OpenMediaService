@@ -25,7 +25,7 @@ double LibraryProbe::current() const {
 
 void LibraryProbe::setPaths(QSet<QString> paths) { m_paths = paths; }
 
-bool LibraryProbe::isRunning() const { return current() != 100.0; }
+bool LibraryProbe::isRunning() const { return current() < 100.0; }
 
 void LibraryProbe::probe() {
 	connect(this, &LibraryProbe::mediaFind, this, &LibraryProbe::onMediaFind,
@@ -47,9 +47,14 @@ void LibraryProbe::probe() {
 			sleep(10);
 			while (current() < 100.0 && !m_infos.isEmpty()) {
 				m_mutex.lock();
+                if(m_infos.isEmpty()) {
+                    m_mutex.unlock();
+                    continue;
+                }
 				auto it = m_infos.dequeue();
 				m_mutex.unlock();
-				if (!m_paths.contains(it.absoluteFilePath()) &&
+
+                if (!m_paths.contains(it.absoluteFilePath()) &&
 						isValid(it.absoluteFilePath())) {
 					QCryptographicHash hasher(QCryptographicHash::Sha256);
 					QFile file(it.absoluteFilePath());
@@ -64,6 +69,7 @@ void LibraryProbe::probe() {
 					m_paths << it.absoluteFilePath();
 					m_mutex.unlock();
 				}
+
 			}
 		}));
 
@@ -76,6 +82,7 @@ void LibraryProbe::probe() {
 
 			if (m_threads.count() == 0) {
 				qDebug() << "End probe";
+                m_current = m_total - 1;
 			}
 		});
 		last->start();
