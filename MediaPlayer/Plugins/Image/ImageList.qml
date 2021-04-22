@@ -13,6 +13,23 @@ Item {
     }
     TableView {
         id: table
+        property int firstRow: 0
+
+        MouseArea{
+            anchors.fill: parent
+            acceptedButtons: Qt.NoButton
+
+            onWheel: function(wheel) {
+                if(wheel.angleDelta.y < 0 )
+                    table.firstRow++
+                else
+                    table.firstRow--
+
+                table.firstRow = Math.max(0, table.firstRow)
+                table.firstRow = Math.min(table.rows, table.firstRow)
+                table.positionViewAtRow(table.firstRow, Qt.AlignCenter)
+            }
+        }
 
         anchors {
             top: header.bottom
@@ -23,10 +40,25 @@ Item {
 
         model: _imageListModel
 
+
+        interactive: false
+        columnSpacing: width * 0.001
+        property var columnWidth: [width / 7, width / 7,width / 7,width / 7,width / 7,width / 7,width / 7]
+        columnWidthProvider: function(column) {
+            return columnWidth[column]
+        }
+
         property int currentRow: -1
 
         delegate: MediaLabel {
             text: display
+            clip: true
+            horizontalAlignment: Qt.AlignLeft
+
+            anchors {
+                leftMargin: 2
+                rightMargin: 2
+            }
 
             MouseArea {
                 anchors.fill: parent
