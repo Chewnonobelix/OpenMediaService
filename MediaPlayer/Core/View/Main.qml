@@ -315,7 +315,8 @@ ApplicationWindow {
 
                 function onClicked(lib) {
 					currentLibrary = lib
-					_playlist.model = lib.playlist
+                    if(lib)
+                        playlist.model = lib.playlist
 				}
 
 				property var component;

@@ -21,8 +21,8 @@ Item {
 
     signal clicked (ControllerLibrary lib)
 
-    SplitView.fillHeight: SplitView.view.count === 1 || SplitView.view.orientation === Qt.Horizontal
-    SplitView.fillWidth: SplitView.view.count === 1 || SplitView.view.orientation === Qt.Vertical
+    SplitView.fillHeight: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Horizontal
+    SplitView.fillWidth: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Vertical
     SplitView.onFillWidthChanged: {
         if(!SplitView.fillWidth)
             SplitView.preferredWidth = SplitView.view.width / SplitView.view.count
@@ -51,7 +51,7 @@ Item {
 
             Repeater {
                 id: tabRepeater
-                model: 1
+                model: 0
 
                 MediaTabButton {
                     text: qsTr("Tab ") + modelData
