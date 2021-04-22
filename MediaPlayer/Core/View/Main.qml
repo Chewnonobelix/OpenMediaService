@@ -161,7 +161,7 @@ ApplicationWindow {
 		}
 
 		MediaList {
-			id: _playlist
+            id: playlist
 
 			currentIndex: -1
 			Layout.preferredWidth: root.width * 0.20
@@ -182,8 +182,8 @@ ApplicationWindow {
 
 			headerPositioning: ListView.OverlayHeader
 			header: Rectangle {
-				height: _playlist.height * 0.05
-				width: _playlist.width
+                height: playlist.height * 0.05
+                width: playlist.width
 				z:3
 				gradient: Gradient {
 					GradientStop {
@@ -207,7 +207,7 @@ ApplicationWindow {
 				id: menu1
 				MenuItem {
 					text: "Open"
-					onClicked: _drawPlay.open()
+                    onClicked: drawPlay.open()
 				}
 
 				MenuItem {
@@ -240,7 +240,7 @@ ApplicationWindow {
 				acceptedButtons:  Qt.RightButton
 
 				onClicked: {
-					if(_playlist.indexAt(mouseX, mouseY) !== -1) {
+                    if(playlist.indexAt(mouseX, mouseY) !== -1) {
 						menu1.popup(mouseX, mouseY)
 					}
 					else {
@@ -250,16 +250,19 @@ ApplicationWindow {
 			}
 
 			delegate: MediaListItem {
-				width: _playlist.width
-				height: _playlist.height * 0.10
+                width: playlist.width
+                height: playlist.height * 0.10
 				text: (smart ? "*" : "") + (name === "" ? id : name)
 
-				onDoubleClicked: _drawPlay.open()
+                onDoubleClicked:  {
+                    playlist.currentIndex = index
+                    drawPlay.open()
+                }
 			}
 		}
 
 		Drawer {
-			id: _drawPlay
+            id: drawPlay
 
 			edge: Qt.BottomEdge
 			height: root.height * .40
@@ -347,7 +350,7 @@ ApplicationWindow {
 				Component.onCompleted:  {
 					addNew()
 					currentLibrary = itemAt(0).currentLibrary
-                    _playlist.model = currentLibrary.playlist
+                    playlist.model = currentLibrary.playlist
                 }
 			}
 		}
