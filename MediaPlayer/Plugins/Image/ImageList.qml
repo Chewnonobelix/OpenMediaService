@@ -10,6 +10,17 @@ Item {
         height: root.height * .10
         width: root.width
         syncView: table
+
+        delegate: Label {
+            text: display
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    _imageListModel.sort(column)
+                }
+            }
+        }
     }
     TableView {
         id: table

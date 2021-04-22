@@ -39,7 +39,7 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const {
     auto currentCol = m_columns[col];
 
     if(role < int(ImageListRole::FileRole)) {
-        switch(currentCol.second) {
+        switch(currentCol.role) {
         case ImageListRole::FileRole:
             return current->path().split("/").last();
             break;
@@ -82,7 +82,12 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const {
 
     return QVariant();
 }
-void ImageListModel::sort(int , Qt::SortOrder) {}
+void ImageListModel::sort(int col) {
+    auto old = m_columns[col].order;
+    for(auto& it: m_columns)
+        it.order = TristateOrder::NoOrder;
+    m_columns[col].order = nextOrder(old);
+}
 
 QHash<int, QByteArray> ImageListModel::roleNames() const
 {
@@ -102,7 +107,7 @@ QHash<int, QByteArray> ImageListModel::roleNames() const
 QStringList ImageListModel::columnModel() const {
     QStringList ret;
     for(auto it: m_columns)
-        ret<<it.first;
+        ret<<it.name;
 
     return ret;
 }
@@ -131,4 +136,16 @@ void ImageListModel::play(int index)
     m_model->setReadOrder(read);
     m_model->setCurrentIndex(index-1);
     m_model->next();
+}
+
+ImageListModel::TristateOrder ImageListModel::nextOrder(TristateOrder order) {
+    switch (order) {
+    case TristateOrder::NoOrder:
+        return TristateOrder::AscendingOrder;
+    case TristateOrder::AscendingOrder:
+        return TristateOrder::DescendingOrder;
+    case TristateOrder::DescendingOrder:
+        return TristateOrder::NoOrder;
+
+    }
 }
