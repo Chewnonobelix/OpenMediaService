@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Item {
+    id: root
+
 	Rectangle {
 		anchors.fill: parent
 		color: "black"
@@ -11,7 +13,7 @@ Item {
 		target: _image
 
 		function onPlay(path) {
-			_display.source = "file:///"+path
+            display.source = "file:///"+path
 		}
 	}
 
@@ -19,7 +21,8 @@ Item {
 		anchors.fill: parent
 		acceptedButtons: Qt.NoButton
 
-		onWheel: {
+        onWheel: function(wheel){
+            console.log("wheel")
 			if(wheel.angleDelta.y > 0) {
 				_image.onCurrentIndexChanged(-1)
 			}
@@ -31,7 +34,7 @@ Item {
 	}
 
 	Image {
-		id: _display
+        id: display
 		anchors.fill: parent
 		fillMode: Image.PreserveAspectFit
 	}

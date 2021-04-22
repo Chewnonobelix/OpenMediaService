@@ -21,57 +21,13 @@ ApplicationWindow {
 		onActivated: root.close()
 	}
 
-	Popup {
+
+	LibraryPopup {
 		id: addLibraryPop
-
-		onOpened: libraryName.clear()
-		GridLayout {
-			anchors.fill: parent
-			rows: 2
-
-			MediaTextEdit {
-				id: libraryName
-				width: addLibraryPop.width* 0.40
-
-				validator: RegularExpressionValidator {
-					regularExpression : /.+/
-				}
-			}
-
-			MediaCombobox {
-				id: libraryType
-
-				model: CoreModel.typeModel
-				textRole: "name"
-				valueRole: "role"
-			}
-
-			MediaButton {
-				Layout.preferredHeight: addLibraryPop.height * .95
-				Layout.preferredWidth: addLibraryPop.width * .19
-				enabled: libraryName.acceptableInput
-				text: "Add"
-				onClicked: {
-					_db.createLibrary(libraryName.text, libraryType.currentValue)
-				}
-			}
-			MediaButton {
-				Layout.preferredHeight: addLibraryPop.height * .95
-				Layout.preferredWidth: addLibraryPop.width * .19
-				text: "Close"
-				onClicked: {
-					addLibraryPop.close()
-				}
-			}
-		}
 	}
-
-	Connections {
-		target: _libraries
-	}
-
 
 	GridLayout {
+		id: layout
 		anchors.fill: parent
 		columnSpacing: root.width * 0.01
 		rowSpacing: root.height * 0.01
@@ -131,11 +87,11 @@ ApplicationWindow {
 
 
 			onCurrentIndexChanged: {
-				_librariesModel.currentIndex = currentIndex
+                splitView.currentLibrary.currentIndex = currentIndex
+                if(playlist.currentIndex !== -1) {
+                    playlist.currentIndex = -1
+                    playlist.currentIndex = 0
 
-				if(_playlist.currentIndex !== -1) {
-					_playlist.currentIndex = -1
-					_playlist.currentIndex = 0
 				}
 			}
 
@@ -188,19 +144,24 @@ ApplicationWindow {
 				required property string name
 				required property string role
 				required property int index
+				required property string id
 
 				text: name
 
+				onClicked: {
+					_librariesModel.currentIndex = index
+					splitView.currentLibrary.setCurrentLibrary(id)
+				}
+
 				onDoubleClicked:  {
 					ListView.view.currentIndex = index
-					_libraries.open()
+					splitView.currentLibrary.open()
 				}
 			}
 		}
 
 		MediaList {
-			id: _playlist
-			model: _playlistModel
+            id: playlist
 
 			currentIndex: -1
 			Layout.preferredWidth: root.width * 0.20
@@ -211,14 +172,18 @@ ApplicationWindow {
 			Layout.columnSpan: 2
 
 			onCurrentIndexChanged:  {
-				_playlistModel.currentIndex = currentIndex
+				if(model)
+					model.currentIndex = currentIndex
 			}
 
+			onModelChanged: {
+				forceLayout()
+			}
 
 			headerPositioning: ListView.OverlayHeader
 			header: Rectangle {
-				height: _playlist.height * 0.05
-				width: _playlist.width
+                height: playlist.height * 0.05
+                width: playlist.width
 				z:3
 				gradient: Gradient {
 					GradientStop {
@@ -242,16 +207,16 @@ ApplicationWindow {
 				id: menu1
 				MenuItem {
 					text: "Open"
-					onClicked: _drawPlay.open()
+                    onClicked: drawPlay.open()
 				}
 
 				MenuItem {
 					text: "Add smart playlist"
-					onClicked: _libraries.addPlaylist(true)
+                    onClicked: splitView.currentLibrary.addPlaylist(true)
 				}
 				MenuItem {
 					text: "Add playlist"
-					onClicked: _libraries.addPlaylist()
+                    onClicked: splitView.currentLibrary.addPlaylist()
 				}
 				MenuItem {
 					text: "Remove playlist"
@@ -262,11 +227,11 @@ ApplicationWindow {
 				id: menu2
 				MenuItem {
 					text: "Add smart playlist"
-					onClicked: _libraries.addPlaylist(true)
+                    onClicked: splitView.currentLibrary.addPlaylist(true)
 				}
 				MenuItem {
 					text: "Add playlist"
-					onClicked: _libraries.addPlaylist()
+                    onClicked: splitView.currentLibrary.addPlaylist()
 				}
 			}
 
@@ -275,7 +240,7 @@ ApplicationWindow {
 				acceptedButtons:  Qt.RightButton
 
 				onClicked: {
-					if(_playlist.indexAt(mouseX, mouseY) !== -1) {
+                    if(playlist.indexAt(mouseX, mouseY) !== -1) {
 						menu1.popup(mouseX, mouseY)
 					}
 					else {
@@ -285,102 +250,108 @@ ApplicationWindow {
 			}
 
 			delegate: MediaListItem {
-				width: _playlist.width
-				height: _playlist.height * 0.10
+                width: playlist.width
+                height: playlist.height * 0.10
 				text: (smart ? "*" : "") + (name === "" ? id : name)
 
-				onDoubleClicked: _drawPlay.open()
+                onDoubleClicked:  {
+                    playlist.currentIndex = index
+                    drawPlay.open()
+                }
 			}
 		}
 
 		Drawer {
-			id: _drawPlay
+            id: drawPlay
 
 			edge: Qt.BottomEdge
 			height: root.height * .40
 			width: root.width
 
+            onOpened: {
+                playLoad.sourceComponent = splitView.currentLibrary.playlistComponent
+                playLoad.active = splitView.currentLibrary.playlistComponent !== null
+            }
+
 			Loader {
-				Connections {
-					target: _main
-
-					function onPlaylistDisplay(path) {
-						_playLoad.source = path
-						_playLoad.active = path !== ""
-					}
-				}
-
-				id: _playLoad
+                id: playLoad
 				anchors.fill: parent
 				active: false
 			}
 		}
 
-		TabBar {
-			id: viewBar
-
-			Layout.fillWidth: true
-			Layout.preferredHeight: root.height * 0.10
-			Layout.row: 0
-			Layout.column: 2
-
-			Component.onCompleted: {
-				currentIndex = 0
-			}
-
-			Repeater {
-				id: tabRepeater
-				model: 1
-
-				MediaTabButton {
-					text: qsTr("Tab ") + modelData
-					onClicked: {
-						_main.onTabChanged(modelData)
-					}
-				}
-			}
-
-			MediaTabButton {
-				text: "+"
-
-				onClicked:  {
-					tabRepeater.model = viewBar.currentIndex + 1
-					viewBar.currentIndex = viewBar.currentIndex - 1
-					_main.addTab()
-				}
+		Menu {
+			id: splitMenu
+			MenuItem {
+				text: "Split1"
+				onClicked: splitView.addNew()
 			}
 		}
 
-		StackLayout {
-			id: view
-			currentIndex: viewBar.currentIndex
-			Layout.fillWidth: true
-			Layout.fillHeight: true
-
-			Layout.row: 1
+		MouseArea {
+			z: 5
+			Layout.row: 0
 			Layout.column: 2
-			Layout.rowSpan: 2
+			Layout.rowSpan: 3
+			Layout.columnSpan: 1
+			Layout.fillHeight: true
+			Layout.fillWidth: true
+			acceptedButtons: Qt.RightButton
 
-			clip: true
-			Connections {
-				target: _main
-
-				function onPlayerDisplay(name, tab) {
-					var it = viewRep.itemAt(tab)
-					view.currentItem.active = name !== ""
-					it.source = name
-					it.active = name !== ""
-				}
+			onClicked: {
+				splitMenu.open()
 			}
 
-			Repeater {
-				id: viewRep
-				model: tabRepeater.model
-				Loader {
 
-					id: _playerLoader
-					active: false
+			SplitView {
+				id: splitView
+				anchors.fill: parent
+				orientation: Qt.Horizontal
+
+				property ControllerLibrary currentLibrary
+
+                onCurrentLibraryChanged: {
+                }
+
+                function onClicked(lib) {
+					currentLibrary = lib
+					_playlist.model = lib.playlist
 				}
+
+				property var component;
+				property var sprite;
+
+				function addNew() {
+					component = Qt.createComponent("View.qml");
+					if (component.status === Component.Ready)
+						finishCreation();
+					else
+						component.statusChanged.connect(finishCreation);
+				}
+
+				function finishCreation() {
+					if (component.status === Component.Ready) {
+						sprite = component.createObject(this, {});
+						if (sprite === null) {
+							// Error Handling
+							console.log("Error creating object");
+						}
+						else {
+							addItem(sprite)
+							sprite.onClicked.connect(onClicked)
+						}
+					} else if (component.status === Component.Error) {
+						// Error Handling
+						console.log("Error loading component:", component.errorString());
+					}
+				}
+
+
+				Component.onCompleted:  {
+					addNew()
+					currentLibrary = itemAt(0).currentLibrary
+                    playlist.model = currentLibrary.playlist
+                }
 			}
 		}
 	}

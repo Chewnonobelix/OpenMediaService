@@ -1,96 +1,64 @@
 #include "controllermain.h"
 
-ControllerMain::ControllerMain() : AbstractController(), m_libraries() {
-	engine().addImportPath(QStringLiteral(QML_IMPORT_PATH));
-	qDebug() << QStringLiteral(QML_IMPORT_PATH) << "Wesh"
-					 << engine().importPathList();
-	m_manager.init();
+ControllerMain::ControllerMain() : AbstractController() {
+    engine().addImportPath(QStringLiteral(QML_IMPORT_PATH));
+    qDebug() << QStringLiteral(QML_IMPORT_PATH)
+             << engine().importPathList();
+    m_manager.init();
 }
 
 void ControllerMain::exec() {
-	qDebug() << "DataXml" << qRegisterMetaType<DataXml>();
-	qDebug() << "DataJson" << qRegisterMetaType<DataJson>();
-	qDebug() << "MediaPlayer::MediaRole"
+    qDebug() << "DataXml" << qRegisterMetaType<DataXml>();
+    qDebug() << "DataJson" << qRegisterMetaType<DataJson>();
+    qDebug() << "MediaPlayer::MediaRole"
 					 << qRegisterMetaType<MediaPlayerGlobal::MediaRole>();
 
-	qDebug() << "LibraryProbe"
+    qDebug() << "LibraryProbe"
 					 << qmlRegisterUncreatableType<LibraryProbe>(
-									"MediaPlayer", 1, 0, "LibraryProbe", "Cpp owner");
-	qDebug() << "Library"
+                            "MediaPlayer", 1, 0, "LibraryProbe", "Cpp owner");
+    qDebug() << "Library"
 					 << qmlRegisterUncreatableType<Library>("MediaPlayer", 1, 0,
-																									"Library", "Cpp owner");
+                                                            "Library", "Cpp owner");
 
-	qDebug() << "LibraryDataModel"
+    qDebug() << "LibraryDataModel"
 					 << qmlRegisterType<LibraryDataModel>("MediaPlayer.Model", 1, 0,
-																								"LibraryDataModel");
-	qDebug() << "ControllerLibrairy"
+                                                          "LibraryDataModel");
+    qDebug() << "ControllerLibrary"
 					 << qmlRegisterType<ControllerLibrary>("MediaPlayer.Model", 1, 0,
-																								 "ControllerLibrairy");
-	qDebug() << "MediaRole QML"
+                                                           "ControllerLibrary");
+    qDebug() << "MediaRole QML"
 					 << qmlRegisterUncreatableMetaObject(
-									MediaPlayerGlobal::staticMetaObject, "MediaPlayer", 1, 0,
-									"MediaPlayer",
+                            MediaPlayerGlobal::staticMetaObject, "MediaPlayer", 1, 0,
+                            "MediaPlayer",
 
-									"Media Player global");
+                            "Media Player global");
+    qDebug() << "InterfacePLugin"
+					 << qmlRegisterUncreatableType<InterfacePlugins>(
+                            "InterfacePlugin", 1, 0, "InterfacePlugin", "Interface type");
 
-	setDb("DataJson");
-	auto *context = engine().rootContext();
-	context->setContextProperty("_main", this);
-	context->setContextProperty("_db", db());
-	m_libraries << new ControllerLibrary;
-	m_libraries.first()->exec();
+    qDebug() << qmlRegisterType<TabManager>("MediaPlayer.Model", 1, 0,
+                                            "TabManager");
 
-	context->setContextProperty("_librariesModel", &m_librariesModel);
-	context->setContextProperty("_playlistModel", &m_playlistModel);
+    setDb("DataJson");
+    auto *context = engine().rootContext();
+    context->setContextProperty("_main", this);
+    context->setContextProperty("_db", db());
+    m_librariesModel = new LibraryDataModel;
 
-	connect(&m_librariesModel, &LibraryDataModel::currentModelChanged,
-					[this](LibraryPointer l) {
-						m_libraries[m_currentTab]->onCurrentModelChanged(l);
-						m_libraries[m_currentTab]->setModelIndex(
-								m_librariesModel.currentIndex());
-					});
+    context->setContextProperty("_librariesModel", m_librariesModel);
+    connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
+            &LibraryDataModel::onUpdateLibraries);
 
-	connect(&m_playlistModel, &PlaylistModel::currentIndexChanged,
-					[this](PlaylistPointer p) {
-						m_libraries[m_currentTab]->onCurrentPlaylistChanged(p);
-					});
+    qDebug() << "Main context";
 
-	connect(&m_librariesModel, &LibraryDataModel::currentModelChanged,
-					&m_playlistModel, &PlaylistModel::onLibraryChanged);
 
-	connect(m_libraries.first(), &ControllerLibrary::currentLibraryChanged, this,
-					&ControllerMain::onLibraryChanged);
+    m_engine->createWindow(QUrl("/Main.qml"));
+    qDebug() << "~Main context";
 
-	m_engine->createWindow(QUrl("/Main.qml"));
-	m_librariesModel.onUpdateLibraries();
+    emit db()->librariesChanged();
 }
 
 QQmlApplicationEngine &ControllerMain::engine() {
-	return m_engine->qmlEngine();
+    return m_engine->qmlEngine();
 }
 
-void ControllerMain::onLibraryChanged() {
-	auto s = (ControllerLibrary *)sender();
-	auto role = s->currentLibrary()->role();
-
-	if (m_manager[role]) {
-		emit playlistDisplay(m_manager[role]->playlistView());
-		emit playerDisplay(m_manager[role]->playerView(), m_currentTab);
-	} else {
-		emit playlistDisplay("");
-		emit playerDisplay("", m_currentTab);
-	}
-}
-
-void ControllerMain::addTab() {
-	QPointer<ControllerLibrary> t = new ControllerLibrary;
-	m_libraries << (t);
-	connect(m_libraries.last(), &ControllerLibrary::currentLibraryChanged, this,
-					&ControllerMain::onLibraryChanged);
-}
-
-void ControllerMain::onTabChanged(int index) {
-	qDebug() << index << m_libraries[index]->modelIndex();
-	m_currentTab = index;
-	m_librariesModel.setCurrentIndex(m_libraries[index]->modelIndex());
-}

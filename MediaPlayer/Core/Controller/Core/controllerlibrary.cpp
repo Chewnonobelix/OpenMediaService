@@ -1,71 +1,79 @@
 #include "controllerlibrary.h"
 
-ControllerLibrary::ControllerLibrary() {
-	auto *context = m_engine->qmlEngine().rootContext();
-	context->setContextProperty("_libraries", this);
+void ControllerLibrary::exec() {
+	connect(m_playlist, &PlaylistModel::currentIndexChanged, this,
+					&ControllerLibrary::onCurrentPlaylistChanged);
 }
 
-ControllerLibrary::ControllerLibrary(const ControllerLibrary &)
-		: AbstractController() {}
-
-void ControllerLibrary::exec() {}
-
-Library *ControllerLibrary::currentLibrary() const {
-	return m_currentLibrary.data();
-}
+PlaylistModel *ControllerLibrary::playlist() const { return m_playlist; }
 
 void ControllerLibrary::open() {
+	auto context = m_engine->qmlEngine().rootContext();
+	context->setContextProperty("_libraries", this);
+	qDebug() << "Library context";
 	m_engine->createWindow(QUrl(QStringLiteral("/LibraryView.qml")));
 }
 
 void ControllerLibrary::addSourceDir(QString source) {
-	m_currentLibrary->addSourceDir(source);
+	m_current->addSourceDir(source);
 }
 
 void ControllerLibrary::removeSourceDir(QString path) {
-	m_currentLibrary->removeSourceDir(path);
-}
-
-void ControllerLibrary::onCurrentModelChanged(LibraryPointer p) {
-	m_currentLibrary = p;
-
-	if (p) {
-		connect(p.data(), &Library::libraryChanged, this,
-						&ControllerLibrary::onLibraryChanged);
-
-		emit currentLibraryChanged();
-
-		p->probe()->setFilters(m_manager[p->role()]->filters());
-	}
-}
-void ControllerLibrary::onCurrentPlaylistChanged(PlaylistPointer p) {
-	//	auto p = m_playlistModel.current();
-	if (m_currentLibrary && !p.isNull() && m_manager[m_currentLibrary->role()])
-		m_manager[m_currentLibrary->role()]->setPlaylist(p);
+	m_current->removeSourceDir(path);
 }
 
 void ControllerLibrary::addPlaylist(bool smart) {
 	if (smart) {
 		auto pl = factory<SmartPlaylist>();
-		m_currentLibrary->addSmartPlaylist(pl);
+		m_current->addSmartPlaylist(pl);
 	} else {
 		auto pl = factory<PlayList>();
-		m_currentLibrary->addPlaylist(pl);
+		m_current->addPlaylist(pl);
 	}
 }
 
 void ControllerLibrary::removePlaylist(QString id) {
-	m_currentLibrary->removePlaylist(id);
-	m_currentLibrary->removeSmartPlaylist(id);
+	m_current->removePlaylist(id);
+	m_current->removeSmartPlaylist(id);
 }
 
-void ControllerLibrary::onLibraryChanged() {
-	db()->updateLibrary(m_currentLibrary);
+Library *ControllerLibrary::library() const { return m_current.data(); }
+
+void ControllerLibrary::setCurrentLibrary(QString id) {
+	auto uid = QUuid::fromString(id);
+	m_current = (*m_librariesModel)[uid];
+	connect(m_current.data(), &Library::libraryChanged, this,
+					&ControllerLibrary::onUpdateLibrary, Qt::UniqueConnection);
+	m_plugin = m_manager[m_current->role()]->clone();
+	m_plugin->exec();
+
+	emit libraryChanged();
+	emit playerComponentChanged();
+	emit playlistComponentChanged();
+
+	m_current->probe()->setFilters(m_plugin->filters());
+	m_playlist->setSmart(m_current->smartPlaylist().values());
+	m_playlist->setNormal(m_current->playlist().values());
 }
 
-int ControllerLibrary::modelIndex() const { return m_modelIndex; }
-
-void ControllerLibrary::setModelIndex(int i) {
-	m_modelIndex = i;
-	emit modelIndexChanged();
+void ControllerLibrary::onUpdateLibrary() {
+	db()->updateLibrary(m_current);
+	m_playlist->setSmart(m_current->smartPlaylist().values());
+	m_playlist->setNormal(m_current->playlist().values());
 }
+
+void ControllerLibrary::onCurrentPlaylistChanged(PlaylistPointer p) {
+	if (m_plugin) {
+		m_plugin->setPlaylist(p);
+	}
+}
+
+QQmlComponent *ControllerLibrary::playlistComponent() const {
+	return m_plugin ? m_plugin->playlistView() : nullptr;
+}
+
+QQmlComponent *ControllerLibrary::playerComponent() const {
+	return m_plugin ? m_plugin->playerView() : nullptr;
+}
+
+QString ControllerLibrary::id() const { return m_id.toString(); }

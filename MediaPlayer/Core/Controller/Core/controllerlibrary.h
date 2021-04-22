@@ -1,32 +1,42 @@
 #pragma once
-#include <QQmlContext>
-#include <QtCore/qglobal.h>
 
-#include "../DataModel/librarydatamodel.h"
-#include "../DataModel/playlistmodel.h"
+#include <Controller/Core/abstractcontroller.h>
+#include <Controller/DataModel/playlistmodel.h>
 
-#include "abstractcontroller.h"
-#include "liveqmlengine.h"
+#include <Model/library.h>
 
 class ControllerLibrary : public AbstractController {
 	Q_OBJECT
-	Q_PROPERTY(
-			Library *currentLibrary READ currentLibrary NOTIFY currentLibraryChanged)
-	Q_PROPERTY(int modelIndex READ modelIndex WRITE setModelIndex NOTIFY
-								 modelIndexChanged)
+	Q_DISABLE_COPY(ControllerLibrary)
+
+	Q_PROPERTY(PlaylistModel *playlist READ playlist)
+	Q_PROPERTY(Library *currentLibrary READ library NOTIFY libraryChanged)
+	Q_PROPERTY(QQmlComponent *playlistComponent READ playlistComponent NOTIFY
+								 playlistComponentChanged)
+	Q_PROPERTY(QQmlComponent *playerComponent READ playerComponent NOTIFY
+								 playerComponentChanged)
+	Q_PROPERTY(QString id READ id CONSTANT)
 
 private:
-	LibraryPointer m_currentLibrary;
-	int m_modelIndex = -1;
+	LibraryPointer m_current = nullptr;
+	QPointer<PlaylistModel> m_playlist = new PlaylistModel();
+	int m_currentIndex = -1;
+	QUuid m_id = QUuid::createUuid();
+    QSharedPointer<InterfacePlugins> m_plugin;
+
+	Library *library() const;
+	PlaylistModel *playlist() const;
+
+    int currentIndex() const;
+    void setCurrentIndex(int);
 
 public:
-	ControllerLibrary();
-	ControllerLibrary(const ControllerLibrary &);
+	ControllerLibrary() = default;
 	~ControllerLibrary() = default;
 
-	void exec() override;
+	Q_INVOKABLE void exec() override;
 
-	Library *currentLibrary() const;
+	Q_INVOKABLE void setCurrentLibrary(QString);
 
 	Q_INVOKABLE void open();
 
@@ -35,14 +45,16 @@ public:
 	Q_INVOKABLE void addPlaylist(bool = false);
 	Q_INVOKABLE void removePlaylist(QString);
 
-	int modelIndex() const;
-	void setModelIndex(int);
-signals:
-	void currentLibraryChanged();
-	void modelIndexChanged();
+    QQmlComponent *playlistComponent() const;
+    QQmlComponent *playerComponent() const;
+    QString id() const;
 
 public slots:
-	void onCurrentModelChanged(LibraryPointer);
+	void onUpdateLibrary();
 	void onCurrentPlaylistChanged(PlaylistPointer);
-	void onLibraryChanged();
+
+signals:
+	void libraryChanged();
+	void playlistComponentChanged();
+	void playerComponentChanged();
 };

@@ -1,11 +1,6 @@
 #include "librarydatamodel.h"
 
-LibraryDataModel::LibraryDataModel() : QAbstractListModel() {
-	connect(AbstractController::db(), &InterfaceSaver::librariesChanged, this,
-					&LibraryDataModel::onUpdateLibraries);
-
-	onUpdateLibraries();
-}
+LibraryDataModel::LibraryDataModel() : QAbstractListModel() {}
 
 LibraryDataModel::LibraryDataModel(const LibraryDataModel &l)
 		: QAbstractListModel(), m_libraries(l.m_libraries) {
@@ -99,10 +94,10 @@ void LibraryDataModel::onUpdateLibraries() {
 	clear();
 	setCurrentIndex(-1);
 
-	if (!AbstractController::db())
+	if (!sender())
 		return;
 
-	for (auto it : AbstractController::db()->selectLibrary().values())
+	for (auto it : ((InterfaceSaver *)sender())->selectLibrary().values())
 		insertData(it);
 }
 
@@ -116,3 +111,17 @@ void LibraryDataModel::setCurrentIndex(int index) {
 }
 
 int LibraryDataModel::currentIndex() const { return m_currentIndex; }
+
+int LibraryDataModel::indexOf(LibraryPointer lp) const {
+	return m_libraries.indexOf(lp);
+}
+
+LibraryPointer LibraryDataModel::operator[](QUuid id) const {
+	LibraryPointer ret;
+
+	for (auto it : m_libraries)
+		if (it->id() == id)
+			ret = it;
+
+	return ret;
+}

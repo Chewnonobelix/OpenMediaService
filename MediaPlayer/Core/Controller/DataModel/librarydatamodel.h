@@ -5,7 +5,8 @@
 
 #include "../../mediaplayercore_global.h"
 
-#include "../Core/abstractcontroller.h"
+#include <Controller/Data/interfacesaver.h>
+
 #include "Model/global.h"
 #include "Model/library.h"
 
@@ -34,6 +35,7 @@ public:
 	~LibraryDataModel() = default;
 
 	LibraryDataModel &operator=(const LibraryDataModel &);
+	LibraryPointer operator[](QUuid) const;
 
 	friend bool operator!=(const LibraryDataModel &, const LibraryDataModel &);
 
@@ -47,6 +49,7 @@ public:
 	Q_INVOKABLE void clear();
 	void setCurrentIndex(int);
 	int currentIndex() const;
+	int indexOf(LibraryPointer) const;
 
 public slots:
 	void onUpdateLibraries();

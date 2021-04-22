@@ -5,73 +5,72 @@ import QtQuick.Layouts 1.15
 import MediaPlayer.Components 1.0
 
 
-Frame {
-	id: root
-	Connections {
-		target: _imageLibrairyModel
+Item {
+    id: root
 
-		function onSizeChanged() {
-			_rep.model = _imageLibrairyModel.size
+    Connections {
+        target: _imageLibrairyModel
+
+        function onSizeChanged() {
+            rep.model = _imageLibrairyModel.size
+        }
+    }
+
+		Component.onCompleted: {
 		}
-	}
 
-	property string path
+    RowLayout {
+        anchors.fill: parent
+        spacing: 0
+        ScrollView {
+            id: scroll
+            clip:true
+            Layout.fillHeight: true
+            Layout.preferredWidth: root.width * .80
 
-	RowLayout {
-		anchors.fill: parent
-		spacing: 0
-		ScrollView {
-			Layout.fillHeight: true
-			Layout.preferredWidth: root.width * .80
-			clip:true
-			Row {
-			Repeater {
-				id: _rep
+            Row {
+                id: row
+                Repeater {
+                    id: rep
 
-				Tumbler {
-					id: _tumb
-					Layout.fillHeight: true
-					Layout.preferredWidth: root.width * .20
-					Connections {
-						target: _imageLibrairyModel
+                    model: _imageLibrairyModel ? _imageLibrairyModel.size : 0
+                    Tumbler {
+                        id: tumb
+                        Layout.fillHeight: true
+                        Layout.preferredWidth: root.width * .20
+                        Connections {
+                            target: _imageLibrairyModel
 
-						function onIndexesChanged(index, list) {
-							if(modelData === index) {
-								_tumb.model = list
-							}
-						}
+                            function onCurrentIndexChanged(i, j) {
+                                if(modelData === i) {
+                                    tumb.currentIndex = j
+                                }
+                            }
+                        }
 
-						function onCurrentIndexChanged(i, j) {
-							if(modelData === i) {
-								_tumb.currentIndex = j
-							}
-						}
-					}
+                        model: if(_imageLibrairyModel) _imageLibrairyModel.modelAt(modelData)
 
-					model: _imageLibrairyModel.modelAt(modelData)
+                        onCurrentIndexChanged: {
+                            if(_imageLibrairyModel) _imageLibrairyModel.setIndexes(modelData, currentIndex)
+                        }
+                    }
+                }
+            }
+        }
+        MediaList {
+            id: media
+            model: _imageLibrairyModel
+            Layout.fillHeight: true
+            Layout.preferredWidth: root.width * .20
 
-					//				property string currentModel: model[currentIndex]
+            delegate: MediaListItem {
+                text: name + ": " + count
 
-					onCurrentIndexChanged: {
-						_imageLibrairyModel.setIndexes(modelData, currentIndex)
-					}
-				}
-		}
-			}
-		}
-		MediaList {
-			model: _imageLibrairyModel
-			Layout.fillHeight: true
-			Layout.preferredWidth: root.width * .20
-
-			delegate: MediaListItem {
-				text: name + ": " + count
-
-				onDoubleClicked: {
-					_imageLibrairyModel.onDoubleClicked(index)
-				}
-			}
-		}
-	}
+                onDoubleClicked: {
+                    _imageLibrairyModel.onDoubleClicked(index)
+                }
+            }
+        }
+    }
 
 }

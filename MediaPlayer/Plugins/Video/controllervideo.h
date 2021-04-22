@@ -14,11 +14,13 @@ public:
 
 	void exec() override;
 
-	QString playerView() const override;
-	QString playlistView() const override;
+    QQmlComponent * playerView() const override;
+	QQmlComponent *playlistView() override;
 	void setPlaylist(PlaylistPointer) override;
 	void setMedia(MediaPointer) override;
 
 	MediaRole role() const override;
 	QStringList filters() const override;
+
+	QSharedPointer<InterfacePlugins> clone() const override;
 };

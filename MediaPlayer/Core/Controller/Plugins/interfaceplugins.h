@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlComponent>
 
 #include <mediaplayercore_global.h>
 
@@ -13,8 +14,8 @@ public:
 	InterfacePlugins(const InterfacePlugins &) = default;
 	virtual ~InterfacePlugins() = default;
 
-	virtual QString playerView() const = 0;
-	virtual QString playlistView() const = 0;
+    virtual QQmlComponent* playerView() const = 0;
+	virtual QQmlComponent *playlistView() = 0;
 	virtual void setPlaylist(PlaylistPointer) = 0;
 	virtual void setMedia(MediaPointer) = 0;
 
@@ -22,6 +23,7 @@ public:
 	virtual QStringList filters() const = 0;
 
 	virtual void exec() = 0;
+	virtual QSharedPointer<InterfacePlugins> clone() const = 0;
 };
 
 Q_DECLARE_INTERFACE(InterfacePlugins, "InterfacePlugins/1.0")

@@ -4,5 +4,8 @@
         <file>CoreModel.qml</file>
         <file>LibraryView.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>View.qml</file>
+        <file>LibraryPopup.qml</file>
+        <file>ErrorPage.qml</file>
     </qresource>
 </RCC>

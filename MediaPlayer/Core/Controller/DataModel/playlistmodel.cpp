@@ -1,4 +1,5 @@
 #include "playlistmodel.h"
+#include <Controller/Core/controllerlibrary.h>
 
 PlaylistModel::PlaylistModel(const PlaylistModel &) : QAbstractListModel() {}
 
@@ -8,18 +9,17 @@ QVariant PlaylistModel::data(const QModelIndex &index, int role) const {
 
 	int i = index.row();
 
+	auto p = (*this)[i];
 	switch (PlaylistRole(role)) {
 	case PlaylistRole::NameRole:
-		return i < m_smarts.size() ? m_smarts[i]->name()
-															 : m_normals[i - m_smarts.size()]->name();
+		return p->name();
 		break;
 	case PlaylistRole::SmartRole:
 		return i < m_smarts.size();
 		break;
 
 	case PlaylistRole::IdRole:
-		return i < m_smarts.size() ? m_smarts[i]->id()
-															 : m_normals[i - m_smarts.size()]->id();
+		return p->id();
 
 		break;
 	}
@@ -88,4 +88,9 @@ void PlaylistModel::onLibraryChanged(LibraryPointer l) {
 
 	setSmart(l->smartPlaylist().values());
 	setNormal(l->playlist().values());
+}
+
+PlaylistPointer PlaylistModel::operator[](int index) const {
+	return index < m_smarts.size() ? m_smarts[index]
+																 : m_normals[index - m_smarts.size()];
 }

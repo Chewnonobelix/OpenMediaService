@@ -19,7 +19,9 @@ DLLDESTDIR = $$OUT_PWD/../Application/
 SOURCES += \
         Controller/Core/abstractcontroller.cpp \
         Controller/Core/controllerlibrary.cpp \
+        Controller/Core/controllerlibrary_old.cpp \
         Controller/Core/controllermain.cpp \
+        Controller/Core/tabmanager.cpp \
         Controller/Data/datajson.cpp \
         Controller/Data/dataxml.cpp \
         Controller/Data/interfacesaver.cpp \
@@ -52,7 +54,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     Controller/Core/abstractcontroller.h \
     Controller/Core/controllerlibrary.h \
+    Controller/Core/controllerlibrary_old.h \
     Controller/Core/controllermain.h \
+    Controller/Core/tabmanager.h \
     Controller/Data/datajson.h \
     Controller/Data/dataxml.h \
     Controller/Data/interfacesaver.h \

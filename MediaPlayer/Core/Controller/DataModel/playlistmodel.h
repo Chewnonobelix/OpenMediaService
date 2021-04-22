@@ -1,10 +1,11 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QQmlComponent>
 
+//#include <Controller/Core/controllerlibrary.h>
+#include <Model/library.h>
 #include <Model/smartplaylist.h>
-
-#include <Controller/Core/abstractcontroller.h>
 
 class MEDIAPLAYERCORE_EXPORT PlaylistModel : public QAbstractListModel {
 	Q_OBJECT
@@ -29,6 +30,7 @@ public:
 	void setCurrentIndex(int);
 
 	PlaylistPointer current() const;
+	PlaylistPointer operator[](int) const;
 
 public:
 	QVariant data(const QModelIndex &index, int role) const override;
@@ -41,4 +43,5 @@ public slots:
 
 signals:
 	void currentIndexChanged(PlaylistPointer);
+	void displayChanged(QQmlComponent *);
 };

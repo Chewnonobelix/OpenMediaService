@@ -63,8 +63,6 @@ void LibraryProbe::probe() {
 					m_mutex.lock();
 					m_paths << it.absoluteFilePath();
 					m_mutex.unlock();
-				} else {
-					qDebug() << "Wesh" << it;
 				}
 			}
 		}));

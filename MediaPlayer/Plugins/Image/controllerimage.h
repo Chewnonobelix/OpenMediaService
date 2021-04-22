@@ -4,6 +4,7 @@
 #include <Controller/Plugins/interfaceplugins.h>
 
 #include "librairyimagemodel.h"
+#include "imagelistmodel.h"
 
 class ControllerImage : public AbstractController, public InterfacePlugins {
 	Q_OBJECT
@@ -12,8 +13,13 @@ class ControllerImage : public AbstractController, public InterfacePlugins {
 
 private:
 	PlaylistPointer m_current;
-	LibrairyImageModel m_model;
+
+    LibrairyImageModel m_model;
+    ImageListModel m_listModel;
+
 	QTimer m_timer;
+	QPointer<QQmlComponent> m_playlist;
+    QPointer<QQmlComponent> m_player;
 
 public:
 	ControllerImage() = default;
@@ -22,17 +28,18 @@ public:
 
 	void exec() override;
 
-	QString playerView() const override;
-	QString playlistView() const override;
+    QQmlComponent * playerView() const override;
+	QQmlComponent *playlistView() override;
 	void setPlaylist(PlaylistPointer) override;
 	void setMedia(MediaPointer) override;
 
 	MediaRole role() const override;
 	QStringList filters() const override;
+	QSharedPointer<InterfacePlugins> clone() const override;
 
 public slots:
 	void onCurrentIndexChanged(int);
-	void playing();
+    void playing(int = -1);
 	void stop();
 	void onTimeout();
 
