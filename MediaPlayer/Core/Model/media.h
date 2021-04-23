@@ -44,6 +44,8 @@ private:
 	void set();
 
 public:
+	enum class CompareState { EqualState, InferiorState, SuperiorState };
+	
 	Media(MD5 = "", QString = "");
 	Media(const Media &other);
 	using MetaData::MetaData;
@@ -52,7 +54,8 @@ public:
 
 	Media &operator=(const Media &other);
 	operator QJsonObject() const override;
-
+    friend MEDIAPLAYERCORE_EXPORT CompareState compare(MediaPointer, MediaPointer, QString);
+	
 	MD5 id() const;
 	void setId(MD5 id);
 	MediaPlayerGlobal::MediaRole role() const;

@@ -18,11 +18,16 @@ void ImageListModel::setPLaylist(PlaylistPointer p)
     insertColumns(0, columnCount());
     endInsertColumns();
 
+    m_sortList.clear();
+    if(p)
+        for(auto it = 0; it < p->count(); it++)
+            m_sortList<<it;
+
 }
 
 int ImageListModel::rowCount(const QModelIndex&) const
 {
-    return m_model ? m_model->count() : 0;
+    return m_sortList.size();
 }
 
 int ImageListModel::columnCount(const QModelIndex&) const {
@@ -35,7 +40,7 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const {
     if((row < 0 || row >= rowCount()) || (col < 0 || col >= columnCount()))
         return QVariant();
 
-    auto current = (*m_model)[row];
+    auto current = (*m_model)[m_sortList[row]];
     auto currentCol = m_columns[col];
 
     if(role < int(ImageListRole::FileRole)) {
@@ -87,6 +92,43 @@ void ImageListModel::sort(int col) {
     for(auto& it: m_columns)
         it.order = TristateOrder::NoOrder;
     m_columns[col].order = nextOrder(old);
+
+    for(auto i = 0; i < m_sortList.count(); i ++)
+    {
+        auto mi = (*m_model)[m_sortList[i]];
+        for(auto j = i; j < m_sortList.count(); j++) {
+            auto mj = (*m_model)[m_sortList[j]];
+
+            switch (m_columns[col].order) {
+            case TristateOrder::AscendingOrder:
+                if(compare(mi, mj, m_columns[col].name) != Media::CompareState::SuperiorState)
+                {
+                    m_sortList.swapItemsAt(i, j);
+                    mi = mj;
+                }
+                break;
+            case TristateOrder::DescendingOrder:
+                if(compare(mi, mj, m_columns[col].name) != Media::CompareState::InferiorState)
+                {
+                    m_sortList.swapItemsAt(i, j);
+                    mi = mj;
+                }
+                break;
+            default:
+                if(m_sortList[j] < m_sortList[i]){
+                    m_sortList.swapItemsAt(i, j);
+                    mi = mj;
+                }
+                break;
+            }
+        }
+    }
+    beginRemoveRows(QModelIndex(), 0, rowCount());
+    removeRows(0, rowCount());
+    endRemoveRows();
+    beginInsertRows(QModelIndex(), 0, rowCount());
+    insertRows(0, rowCount());
+    endInsertRows();
 }
 
 QHash<int, QByteArray> ImageListModel::roleNames() const

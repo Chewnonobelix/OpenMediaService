@@ -14,19 +14,21 @@ private:
     enum class TristateOrder{NoOrder, AscendingOrder, DescendingOrder};
 
     struct Column {
+        QString display;
         QString name;
         ImageListRole role;
         TristateOrder order;
     };
 
     PlaylistPointer m_model;
-    QList<Column> m_columns = {{"File", ImageListRole::FileRole, TristateOrder::NoOrder},
-                               {"Path", ImageListRole::PathRole, TristateOrder::NoOrder},
-                               {"Count", ImageListRole::CountRole, TristateOrder::NoOrder},
-                               {"Added", ImageListRole::AddedRole, TristateOrder::NoOrder},
-                               {"Last play", ImageListRole::LastPlayRole, TristateOrder::NoOrder},
-                               {"Rating", ImageListRole::RatingRole, TristateOrder::NoOrder},
-                               {"Ext", ImageListRole::ExtensionRole, TristateOrder::NoOrder}};
+    QList<int> m_sortList;
+    QList<Column> m_columns = {{"File", "file", ImageListRole::FileRole, TristateOrder::NoOrder},
+                               {"Path", "path", ImageListRole::PathRole, TristateOrder::NoOrder},
+                               {"Count", "count", ImageListRole::CountRole, TristateOrder::NoOrder},
+                               {"Added", "added", ImageListRole::AddedRole, TristateOrder::NoOrder},
+                               {"Last play", "lastPlayed", ImageListRole::LastPlayRole, TristateOrder::NoOrder},
+                               {"Rating", "rating", ImageListRole::RatingRole, TristateOrder::NoOrder},
+                               {"Ext", "ext", ImageListRole::ExtensionRole, TristateOrder::NoOrder}};
     TristateOrder nextOrder(TristateOrder);
 
 public:

@@ -147,3 +147,13 @@ Media &Media::operator=(const Media &other) {
 	mt = other;
 	return *this;
 }
+
+Media::CompareState compare(MediaPointer m1, MediaPointer m2, QString field)
+{
+    if(QStringList({"count", "rating", "currenrRead"}).contains(field)) {
+        return m1->metaData<double>(field) < m2->metaData<double>(field) ? Media::CompareState::InferiorState : m1->metaData<double>(field) == m2->metaData<double>(field) ? Media::CompareState::EqualState : Media::CompareState::SuperiorState;
+	}
+	else {
+        return m1->metaData<QString>(field) < m2->metaData<QString>(field) ? Media::CompareState::InferiorState : m1->metaData<QString>(field) == m2->metaData<QString>(field) ? Media::CompareState::EqualState : Media::CompareState::SuperiorState;
+	}
+}	
