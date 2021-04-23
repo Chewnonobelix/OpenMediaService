@@ -102,11 +102,18 @@ Item {
 
                      visible: true
 
+                     property string idScreen: model.id
+                     property Media media
                      Connections {
                          target: model
 
                          function onPlayerComponentChanged() {
                              sourceComponent = model.playerComponent
+
+                         }
+
+                         function onPlay(media) {
+                             playerLoader.media = media
                          }
                      }
 

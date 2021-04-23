@@ -63,6 +63,12 @@ void ControllerLibrary::onUpdateLibrary() {
 }
 
 void ControllerLibrary::onCurrentPlaylistChanged(PlaylistPointer p) {
+    disconnect(m_currentPlaylist.data(), &PlayList::play, this, &ControllerLibrary::onPlay);
+    if(p) {
+        connect(p.data(), &PlayList::play, this, &ControllerLibrary::onPlay);
+        m_currentPlaylist = p;
+    }
+
 	if (m_plugin) {
 		m_plugin->setPlaylist(p);
 	}
@@ -87,4 +93,9 @@ void ControllerLibrary::setCurrentIndex(int index)
 {
     m_currentIndex = index;
     emit currentIndexChanged();
+}
+
+void ControllerLibrary::onPlay(MediaPointer m)
+{
+    emit play(m.data());
 }

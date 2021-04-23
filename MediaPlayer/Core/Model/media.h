@@ -35,7 +35,7 @@ class MEDIAPLAYERCORE_EXPORT Media : public QObject, public MetaData {
 	Q_PROPERTY(QDateTime lastFinish READ lastFinish NOTIFY lastFinishChanged)
 	Q_PROPERTY(double currentRead READ currentRead WRITE setCurrentRead NOTIFY
 								 currentReadChanged)
-	Q_PROPERTY(QStringList paths READ paths)
+    Q_PROPERTY(QStringList paths READ paths CONSTANT)
 	Q_PROPERTY(int rating READ rating WRITE setRating NOTIFY ratingChanged)
 
 private:

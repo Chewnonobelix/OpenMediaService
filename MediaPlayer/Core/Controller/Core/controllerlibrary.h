@@ -24,6 +24,7 @@ private:
 	int m_currentIndex = -1;
 	QUuid m_id = QUuid::createUuid();
     QSharedPointer<InterfacePlugins> m_plugin;
+    PlaylistPointer m_currentPlaylist;
 
 	Library *library() const;
 	PlaylistModel *playlist() const;
@@ -53,10 +54,12 @@ public:
 public slots:
 	void onUpdateLibrary();
 	void onCurrentPlaylistChanged(PlaylistPointer);
+    void onPlay(MediaPointer);
 
 signals:
 	void libraryChanged();
 	void playlistComponentChanged();
 	void playerComponentChanged();
     void currentIndexChanged();
+    void play(Media*);
 };
