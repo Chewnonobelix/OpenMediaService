@@ -30,6 +30,6 @@ Item {
         id: display
 		anchors.fill: parent
 		fillMode: Image.PreserveAspectFit
-        source: media ? "file:///" + media.paths[0] : ""
+        source: root["media"] ? "file:///" + media.paths[0] : ""
 	}
 }

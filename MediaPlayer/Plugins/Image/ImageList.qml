@@ -72,13 +72,16 @@ Item {
             }
 
             Rating {
+                z:15
                 visible: column === 5
                 rating: visible ? display : 0
+                anchors.fill: parent
             }
 
             MouseArea {
                 anchors.fill: parent
-
+                hoverEnabled: true
+                propagateComposedEvents: true
                 onClicked: table.currentRow = row
 
                 onDoubleClicked: _imageListModel.play(index)
