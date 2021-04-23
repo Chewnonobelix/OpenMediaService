@@ -62,13 +62,18 @@ Item {
         property int currentRow: -1
 
         delegate: MediaLabel {
-            text: display
+            text:  column !== 5 ? display : ""
             clip: true
             horizontalAlignment: Qt.AlignLeft
 
             anchors {
                 leftMargin: 2
                 rightMargin: 2
+            }
+
+            Rating {
+                visible: column === 5
+                rating: visible ? display : 0
             }
 
             MouseArea {

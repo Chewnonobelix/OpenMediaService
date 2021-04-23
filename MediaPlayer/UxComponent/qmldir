@@ -12,5 +12,6 @@ MediaRadioButton 1.0 qrc:/MediaRadioButton.qml
 MediaTextEdit 1.0 qrc:/MediaTextEdit.qml
 MediaWindow 1.0 qrc:/MediaWindow.qml
 MediaTabButton 1.0 qrc:/MediaTabButton.qml
+Rating 1.0 qrc:/Rating.qml
 plugin UxComponents
 typeinfo plugin.qmltypes
