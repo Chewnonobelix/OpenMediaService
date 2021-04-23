@@ -7,6 +7,13 @@ Item {
 
     property int rating: 0
 
+    MouseArea {
+        z:10
+        anchors.fill: parent
+        acceptedButtons: Qt.NoButton
+        cursorShape: Qt.SizeHorCursor
+    }
+
     Row {
         id: row
 
