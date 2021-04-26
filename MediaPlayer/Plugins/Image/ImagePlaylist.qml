@@ -20,7 +20,7 @@ Item {
 
             MediaCombobox {
                 id: displayType
-                model: ["Library", "List"]
+                model: ["List", "Library"]
 
                 Layout.preferredHeight: toolbar.height
 
@@ -67,11 +67,12 @@ Item {
 //            implicitHeight: height > 0 ? height : 1
 
             currentIndex: displayType.currentIndex
-            ImageLibrairyPlaylist {
+
+            ImageList {
                 //                anchors.fill: parent
             }
 
-            ImageList {
+            ImageLibrairyPlaylist {
                 //                anchors.fill: parent
             }
         }

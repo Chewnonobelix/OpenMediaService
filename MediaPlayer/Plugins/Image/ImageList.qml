@@ -11,8 +11,12 @@ Item {
         width: root.width
         syncView: table
 
-        delegate: Label {
+        delegate: MediaLabel {
             text: display
+
+            background: Rectangle {
+                color: "black"
+            }
 
             MouseArea {
                 anchors.fill: parent
