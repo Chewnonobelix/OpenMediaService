@@ -44,6 +44,7 @@ public:
     int columnCount(const QModelIndex& = QModelIndex()) const override;
 
     QVariant data(const QModelIndex&, int) const override;
+    bool setData(const QModelIndex &, const QVariant &, int role = Qt::EditRole) override;
     Q_INVOKABLE void sort(int);
 
     QHash<int, QByteArray> roleNames() const override;

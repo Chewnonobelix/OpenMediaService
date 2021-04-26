@@ -80,6 +80,10 @@ Item {
                 visible: column === 5
                 rating: visible ? display : 0
                 anchors.fill: parent
+
+                onRatingChanged: {
+                    display = rating
+                }
             }
 
             MouseArea {

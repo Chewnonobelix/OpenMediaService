@@ -191,3 +191,10 @@ ImageListModel::TristateOrder ImageListModel::nextOrder(TristateOrder order) {
 
     }
 }
+
+bool ImageListModel::setData(const QModelIndex &index, const QVariant &value, int) {
+    if(m_columns[index.column()].name == "rating")
+        (*m_model)[m_sortList[index.row()]]->setRating(value.toInt());
+
+    return true;
+}
