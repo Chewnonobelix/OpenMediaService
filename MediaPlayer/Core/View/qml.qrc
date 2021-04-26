@@ -7,5 +7,6 @@
         <file>View.qml</file>
         <file>LibraryPopup.qml</file>
         <file>ErrorPage.qml</file>
+        <file>Settings.qml</file>
     </qresource>
 </RCC>
