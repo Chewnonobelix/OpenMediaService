@@ -11,15 +11,26 @@ class ImageListModel: public QAbstractTableModel
 
 private:
     enum class ImageListRole{DisplayRole = Qt::UserRole +1, RatingRole, FileRole, ExtensionRole, PathRole, CountRole, AddedRole, LastPlayRole, Fullpath, IndexRole};
+    enum class TristateOrder{NoOrder, AscendingOrder, DescendingOrder};
+
+    struct Column {
+        QString display;
+        QString name;
+        ImageListRole role;
+        TristateOrder order;
+    };
 
     PlaylistPointer m_model;
-    QList<QPair<QString, ImageListRole>> m_columns = {{"File", ImageListRole::FileRole},
-                                                     {"Path", ImageListRole::PathRole},
-                                                     {"Count", ImageListRole::CountRole},
-                                                     {"Added", ImageListRole::AddedRole},
-                                                     {"Last play", ImageListRole::LastPlayRole},
-                                                     {"Rating", ImageListRole::RatingRole},
-                                                     {"Ext", ImageListRole::ExtensionRole}};
+    QList<int> m_sortList;
+    QList<Column> m_columns = {{"File", "file", ImageListRole::FileRole, TristateOrder::NoOrder},
+                               {"Path", "path", ImageListRole::PathRole, TristateOrder::NoOrder},
+                               {"Count", "count", ImageListRole::CountRole, TristateOrder::NoOrder},
+                               {"Added", "added", ImageListRole::AddedRole, TristateOrder::NoOrder},
+                               {"Last play", "lastPlayed", ImageListRole::LastPlayRole, TristateOrder::NoOrder},
+                               {"Rating", "rating", ImageListRole::RatingRole, TristateOrder::NoOrder},
+                               {"Ext", "ext", ImageListRole::ExtensionRole, TristateOrder::NoOrder}};
+    TristateOrder nextOrder(TristateOrder);
+
 public:
     ImageListModel() = default;
 
@@ -33,7 +44,8 @@ public:
     int columnCount(const QModelIndex& = QModelIndex()) const override;
 
     QVariant data(const QModelIndex&, int) const override;
-    void sort(int , Qt::SortOrder) override;
+    bool setData(const QModelIndex &, const QVariant &, int role = Qt::EditRole) override;
+    Q_INVOKABLE void sort(int);
 
     QHash<int, QByteArray> roleNames() const override;
 };

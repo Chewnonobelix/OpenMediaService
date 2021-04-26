@@ -4,5 +4,6 @@
         <file>ImagePlayer.qml</file>
         <file>ImageLibrairyPlaylist.qml</file>
         <file>ImageList.qml</file>
+        <file>ImageSettings.qml</file>
     </qresource>
 </RCC>

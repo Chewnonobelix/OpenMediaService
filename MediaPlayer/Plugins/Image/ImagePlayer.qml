@@ -9,17 +9,10 @@ Item {
 		color: "black"
 	}
 
-	Connections {
-		target: _image
-
-		function onPlay(path) {
-            display.source = "file:///"+path
-		}
-	}
-
 	MouseArea {
 		anchors.fill: parent
-		acceptedButtons: Qt.NoButton
+        acceptedButtons: Qt.NoButton
+
 
         onWheel: function(wheel){
             console.log("wheel")
@@ -37,5 +30,6 @@ Item {
         id: display
 		anchors.fill: parent
 		fillMode: Image.PreserveAspectFit
+        source: root["media"] ? "file:///" + media.paths[0] : ""
 	}
 }

@@ -34,7 +34,8 @@ SOURCES += \
         Model\library.cpp \
         Model\libraryprobe.cpp \
         Model\media.cpp \
-        Model\playlist.cpp
+        Model\playlist.cpp \
+        Controller/Core/controllersettings.cpp
 
 RESOURCES += View\qml.qrc
 
@@ -70,6 +71,7 @@ HEADERS += \
     Model\libraryprobe.h \
     Model\media.h \
     Model\playlist.h \
+    Controller/Core/controllersettings.h \
     mediaplayercore_global.h
 
 

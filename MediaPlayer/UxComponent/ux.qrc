@@ -14,5 +14,6 @@
         <file>MediaRadioButton.qml</file>
         <file>MediaTabButton.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>Rating.qml</file>
     </qresource>
 </RCC>

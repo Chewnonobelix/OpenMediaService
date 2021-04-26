@@ -10,6 +10,21 @@ Item {
         height: root.height * .10
         width: root.width
         syncView: table
+
+        delegate: MediaLabel {
+            text: display
+
+            background: Rectangle {
+                color: "black"
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    _imageListModel.sort(column)
+                }
+            }
+        }
     }
     TableView {
         id: table
@@ -51,7 +66,7 @@ Item {
         property int currentRow: -1
 
         delegate: MediaLabel {
-            text: display
+            text:  column !== 5 ? display : ""
             clip: true
             horizontalAlignment: Qt.AlignLeft
 
@@ -60,9 +75,21 @@ Item {
                 rightMargin: 2
             }
 
-            MouseArea {
+            Rating {
+                z:15
+                visible: column === 5
+                rating: visible ? display : 0
                 anchors.fill: parent
 
+                onRatingChanged: {
+                    display = rating
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                propagateComposedEvents: true
                 onClicked: table.currentRow = row
 
                 onDoubleClicked: _imageListModel.play(index)

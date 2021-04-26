@@ -21,8 +21,8 @@ Item {
 
     signal clicked (ControllerLibrary lib)
 
-    SplitView.fillHeight: SplitView.view.count === 1 || SplitView.view.orientation === Qt.Horizontal
-    SplitView.fillWidth: SplitView.view.count === 1 || SplitView.view.orientation === Qt.Vertical
+    SplitView.fillHeight: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Horizontal
+    SplitView.fillWidth: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Vertical
     SplitView.onFillWidthChanged: {
         if(!SplitView.fillWidth)
             SplitView.preferredWidth = SplitView.view.width / SplitView.view.count
@@ -35,7 +35,9 @@ Item {
 
     property ControllerLibrary currentLibrary: repModel.at(0)
 
-    onCurrentLibraryChanged: root.clicked(currentLibrary)
+    onCurrentLibraryChanged:  {
+        root.clicked(currentLibrary)
+    }
     ColumnLayout {
         anchors.fill: parent
 
@@ -51,7 +53,7 @@ Item {
 
             Repeater {
                 id: tabRepeater
-                model: 1
+                model: 0
 
                 MediaTabButton {
                     text: qsTr("Tab ") + modelData
@@ -66,11 +68,11 @@ Item {
 
                 Component.onCompleted: onClicked()
                 onClicked:  {
-                    tabRepeater.model = viewBar.currentIndex + 1
+                             tabRepeater.model = viewBar.currentIndex + 1
                     viewBar.currentIndex = viewBar.currentIndex - 1
                     repModel.addTab()
-                    root.currentLibrary = repModel.at(viewBar.currentIndex +1)
-                }
+                    root.currentLibrary = repModel.at(viewBar.currentIndex)
+                    }
             }
         }
 
@@ -100,11 +102,18 @@ Item {
 
                      visible: true
 
+                     property string idScreen: model.id
+                     property Media media
                      Connections {
                          target: model
 
                          function onPlayerComponentChanged() {
                              sourceComponent = model.playerComponent
+
+                         }
+
+                         function onPlay(media) {
+                             playerLoader.media = media
                          }
                      }
 
