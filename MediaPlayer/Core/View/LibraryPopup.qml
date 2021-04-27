@@ -26,9 +26,22 @@ Popup {
 		MediaCombobox {
 			id: libraryType
 
-			model: CoreModel.typeModel
+            model: _plugins
 			textRole: "name"
 			valueRole: "role"
+
+            delegate: ItemDelegate {
+                text: name
+                enabled: enable
+                visible: enable
+                width: libraryType.width
+
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.NoButton
+                    cursorShape: enable ? Qt.PointingHandCursor : Qt.ArrowCursor
+                }
+             }
 		}
 
 		MediaButton {

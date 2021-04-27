@@ -5,20 +5,41 @@ void PluginManager::init() {
 	dir.cd("Plugins");
 	auto list = dir.entryInfoList({"*.dll"});
 
+    auto toString = [](auto r) {
+        switch(r) {
+        case MediaRole::Audio:
+            return "Audio";
+        case MediaRole::Video:
+            return "Video";
+        case MediaRole::Books:
+            return "Books";
+        case MediaRole::Comics:
+            return "Comics";
+        case MediaRole::Image:
+            return "Image";
+        case MediaRole::Game:
+            return "Game";
+        default:
+            return "Undefined";
+        }
+    };
+
 	for (auto it : list) {
 		QPluginLoader loader(it.absoluteFilePath());
 		auto obj = dynamic_cast<InterfacePlugins *>(loader.instance());
 		QSharedPointer<InterfacePlugins> p(obj);
 
-		m_plugins[p->role()] = p;
+        m_plugins[p->role()] = {p, true};
 		p->exec();
+
+        m_liste << Plugin {toString(p->role()), p->role(), p, true};
 	}
 }
 
 QSharedPointer<InterfacePlugins>
 PluginManager::operator[](MediaRole role) const {
     if(m_plugins.contains(role))
-        return m_plugins[role];
+        return m_plugins[role].first;
 
     return QSharedPointer<InterfacePlugins>();
 }
@@ -53,9 +74,11 @@ QVariant PluginManager::data(const QModelIndex & index , int role) const
 
     switch(erole) {
     case PluginRole::EnableRole:
-        return false;
+        return m_liste[row].enable;
     case PluginRole::NameRole:
-        return toString(m_plugins.keys()[row]);
+        return m_liste[row].name;
+    case PluginRole::RoleRole:
+        return QVariant::fromValue(m_liste[row].role);
 
     }
 
@@ -65,6 +88,7 @@ QVariant PluginManager::data(const QModelIndex & index , int role) const
 QHash<int, QByteArray> PluginManager::roleNames() const
 {
     static QHash<int, QByteArray> ret = {{int(PluginRole::NameRole), "name"},
+                                         {int(PluginRole::RoleRole), "role"},
                                          {int(PluginRole::EnableRole), "enable"}};
 
     return ret;
@@ -73,4 +97,11 @@ QHash<int, QByteArray> PluginManager::roleNames() const
 int PluginManager::rowCount(QModelIndex const&) const
 {
     return m_plugins.size();
+}
+
+bool PluginManager::setData(const QModelIndex& index, const QVariant& data, int role)
+{
+    qDebug()<<"Set data"<<index.row()<<data<<role;
+    m_liste[index.row()].enable = data.toBool();
+    return true;
 }
