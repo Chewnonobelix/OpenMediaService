@@ -287,6 +287,10 @@ ApplicationWindow {
 				text: "Split1"
 				onClicked: splitView.addNew()
 			}
+            MenuItem {
+                text: "Settings"
+                onClicked: _settings.display()
+            }
 		}
 
 		MouseArea {

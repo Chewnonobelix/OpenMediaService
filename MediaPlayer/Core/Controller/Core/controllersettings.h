@@ -2,9 +2,11 @@
 
 #include <QSettings>
 
+#include "mediaplayercore_global.h"
+
 #include "abstractcontroller.h"
 
-class ControllerSettings: public AbstractController
+class MEDIAPLAYERCORE_EXPORT ControllerSettings: public AbstractController
 {
     Q_OBJECT
     Q_DISABLE_COPY(ControllerSettings)
@@ -17,5 +19,7 @@ public:
     ~ControllerSettings() = default;
 
     void exec() override;
+
+    Q_INVOKABLE void display();
 };
 

@@ -13,6 +13,7 @@
 #include "controllerlibrary.h"
 #include "tabmanager.h"
 #include <Controller/Plugins/pluginmanager.h>
+#include "controllersettings.h"
 
 class MEDIAPLAYERCORE_EXPORT ControllerMain : public AbstractController {
 	Q_OBJECT
@@ -23,6 +24,7 @@ private:
 
 	QQmlApplicationEngine &engine();
 	TabManager m_tabsManager;
+    ControllerSettings m_settings;
 
 public:
 	ControllerMain();

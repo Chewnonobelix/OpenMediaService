@@ -8,3 +8,8 @@ void ControllerSettings::exec()
     m_settings = new QSettings(QSettings::UserScope, "Chewnonobelix Inc.", "MediaPlayer");
 
 }
+
+void ControllerSettings::display()
+{
+    m_engine->createWindow(QUrl(QStringLiteral("/Settings.qml")));
+}
