@@ -46,6 +46,8 @@ void ControllerMain::exec() {
     auto *context = engine().rootContext();
     context->setContextProperty("_main", this);
     context->setContextProperty("_db", db());
+    context->setContextProperty("_plugins", &m_manager);
+
     m_librariesModel = new LibraryDataModel;
 
     context->setContextProperty("_librariesModel", m_librariesModel);
