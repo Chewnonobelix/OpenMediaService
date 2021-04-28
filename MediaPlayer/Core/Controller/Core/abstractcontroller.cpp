@@ -5,6 +5,7 @@ QThread *AbstractController::m_dbThread = new QThread();
 QPointer<LiveQmlEngine> AbstractController::m_engine = nullptr;
 QPointer<LibraryDataModel> AbstractController::m_librariesModel = nullptr;
 PluginManager AbstractController::m_manager = PluginManager();
+QPointer<ControllerSettings> AbstractController::m_settings = nullptr;
 
 AbstractController::AbstractController() : QObject() {
 	if (m_engine.isNull())

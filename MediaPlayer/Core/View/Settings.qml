@@ -37,7 +37,10 @@ MediaWindow {
                         text: name
                         checked: enable
 
-                        onCheckedChanged: enable = checked
+                        onCheckedChanged: {
+                            enable = checked
+                            _settings.setPlugin(name, enable)
+                        }
                     }
                 }
             }

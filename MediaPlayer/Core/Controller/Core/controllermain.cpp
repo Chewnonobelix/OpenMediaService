@@ -43,11 +43,13 @@ void ControllerMain::exec() {
                                             "TabManager");
 
     setDb("DataJson");
-    m_settings.exec();
+    m_settings = new ControllerSettings(*m_engine);
+
     auto *context = engine().rootContext();
     context->setContextProperty("_main", this);
     context->setContextProperty("_db", db());
     context->setContextProperty("_plugins", &m_manager);
+    context->setContextProperty("_settings", m_settings);
 
     m_librariesModel = new LibraryDataModel;
 

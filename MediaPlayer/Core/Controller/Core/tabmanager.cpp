@@ -38,6 +38,7 @@ QVariant TabManager::data(const QModelIndex &index, int role) const {
         return QVariant::fromValue(m_tabs[id].data());
     }
 
+    return QVariant();
 }
 
 ControllerLibrary* TabManager::at(int index) const {

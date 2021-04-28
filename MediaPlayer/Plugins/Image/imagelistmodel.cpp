@@ -188,8 +188,9 @@ ImageListModel::TristateOrder ImageListModel::nextOrder(TristateOrder order) {
         return TristateOrder::DescendingOrder;
     case TristateOrder::DescendingOrder:
         return TristateOrder::NoOrder;
-
     }
+
+    return TristateOrder::NoOrder;
 }
 
 bool ImageListModel::setData(const QModelIndex &index, const QVariant &value, int) {

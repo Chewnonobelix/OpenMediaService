@@ -2,24 +2,29 @@
 
 #include <QSettings>
 
+#include <liveqmlengine.h>
+
 #include "mediaplayercore_global.h"
 
-#include "abstractcontroller.h"
-
-class MEDIAPLAYERCORE_EXPORT ControllerSettings: public AbstractController
+class MEDIAPLAYERCORE_EXPORT ControllerSettings: public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(ControllerSettings)
 
 private:
     QPointer<QSettings> m_settings;
+    LiveQmlEngine& m_engine;
 
 public:
-    ControllerSettings() = default;
+    ControllerSettings(LiveQmlEngine&);
     ~ControllerSettings() = default;
 
-    void exec() override;
+    void exec();
 
     Q_INVOKABLE void display();
+
+    Q_INVOKABLE void setPlugin(QString, bool);
+    bool plugin(QString) const;
+    QStringList pluginList() const;
 };
 

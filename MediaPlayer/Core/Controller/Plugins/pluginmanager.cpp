@@ -46,26 +46,6 @@ PluginManager::operator[](MediaRole role) const {
 
 QVariant PluginManager::data(const QModelIndex & index , int role) const
 {
-
-    auto toString = [](auto r) {
-        switch(r) {
-        case MediaRole::Audio:
-            return "Audio";
-        case MediaRole::Video:
-            return "Video";
-        case MediaRole::Books:
-            return "Books";
-        case MediaRole::Comics:
-            return "Comics";
-        case MediaRole::Image:
-            return "Image";
-        case MediaRole::Game:
-            return "Game";
-        default:
-            return "Undefined";
-        }
-    };
-
     if(index.row() < 0 || index.row() >= rowCount())
         return QVariant();
 

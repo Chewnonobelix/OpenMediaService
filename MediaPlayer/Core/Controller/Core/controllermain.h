@@ -24,7 +24,6 @@ private:
 
 	QQmlApplicationEngine &engine();
 	TabManager m_tabsManager;
-    ControllerSettings m_settings;
 
 public:
 	ControllerMain();
