@@ -29,7 +29,7 @@ public:
 	PluginManager() = default;
 	~PluginManager() = default;
 
-	void init();
+    void init();
 
 	QSharedPointer<InterfacePlugins> operator[](MediaRole) const;
 

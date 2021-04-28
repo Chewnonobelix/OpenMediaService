@@ -1,4 +1,5 @@
 #include "pluginmanager.h"
+#include <Controller/Core/abstractcontroller.h>
 
 void PluginManager::init() {
 	QDir dir;
@@ -32,7 +33,7 @@ void PluginManager::init() {
         m_plugins[p->role()] = {p, true};
 		p->exec();
 
-        m_liste << Plugin {toString(p->role()), p->role(), p, true};
+        m_liste << Plugin {toString(p->role()), p->role(), p, AbstractController::m_settings->plugin(toString(p->role()))};
 	}
 }
 

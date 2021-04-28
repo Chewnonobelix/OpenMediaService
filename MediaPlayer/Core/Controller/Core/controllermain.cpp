@@ -43,7 +43,6 @@ void ControllerMain::exec() {
                                             "TabManager");
 
     setDb("DataJson");
-    m_settings = new ControllerSettings(*m_engine);
 
     auto *context = engine().rootContext();
     context->setContextProperty("_main", this);

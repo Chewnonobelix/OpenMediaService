@@ -8,8 +8,11 @@ PluginManager AbstractController::m_manager = PluginManager();
 QPointer<ControllerSettings> AbstractController::m_settings = nullptr;
 
 AbstractController::AbstractController() : QObject() {
-	if (m_engine.isNull())
-		m_engine = new LiveQmlEngine(nullptr, QStringLiteral(QML_SOURCE) + "/View");
+    if (m_engine.isNull())
+        m_engine = new LiveQmlEngine(nullptr, QStringLiteral(QML_SOURCE) + "/View");
+    if (m_settings.isNull()) {
+        m_settings = new ControllerSettings(*m_engine);
+    }
 }
 
 AbstractController::AbstractController(const AbstractController &) : QObject() {
