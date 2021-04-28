@@ -24,3 +24,14 @@ QStringList ControllerSettings::pluginList() const {
     m_settings->endGroup();
     return ret;
 }
+
+void ControllerSettings::setDb(QString name)
+{
+    m_settings->setValue("Database/name", name);
+    emit dbChanged();
+}
+
+QString ControllerSettings::db() const
+{
+    return m_settings->value("Database/name", "DataJson").toString();
+}

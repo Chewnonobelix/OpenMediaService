@@ -32,6 +32,7 @@ public:
 	void exec();
 
 public slots:
+    void onDbChanged();
 
 signals:
 	void playlistDisplay(QQmlComponent *);

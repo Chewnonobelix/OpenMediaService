@@ -26,5 +26,11 @@ public:
     Q_INVOKABLE void setPlugin(QString, bool);
     bool plugin(QString) const;
     QStringList pluginList() const;
+
+    Q_INVOKABLE void setDb(QString);
+    Q_INVOKABLE QString db() const;
+
+signals:
+    void dbChanged();
 };
 

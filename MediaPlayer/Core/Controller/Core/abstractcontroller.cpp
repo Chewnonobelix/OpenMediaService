@@ -38,4 +38,6 @@ void AbstractController::setDb(QString name) {
 	m_db = (InterfaceSaver *)(type.create());
 	m_db->init();
 	m_db->moveToThread(m_dbThread);
+
+    emit m_db->librariesChanged();
 }

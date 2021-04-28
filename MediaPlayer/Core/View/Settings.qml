@@ -22,6 +22,30 @@ MediaWindow {
 
         GroupBox {
             title: "DB"
+
+            MediaCombobox {
+                model: ListModel {
+                    ListElement {
+                        display: "Json"
+                        db: "DataJson"
+                    }
+                    ListElement {
+                        display: "Xml"
+                        db: "DataXml"
+                    }
+                    //                    ListElement {
+                    //                        display: "SQL"
+                    //                        db: "DataSql"
+                    //                    }
+                }
+
+                textRole: "display"
+                valueRole: "db"
+                currentIndex: -1
+                onCurrentValueChanged: _settings.setDb(currentValue)
+
+                Component.onCompleted: currentIndex = indexOfValue(_settings.db())
+            }
         }
 
         GroupBox {
