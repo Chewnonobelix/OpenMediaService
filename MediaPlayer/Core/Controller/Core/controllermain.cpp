@@ -72,6 +72,8 @@ QQmlApplicationEngine &ControllerMain::engine() {
 
 void ControllerMain::onDbChanged()
 {
-    qDebug()<<"ON db changd"<<m_settings->db();
     setDb(m_settings->db());
+    connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
+            &LibraryDataModel::onUpdateLibraries);
+    emit db()->librariesChanged();
 }
