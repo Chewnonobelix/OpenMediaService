@@ -26,6 +26,10 @@ ApplicationWindow {
 		id: addLibraryPop
 	}
 
+    menuBar: MediaMenuBar {
+        onQuit: root.close()
+    }
+
 	GridLayout {
 		id: layout
 		anchors.fill: parent
@@ -287,10 +291,6 @@ ApplicationWindow {
 				text: "Split1"
 				onClicked: splitView.addNew()
 			}
-            MenuItem {
-                text: "Settings"
-                onClicked: _settings.display()
-            }
 		}
 
 		MouseArea {
