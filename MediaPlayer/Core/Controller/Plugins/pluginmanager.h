@@ -20,7 +20,7 @@ private:
         bool enable;
     };
 
-    enum class PluginRole {NameRole = Qt::DisplayRole +1, EnableRole, RoleRole};
+    enum class PluginRole {NameRole = Qt::DisplayRole +1, EnableRole, RoleRole, SettingsViewRole};
 
     QMap<MediaRole, QPair<QSharedPointer<InterfacePlugins>, bool>> m_plugins;
     QList<Plugin> m_liste;

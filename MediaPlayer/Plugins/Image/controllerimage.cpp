@@ -84,5 +84,5 @@ QSharedPointer<InterfacePlugins> ControllerImage::clone() const {
 
 
 QUrl ControllerImage::settingsView() const {
-    return QUrl();
+    return QUrl("qrc:/image/ImageSettings.qml");
 }

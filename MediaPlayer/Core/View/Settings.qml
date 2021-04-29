@@ -136,8 +136,8 @@ MediaWindow {
         Repeater {
             model: _plugins
 
-            MediaLabel {
-                text: name
+            Loader {
+                source: settingsView
             }
         }
     }

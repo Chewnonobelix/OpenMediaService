@@ -60,7 +60,8 @@ QVariant PluginManager::data(const QModelIndex & index , int role) const
         return m_liste[row].name;
     case PluginRole::RoleRole:
         return QVariant::fromValue(m_liste[row].role);
-
+    case PluginRole::SettingsViewRole:
+        return m_liste[row].plugin->settingsView();
     }
 
     return QVariant();
@@ -70,6 +71,7 @@ QHash<int, QByteArray> PluginManager::roleNames() const
 {
     static QHash<int, QByteArray> ret = {{int(PluginRole::NameRole), "name"},
                                          {int(PluginRole::RoleRole), "role"},
+                                         {int(PluginRole::SettingsViewRole), "settingsView"},
                                          {int(PluginRole::EnableRole), "enable"}};
 
     return ret;
