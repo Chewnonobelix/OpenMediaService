@@ -14,68 +14,131 @@ MediaWindow {
 
     width: 400
     height: 600
-    ColumnLayout {
-        anchors.fill: parent
-        GroupBox {
-            title: "Language"
+
+    Column {
+        id: tabColumn
+
+        property int currentIndex: 0
+
+        anchors {
+            top: root.top
+            left: root.left
         }
 
-        GroupBox {
-            title: "DB"
+        width: root.width * 0.20
+        height: root.height
 
-            MediaCombobox {
-                model: ListModel {
-                    ListElement {
-                        display: "Json"
-                        db: "DataJson"
-                    }
-                    ListElement {
-                        display: "Xml"
-                        db: "DataXml"
-                    }
-                    //                    ListElement {
-                    //                        display: "SQL"
-                    //                        db: "DataSql"
-                    //                    }
-                }
 
-                textRole: "display"
-                valueRole: "db"
-                currentIndex: -1
-                onCurrentValueChanged: _settings.setDb(currentValue)
+        MediaButton {
+            id: generalTab
+            text: "General"
+            onClicked: {
+                tabColumn.currentIndex = 0
+            }
 
-                Component.onCompleted: currentIndex = indexOfValue(_settings.db())
+            width: tabColumn.width
+            height: tabColumn.height * 0.1
+        }
+
+        Repeater {
+            model: _plugins
+
+            MediaButton {
+                text: name
+                onClicked: tabColumn.currentIndex = index + 1
+                width: tabColumn.width
+                height: tabColumn.height * 0.1
             }
         }
+    }
 
-        GroupBox {
-            title: "Plugins"
+    StackLayout {
+        id: stack
+        currentIndex:  tabColumn.currentIndex
+        anchors {
+            top: root.top
+            left: tabColumn.right
+            right: root.right
+            leftMargin: root.width * 0.02
+        }
 
-            ColumnLayout {
-                anchors.fill: parent
+        height: root.height
 
-                Repeater {
-                    model: _plugins
+        ColumnLayout {
 
-                    MediaCheckbox {
-                        text: name
-                        checked: enable
+            GroupBox {
+                title: "Language"
 
-                        onCheckedChanged: {
-                            enable = checked
-                            _settings.setPlugin(name, enable)
+                MediaCombobox {
+
+                }
+            }
+
+            GroupBox {
+                title: "DB"
+
+                MediaCombobox {
+                    model: ListModel {
+                        ListElement {
+                            display: "Json"
+                            db: "DataJson"
+                        }
+                        ListElement {
+                            display: "Xml"
+                            db: "DataXml"
+                        }
+                        //                    ListElement {
+                        //                        display: "SQL"
+                        //                        db: "DataSql"
+                        //                    }
+                    }
+
+                    textRole: "display"
+                    valueRole: "db"
+                    currentIndex: -1
+                    onCurrentValueChanged: _settings.setDb(currentValue)
+
+                    Component.onCompleted: currentIndex = indexOfValue(_settings.db())
+                }
+            }
+
+            GroupBox {
+                title: "Plugins"
+
+                ColumnLayout {
+                    anchors.fill: parent
+
+                    Repeater {
+                        model: _plugins
+
+                        MediaCheckbox {
+                            text: name
+                            checked: enable
+
+                            onCheckedChanged: {
+                                enable = checked
+                                _settings.setPlugin(name, enable)
+                            }
                         }
                     }
                 }
             }
+
+            GroupBox {
+                title: "Sync"
+            }
+
+            GroupBox {
+                title: "Stream"
+            }
         }
 
-        GroupBox {
-            title: "Sync"
-        }
+        Repeater {
+            model: _plugins
 
-        GroupBox {
-            title: "Stream"
+            MediaLabel {
+                text: name
+            }
         }
     }
 }
