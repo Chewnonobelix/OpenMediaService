@@ -83,8 +83,8 @@ void ControllerLibrary_old::setModelIndex(int i) {
 }
 
 void ControllerLibrary_old::setCurrentLibrary(QString id) {
-	auto p = (*m_librariesModel)[QUuid::fromString(id)];
-	m_actives.key(true)->onCurrentModelChanged(p);
+//	auto p = (*m_librariesModel)[QUuid::fromString(id)];
+//	m_actives.key(true)->onCurrentModelChanged(p);
 }
 
 bool ControllerLibrary_old::isActive() const { return m_isActive; }
@@ -99,8 +99,8 @@ void ControllerLibrary_old::setActive(bool a) {
 
 		m_actives[this] = a;
 
-		auto index = m_librariesModel->indexOf(m_currentLibrary);
-		m_librariesModel->setCurrentIndex(index);
+//		auto index = m_librariesModel->indexOf(m_currentLibrary);
+//		m_librariesModel->setCurrentIndex(index);
 	}
 }
 

@@ -38,7 +38,7 @@ public:
 
 	Q_INVOKABLE void exec() override;
 
-	Q_INVOKABLE void setCurrentLibrary(QString);
+    Q_INVOKABLE void setCurrentLibrary(LibraryPointer);
 
 	Q_INVOKABLE void open();
 

@@ -39,21 +39,20 @@ void ControllerLibrary::removePlaylist(QString id) {
 
 Library *ControllerLibrary::library() const { return m_current.data(); }
 
-void ControllerLibrary::setCurrentLibrary(QString id) {
-	auto uid = QUuid::fromString(id);
-	m_current = (*m_librariesModel)[uid];
-	connect(m_current.data(), &Library::libraryChanged, this,
-					&ControllerLibrary::onUpdateLibrary, Qt::UniqueConnection);
-	m_plugin = m_manager[m_current->role()]->clone();
-	m_plugin->exec();
+void ControllerLibrary::setCurrentLibrary(LibraryPointer lib) {
+    m_current = lib;
+    connect(m_current.data(), &Library::libraryChanged, this,
+                    &ControllerLibrary::onUpdateLibrary, Qt::UniqueConnection);
+    m_plugin = m_manager[m_current->role()]->clone();
+    m_plugin->exec();
 
-	emit libraryChanged();
-	emit playerComponentChanged();
-	emit playlistComponentChanged();
+    emit libraryChanged();
+    emit playerComponentChanged();
+    emit playlistComponentChanged();
 
-	m_current->probe()->setFilters(m_plugin->filters());
-	m_playlist->setSmart(m_current->smartPlaylist().values());
-	m_playlist->setNormal(m_current->playlist().values());
+    m_current->probe()->setFilters(m_plugin->filters());
+    m_playlist->setSmart(m_current->smartPlaylist().values());
+    m_playlist->setNormal(m_current->playlist().values());
 }
 
 void ControllerLibrary::onUpdateLibrary() {

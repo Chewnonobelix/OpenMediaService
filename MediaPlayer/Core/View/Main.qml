@@ -91,7 +91,7 @@ ApplicationWindow {
 
 
 			onCurrentIndexChanged: {
-                splitView.currentLibrary.currentIndex = currentIndex
+//                splitView.currentLibrary.currentIndex = currentIndex
                 if(playlist.currentIndex !== -1) {
                     playlist.currentIndex = -1
                     playlist.currentIndex = 0
@@ -128,7 +128,6 @@ ApplicationWindow {
 					}
 				}
 			}
-
 			section {
 				delegate: MediaLabel {
 					clip: true
@@ -145,22 +144,15 @@ ApplicationWindow {
 				lock: true
 				clip: true
 
-				required property string name
-				required property string role
-				required property int index
-				required property string id
-
 				text: name
 
 				onClicked: {
-					_librariesModel.currentIndex = index
-					splitView.currentLibrary.setCurrentLibrary(id)
-                    splitView.currentLibrary.currentIndex = index
+                    playlist.model = controller.playlist
 				}
 
 				onDoubleClicked:  {
 					ListView.view.currentIndex = index
-					splitView.currentLibrary.open()
+                    controller.open()
 				}
 			}
 		}
@@ -204,7 +196,7 @@ ApplicationWindow {
 				MediaLabel {
 					id: playlistHeader
 					anchors.fill: parent
-					text: "Playlist: " + (libraryView.currentIndex > -1 ? libraryView.currentItem.name : "")
+                    text: "Playlist: " + (libraryView.currentIndex > -1 ? _librariesModel.at(libraryView.currentIndex).name : "")
 				}
 			}
 
@@ -274,8 +266,8 @@ ApplicationWindow {
 			width: root.width
 
             onOpened: {
-                playLoad.sourceComponent = splitView.currentLibrary.playlistComponent
-                playLoad.active = splitView.currentLibrary.playlistComponent !== null
+                playLoad.sourceComponent = _librariesModel.controller(libraryView.currentIndex).playlistComponent
+                playLoad.active = playLoad.sourceComponent !== null
             }
 
 			Loader {
@@ -313,18 +305,18 @@ ApplicationWindow {
 				anchors.fill: parent
 				orientation: Qt.Horizontal
 
-				property ControllerLibrary currentLibrary
+//				property ControllerLibrary currentLibrary
 
-                onCurrentLibraryChanged: {
-                }
+//                onCurrentLibraryChanged: {
+//                }
 
-                function onClicked(lib) {
-					currentLibrary = lib
-                    if(lib) {
-                        playlist.model = lib.playlist
-                        libraryView.currentIndex = currentLibrary.currentIndex
-                    }
-				}
+//                function onClicked(lib) {
+//					currentLibrary = lib
+//                    if(lib) {
+//                        playlist.model = lib.playlist
+//                        libraryView.currentIndex = currentLibrary.currentIndex
+//                    }
+//				}
 
 				property var component;
 				property var sprite;
@@ -346,7 +338,7 @@ ApplicationWindow {
 						}
 						else {
 							addItem(sprite)
-							sprite.onClicked.connect(onClicked)
+//							sprite.onClicked.connect(onClicked)
 						}
 					} else if (component.status === Component.Error) {
 						// Error Handling
@@ -357,8 +349,8 @@ ApplicationWindow {
 
 				Component.onCompleted:  {
 					addNew()
-					currentLibrary = itemAt(0).currentLibrary
-                    playlist.model = currentLibrary.playlist
+//					currentLibrary = itemAt(0).currentLibrary
+//                    playlist.model = currentLibrary.playlist
                 }
 			}
 		}

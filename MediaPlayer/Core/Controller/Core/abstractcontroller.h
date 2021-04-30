@@ -7,7 +7,6 @@
 #include <mediaplayercore_global.h>
 
 #include <Controller/Data/interfacesaver.h>
-#include <Controller/DataModel/librarydatamodel.h>
 #include <Controller/DataModel/playlistmodel.h>
 #include <Controller/Plugins/pluginmanager.h>
 #include "controllersettings.h"
@@ -25,7 +24,6 @@ public:
 	static InterfaceSaver *db();
 	static void setDb(QString);
 	static PluginManager m_manager;
-	static QPointer<LibraryDataModel> m_librariesModel;
     static QPointer<ControllerSettings> m_settings;
 
 signals:

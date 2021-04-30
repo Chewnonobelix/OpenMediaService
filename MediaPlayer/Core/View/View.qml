@@ -19,7 +19,7 @@ Item {
         }
     }
 
-    signal clicked (ControllerLibrary lib)
+//    signal clicked (ControllerLibrary lib)
 
     SplitView.fillHeight: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Horizontal
     SplitView.fillWidth: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Vertical
@@ -33,11 +33,11 @@ Item {
             SplitView.preferredHeight = SplitView.view.height / SplitView.view.count
     }
 
-    property ControllerLibrary currentLibrary: repModel.at(0)
+//    property ControllerLibrary currentLibrary: repModel.at(0)
 
-    onCurrentLibraryChanged:  {
-        root.clicked(currentLibrary)
-    }
+//    onCurrentLibraryChanged:  {
+//        root.clicked(currentLibrary)
+//    }
     ColumnLayout {
         anchors.fill: parent
 
@@ -68,11 +68,11 @@ Item {
 
                 Component.onCompleted: onClicked()
                 onClicked:  {
-                             tabRepeater.model = viewBar.currentIndex + 1
+                    tabRepeater.model = viewBar.currentIndex + 1
                     viewBar.currentIndex = viewBar.currentIndex - 1
                     repModel.addTab()
-                    root.currentLibrary = repModel.at(viewBar.currentIndex)
-                    }
+//                    root.currentLibrary = repModel.at(viewBar.currentIndex)
+                }
             }
         }
 
@@ -96,31 +96,31 @@ Item {
                     id: repModel
                 }
 
-                 Loader {
-                     id: playerLoader
-                     active: true
+                Loader {
+                    id: playerLoader
+                    active: true
 
-                     visible: true
+                    visible: true
 
-                     property string idScreen: model.id
-                     property Media media
-                     Connections {
-                         target: model
+                    property string idScreen: model.id
+                    property Media media
+                    Connections {
+                        target: model
 
-                         function onPlayerComponentChanged() {
-                             sourceComponent = model.playerComponent
+                        function onPlayerComponentChanged() {
+                            sourceComponent = model.playerComponent
 
-                         }
+                        }
 
-                         function onPlay(media) {
-                             playerLoader.media = media
-                         }
-                     }
+                        function onPlay(media) {
+                            playerLoader.media = media
+                        }
+                    }
 
-                     Component.onCompleted: {
-                     }
-                 }
-             }
-         }
-     }
- }
+                    Component.onCompleted: {
+                    }
+                }
+            }
+        }
+    }
+}
