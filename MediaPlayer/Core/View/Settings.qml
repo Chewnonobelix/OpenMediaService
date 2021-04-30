@@ -36,8 +36,11 @@ MediaWindow {
                 tabColumn.currentIndex = 0
             }
 
+            autoExclusive: true
             width: tabColumn.width
             height: tabColumn.height * 0.1
+            checkable: true
+            checked: true
         }
 
         Repeater {
@@ -48,6 +51,8 @@ MediaWindow {
                 onClicked: tabColumn.currentIndex = index + 1
                 width: tabColumn.width
                 height: tabColumn.height * 0.1
+                autoExclusive: true
+                checkable: true
             }
         }
     }
