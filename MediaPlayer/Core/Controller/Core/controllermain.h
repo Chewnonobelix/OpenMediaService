@@ -13,6 +13,7 @@
 #include "controllerlibrary.h"
 #include "tabmanager.h"
 #include <Controller/Plugins/pluginmanager.h>
+#include "controllersettings.h"
 
 class MEDIAPLAYERCORE_EXPORT ControllerMain : public AbstractController {
 	Q_OBJECT
@@ -31,6 +32,7 @@ public:
 	void exec();
 
 public slots:
+    void onDbChanged();
 
 signals:
 	void playlistDisplay(QQmlComponent *);

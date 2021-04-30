@@ -5,10 +5,14 @@ QThread *AbstractController::m_dbThread = new QThread();
 QPointer<LiveQmlEngine> AbstractController::m_engine = nullptr;
 QPointer<LibraryDataModel> AbstractController::m_librariesModel = nullptr;
 PluginManager AbstractController::m_manager = PluginManager();
+QPointer<ControllerSettings> AbstractController::m_settings = nullptr;
 
 AbstractController::AbstractController() : QObject() {
-	if (m_engine.isNull())
-		m_engine = new LiveQmlEngine(nullptr, QStringLiteral(QML_SOURCE) + "/View");
+    if (m_engine.isNull())
+        m_engine = new LiveQmlEngine(nullptr, QStringLiteral(QML_SOURCE) + "/View");
+    if (m_settings.isNull()) {
+        m_settings = new ControllerSettings(*m_engine);
+    }
 }
 
 AbstractController::AbstractController(const AbstractController &) : QObject() {
@@ -34,4 +38,6 @@ void AbstractController::setDb(QString name) {
 	m_db = (InterfaceSaver *)(type.create());
 	m_db->init();
 	m_db->moveToThread(m_dbThread);
+
+    emit m_db->librariesChanged();
 }

@@ -10,6 +10,7 @@
 #include <Controller/DataModel/librarydatamodel.h>
 #include <Controller/DataModel/playlistmodel.h>
 #include <Controller/Plugins/pluginmanager.h>
+#include "controllersettings.h"
 
 class MEDIAPLAYERCORE_EXPORT AbstractController : public QObject {
 	Q_OBJECT
@@ -25,6 +26,7 @@ public:
 	static void setDb(QString);
 	static PluginManager m_manager;
 	static QPointer<LibraryDataModel> m_librariesModel;
+    static QPointer<ControllerSettings> m_settings;
 
 signals:
 

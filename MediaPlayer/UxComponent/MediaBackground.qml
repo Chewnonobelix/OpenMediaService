@@ -4,7 +4,9 @@ import QtQuick.Controls.Material 2.12
 Rectangle {
 	id: root
 
-	color: "#404040"
+    property bool checked: false
+
+    color: checked ? "#202020" : "#404040"
 
 	Rectangle {
 		gradient: Gradient {

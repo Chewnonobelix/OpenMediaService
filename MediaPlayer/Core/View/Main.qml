@@ -26,6 +26,10 @@ ApplicationWindow {
 		id: addLibraryPop
 	}
 
+    menuBar: MediaMenuBar {
+        onQuit: root.close()
+    }
+
 	GridLayout {
 		id: layout
 		anchors.fill: parent

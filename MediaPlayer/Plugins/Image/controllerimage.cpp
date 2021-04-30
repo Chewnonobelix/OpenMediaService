@@ -81,3 +81,8 @@ void ControllerImage::onTimeout() { m_current->next(); }
 QSharedPointer<InterfacePlugins> ControllerImage::clone() const {
 	return QSharedPointer<ControllerImage>::create();
 }
+
+
+QUrl ControllerImage::settingsView() const {
+    return QUrl("qrc:/image/ImageSettings.qml");
+}

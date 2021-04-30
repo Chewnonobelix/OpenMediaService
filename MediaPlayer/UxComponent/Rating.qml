@@ -22,19 +22,12 @@ Item {
         }
 
         Repeater {
-            model: Math.floor(rating/2)
-            Label {
-                text: "F"
-            }
-        }
-        Label {
-            visible: rating%2 === 1
-            text: "H"
-        }
-        Repeater {
-            model: Math.floor((10 - rating)/2)
-            Label {
-                text: "E"
+            model: rating
+            Image {
+                id: name
+                source: "qrc:/icon/rating_star.png"
+                width: row.width*0.1
+                height: row.height
             }
         }
     }

@@ -27,3 +27,7 @@ QStringList ControllerVideo::filters() const {
 QSharedPointer<InterfacePlugins> ControllerVideo::clone() const {
 	return QSharedPointer<ControllerVideo>::create();
 }
+
+QUrl ControllerVideo::settingsView() const {
+    return QUrl();
+}

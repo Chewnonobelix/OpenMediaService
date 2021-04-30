@@ -63,7 +63,9 @@ void ControllerLibrary::onUpdateLibrary() {
 }
 
 void ControllerLibrary::onCurrentPlaylistChanged(PlaylistPointer p) {
-    disconnect(m_currentPlaylist.data(), &PlayList::play, this, &ControllerLibrary::onPlay);
+    if(m_currentPlaylist)
+        disconnect(m_currentPlaylist.data(), &PlayList::play, this, &ControllerLibrary::onPlay);
+
     if(p) {
         connect(p.data(), &PlayList::play, this, &ControllerLibrary::onPlay);
         m_currentPlaylist = p;

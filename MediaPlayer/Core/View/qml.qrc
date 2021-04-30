@@ -8,5 +8,6 @@
         <file>LibraryPopup.qml</file>
         <file>ErrorPage.qml</file>
         <file>Settings.qml</file>
+        <file>MediaMenuBar.qml</file>
     </qresource>
 </RCC>

@@ -15,11 +15,11 @@ Item {
 
         SpinBox {
             id: imageWidth
-            enabled: aspectRatio.currentIndex === 3
+            enabled: aspectRatio.currentIndex === 2
         }
         SpinBox {
             id: imageHeight
-            enabled: aspectRatio.currentIndex === 3
+            enabled: aspectRatio.currentIndex === 2
         }
     }
 

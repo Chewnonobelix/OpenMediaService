@@ -2,20 +2,40 @@
 
 #include <QMap>
 #include <QPluginLoader>
+#include <QAbstractListModel>
 
 #include "interfaceplugins.h"
 #include <Model/global.h>
 
-class PluginManager {
+class PluginManager: public QAbstractListModel
+{
+    Q_OBJECT
+    Q_DISABLE_COPY(PluginManager)
+
 private:
-	QMap<MediaRole, QSharedPointer<InterfacePlugins>> m_plugins;
+    struct Plugin {
+        QString name;
+        MediaRole role;
+        QSharedPointer<InterfacePlugins> plugin;
+        bool enable;
+    };
+
+    enum class PluginRole {NameRole = Qt::DisplayRole +1, EnableRole, RoleRole, SettingsViewRole};
+
+    QMap<MediaRole, QPair<QSharedPointer<InterfacePlugins>, bool>> m_plugins;
+    QList<Plugin> m_liste;
 
 public:
 	PluginManager() = default;
-	PluginManager(const PluginManager &) = default;
 	~PluginManager() = default;
 
-	void init();
+    void init();
 
 	QSharedPointer<InterfacePlugins> operator[](MediaRole) const;
+
+    int rowCount(QModelIndex const& = QModelIndex()) const override;
+    QVariant data(const QModelIndex & , int = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex&, const QVariant&, int) override;
+
+    QHash<int, QByteArray> roleNames() const override;
 };
