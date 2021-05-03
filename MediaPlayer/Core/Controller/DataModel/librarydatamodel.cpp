@@ -43,13 +43,14 @@ QHash<int, QByteArray> LibraryDataModel::roleNames() const {
 }
 
 void LibraryDataModel::insertData(LibraryPointer l) {
-	beginInsertRows(QModelIndex(), rowCount(), rowCount() + 1);
+    beginInsertRows(QModelIndex(), rowCount(), rowCount() + 1);
     m_libraries << Data{l, new ControllerLibrary};
+    m_libraries.last().controller->exec();
     m_libraries.last().controller->setCurrentLibrary(l);
-	insertRow(rowCount());
-	setData(index(rowCount() - 1),
+    insertRow(rowCount());
+    setData(index(rowCount() - 1),
                     QVariant::fromValue(m_libraries.last().library.data()));
-	endInsertRows();
+    endInsertRows();
 }
 
 Library *LibraryDataModel::at(int index) {

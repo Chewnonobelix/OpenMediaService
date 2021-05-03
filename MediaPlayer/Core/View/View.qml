@@ -15,7 +15,7 @@ Item {
         propagateComposedEvents: true
         onClicked: function(mouse) {
             mouse.accepted = false
-            root.clicked(currentLibrary)
+//            root.clicked(currentLibrary)
         }
     }
 
