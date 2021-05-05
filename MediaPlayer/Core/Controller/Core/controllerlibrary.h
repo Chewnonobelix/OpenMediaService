@@ -34,7 +34,7 @@ private:
 
 public:
 	ControllerLibrary() = default;
-	~ControllerLibrary() = default;
+    ~ControllerLibrary() = default;
 
 	Q_INVOKABLE void exec() override;
 

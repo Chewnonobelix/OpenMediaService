@@ -43,7 +43,7 @@ public:
 	using MetaData::MetaData;
 	Library(const Library &);
 	Library(QJsonObject &);
-	~Library() = default;
+    ~Library() = default;
 
 	Library &operator=(const Library &);
 	operator QJsonObject() const override;

@@ -64,7 +64,16 @@ ControllerLibrary *LibraryDataModel::controller(int index) {
     if (index >= rowCount() || index < 0)
         return nullptr;
 
-    return m_libraries[index].controller.data();
+    qDebug()<<"Controller";
+    return m_libraries[index].controller;
+}
+
+QQmlComponent *LibraryDataModel::playlistComponent(int index) {
+    if (index >= rowCount() || index < 0)
+        return nullptr;
+
+    qDebug()<<"Controller";
+    return m_libraries[index].controller->playlistComponent();
 }
 
 void LibraryDataModel::sort(int, Qt::SortOrder order) {

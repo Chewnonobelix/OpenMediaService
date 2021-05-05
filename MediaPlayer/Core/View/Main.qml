@@ -267,13 +267,13 @@ ApplicationWindow {
 
             onOpened: {
                 playLoad.sourceComponent = _librariesModel.controller(libraryView.currentIndex).playlistComponent
-                playLoad.active = playLoad.sourceComponent !== null
+//                playLoad.active = playLoad.sourceComponent !== null
             }
 
 			Loader {
                 id: playLoad
 				anchors.fill: parent
-				active: false
+//                active: sourceComponent !== null
 			}
 		}
 

@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-
+import Qt.labs.qmlmodels
 import MediaPlayer.Components 1.0
 
 Item {
@@ -65,73 +65,82 @@ Item {
 
         property int currentRow: -1
 
-        delegate: MediaLabel {
-            text:  column !== 5 ? display : ""
-            clip: true
-            horizontalAlignment: Qt.AlignLeft
+        DelegateChooser {
+            id: chooser
+            role: "type"
+            DelegateChoice {
+                column: 5
+                Rating {
+                    z:1
+                    rating: display
 
-            anchors {
-                leftMargin: 2
-                rightMargin: 2
-            }
-
-            Rating {
-                z:15
-                visible: column === 5
-                rating: visible ? display : 0
-                anchors.fill: parent
-
-                onRatingChanged: {
-                    display = rating
+                    onRatingChanged: {
+                        display = rating
+                    }
                 }
             }
 
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                propagateComposedEvents: true
-                onClicked: table.currentRow = row
+            DelegateChoice {
+                MediaLabel {
+                    text:  display
+                    clip: true
+                    horizontalAlignment: Qt.AlignLeft
 
-                onDoubleClicked: _imageListModel.play(index)
-            }
-
-            background: Rectangle {
-                property Gradient selected: Gradient {
-                    GradientStop {
-                        color: "black"
-                        position: 0.0
+                    anchors {
+                        leftMargin: 2
+                        rightMargin: 2
                     }
 
-                    GradientStop {
-                        color: "darkblue"
-                        position: 0.40
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        propagateComposedEvents: true
+                        onClicked: table.currentRow = row
+
+                        onDoubleClicked: _imageListModel.play(index)
                     }
 
-                    GradientStop {
-                        color: "aqua"
-                        position: 0.5
-                    }
+                    background: Rectangle {
+                        property Gradient selected: Gradient {
+                            GradientStop {
+                                color: "black"
+                                position: 0.0
+                            }
 
-                    GradientStop {
-                        color: "darkblue"
-                        position: 0.60
-                    }
+                            GradientStop {
+                                color: "darkblue"
+                                position: 0.40
+                            }
 
-                    GradientStop {
-                        color: "black"
-                        position: 1.0
+                            GradientStop {
+                                color: "aqua"
+                                position: 0.5
+                            }
+
+                            GradientStop {
+                                color: "darkblue"
+                                position: 0.60
+                            }
+
+                            GradientStop {
+                                color: "black"
+                                position: 1.0
+                            }
+                        }
+
+                        property Gradient unselected: Gradient {
+                            GradientStop {
+                                color: row % 2 ? "grey" : Qt.lighter("grey", 0.5)
+                            }
+                        }
+
+                        gradient: row === table.currentRow ? selected : unselected
+
                     }
                 }
-
-                property Gradient unselected: Gradient {
-                    GradientStop {
-                        color: row % 2 ? "grey" : Qt.lighter("grey", 0.5)
-                    }
-                }
-
-                gradient: row === table.currentRow ? selected : unselected
-
             }
         }
+
+        delegate: chooser
     }
 }

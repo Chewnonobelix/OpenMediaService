@@ -1,8 +1,8 @@
 #include "controllerlibrary.h"
 
 void ControllerLibrary::exec() {
-	connect(m_playlist, &PlaylistModel::currentIndexChanged, this,
-					&ControllerLibrary::onCurrentPlaylistChanged);
+    connect(m_playlist, &PlaylistModel::currentIndexChanged, this,
+                    &ControllerLibrary::onCurrentPlaylistChanged);
 }
 
 PlaylistModel *ControllerLibrary::playlist() const { return m_playlist; }
@@ -62,15 +62,12 @@ void ControllerLibrary::onUpdateLibrary() {
 }
 
 void ControllerLibrary::onCurrentPlaylistChanged(PlaylistPointer p) {
-    if(m_currentPlaylist)
-        disconnect(m_currentPlaylist.data(), &PlayList::play, this, &ControllerLibrary::onPlay);
-
     if(p) {
-        connect(p.data(), &PlayList::play, this, &ControllerLibrary::onPlay);
+        connect(p.data(), &PlayList::play, this, &ControllerLibrary::onPlay, Qt::UniqueConnection);
         m_currentPlaylist = p;
     }
 
-	if (m_plugin) {
+    if (m_plugin && p) {
 		m_plugin->setPlaylist(p);
 	}
 }
