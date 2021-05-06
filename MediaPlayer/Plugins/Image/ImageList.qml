@@ -65,17 +65,64 @@ Item {
 
         property int currentRow: -1
 
+        property Gradient selected: Gradient {
+            GradientStop {
+                color: "black"
+                position: 0.0
+            }
+
+            GradientStop {
+                color: "darkblue"
+                position: 0.40
+            }
+
+            GradientStop {
+                color: "aqua"
+                position: 0.5
+            }
+
+            GradientStop {
+                color: "darkblue"
+                position: 0.60
+            }
+
+            GradientStop {
+                color: "black"
+                position: 1.0
+            }
+        }
+
+        property Gradient unselected1: Gradient {
+            GradientStop {
+                color: "grey"
+            }
+        }
+
+        property Gradient unselected2: Gradient {
+            GradientStop {
+                color: Qt.lighter("grey", 0.5)
+            }
+        }
+
+        function unselectedGradient(index) {
+            return index % 2 ? unselected1 : unselected2
+        }
+
         DelegateChooser {
             id: chooser
             role: "type"
             DelegateChoice {
                 column: 5
-                Rating {
-                    z:1
-                    rating: display
+                Rectangle {
+                    gradient: row === table.currentRow ? table.selected : table.unselectedGradient(row)
 
-                    onRatingChanged: {
-                        display = rating
+                    Rating {
+                        z:1
+                        rating: display
+                        anchors.fill: parent
+                        onRatingChanged: {
+                            display = rating
+                        }
                     }
                 }
             }
@@ -101,41 +148,7 @@ Item {
                     }
 
                     background: Rectangle {
-                        property Gradient selected: Gradient {
-                            GradientStop {
-                                color: "black"
-                                position: 0.0
-                            }
-
-                            GradientStop {
-                                color: "darkblue"
-                                position: 0.40
-                            }
-
-                            GradientStop {
-                                color: "aqua"
-                                position: 0.5
-                            }
-
-                            GradientStop {
-                                color: "darkblue"
-                                position: 0.60
-                            }
-
-                            GradientStop {
-                                color: "black"
-                                position: 1.0
-                            }
-                        }
-
-                        property Gradient unselected: Gradient {
-                            GradientStop {
-                                color: row % 2 ? "grey" : Qt.lighter("grey", 0.5)
-                            }
-                        }
-
-                        gradient: row === table.currentRow ? selected : unselected
-
+                        gradient: row === table.currentRow ? table.selected : table.unselectedGradient(row)
                     }
                 }
             }
