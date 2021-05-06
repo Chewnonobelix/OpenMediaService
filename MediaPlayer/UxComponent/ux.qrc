@@ -16,5 +16,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>Rating.qml</file>
         <file>icon/rating_star.png</file>
+        <file>StyleSheet.qml</file>
     </qresource>
 </RCC>
