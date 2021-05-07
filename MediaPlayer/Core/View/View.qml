@@ -111,11 +111,13 @@ Item {
                     function setIndex(index) {
                         model.index = index
                         sourceComponent = _librariesModel.controller(index).playerComponent
+                        connect.target = _librariesModel.controller(index)
                     }
 
 //                    property string idScreen: model.id
                     property Media media
                     Connections {
+                        id: connect
                         target: model
 
 //                        function onPlayerComponentChanged() {
