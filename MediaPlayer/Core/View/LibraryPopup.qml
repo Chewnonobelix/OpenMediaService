@@ -26,7 +26,7 @@ Popup {
 		MediaCombobox {
 			id: libraryType
 
-            model: _plugins
+//            model: _plugins
 			textRole: "name"
 			valueRole: "role"
 

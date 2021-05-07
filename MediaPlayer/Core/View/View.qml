@@ -10,16 +10,17 @@ import MediaPlayer.Components 1.0
 Item {
     id: root
 
+    property int index: -1
     MouseArea {
         anchors.fill: parent
         propagateComposedEvents: true
         onClicked: function(mouse) {
             mouse.accepted = false
-//            root.clicked(currentLibrary)
+            root.clicked(currentIndex)
         }
     }
 
-//    signal clicked (ControllerLibrary lib)
+    signal clicked (int index)
 
     SplitView.fillHeight: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Horizontal
     SplitView.fillWidth: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Vertical
@@ -38,6 +39,11 @@ Item {
 //    onCurrentLibraryChanged:  {
 //        root.clicked(currentLibrary)
 //    }
+
+    function setLibraryIndex(index) {
+        viewRep.itemAt(viewBar.currentIndex).setIndex(index)
+    }
+
     ColumnLayout {
         anchors.fill: parent
 
@@ -102,22 +108,25 @@ Item {
 
                     visible: true
 
-                    property string idScreen: model.id
+                    function setIndex(index) {
+                        model.index = index
+                        sourceComponent = _librariesModel.controller(index).playerComponent
+                    }
+
+//                    property string idScreen: model.id
                     property Media media
                     Connections {
                         target: model
 
-                        function onPlayerComponentChanged() {
-                            sourceComponent = model.playerComponent
+//                        function onPlayerComponentChanged() {
+//                            sourceComponent = model.playerComponent
 
-                        }
+//                        }
 
                         function onPlay(media) {
+                            console.log("On plya", media)
                             playerLoader.media = media
                         }
-                    }
-
-                    Component.onCompleted: {
                     }
                 }
             }

@@ -148,6 +148,7 @@ ApplicationWindow {
 
 				onClicked: {
                     playlist.model = controller.playlist
+                    splitView.currentItem.setLibraryIndex(index)
 				}
 
 				onDoubleClicked:  {
@@ -318,6 +319,11 @@ ApplicationWindow {
 //                    }
 //				}
 
+                function onClicked(index) {
+                    currentIndex = index
+                    currentItem = itemAt(index)
+                }
+
 				property var component;
 				property var sprite;
 
@@ -338,7 +344,8 @@ ApplicationWindow {
 						}
 						else {
 							addItem(sprite)
-//							sprite.onClicked.connect(onClicked)
+                            sprite.index = count - 1
+                            sprite.onClicked.connect(onClicked)
 						}
 					} else if (component.status === Component.Error) {
 						// Error Handling
