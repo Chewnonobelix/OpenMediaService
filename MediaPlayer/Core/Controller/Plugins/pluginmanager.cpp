@@ -87,3 +87,35 @@ bool PluginManager::setData(const QModelIndex& index, const QVariant& data, int 
     m_liste[index.row()].enable = data.toBool();
     return true;
 }
+
+QStringList PluginManager::pluginsName() const
+{
+    QStringList ret;
+   for(auto it: m_liste) {
+        ret<<it.name;
+    }
+
+    return ret;
+}
+
+MediaRole PluginManager::pluginRole(QString name) const
+{
+    MediaRole ret;
+    std::for_each(m_liste.begin(), m_liste.end(), [&ret, name](auto it) {
+        if(name == it.name)
+            ret = it.role;
+    });
+
+    return ret;
+}
+
+bool PluginManager::pluginEnable(QString name) const
+{
+    bool ret;
+    std::for_each(m_liste.begin(), m_liste.end(), [&ret, name](auto it) {
+        if(name == it.name)
+            ret = it.enable;
+    });
+
+    return ret;
+}

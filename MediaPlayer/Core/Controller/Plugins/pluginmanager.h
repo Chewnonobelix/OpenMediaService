@@ -27,7 +27,7 @@ private:
 
 public:
 	PluginManager() = default;
-	~PluginManager() = default;
+    ~PluginManager() = default;
 
     void init();
 
@@ -38,4 +38,9 @@ public:
     bool setData(const QModelIndex&, const QVariant&, int) override;
 
     QHash<int, QByteArray> roleNames() const override;
+
+    Q_INVOKABLE QStringList pluginsName() const;
+    Q_INVOKABLE MediaRole pluginRole(QString) const;
+    Q_INVOKABLE bool pluginEnable(QString) const;
+
 };

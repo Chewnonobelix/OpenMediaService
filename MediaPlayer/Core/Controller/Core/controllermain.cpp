@@ -56,11 +56,7 @@ void ControllerMain::exec() {
     connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
             &LibraryDataModel::onUpdateLibraries);
 
-    qDebug() << "Main context";
-
-
     m_engine->createWindow(QUrl("/Main.qml"));
-    qDebug() << "~Main context";
 
     connect(m_settings, &ControllerSettings::dbChanged, this, &ControllerMain::onDbChanged);
     emit db()->librariesChanged();
