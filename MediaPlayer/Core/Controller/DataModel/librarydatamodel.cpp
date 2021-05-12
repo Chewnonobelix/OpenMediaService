@@ -64,8 +64,14 @@ ControllerLibrary *LibraryDataModel::controller(int index) {
     if (index >= rowCount() || index < 0)
         return nullptr;
 
-    qDebug()<<"Controller";
     return m_libraries[index].controller;
+}
+
+QString LibraryDataModel::name(int index) const {
+    if (index >= rowCount() || index < 0)
+        return nullptr;
+
+    return m_libraries[index].library->name();
 }
 
 QQmlComponent *LibraryDataModel::playlistComponent(int index) {

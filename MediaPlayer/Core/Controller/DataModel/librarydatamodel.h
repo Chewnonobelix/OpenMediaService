@@ -52,6 +52,7 @@ public:
 
 	Q_INVOKABLE Library *at(int);
     Q_INVOKABLE ControllerLibrary * controller(int);
+    Q_INVOKABLE QString name(int) const;
     Q_INVOKABLE QQmlComponent * playlistComponent(int);
 	Q_INVOKABLE void clear();
 	void setCurrentIndex(int);
