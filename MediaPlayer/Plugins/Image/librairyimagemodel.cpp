@@ -161,5 +161,6 @@ void LibrairyImageModel::onDoubleClicked(int i) {
 
 PlayList* LibrairyImageModel::playlist() const
 {
+    QJSEngine::setObjectOwnership(m_playlist.data(), QJSEngine::CppOwnership);
     return m_playlist.data();
 }

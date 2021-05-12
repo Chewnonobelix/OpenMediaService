@@ -1,11 +1,11 @@
 #include "controllerlibrary.h"
 
 void ControllerLibrary::exec() {
-    connect(m_playlist, &PlaylistModel::currentIndexChanged, this,
+    connect(&m_playlist, &PlaylistModel::currentIndexChanged, this,
                     &ControllerLibrary::onCurrentPlaylistChanged);
 }
 
-PlaylistModel *ControllerLibrary::playlist() const { return m_playlist; }
+PlaylistModel *ControllerLibrary::playlist() { return &m_playlist; }
 
 void ControllerLibrary::open() {
 	auto context = m_engine->qmlEngine().rootContext();
@@ -51,14 +51,14 @@ void ControllerLibrary::setCurrentLibrary(LibraryPointer lib) {
     emit playlistComponentChanged();
 
     m_current->probe()->setFilters(m_plugin->filters());
-    m_playlist->setSmart(m_current->smartPlaylist().values());
-    m_playlist->setNormal(m_current->playlist().values());
+    m_playlist.setSmart(m_current->smartPlaylist().values());
+    m_playlist.setNormal(m_current->playlist().values());
 }
 
 void ControllerLibrary::onUpdateLibrary() {
 	db()->updateLibrary(m_current);
-	m_playlist->setSmart(m_current->smartPlaylist().values());
-	m_playlist->setNormal(m_current->playlist().values());
+    m_playlist.setSmart(m_current->smartPlaylist().values());
+    m_playlist.setNormal(m_current->playlist().values());
 }
 
 void ControllerLibrary::onCurrentPlaylistChanged(PlaylistPointer p) {

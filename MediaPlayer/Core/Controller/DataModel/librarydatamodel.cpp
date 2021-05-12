@@ -45,6 +45,9 @@ QHash<int, QByteArray> LibraryDataModel::roleNames() const {
 void LibraryDataModel::insertData(LibraryPointer l) {
     beginInsertRows(QModelIndex(), rowCount(), rowCount() + 1);
     m_libraries << Data{l, new ControllerLibrary};
+    QJSEngine::setObjectOwnership(m_libraries.last().controller, QJSEngine::CppOwnership);
+    QJSEngine::setObjectOwnership(l.data(), QJSEngine::CppOwnership);
+
     m_libraries.last().controller->exec();
     m_libraries.last().controller->setCurrentLibrary(l);
     insertRow(rowCount());
@@ -64,7 +67,6 @@ ControllerLibrary *LibraryDataModel::controller(int index) {
     if (index >= rowCount() || index < 0)
         return nullptr;
 
-    qDebug()<<"Controller";
     return m_libraries[index].controller;
 }
 
@@ -72,7 +74,6 @@ QQmlComponent *LibraryDataModel::playlistComponent(int index) {
     if (index >= rowCount() || index < 0)
         return nullptr;
 
-    qDebug()<<"Controller";
     return m_libraries[index].controller->playlistComponent();
 }
 

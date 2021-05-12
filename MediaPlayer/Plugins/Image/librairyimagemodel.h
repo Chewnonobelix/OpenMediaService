@@ -6,6 +6,7 @@
 #include <QQueue>
 #include <QThread>
 #include <QTimer>
+#include <QJSEngine>
 
 #include <Model/smartplaylist.h>
 

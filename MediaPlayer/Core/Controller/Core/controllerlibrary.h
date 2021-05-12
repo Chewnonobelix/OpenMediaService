@@ -10,7 +10,7 @@ class ControllerLibrary : public AbstractController {
 	Q_DISABLE_COPY(ControllerLibrary)
 
 	Q_PROPERTY(PlaylistModel *playlist READ playlist)
-	Q_PROPERTY(Library *currentLibrary READ library NOTIFY libraryChanged)
+    Q_PROPERTY(Library *currentLibrary READ library NOTIFY libraryChanged)
 	Q_PROPERTY(QQmlComponent *playlistComponent READ playlistComponent NOTIFY
 								 playlistComponentChanged)
 	Q_PROPERTY(QQmlComponent *playerComponent READ playerComponent NOTIFY
@@ -20,14 +20,14 @@ class ControllerLibrary : public AbstractController {
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
 private:
 	LibraryPointer m_current = nullptr;
-	QPointer<PlaylistModel> m_playlist = new PlaylistModel();
+    PlaylistModel m_playlist;
 	int m_currentIndex = -1;
 	QUuid m_id = QUuid::createUuid();
     QSharedPointer<InterfacePlugins> m_plugin;
     PlaylistPointer m_currentPlaylist;
 
 	Library *library() const;
-	PlaylistModel *playlist() const;
+    PlaylistModel *playlist() ;
 
     int currentIndex() const;
     void setCurrentIndex(int);
