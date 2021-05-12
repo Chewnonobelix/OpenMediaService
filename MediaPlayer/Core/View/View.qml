@@ -34,12 +34,6 @@ Item {
             SplitView.preferredHeight = SplitView.view.height / SplitView.view.count
     }
 
-//    property ControllerLibrary currentLibrary: repModel.at(0)
-
-//    onCurrentLibraryChanged:  {
-//        root.clicked(currentLibrary)
-//    }
-
     function setLibraryIndex(index) {
         viewRep.itemAt(viewBar.currentIndex).setIndex(index)
     }
@@ -77,7 +71,6 @@ Item {
                     tabRepeater.model = viewBar.currentIndex + 1
                     viewBar.currentIndex = viewBar.currentIndex - 1
                     repModel.addTab()
-//                    root.currentLibrary = repModel.at(viewBar.currentIndex)
                 }
             }
         }
@@ -114,16 +107,10 @@ Item {
                         connect.target = _librariesModel.controller(index)
                     }
 
-//                    property string idScreen: model.id
                     property Media media
                     Connections {
                         id: connect
                         target: model
-
-//                        function onPlayerComponentChanged() {
-//                            sourceComponent = model.playerComponent
-
-//                        }
 
                         function onPlay(media) {
                             console.log("On plya", media)
