@@ -175,7 +175,7 @@ ApplicationWindow {
 			}
 
 			onModelChanged: {
-                forceLayout()
+				forceLayout()
 			}
 
 			headerPositioning: ListView.OverlayHeader
@@ -197,7 +197,7 @@ ApplicationWindow {
 				MediaLabel {
 					id: playlistHeader
 					anchors.fill: parent
-                    text: "Playlist: " + (libraryView.currentIndex > -1 ? _librariesModel.name(libraryView.currentIndex) : "")
+                    text: "Playlist: " + (libraryView.currentIndex > -1 ? _librariesModel.at(libraryView.currentIndex).name : "")
 				}
 			}
 
