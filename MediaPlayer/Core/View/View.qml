@@ -16,7 +16,7 @@ Item {
         propagateComposedEvents: true
         onClicked: function(mouse) {
             mouse.accepted = false
-            root.clicked(currentIndex)
+            root.clicked(index)
         }
     }
 
@@ -113,7 +113,6 @@ Item {
                         target: model
 
                         function onPlay(media) {
-                            console.log("On plya", media)
                             playerLoader.media = media
                         }
                     }

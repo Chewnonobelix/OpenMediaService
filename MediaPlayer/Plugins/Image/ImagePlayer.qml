@@ -26,10 +26,12 @@ Item {
 		}
 	}
 
+
+
 	Image {
         id: display
 		anchors.fill: parent
 		fillMode: Image.PreserveAspectFit
-        source: root["media"] ? "file:///" + media.paths[0] : ""
+        source: root.parent && root.parent.media ? "file:///" + root.parent.media.paths[0] : ""
 	}
 }

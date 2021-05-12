@@ -84,21 +84,21 @@ MediaPointer PlayList::next() {
 		setCurrentIndex(currentIndex() + 1);
 		auto index = m_readOrder[currentIndex()];
 		ret = at(index);
-	}
-	emit play(ret);
+        emit play(ret);
+    }
 	return ret;
 }
 
 MediaPointer PlayList::prev() {
 	MediaPointer ret;
 
-	if (currentIndex() > -1) {
+    if (currentIndex() > 0) {
 		setCurrentIndex(currentIndex() - 1);
 		auto index = m_readOrder[currentIndex()];
 		ret = at(index);
+        emit play(ret);
 	}
 
-	emit play(ret);
 	return ret;
 }
 
