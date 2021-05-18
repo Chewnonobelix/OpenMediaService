@@ -57,9 +57,6 @@ Item {
 
                 MediaTabButton {
                     text: qsTr("Tab ") + modelData
-                    onClicked: {
-                        currentLibrary = repModel.at(modelData)
-                    }
                 }
             }
 
@@ -100,9 +97,10 @@ Item {
                     active: true
 
                     visible: true
+                    property string idTab: id
 
                     function setIndex(index) {
-                        model.index = index
+                        model.library = index
                         sourceComponent = _librariesModel.controller(index).playerComponent
                         connect.target = _librariesModel.controller(index)
                     }

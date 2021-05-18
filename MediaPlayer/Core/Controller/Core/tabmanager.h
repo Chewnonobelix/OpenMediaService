@@ -14,8 +14,14 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
 	Q_OBJECT
 	Q_DISABLE_COPY(TabManager)
 
-    enum class TabRole {IndexRole = Qt::UserRole +1, IdRole};
-    QList<QPair<QUuid, int>> m_model;
+    struct Data {
+        QUuid id = QUuid::createUuid();
+        int libIndex = -1;
+        int playlistIndex = -1;
+    };
+
+    enum class TabRole {LibRole = Qt::UserRole +1, IdRole, PlaylistRole};
+    QList<Data> m_model;
 
 public:
 	TabManager() = default;
