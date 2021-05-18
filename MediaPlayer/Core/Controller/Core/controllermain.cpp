@@ -39,7 +39,7 @@ void ControllerMain::exec() {
 					 << qmlRegisterUncreatableType<InterfacePlugins>(
                             "InterfacePlugin", 1, 0, "InterfacePlugin", "Interface type");
 
-    qDebug() << qmlRegisterType<TabManager>("MediaPlayer.Model", 1, 0,
+    qDebug() << "TabManager" << qmlRegisterType<TabManager>("MediaPlayer.Model", 1, 0,
                                             "TabManager");
 
     setDb(m_settings->db());

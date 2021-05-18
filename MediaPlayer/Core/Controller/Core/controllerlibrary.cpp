@@ -43,14 +43,12 @@ void ControllerLibrary::setCurrentLibrary(LibraryPointer lib) {
     m_current = lib;
     connect(m_current.data(), &Library::libraryChanged, this,
                     &ControllerLibrary::onUpdateLibrary, Qt::UniqueConnection);
-    m_plugin = m_manager[m_current->role()]->clone();
-    m_plugin->exec();
+//    m_plugin = m_manager[m_current->role()]->clone();
+//    m_plugin->exec();
 
     emit libraryChanged();
-    emit playerComponentChanged();
-    emit playlistComponentChanged();
 
-    m_current->probe()->setFilters(m_plugin->filters());
+//    m_current->probe()->setFilters(m_plugin->filters());
     m_playlist.setSmart(m_current->smartPlaylist().values());
     m_playlist.setNormal(m_current->playlist().values());
 }
@@ -64,36 +62,40 @@ void ControllerLibrary::onUpdateLibrary() {
 void ControllerLibrary::onCurrentPlaylistChanged(PlaylistPointer p) {
     if(p) {
         connect(p.data(), &PlayList::play, this, &ControllerLibrary::onPlay, Qt::UniqueConnection);
-        m_currentPlaylist = p;
+//        m_currentPlaylist = p;
     }
 
-    if (m_plugin && p) {
-		m_plugin->setPlaylist(p);
-	}
-}
-
-QQmlComponent *ControllerLibrary::playlistComponent() const {
-	return m_plugin ? m_plugin->playlistView() : nullptr;
-}
-
-QQmlComponent *ControllerLibrary::playerComponent() const {
-	return m_plugin ? m_plugin->playerView() : nullptr;
+//    if (m_plugin && p) {
+//		m_plugin->setPlaylist(p);
+//	}
 }
 
 QString ControllerLibrary::id() const { return m_id.toString(); }
-
-int ControllerLibrary::currentIndex() const
-{
-    return m_currentIndex;
-}
-
-void ControllerLibrary::setCurrentIndex(int index)
-{
-    m_currentIndex = index;
-    emit currentIndexChanged();
-}
 
 void ControllerLibrary::onPlay(MediaPointer m)
 {
     emit play(m.data());
 }
+
+void ControllerLibrary::setPlaylistIndex(QString id, int index)
+{
+    if(index == -1)
+        m_plugins.remove(QUuid::fromString(id));
+
+    if(!m_plugins.contains(QUuid::fromString(id)))
+        m_plugins[QUuid::fromString(id)] = m_manager[m_current->role()]->clone();
+
+    if(index != -1)
+        m_plugins[QUuid::fromString(id)]->setPlaylist(m_playlist[index]);
+}
+
+QQmlComponent* ControllerLibrary::playerComp(QString id)
+{
+    return m_plugins.contains(QUuid::fromString(id)) ? m_plugins[QUuid::fromString(id)]->playerView() : nullptr;
+}
+
+QQmlComponent* ControllerLibrary::playlistComp(QString id)
+{
+    return m_plugins.contains(QUuid::fromString(id)) ? m_plugins[QUuid::fromString(id)]->playlistView() : nullptr;
+}
+
