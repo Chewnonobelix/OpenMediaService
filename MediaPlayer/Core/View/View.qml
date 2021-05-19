@@ -57,6 +57,8 @@ Item {
 
                 MediaTabButton {
                     text: qsTr("Tab ") + modelData
+
+                    onClicked: repModel.setCurrentTab(view.itemAt(modelData).idTab)
                 }
             }
 
@@ -96,6 +98,10 @@ Item {
                     id: playerLoader
                     active: true
 
+                    Component.onCompleted: {
+                        repModel.setCurrentTab(idTab)
+                    }
+
                     visible: true
                     property string idTab: id
 
@@ -109,6 +115,8 @@ Item {
                     Connections {
                         id: connect
                         target: model
+
+                        ignoreUnknownSignals: true
 
                         function onPlay(media) {
                             playerLoader.media = media

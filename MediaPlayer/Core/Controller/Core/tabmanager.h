@@ -20,14 +20,18 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
         int playlistIndex = -1;
     };
 
-    enum class TabRole {LibRole = Qt::UserRole +1, IdRole, PlaylistRole};
+    enum class TabRole {LibRole = Qt::UserRole +1, IdRole, PlaylistRole, IsCurrentRole};
     QList<Data> m_model;
+
+    static QUuid s_currentTab;
 
 public:
 	TabManager() = default;
 	~TabManager() = default;
 
     Q_INVOKABLE void addTab();
+    Q_INVOKABLE void setCurrentTab(QString);
+    static QUuid currentTab();
 
 public:
 	QVariant data(const QModelIndex &index, int role) const override;

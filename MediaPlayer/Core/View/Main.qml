@@ -321,7 +321,7 @@ ApplicationWindow {
 
                 function onClicked(index) {
                     currentIndex = index
-                    currentItem = itemAt(index)
+//                    currentItem = itemAt(index)
                 }
 
 				property var component;
