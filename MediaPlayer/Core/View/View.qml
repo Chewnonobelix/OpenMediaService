@@ -107,7 +107,7 @@ Item {
 
                     function setIndex(index) {
                         model.library = index
-                        sourceComponent = _librariesModel.controller(index).playerComponent
+                        sourceComponent = _librariesModel.controller(index).playerComp(idTab)
                         connect.target = _librariesModel.controller(index)
                     }
 

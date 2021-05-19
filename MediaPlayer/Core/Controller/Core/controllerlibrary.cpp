@@ -82,8 +82,10 @@ void ControllerLibrary::setPlaylistIndex(QString id, int index)
     if(index == -1)
         m_plugins.remove(QUuid::fromString(id));
 
-    if(!m_plugins.contains(QUuid::fromString(id)))
+    if(!m_plugins.contains(QUuid::fromString(id))) {
         m_plugins[QUuid::fromString(id)] = m_manager[m_current->role()]->clone();
+         m_plugins[QUuid::fromString(id)]->exec();
+    }
 
     if(index != -1)
         m_plugins[QUuid::fromString(id)]->setPlaylist(m_playlist[index]);

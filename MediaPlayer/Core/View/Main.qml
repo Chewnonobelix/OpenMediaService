@@ -92,6 +92,7 @@ ApplicationWindow {
 
 			onCurrentIndexChanged: {
 //                splitView.currentLibrary.currentIndex = currentIndex
+                model.currentIndex = currentIndex
                 if(playlist.currentIndex !== -1) {
                     playlist.currentIndex = -1
                     playlist.currentIndex = 0

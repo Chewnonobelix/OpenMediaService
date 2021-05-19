@@ -7,10 +7,10 @@
 
 #include <Controller/Data/interfacesaver.h>
 #include <Controller/Core/controllerlibrary.h>
+#include <Controller/Core/tabmanager.h>
 
 #include "Model/global.h"
 #include "Model/library.h"
-
 class MEDIAPLAYERCORE_EXPORT LibraryDataModel : public QAbstractListModel {
 	Q_OBJECT
 
