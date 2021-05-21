@@ -22,6 +22,7 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     _imageListModel.sort(column)
+                    console.log(table.rows)
                 }
             }
         }

@@ -74,9 +74,7 @@ QQmlComponent *LibraryDataModel::playlistComponent(int index) {
     if (index >= rowCount() || index < 0)
         return nullptr;
 
-    //TODO
-    return nullptr;
-    //    return m_libraries[index].controller->playlistComponent();
+    return m_libraries[index].controller->playlistComp(TabManager::currentTabId().toString());
 }
 
 void LibraryDataModel::sort(int, Qt::SortOrder order) {
@@ -126,10 +124,15 @@ void LibraryDataModel::onUpdateLibraries() {
 void LibraryDataModel::setCurrentIndex(int index) {
     m_currentIndex = index;
     emit currentIndexChanged();
+    TabManager::setGlobalCurrentLibrary(index);
 
     if(index > -1) {
         auto& ctrl = m_libraries[index].controller;
-        ctrl->setPlaylistIndex(TabManager::currentTab().toString(), 0);
+        ctrl->setPlaylistIndex(TabManager::currentTabId().toString(), 0);
+    }
+    else
+    {
+        TabManager::setGlobalCurrentPlaylist(-1);
     }
 }
 

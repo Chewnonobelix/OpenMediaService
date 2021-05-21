@@ -1,5 +1,5 @@
 #include "playlistmodel.h"
-#include <Controller/Core/controllerlibrary.h>
+//#include <Controller/Core/controllerlibrary.h>
 
 PlaylistModel::PlaylistModel(const PlaylistModel &) : QAbstractListModel() {}
 
@@ -70,7 +70,7 @@ int PlaylistModel::currentIndex() const { return m_currentIndex; }
 
 void PlaylistModel::setCurrentIndex(int index) {
 	m_currentIndex = index;
-	emit currentIndexChanged(current());
+    emit currentIndexChanged();
 }
 
 PlaylistPointer PlaylistModel::current() const {

@@ -24,6 +24,8 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
     QList<Data> m_model;
 
     static QUuid s_currentTab;
+    static QList<Data>::iterator s_current;
+    static QList<TabManager*> s_list;
 
 public:
 	TabManager() = default;
@@ -31,7 +33,14 @@ public:
 
     Q_INVOKABLE void addTab();
     Q_INVOKABLE void setCurrentTab(QString);
-    static QUuid currentTab();
+    static QUuid currentTabId();
+    static void setGlobalCurrentPlaylist(int);
+    static void setGlobalCurrentLibrary(int);
+
+    void setCurrentPlaylist(int);
+    void setCurrentLibrary(int);
+
+    Q_INVOKABLE QVariant at(int, QString) const;
 
 public:
 	QVariant data(const QModelIndex &index, int role) const override;

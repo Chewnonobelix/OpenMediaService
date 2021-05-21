@@ -16,11 +16,11 @@ Item {
         propagateComposedEvents: true
         onClicked: function(mouse) {
             mouse.accepted = false
-            root.clicked(index)
+//            root.clicked(index)
         }
     }
 
-    signal clicked (int index)
+    signal tabSelection (int indexLib, int plyalistLib)
 
     SplitView.fillHeight: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Horizontal
     SplitView.fillWidth: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Vertical
@@ -35,7 +35,7 @@ Item {
     }
 
     function setLibraryIndex(index) {
-        viewRep.itemAt(viewBar.currentIndex).setIndex(index)
+//        viewRep.itemAt(viewBar.currentIndex).setIndex(index)
     }
 
     ColumnLayout {
@@ -58,7 +58,13 @@ Item {
                 MediaTabButton {
                     text: qsTr("Tab ") + modelData
 
-                    onClicked: repModel.setCurrentTab(view.itemAt(modelData).idTab)
+                    onClicked: {
+                        repModel.setCurrentTab(view.itemAt(modelData).idTab)
+                        console.log(repModel.at(modelData, "library"), repModel.at(modelData, "playlist"))
+
+
+//                        root.tabSelection()
+                    }
                 }
             }
 
@@ -104,6 +110,9 @@ Item {
 
                     visible: true
                     property string idTab: id
+                    property int library: library
+                    property int playlist: playlist
+
 
                     function setIndex(index) {
                         model.library = index
@@ -118,8 +127,11 @@ Item {
 
                         ignoreUnknownSignals: true
 
-                        function onPlay(media) {
-                            playerLoader.media = media
+                        function onPlay(tabId, media) {
+                            console.log(tabId, idTab)
+
+                            if(tabId === idTab)
+                                playerLoader.media = media
                         }
                     }
                 }

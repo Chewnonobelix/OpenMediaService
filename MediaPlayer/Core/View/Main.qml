@@ -149,7 +149,7 @@ ApplicationWindow {
 
 				onClicked: {
                     playlist.model = controller.playlist
-                    splitView.currentItem.setLibraryIndex(index)
+//                    splitView.currentItem.setLibraryIndex(index)
 				}
 
 				onDoubleClicked:  {
@@ -211,11 +211,11 @@ ApplicationWindow {
 
 				MenuItem {
 					text: "Add smart playlist"
-                    onClicked: splitView.currentLibrary.addPlaylist(true)
+                    onClicked: _librariesModel.controller(libraryView.currentIndex).addPlaylist(true)
 				}
 				MenuItem {
 					text: "Add playlist"
-                    onClicked: splitView.currentLibrary.addPlaylist()
+                    onClicked: _librariesModel.controller(libraryView.currentIndex).addPlaylist(false)
 				}
 				MenuItem {
 					text: "Remove playlist"
@@ -226,11 +226,11 @@ ApplicationWindow {
 				id: menu2
 				MenuItem {
 					text: "Add smart playlist"
-                    onClicked: splitView.currentLibrary.addPlaylist(true)
+                    onClicked: _librariesModel.controller(libraryView.currentIndex).addPlaylist(true)
 				}
 				MenuItem {
 					text: "Add playlist"
-                    onClicked: splitView.currentLibrary.addPlaylist()
+                    onClicked: _librariesModel.controller(libraryView.currentIndex).addPlaylist(false)
 				}
 			}
 
@@ -268,8 +268,9 @@ ApplicationWindow {
 			width: root.width
 
             onOpened: {
-                playLoad.sourceComponent = _librariesModel.controller(libraryView.currentIndex).playlistComponent
+                playLoad.sourceComponent = _librariesModel.controller(libraryView.currentIndex).playlistComp()
                 playLoad.active = playLoad.sourceComponent !== null
+                console.log(playLoad.sourceComponent, )
             }
 
 			Loader {
@@ -320,8 +321,8 @@ ApplicationWindow {
 //                    }
 //				}
 
-                function onClicked(index) {
-                    currentIndex = index
+                function onSelection(lib, pl) {
+                    currentIndex = lib
 //                    currentItem = itemAt(index)
                 }
 
@@ -346,7 +347,7 @@ ApplicationWindow {
 						else {
 							addItem(sprite)
                             sprite.index = count - 1
-                            sprite.onClicked.connect(onClicked)
+                            sprite.onTabSelection.connect(onSelection)
 						}
 					} else if (component.status === Component.Error) {
 						// Error Handling

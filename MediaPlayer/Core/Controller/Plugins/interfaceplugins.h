@@ -9,6 +9,9 @@
 #include <Model/media.h>
 
 class MEDIAPLAYERCORE_EXPORT InterfacePlugins {
+private:
+    QUuid m_tabId;
+
 public:
 	InterfacePlugins() = default;
 	InterfacePlugins(const InterfacePlugins &) = default;
@@ -26,6 +29,9 @@ public:
 
 	virtual void exec() = 0;
 	virtual QSharedPointer<InterfacePlugins> clone() const = 0;
+
+    QUuid id() const;
+    void setID(QUuid);
 };
 
 Q_DECLARE_INTERFACE(InterfacePlugins, "InterfacePlugins/1.0")

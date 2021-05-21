@@ -2,6 +2,7 @@
 
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/DataModel/playlistmodel.h>
+#include <Controller/Core/tabmanager.h>
 
 #include <Model/library.h>
 
@@ -44,14 +45,14 @@ public:
 public:
     Q_INVOKABLE void setPlaylistIndex(QString, int);
     Q_INVOKABLE QQmlComponent* playerComp(QString);
-    Q_INVOKABLE QQmlComponent* playlistComp(QString);
+    Q_INVOKABLE QQmlComponent* playlistComp(QString = "");
 
 public slots:
 	void onUpdateLibrary();
-	void onCurrentPlaylistChanged(PlaylistPointer);
+    void onCurrentPlaylistChanged();
     void onPlay(MediaPointer);
 
 signals:
 	void libraryChanged();
-    void play(Media*);
+    void play(QUuid, Media*);
 };
