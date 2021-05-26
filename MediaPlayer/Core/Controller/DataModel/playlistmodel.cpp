@@ -86,8 +86,10 @@ void PlaylistModel::onLibraryChanged(LibraryPointer l) {
 	if (l.isNull())
 		return;
 
+    auto index = currentIndex();
 	setSmart(l->smartPlaylist().values());
 	setNormal(l->playlist().values());
+    setCurrentIndex(index);
 }
 
 PlaylistPointer PlaylistModel::operator[](int index) const {

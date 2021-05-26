@@ -170,13 +170,20 @@ ApplicationWindow {
 			Layout.rowSpan: 1
 			Layout.columnSpan: 2
 
+            Connections {
+                target: playlist.model ? playlist.model : null
+
+                function onCurrentIndexChanged() {
+                    playlist.currentIndex = playlist.model.currentIndex
+                }
+            }
+
 			onCurrentIndexChanged:  {
 				if(model)
 					model.currentIndex = currentIndex
 			}
 
 			onModelChanged: {
-				forceLayout()
 			}
 
 			headerPositioning: ListView.OverlayHeader
@@ -270,7 +277,6 @@ ApplicationWindow {
             onOpened: {
                 playLoad.sourceComponent = _librariesModel.controller(libraryView.currentIndex).playlistComp()
                 playLoad.active = playLoad.sourceComponent !== null
-                console.log(playLoad.sourceComponent, )
             }
 
 			Loader {
@@ -322,7 +328,7 @@ ApplicationWindow {
 //				}
 
                 function onSelection(lib, pl) {
-                    currentIndex = lib
+//                    currentIndex = lib
 //                    currentItem = itemAt(index)
                 }
 

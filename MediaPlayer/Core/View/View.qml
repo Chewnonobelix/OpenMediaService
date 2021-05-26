@@ -60,10 +60,6 @@ Item {
 
                     onClicked: {
                         repModel.setCurrentTab(view.itemAt(modelData).idTab)
-                        console.log(repModel.at(modelData, "library"), repModel.at(modelData, "playlist"))
-
-
-//                        root.tabSelection()
                     }
                 }
             }
@@ -110,8 +106,8 @@ Item {
 
                     visible: true
                     property string idTab: id
-                    property int library: library
-                    property int playlist: playlist
+//                    property int library: library
+//                    property int playlist: playlist
 
 
                     function setIndex(index) {
