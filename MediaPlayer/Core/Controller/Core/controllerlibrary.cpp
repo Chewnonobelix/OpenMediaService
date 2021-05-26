@@ -44,12 +44,10 @@ void ControllerLibrary::setCurrentLibrary(LibraryPointer lib) {
     m_current = lib;
     connect(m_current.data(), &Library::libraryChanged, this,
                     &ControllerLibrary::onUpdateLibrary, Qt::UniqueConnection);
-//    m_plugin = m_manager[m_current->role()]->clone();
-//    m_plugin->exec();
 
     emit libraryChanged();
 
-//    m_current->probe()->setFilters(m_plugin->filters());
+    m_current->probe()->setFilters(m_manager[m_current->role()]->filters());
     m_playlist.setSmart(m_current->smartPlaylist().values());
     m_playlist.setNormal(m_current->playlist().values());
 }
@@ -65,7 +63,6 @@ void ControllerLibrary::onCurrentPlaylistChanged() {
     TabManager::setGlobalCurrentPlaylist(index);
     if(p) {
         connect(p.data(), &PlayList::play, this, &ControllerLibrary::onPlay, Qt::UniqueConnection);
-//        m_currentPlaylist = p;
     }
 
     auto plugin = m_plugins[TabManager::currentTabId()];
@@ -92,21 +89,23 @@ void ControllerLibrary::setPlaylistIndex(QString id, int index)
          m_plugins[QUuid::fromString(id)]->exec();
     }
 
-    if(index != -1)
+    if(index != -1 &&  m_plugins.contains(QUuid::fromString(id))) {
         m_plugins[QUuid::fromString(id)]->setPlaylist(m_playlist[index]);
+        m_plugins[QUuid::fromString(id)]->setID(QUuid::fromString(id));
+    }
 
     TabManager::setGlobalCurrentPlaylist(index);
 }
 
 QQmlComponent* ControllerLibrary::playerComp(QString id)
 {
+    id = id.isEmpty() ? TabManager::currentTabId().toString() : id;
     return m_plugins.contains(QUuid::fromString(id)) ? m_plugins[QUuid::fromString(id)]->playerView() : nullptr;
 }
 
 QQmlComponent* ControllerLibrary::playlistComp(QString id)
 {
     id = id.isEmpty() ? TabManager::currentTabId().toString() : id;
-    qDebug()<<id<<m_plugins.keys();
     return m_plugins.contains(QUuid::fromString(id)) ? m_plugins[QUuid::fromString(id)]->playlistView() : nullptr;
 }
 

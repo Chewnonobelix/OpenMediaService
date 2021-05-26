@@ -99,6 +99,8 @@ void TabManager::setCurrentLibrary(int lib)
 {
     if(s_current != m_model.end())
         s_current->libIndex = lib;
+
+    emit libraryChanged(lib);
 }
 
 void TabManager::setCurrentPlaylist(int pl)

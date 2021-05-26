@@ -16,7 +16,7 @@ Item {
         propagateComposedEvents: true
         onClicked: function(mouse) {
             mouse.accepted = false
-//            root.clicked(index)
+            //            root.clicked(index)
         }
     }
 
@@ -35,7 +35,7 @@ Item {
     }
 
     function setLibraryIndex(index) {
-//        viewRep.itemAt(viewBar.currentIndex).setIndex(index)
+        //        viewRep.itemAt(viewBar.currentIndex).setIndex(index)
     }
 
     ColumnLayout {
@@ -90,41 +90,45 @@ Item {
 
 
 
+
             Repeater {
                 id: viewRep
                 model: TabManager {
                     id: repModel
+
+
                 }
 
                 Loader {
                     id: playerLoader
                     active: true
+                    property string idTab: model.id
+                    Connections {
+                        target: repModel
+                        function onLibraryChanged(lib) {
+                            console.log(isCurrentTab, lib, idTab)
+                            if(isCurrentTab && lib > -1) {
+                                sourceComponent = _librariesModel.controller(lib).playerComp(idTab)
+                                connect.target = _librariesModel.controller(lib)
+                            }
+
+                        }
+                    }
 
                     Component.onCompleted: {
                         repModel.setCurrentTab(idTab)
                     }
 
                     visible: true
-                    property string idTab: id
-//                    property int library: library
-//                    property int playlist: playlist
-
-
-                    function setIndex(index) {
-                        model.library = index
-                        sourceComponent = _librariesModel.controller(index).playerComp(idTab)
-                        connect.target = _librariesModel.controller(index)
-                    }
 
                     property Media media
                     Connections {
                         id: connect
-                        target: model
 
                         ignoreUnknownSignals: true
 
                         function onPlay(tabId, media) {
-                            console.log(tabId, idTab)
+                            console.log(tabId, idTab, "onPLay")
 
                             if(tabId === idTab)
                                 playerLoader.media = media

@@ -47,4 +47,8 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	QHash<int, QByteArray> roleNames() const override;
+
+signals:
+    void libraryChanged(int);
+    void playlistChanged(int);
 };

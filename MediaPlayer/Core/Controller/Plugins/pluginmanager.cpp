@@ -85,6 +85,7 @@ int PluginManager::rowCount(QModelIndex const&) const
 bool PluginManager::setData(const QModelIndex& index, const QVariant& data, int role)
 {
     m_liste[index.row()].enable = data.toBool();
+    emit dataChanged(index, index, {role});
     return true;
 }
 

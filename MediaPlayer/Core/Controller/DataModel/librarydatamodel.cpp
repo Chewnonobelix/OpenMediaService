@@ -129,6 +129,7 @@ void LibraryDataModel::setCurrentIndex(int index) {
     if(index > -1) {
         auto& ctrl = m_libraries[index].controller;
         ctrl->setPlaylistIndex(TabManager::currentTabId().toString(), 0);
+        TabManager::setGlobalCurrentLibrary(index);
     }
     else
     {
