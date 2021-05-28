@@ -50,12 +50,20 @@ bool TabManager::moveTab(QUuid, int)
     return false;
 }
 
-bool TabManager::contains(QUuid) const
+bool TabManager::contains(QUuid id) const
 {
-    return false;
+    auto it = std::find_if(m_model.begin(), m_model.end(), [id](Data d) {
+            return id == d.id;
+    });
+
+    return it != m_model.end();
 }
 
-TabManager::Data& TabManager::operator[](QUuid)
+TabManager::Data& TabManager::operator[](QUuid id)
 {
-    return m_model.first();
+    auto it = std::find_if(m_model.begin(), m_model.end(), [id](Data d) {
+            return id == d.id;
+    });
+
+    return *it;
 }
