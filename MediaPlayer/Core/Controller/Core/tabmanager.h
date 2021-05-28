@@ -18,8 +18,6 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
         QUuid id = QUuid::createUuid();
         PlaylistPointer playlist = PlaylistPointer();
         QQmlComponent* player = nullptr;
-        void setPlaylist(PlaylistPointer);
-
     };
 
     enum class TabRole {LibRole = Qt::UserRole +1, IdRole, PlaylistRole, IsCurrentRole};
@@ -30,6 +28,11 @@ public:
 	~TabManager() = default;
 
     Q_INVOKABLE void addTab();
+    Q_INVOKABLE bool removeTab(QUuid);
+    Q_INVOKABLE bool moveTab(QUuid, int);
+
+    bool contains(QUuid) const;
+    Data& operator[](QUuid);
 
 public:
 	QVariant data(const QModelIndex &index, int role) const override;
@@ -37,5 +40,5 @@ public:
 	QHash<int, QByteArray> roleNames() const override;
 
 signals:
-    void play(Media*);
+    void clicked(QUuid);
 };

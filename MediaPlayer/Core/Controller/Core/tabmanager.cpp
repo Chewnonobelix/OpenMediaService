@@ -39,3 +39,23 @@ QHash<int, QByteArray> TabManager::roleNames() const {
                                        {int(TabRole::PlaylistRole), "playlist"}};
     return ret;
 }
+
+bool TabManager::removeTab(QUuid)
+{
+    return false;
+}
+
+bool TabManager::moveTab(QUuid, int)
+{
+    return false;
+}
+
+bool TabManager::contains(QUuid) const
+{
+    return false;
+}
+
+TabManager::Data& TabManager::operator[](QUuid)
+{
+    return m_model.first();
+}
