@@ -2,7 +2,6 @@
 
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/DataModel/playlistmodel.h>
-#include <Controller/Core/tabmanager.h>
 
 #include <Model/library.h>
 

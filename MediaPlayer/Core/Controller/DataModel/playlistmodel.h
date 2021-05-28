@@ -3,9 +3,6 @@
 #include <QAbstractListModel>
 #include <QQmlComponent>
 
-//#include <Controller/Core/controllerlibrary.h>
-//#include <Controller/Core/tabmanager.h>
-
 #include <Model/library.h>
 #include <Model/smartplaylist.h>
 

@@ -24,7 +24,6 @@ private:
 	int m_currentTab = 0;
 
 	QQmlApplicationEngine &engine();
-	TabManager m_tabsManager;
     QPointer<LibraryDataModel> m_librariesModel;
 
 public:

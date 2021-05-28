@@ -95,44 +95,18 @@ Item {
                 id: viewRep
                 model: TabManager {
                     id: repModel
-
-
                 }
 
                 Loader {
                     id: playerLoader
                     active: true
-                    property string idTab: model.id
-                    Connections {
-                        target: repModel
-                        function onLibraryChanged(lib) {
-                            console.log(isCurrentTab, lib, idTab)
-                            if(isCurrentTab && lib > -1) {
-                                sourceComponent = _librariesModel.controller(lib).playerComp(idTab)
-                                connect.target = _librariesModel.controller(lib)
-                            }
 
-                        }
-                    }
 
-                    Component.onCompleted: {
-                        repModel.setCurrentTab(idTab)
-                    }
 
                     visible: true
 
                     property Media media
                     Connections {
-                        id: connect
-
-                        ignoreUnknownSignals: true
-
-                        function onPlay(tabId, media) {
-                            console.log(tabId, idTab, "onPLay")
-
-                            if(tabId === idTab)
-                                playerLoader.media = media
-                        }
                     }
                 }
             }
