@@ -16,3 +16,8 @@ QPointer<TabManager> TabWrapper::get(QUuid id)
 {
     return m_model.contains(id) ? m_model[id] : nullptr;
 }
+
+QPointer<TabManager> TabWrapper::get(QString id)
+{
+    return get(QUuid::fromString(id));
+}

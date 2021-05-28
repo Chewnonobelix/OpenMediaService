@@ -5,10 +5,11 @@
 #include <QObject>
 #include <QQmlComponent>
 #include <QUuid>
+#include <QPointer>
 
 #include "mediaplayercore_global.h"
 
-#include <Controller/Core/controllerlibrary.h>
+#include <Model/playlist.h>
 
 class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
 	Q_OBJECT
@@ -20,7 +21,7 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
         QQmlComponent* player = nullptr;
     };
 
-    enum class TabRole {LibRole = Qt::UserRole +1, IdRole, PlaylistRole, IsCurrentRole};
+    enum class TabRole {PlayerRole = Qt::UserRole +1, IdRole, PlaylistRole};
     QList<Data> m_model;
 
     QUuid m_id = QUuid::createUuid();

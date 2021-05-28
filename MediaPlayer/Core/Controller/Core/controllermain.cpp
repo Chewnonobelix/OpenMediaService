@@ -49,6 +49,7 @@ void ControllerMain::exec() {
     context->setContextProperty("_db", db());
     context->setContextProperty("_plugins", &m_manager);
     context->setContextProperty("_settings", m_settings);
+    context->setContextProperty("_tabWrapper", m_tabWrapper);
 
     m_librariesModel = new LibraryDataModel;
 

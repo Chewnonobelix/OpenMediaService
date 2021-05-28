@@ -93,8 +93,10 @@ Item {
 
             Repeater {
                 id: viewRep
-                model: TabManager {
-                    id: repModel
+                Component.onCompleted:  {
+                    var id = _tabWrapper.create()
+                    console.log("View completed", id)
+                    model = _tabWrapper.get(id);
                 }
 
                 Loader {

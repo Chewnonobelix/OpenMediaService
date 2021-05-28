@@ -2,10 +2,13 @@
 
 #include <QObject>
 #include <QMap>
+#include <QPointer>
+
+#include "mediaplayercore_global.h"
 
 #include "tabmanager.h"
 
-class TabWrapper: public QObject
+class MEDIAPLAYERCORE_EXPORT TabWrapper: public QObject
 {
     Q_OBJECT
 
@@ -13,11 +16,13 @@ private:
     QMap<QUuid, QPointer<TabManager>> m_model;
     QUuid m_current;
 
-    Q_INVOKABLE QUuid create();
-    Q_INVOKABLE QPointer<TabManager> get(QUuid);
 
 public:
     TabWrapper() = default;
     ~TabWrapper() = default;
+
+    Q_INVOKABLE QUuid create();
+    QPointer<TabManager> get(QUuid);
+    Q_INVOKABLE QPointer<TabManager> get(QString);
 };
 

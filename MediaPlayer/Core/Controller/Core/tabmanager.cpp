@@ -19,12 +19,10 @@ QVariant TabManager::data(const QModelIndex &index, int role) const {
     {
     case TabRole::IdRole:
         return m_model[row].id;
-    case TabRole::LibRole:
-        return QVariant();
+    case TabRole::PlayerRole:
+        return QVariant::fromValue(m_model[row].player);
     case TabRole::PlaylistRole:
         return QVariant();
-    case TabRole::IsCurrentRole:
-        return false;
     }
 
     return QVariant();
@@ -33,9 +31,8 @@ QVariant TabManager::data(const QModelIndex &index, int role) const {
 int TabManager::rowCount(const QModelIndex &) const { return m_model.size(); }
 
 QHash<int, QByteArray> TabManager::roleNames() const {
-    static QHash<int, QByteArray> ret {{int(TabRole::LibRole), "library"},
+    static QHash<int, QByteArray> ret {{int(TabRole::PlayerRole), "player"},
                                        {int(TabRole::IdRole), "id"},
-                                       {int(TabRole::IsCurrentRole), "isCurrentTab"},
                                        {int(TabRole::PlaylistRole), "playlist"}};
     return ret;
 }
