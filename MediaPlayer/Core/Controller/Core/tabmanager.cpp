@@ -67,3 +67,8 @@ TabManager::Data& TabManager::operator[](QUuid id)
 
     return *it;
 }
+
+QUuid TabManager::id() const
+{
+    return m_id;
+}

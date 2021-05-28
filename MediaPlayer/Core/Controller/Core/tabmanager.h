@@ -23,9 +23,13 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
     enum class TabRole {LibRole = Qt::UserRole +1, IdRole, PlaylistRole, IsCurrentRole};
     QList<Data> m_model;
 
+    QUuid m_id = QUuid::createUuid();
+
 public:
 	TabManager() = default;
 	~TabManager() = default;
+
+    QUuid id() const;
 
     Q_INVOKABLE void addTab();
     Q_INVOKABLE bool removeTab(QUuid);
