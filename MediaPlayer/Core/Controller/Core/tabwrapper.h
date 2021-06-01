@@ -24,5 +24,8 @@ public:
     Q_INVOKABLE QUuid create();
     QPointer<TabManager> get(QUuid);
     Q_INVOKABLE QPointer<TabManager> get(QString);
+
+public slots:
+    void setCurrentTab(QString);
 };
 

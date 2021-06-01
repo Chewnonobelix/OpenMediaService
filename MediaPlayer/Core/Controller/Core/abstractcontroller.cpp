@@ -5,7 +5,7 @@ QThread *AbstractController::m_dbThread = new QThread();
 QPointer<LiveQmlEngine> AbstractController::m_engine = nullptr;
 PluginManager AbstractController::m_manager = PluginManager();
 QPointer<ControllerSettings> AbstractController::m_settings = nullptr;
-QPointer<TabWrapper> AbstractController::m_tabWrapper = nullptr;
+QPointer<TabWrapper> AbstractController::m_tabWrapper = new TabWrapper;
 
 AbstractController::AbstractController() : QObject() {
     if (m_engine.isNull())

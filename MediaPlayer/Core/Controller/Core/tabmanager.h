@@ -45,5 +45,5 @@ public:
 	QHash<int, QByteArray> roleNames() const override;
 
 signals:
-    void clicked(QUuid);
+    void clicked(QString);
 };

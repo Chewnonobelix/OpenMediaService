@@ -6,6 +6,7 @@ void TabManager::addTab()
     beginInsertRows(QModelIndex(), rowCount() - 1, rowCount()-1);
     insertRows(rowCount()- 1, 1);
     endInsertRows();
+    emit clicked(m_model.last().id.toString());
 }
 
 QVariant TabManager::data(const QModelIndex &index, int role) const {

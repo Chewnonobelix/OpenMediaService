@@ -59,7 +59,7 @@ Item {
                     text: qsTr("Tab ") + modelData
 
                     onClicked: {
-                        repModel.setCurrentTab(view.itemAt(modelData).idTab)
+                        _tabWrapper.setCurrentTab(view.itemAt(modelData).id)
                     }
                 }
             }
@@ -71,7 +71,7 @@ Item {
                 onClicked:  {
                     tabRepeater.model = viewBar.currentIndex + 1
                     viewBar.currentIndex = viewBar.currentIndex - 1
-                    repModel.addTab()
+                    viewRep.model.addTab()
                 }
             }
         }
@@ -104,6 +104,7 @@ Item {
                     active: true
 
 
+                    property string id: model.id
 
                     visible: true
 
