@@ -24,3 +24,24 @@ void TabWrapper::setCurrentTab(QString id)
 {
     m_current = QUuid::fromString(id);
 }
+
+QPointer<TabManager>& TabWrapper::current()
+{
+    auto it = std::find_if(m_model.begin(), m_model.end(), [this](const QPointer<TabManager>& tab) {
+        return tab->contains(m_current);
+    });
+
+    return *it;
+}
+
+void TabWrapper::setPlayer(QQmlComponent * p)
+{
+    auto tab = current();
+    (*tab)[m_current].player = p;
+}
+
+void TabWrapper::setPlaylist(PlaylistPointer pl)
+{
+    auto tab = current();
+    (*tab)[m_current].setPlaylist(pl);
+}

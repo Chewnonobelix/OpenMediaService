@@ -16,6 +16,7 @@ private:
     QMap<QUuid, QPointer<TabManager>> m_model;
     QUuid m_current;
 
+    QPointer<TabManager>& current();
 
 public:
     TabWrapper() = default;
@@ -24,6 +25,9 @@ public:
     Q_INVOKABLE QUuid create();
     QPointer<TabManager> get(QUuid);
     Q_INVOKABLE QPointer<TabManager> get(QString);
+
+    void setPlaylist(PlaylistPointer);
+    void setPlayer(QQmlComponent*);
 
 public slots:
     void setCurrentTab(QString);

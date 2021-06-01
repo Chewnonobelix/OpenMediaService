@@ -1,5 +1,11 @@
 #include "tabmanager.h"
 
+void TabManager::Data::setPlaylist(PlaylistPointer pl)
+{
+    playlist->disconnect(SIGNAL(play(MediaPointer)));
+    playlist = pl;
+
+}
 void TabManager::addTab()
 {
     m_model<<Data{};
@@ -23,7 +29,9 @@ QVariant TabManager::data(const QModelIndex &index, int role) const {
     case TabRole::PlayerRole:
         return QVariant::fromValue(m_model[row].player);
     case TabRole::PlaylistRole:
-        return QVariant();
+        return QVariant::fromValue(m_model[row].playlist.data());
+    case TabRole::DataRole:
+        return QVariant::fromValue(m_model[row]);
     }
 
     return QVariant();
@@ -34,6 +42,7 @@ int TabManager::rowCount(const QModelIndex &) const { return m_model.size(); }
 QHash<int, QByteArray> TabManager::roleNames() const {
     static QHash<int, QByteArray> ret {{int(TabRole::PlayerRole), "player"},
                                        {int(TabRole::IdRole), "id"},
+                                       {int(TabRole::DataRole), "data"},
                                        {int(TabRole::PlaylistRole), "playlist"}};
     return ret;
 }

@@ -22,6 +22,9 @@ void ControllerMain::exec() {
     qDebug() << "Media"
                      << qmlRegisterUncreatableType<Media>("MediaPlayer", 1, 0,
                                                             "Media", "Cpp owner");
+    qDebug() << "Playlist"
+                     << qmlRegisterUncreatableType<PlayList>("MediaPlayer", 1, 0,
+                                                          "Playlist", "Cpp owner");
 
     qDebug() << "LibraryDataModel"
 					 << qmlRegisterType<LibraryDataModel>("MediaPlayer.Model", 1, 0,

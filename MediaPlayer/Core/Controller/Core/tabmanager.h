@@ -19,9 +19,11 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
         QUuid id = QUuid::createUuid();
         PlaylistPointer playlist = PlaylistPointer();
         QQmlComponent* player = nullptr;
+
+        void setPlaylist(PlaylistPointer);
     };
 
-    enum class TabRole {PlayerRole = Qt::UserRole +1, IdRole, PlaylistRole};
+    enum class TabRole {PlayerRole = Qt::UserRole +1, IdRole, PlaylistRole, DataRole};
     QList<Data> m_model;
 
     QUuid m_id = QUuid::createUuid();

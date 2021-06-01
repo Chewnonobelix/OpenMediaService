@@ -72,6 +72,7 @@ QString ControllerLibrary::id() const { return m_id.toString(); }
 void ControllerLibrary::onPlay(MediaPointer m)
 {
     auto src = (InterfacePlugins*)sender();
+
     emit play(src->id(), m.data());
 }
 

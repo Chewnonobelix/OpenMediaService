@@ -60,6 +60,7 @@ Item {
 
                     onClicked: {
                         _tabWrapper.setCurrentTab(view.itemAt(modelData).id)
+                        console.log(view.itemAt(modelData).pl)
                     }
                 }
             }
@@ -106,11 +107,12 @@ Item {
 
                     property string id: model.id
 
+                    property Playlist pl: model.playlist
+
+                    onPlChanged: console.log(pl)
                     visible: true
 
                     property Media media
-                    Connections {
-                    }
                 }
             }
         }
