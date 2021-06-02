@@ -104,6 +104,7 @@ Item {
                     id: playerLoader
                     active: true
 
+                    sourceComponent: model.player
 
                     property string id: model.id
 

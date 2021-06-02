@@ -38,10 +38,22 @@ void TabWrapper::setPlayer(QQmlComponent * p)
 {
     auto tab = current();
     (*tab)[m_current].player = p;
+    auto index = tab->indexOf(m_current);
+    auto modelIndex = tab->index(index, 0);
+    emit tab->dataChanged(modelIndex, modelIndex, {int(TabManager::TabRole::PlayerRole)});
 }
 
 void TabWrapper::setPlaylist(PlaylistPointer pl)
 {
+    qDebug()<<"Set playlist";
     auto tab = current();
     (*tab)[m_current].setPlaylist(pl);
+    auto index = tab->indexOf(m_current);
+    auto modelIndex = tab->index(index, 0);
+    emit tab->dataChanged(modelIndex, modelIndex, {int(TabManager::TabRole::PlaylistRole)});
+}
+
+QUuid TabWrapper::currentId() const
+{
+    return m_current;
 }

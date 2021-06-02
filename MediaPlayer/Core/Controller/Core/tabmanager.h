@@ -23,13 +23,14 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
         void setPlaylist(PlaylistPointer);
     };
 
-    enum class TabRole {PlayerRole = Qt::UserRole +1, IdRole, PlaylistRole, DataRole};
     QList<Data> m_model;
 
     QUuid m_id = QUuid::createUuid();
 
 public:
-	TabManager() = default;
+    enum class TabRole {PlayerRole = Qt::UserRole +1, IdRole, PlaylistRole, DataRole};
+
+    TabManager() = default;
 	~TabManager() = default;
 
     QUuid id() const;
@@ -41,6 +42,7 @@ public:
     bool contains(QUuid) const;
     Data& operator[](QUuid);
 
+    int indexOf(QUuid) const;
 public:
 	QVariant data(const QModelIndex &index, int role) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;

@@ -64,6 +64,14 @@ void ControllerMain::exec() {
 
     connect(m_settings, &ControllerSettings::dbChanged, this, &ControllerMain::onDbChanged);
     emit db()->librariesChanged();
+
+    connect(m_librariesModel, &LibraryDataModel::currentIndexChanged, [this]() {
+       auto index = m_librariesModel->currentIndex();
+       auto cl = m_librariesModel->controller(index);
+       auto current = m_tabWrapper->currentId();
+       cl->setPlaylistIndex(current.toString(), 0);
+       m_tabWrapper->setPlayer(cl->playerComp(current.toString()));
+    });
 }
 
 QQmlApplicationEngine &ControllerMain::engine() {

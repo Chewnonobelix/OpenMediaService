@@ -79,3 +79,14 @@ QUuid TabManager::id() const
 {
     return m_id;
 }
+
+int TabManager::indexOf(QUuid id) const
+{
+    auto ret = -1;
+    for(auto i = 0; i < m_model.size(); i++)
+        if(m_model[i].id == id)
+            ret = i;
+
+    return ret;
+
+}
