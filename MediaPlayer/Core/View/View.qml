@@ -60,7 +60,6 @@ Item {
 
                     onClicked: {
                         _tabWrapper.setCurrentTab(view.itemAt(modelData).id)
-                        console.log(view.itemAt(modelData).pl)
                     }
                 }
             }
@@ -96,7 +95,6 @@ Item {
                 id: viewRep
                 Component.onCompleted:  {
                     var id = _tabWrapper.create()
-                    console.log("View completed", id)
                     model = _tabWrapper.get(id);
                 }
 

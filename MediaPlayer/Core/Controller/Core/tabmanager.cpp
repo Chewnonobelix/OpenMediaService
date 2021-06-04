@@ -2,10 +2,9 @@
 
 void TabManager::Data::setPlaylist(PlaylistPointer pl)
 {
-    playlist->disconnect(SIGNAL(play(MediaPointer)));
-    playlist = pl;
 
 }
+
 void TabManager::addTab()
 {
     m_model<<Data{};

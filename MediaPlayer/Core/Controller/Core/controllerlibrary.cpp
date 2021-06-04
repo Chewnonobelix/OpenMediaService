@@ -60,9 +60,10 @@ void ControllerLibrary::onUpdateLibrary() {
 void ControllerLibrary::onCurrentPlaylistChanged() {
     auto p = m_playlist.current();
 
-//    auto plugin = m_plugins[/*TabManager::currentTabId()*/];
-    auto plugin = m_plugins[QUuid()];
+    auto plugin = m_plugins[m_tabWrapper->currentId()];
     if (plugin && p) {
+
+        m_tabWrapper->setPlaylist(p);
         plugin->setPlaylist(p);
     }
 }
@@ -78,10 +79,10 @@ void ControllerLibrary::onPlay(MediaPointer m)
 
 void ControllerLibrary::setPlaylistIndex(QString id, int index)
 {
-    if(index == -1)
+    if(index == -1 && m_plugins.contains(QUuid::fromString(id)))
         m_plugins.remove(QUuid::fromString(id));
 
-    if(!m_plugins.contains(QUuid::fromString(id))) {
+    if(!m_plugins.contains(QUuid::fromString(id)) || !m_plugins[QUuid::fromString(id)]) {
         m_plugins[QUuid::fromString(id)] = m_manager[m_current->role()]->clone();
          m_plugins[QUuid::fromString(id)]->exec();
     }

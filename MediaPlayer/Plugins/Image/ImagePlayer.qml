@@ -4,6 +4,14 @@ import QtQuick.Controls 2.15
 Item {
     id: root
 
+    Connections {
+        target: _image
+
+        function onPlay(m) {
+            display.source = "file:///"+m
+        }
+    }
+
 	Rectangle {
 		anchors.fill: parent
 		color: "black"
