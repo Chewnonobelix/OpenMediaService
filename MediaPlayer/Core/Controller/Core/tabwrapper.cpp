@@ -45,7 +45,6 @@ void TabWrapper::setPlayer(QQmlComponent * p)
 
 void TabWrapper::setPlaylist(PlaylistPointer pl)
 {
-    qDebug()<<"Set playlist";
     auto tab = current();
     (*tab)[m_current].setPlaylist(pl);
     auto index = tab->indexOf(m_current);

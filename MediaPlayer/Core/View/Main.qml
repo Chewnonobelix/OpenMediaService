@@ -260,6 +260,7 @@ ApplicationWindow {
                 height: playlist.height * 0.10
 				text: (smart ? "*" : "") + (name === "" ? id : name)
 
+                onClicked: console.log(_tabWrapper.currentId())
                 onDoubleClicked:  {
                     playlist.currentIndex = index
                     drawPlay.open()
@@ -275,7 +276,7 @@ ApplicationWindow {
 			width: root.width
 
             onOpened: {
-                playLoad.sourceComponent = _librariesModel.controller(libraryView.currentIndex).playlistComp()
+                playLoad.sourceComponent = _librariesModel.controller(libraryView.currentIndex).playlistComp(_tabWrapper.currentId())
                 playLoad.active = playLoad.sourceComponent !== null
             }
 

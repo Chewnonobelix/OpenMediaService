@@ -28,7 +28,7 @@ public:
 
     void setPlaylist(PlaylistPointer);
     void setPlayer(QQmlComponent*);
-    QUuid currentId() const;
+    Q_INVOKABLE QUuid currentId() const;
 
 public slots:
     void setCurrentTab(QString);
