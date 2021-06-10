@@ -31,6 +31,10 @@ QVariant TabManager::data(const QModelIndex &index, int role) const {
         return QVariant::fromValue(m_model[row].playlist.data());
     case TabRole::DataRole:
         return QVariant::fromValue(m_model[row]);
+    case TabRole::PLaylistIndex:
+        return m_model[row].playlistIndex;
+    case TabRole::LibraryIndex:
+        return m_model[row].libIndex;
     }
 
     return QVariant();
@@ -42,6 +46,8 @@ QHash<int, QByteArray> TabManager::roleNames() const {
     static QHash<int, QByteArray> ret {{int(TabRole::PlayerRole), "player"},
                                        {int(TabRole::IdRole), "id"},
                                        {int(TabRole::DataRole), "data"},
+                                       {int(TabRole::LibraryIndex), "libIndex"},
+                                       {int(TabRole::PLaylistIndex), "playlistIndex"},
                                        {int(TabRole::PlaylistRole), "playlist"}};
     return ret;
 }
@@ -88,4 +94,24 @@ int TabManager::indexOf(QUuid id) const
 
     return ret;
 
+}
+
+bool TabManager::setData(const QModelIndex &index, const QVariant & value, int role)
+{
+    auto e = TabRole(role);
+
+    switch(e)
+    {
+    case TabRole::LibraryIndex:
+        m_model[index.row()].libIndex = value.toInt();
+        break;
+    case TabRole::PLaylistIndex:
+        m_model[index.row()].playlistIndex = value.toInt();
+        break;
+    default:
+        break;
+    }
+
+    emit dataChanged(index, index, {role});
+    return true;
 }

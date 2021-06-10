@@ -93,6 +93,7 @@ Item {
 
                 Item {
                     id: pRoot
+                    property string id: model.id
                     property Item rPlayer: model.player
                         Item {
 

@@ -63,7 +63,7 @@ void ControllerLibrary::onCurrentPlaylistChanged() {
     auto plugin = m_plugins[s_tabWrapper->currentId()];
     if (plugin && p) {
 
-        s_tabWrapper->setPlaylist(p);
+        s_tabWrapper->setPlaylist(m_playlist.currentIndex(), p);
         plugin->setPlaylist(p);
     }
 }
@@ -91,7 +91,7 @@ void ControllerLibrary::setPlaylistIndex(QString id, int index)
         m_plugins[QUuid::fromString(id)]->setPlaylist(m_playlist[index]);
         m_plugins[QUuid::fromString(id)]->setID(QUuid::fromString(id));
 
-        s_tabWrapper->setPlaylist(m_playlist[index]);
+        s_tabWrapper->setPlaylist(index, m_playlist[index]);
     }
 }
 
@@ -106,3 +106,12 @@ QObject* ControllerLibrary::playlistComp(QString id)
     return m_plugins.contains(uid) ? m_plugins[uid]->playlistView() : nullptr;
 }
 
+bool ControllerLibrary::containView(QUuid id) const
+{
+    return m_plugins.keys().contains(id);
+}
+
+void ControllerLibrary::setModelIndex(int index)
+{
+    m_playlist.setCurrentIndex(index);
+}

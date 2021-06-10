@@ -96,7 +96,14 @@ ApplicationWindow {
                     playlist.currentIndex = -1
                     playlist.currentIndex = 0
 
-				}
+                }
+
+                if(currentIndex === -1) {
+                    playlist.model = null
+                } else {
+                    playlist.model = model.controller(currentIndex).playlist
+
+                }
 			}
 
 			headerPositioning: ListView.OverlayHeader

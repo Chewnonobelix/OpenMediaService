@@ -21,10 +21,10 @@ void ControllerMain::exec() {
                                                             "Library", "Cpp owner");
     qDebug() << "Media"
                      << qmlRegisterUncreatableType<Media>("MediaPlayer", 1, 0,
-                                                            "Media", "Cpp owner");
+                                                          "Media", "Cpp owner");
     qDebug() << "Playlist"
                      << qmlRegisterUncreatableType<PlayList>("MediaPlayer", 1, 0,
-                                                          "Playlist", "Cpp owner");
+                                                             "Playlist", "Cpp owner");
 
     qDebug() << "LibraryDataModel"
 					 << qmlRegisterType<LibraryDataModel>("MediaPlayer.Model", 1, 0,
@@ -43,7 +43,7 @@ void ControllerMain::exec() {
                             "InterfacePlugin", 1, 0, "InterfacePlugin", "Interface type");
 
     qDebug() << "TabManager" << qmlRegisterType<TabManager>("MediaPlayer.Model", 1, 0,
-                                            "TabManager");
+                                                            "TabManager");
 
     setDb(s_settings->db());
 
@@ -67,11 +67,27 @@ void ControllerMain::exec() {
     emit db()->librariesChanged();
 
     connect(m_librariesModel, &LibraryDataModel::currentIndexChanged, [this]() {
-       auto index = m_librariesModel->currentIndex();
-       auto cl = m_librariesModel->controller(index);
-       auto current = s_tabWrapper->currentId();
-       cl->setPlaylistIndex(current.toString(), 0);
-       s_tabWrapper->setPlayer(cl->playerComp(current.toString()));
+        auto index = m_librariesModel->currentIndex();
+        auto cl = m_librariesModel->controller(index);
+        if(cl) {
+            auto current = s_tabWrapper->currentId();
+            cl->setPlaylistIndex(current.toString(), 0);
+            s_tabWrapper->setPlayer(index, cl->playerComp(current.toString()));
+        }
+    });
+
+    connect(s_tabWrapper, &TabWrapper::currentTabChanged, [this]() {
+        if(s_tabWrapper->current()) {
+
+            auto tab = (*s_tabWrapper->current())[s_tabWrapper->currentId()];
+            auto lib = tab.libIndex;
+            auto play = tab.playlistIndex;
+
+            m_librariesModel->setCurrentIndex(lib);
+
+            if(m_librariesModel->controller(lib))
+                m_librariesModel->controller(lib)->setModelIndex(play);
+        }
     });
 }
 

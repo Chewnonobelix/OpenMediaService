@@ -40,7 +40,8 @@ public:
 	Q_INVOKABLE void removePlaylist(QString);
 
     QString id() const;
-
+    bool containView(QUuid) const;
+    void setModelIndex(int);
 public:
     Q_INVOKABLE void setPlaylistIndex(QString, int);
     Q_INVOKABLE QObject *playerComp(QString);

@@ -20,6 +20,9 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
         PlaylistPointer playlist = PlaylistPointer();
         QObject* player = nullptr;
 
+        int playlistIndex = -1;
+        int libIndex = -1;
+
         void setPlaylist(PlaylistPointer);
     };
 
@@ -28,7 +31,7 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
     QUuid m_id = QUuid::createUuid();
 
 public:
-    enum class TabRole {PlayerRole = Qt::UserRole +1, IdRole, PlaylistRole, DataRole};
+    enum class TabRole {PlayerRole = Qt::UserRole +1, IdRole, PlaylistRole, DataRole, LibraryIndex, PLaylistIndex};
 
     TabManager() = default;
 	~TabManager() = default;
@@ -45,6 +48,7 @@ public:
     int indexOf(QUuid) const;
 public:
 	QVariant data(const QModelIndex &index, int role) const override;
+    bool setData(const QModelIndex &index, const QVariant &, int = Qt::EditRole) override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	QHash<int, QByteArray> roleNames() const override;
 
