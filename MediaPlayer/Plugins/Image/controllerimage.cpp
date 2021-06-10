@@ -1,7 +1,7 @@
 #include "controllerimage.h"
 
 void ControllerImage::exec() {
-    auto context = m_engine->qmlEngine().rootContext();
+    auto* root =s_engine->qmlEngine().rootContext();
     context->setContextProperty("_imageLibrairyModel", &m_model);
     context->setContextProperty("_imageListModel", &m_listModel);
     context->setContextProperty("_image", this);
@@ -12,11 +12,11 @@ void ControllerImage::exec() {
     connect(&m_timer, &QTimer::timeout, this, &ControllerImage::onTimeout);
     m_timer.setInterval(2000);
 
-    m_playlist = new QQmlComponent(&(m_engine->qmlEngine()),
+    m_playlist = new QQmlComponent(&(s_engine->qmlEngine()),
                                    QUrl("qrc:/image/ImagePlaylist.qml"));
     m_playlist->createWithInitialProperties({{"_image", QVariant::fromValue(this)}}, context);
 
-    m_player = new QQmlComponent(&(m_engine->qmlEngine()),
+    m_player = new QQmlComponent(&(s_engine->qmlEngine()),
                                  QUrl("qrc:/image/ImagePlayer.qml"));
     m_player->createWithInitialProperties({{"_image", QVariant::fromValue(this)}}, context);
 

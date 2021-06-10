@@ -47,7 +47,7 @@ void ControllerLibrary::setCurrentLibrary(LibraryPointer lib) {
 
     emit libraryChanged();
 
-    m_current->probe()->setFilters(m_manager[m_current->role()]->filters());
+    m_current->probe()->setFilters(s_manager[m_current->role()]->filters());
     m_playlist.setSmart(m_current->smartPlaylist().values());
     m_playlist.setNormal(m_current->playlist().values());
 }
@@ -60,10 +60,10 @@ void ControllerLibrary::onUpdateLibrary() {
 void ControllerLibrary::onCurrentPlaylistChanged() {
     auto p = m_playlist.current();
 
-    auto plugin = m_plugins[m_tabWrapper->currentId()];
+    auto plugin = m_plugins[s_tabWrapper->currentId()];
     if (plugin && p) {
 
-        m_tabWrapper->setPlaylist(p);
+        s_tabWrapper->setPlaylist(p);
         plugin->setPlaylist(p);
     }
 }
@@ -83,7 +83,7 @@ void ControllerLibrary::setPlaylistIndex(QString id, int index)
         m_plugins.remove(QUuid::fromString(id));
 
     if(!m_plugins.contains(QUuid::fromString(id)) || !m_plugins[QUuid::fromString(id)]) {
-        m_plugins[QUuid::fromString(id)] = m_manager[m_current->role()]->clone();
+        m_plugins[QUuid::fromString(id)] = s_manager[m_current->role()]->clone();
          m_plugins[QUuid::fromString(id)]->exec();
     }
 
@@ -91,7 +91,7 @@ void ControllerLibrary::setPlaylistIndex(QString id, int index)
         m_plugins[QUuid::fromString(id)]->setPlaylist(m_playlist[index]);
         m_plugins[QUuid::fromString(id)]->setID(QUuid::fromString(id));
 
-        m_tabWrapper->setPlaylist(m_playlist[index]);
+        s_tabWrapper->setPlaylist(m_playlist[index]);
     }
 }
 
@@ -102,7 +102,7 @@ QQmlComponent* ControllerLibrary::playerComp(QString id)
 
 QQmlComponent* ControllerLibrary::playlistComp(QString id)
 {
-    auto uid = id.isEmpty() ? m_tabWrapper->currentId() : QUuid::fromString(id);
+    auto uid = id.isEmpty() ? s_tabWrapper->currentId() : QUuid::fromString(id);
     return m_plugins.contains(uid) ? m_plugins[uid]->playlistView() : nullptr;
 }
 

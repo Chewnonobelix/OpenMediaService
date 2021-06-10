@@ -33,7 +33,7 @@ void PluginManager::init() {
         m_plugins[p->role()] = {p, true};
         p->exec();
 
-        m_liste << Plugin {toString(p->role()), p->role(), p, AbstractController::m_settings->plugin(toString(p->role()))};
+        m_liste << Plugin {toString(p->role()), p->role(), p, AbstractController::s_settings->plugin(toString(p->role()))};
     }
 }
 

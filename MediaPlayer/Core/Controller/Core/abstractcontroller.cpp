@@ -1,43 +1,43 @@
 #include "abstractcontroller.h"
 
-InterfaceSaver *AbstractController::m_db = nullptr;
-QThread *AbstractController::m_dbThread = new QThread();
-QPointer<LiveQmlEngine> AbstractController::m_engine = nullptr;
-PluginManager AbstractController::m_manager = PluginManager();
-QPointer<ControllerSettings> AbstractController::m_settings = nullptr;
-QPointer<TabWrapper> AbstractController::m_tabWrapper = new TabWrapper;
+InterfaceSaver *AbstractController::s_db = nullptr;
+QThread *AbstractController::s_dbThread = new QThread();
+QPointer<LiveQmlEngine> AbstractController::s_engine = nullptr;
+PluginManager AbstractController::s_manager = PluginManager();
+QPointer<ControllerSettings> AbstractController::s_settings = nullptr;
+QPointer<TabWrapper> AbstractController::s_tabWrapper = new TabWrapper;
 
 AbstractController::AbstractController() : QObject() {
-    if (m_engine.isNull())
-        m_engine = new LiveQmlEngine(nullptr, QStringLiteral(QML_SOURCE) + "/View");
-    if (m_settings.isNull()) {
-        m_settings = new ControllerSettings(*m_engine);
+    if(s_engine.isNull()) {
+        s_engine = new LiveQmlEngine(nullptr, QStringLiteral(QML_SOURCE) + "/View");
+    }
+
+    if (s_settings.isNull()) {
+        s_settings = new ControllerSettings(*s_engine);
     }
 }
 
 AbstractController::AbstractController(const AbstractController &) : QObject() {
-	if (m_engine.isNull())
-		m_engine = new LiveQmlEngine(nullptr, QStringLiteral(QML_SOURCE) + "/View");
 }
 
-InterfaceSaver *AbstractController::db() { return m_db; }
+InterfaceSaver *AbstractController::db() { return s_db; }
 
 void AbstractController::setDb(QString name) {
 	auto type = QMetaType::fromName(name.toLatin1());
 	if (!type.isValid())
 		throw QString("Unknow DB type");
 
-	if (m_db != nullptr) {
-		m_db->thread()->terminate();
-		m_db->thread()->wait();
+    if (s_db != nullptr) {
+        s_db->thread()->terminate();
+        s_db->thread()->wait();
 
-		delete m_db;
+        delete s_db;
 	}
-	m_dbThread->start();
+    s_dbThread->start();
 
-	m_db = (InterfaceSaver *)(type.create());
-	m_db->init();
-	m_db->moveToThread(m_dbThread);
+    s_db = (InterfaceSaver *)(type.create());
+    s_db->init();
+    s_db->moveToThread(s_dbThread);
 
-    emit m_db->librariesChanged();
+    emit s_db->librariesChanged();
 }

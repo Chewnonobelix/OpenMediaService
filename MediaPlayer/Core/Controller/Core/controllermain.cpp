@@ -4,7 +4,7 @@ ControllerMain::ControllerMain() : AbstractController() {
     engine().addImportPath(QStringLiteral(QML_IMPORT_PATH));
     qDebug() << QStringLiteral(QML_IMPORT_PATH)
              << engine().importPathList();
-    m_manager.init();
+    s_manager.init();
 }
 
 void ControllerMain::exec() {
@@ -45,7 +45,7 @@ void ControllerMain::exec() {
     qDebug() << "TabManager" << qmlRegisterType<TabManager>("MediaPlayer.Model", 1, 0,
                                             "TabManager");
 
-    setDb(m_settings->db());
+    setDb(s_settings->db());
 
     auto *context = engine().rootContext();
     context->setContextProperty("_main", this);
@@ -62,25 +62,25 @@ void ControllerMain::exec() {
 
     m_engine->createWindow(QUrl("/Main.qml"));
 
-    connect(m_settings, &ControllerSettings::dbChanged, this, &ControllerMain::onDbChanged);
+    connect(s_settings, &ControllerSettings::dbChanged, this, &ControllerMain::onDbChanged);
     emit db()->librariesChanged();
 
     connect(m_librariesModel, &LibraryDataModel::currentIndexChanged, [this]() {
        auto index = m_librariesModel->currentIndex();
        auto cl = m_librariesModel->controller(index);
-       auto current = m_tabWrapper->currentId();
+       auto current = s_tabWrapper->currentId();
        cl->setPlaylistIndex(current.toString(), 0);
-       m_tabWrapper->setPlayer(cl->playerComp(current.toString()));
+       s_tabWrapper->setPlayer(cl->playerComp(current.toString()));
     });
 }
 
 QQmlApplicationEngine &ControllerMain::engine() {
-    return m_engine->qmlEngine();
+    return s_engine->qmlEngine();
 }
 
 void ControllerMain::onDbChanged()
 {
-    setDb(m_settings->db());
+    setDb(s_settings->db());
     connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
             &LibraryDataModel::onUpdateLibraries);
     emit db()->librariesChanged();

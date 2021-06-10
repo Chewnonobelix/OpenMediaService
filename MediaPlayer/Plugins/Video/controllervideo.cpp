@@ -3,13 +3,13 @@
 void ControllerVideo::exec() {}
 
 QQmlComponent * ControllerVideo::playerView() const {
-    static QQmlComponent ret(&(m_engine->qmlEngine()), "qrc:/video/VideoPlayer.qml");
+    static QQmlComponent ret(&(s_engine->qmlEngine()), "qrc:/video/VideoPlayer.qml");
     return &ret;
 //	return "qrc:/video/VideoPlayer.qml";
 }
 
 QQmlComponent *ControllerVideo::playlistView() {
-    static QQmlComponent ret(&(m_engine->qmlEngine()), "qrc:/video/VideoPlaylist.qml");
+    static QQmlComponent ret(&(s_engine->qmlEngine()), "qrc:/video/VideoPlaylist.qml");
 	return &ret;
 	//	return "qrc:/video/VideoPlaylist.qml";
 }

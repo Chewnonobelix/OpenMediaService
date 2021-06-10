@@ -24,16 +24,16 @@ public:
 
 	static InterfaceSaver *db();
 	static void setDb(QString);
-	static PluginManager m_manager;
-    static QPointer<ControllerSettings> m_settings;
-    static QPointer<TabWrapper> m_tabWrapper;
+	static PluginManager s_manager;
+    static QPointer<ControllerSettings> s_settings;
+    static QPointer<TabWrapper> s_tabWrapper;
 
 signals:
 
 protected:
-	static QPointer<LiveQmlEngine> m_engine;
+	static QPointer<LiveQmlEngine> s_engine;
 
 private:
-	static InterfaceSaver *m_db;
-	static QThread *m_dbThread;
+	static InterfaceSaver *s_db;
+	static QThread *s_dbThread;
 };
