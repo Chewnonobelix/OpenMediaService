@@ -47,12 +47,13 @@ void ControllerMain::exec() {
 
     setDb(s_settings->db());
 
-    auto *context = engine().rootContext();
+    auto *context = new QQmlContext(engine().rootContext(), this);
+
     context->setContextProperty("_main", this);
     context->setContextProperty("_db", db());
-    context->setContextProperty("_plugins", &m_manager);
-    context->setContextProperty("_settings", m_settings);
-    context->setContextProperty("_tabWrapper", m_tabWrapper);
+    context->setContextProperty("_plugins", &s_manager);
+    context->setContextProperty("_settings", s_settings);
+    context->setContextProperty("_tabWrapper", s_tabWrapper);
 
     m_librariesModel = new LibraryDataModel;
 
@@ -60,7 +61,7 @@ void ControllerMain::exec() {
     connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
             &LibraryDataModel::onUpdateLibraries);
 
-    m_engine->createWindow(QUrl("/Main.qml"));
+    s_engine->createWindow(QUrl("/Main.qml"), context);
 
     connect(s_settings, &ControllerSettings::dbChanged, this, &ControllerMain::onDbChanged);
     emit db()->librariesChanged();
