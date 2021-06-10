@@ -1,10 +1,15 @@
 #include "controllerimage.h"
 
 void ControllerImage::exec() {
-    auto* root =s_engine->qmlEngine().rootContext();
+    auto* root = s_engine->qmlEngine().rootContext();
+    context = new QQmlContext(root);
     context->setContextProperty("_imageLibrairyModel", &m_model);
     context->setContextProperty("_imageListModel", &m_listModel);
     context->setContextProperty("_image", this);
+
+    auto contextPlayer = new QQmlContext(context);
+    auto contextPlaylist = new QQmlContext(context);
+
 
     qDebug() << "Image context";
     connect(&m_model, &LibrairyImageModel::imageChanged, this,
@@ -14,23 +19,19 @@ void ControllerImage::exec() {
 
     m_playlist = new QQmlComponent(&(s_engine->qmlEngine()),
                                    QUrl("qrc:/image/ImagePlaylist.qml"));
-    m_playlist->createWithInitialProperties({{"_image", QVariant::fromValue(this)}}, context);
+    m_playlistObj = m_playlist->create(contextPlaylist);
 
     m_player = new QQmlComponent(&(s_engine->qmlEngine()),
                                  QUrl("qrc:/image/ImagePlayer.qml"));
-    m_player->createWithInitialProperties({{"_image", QVariant::fromValue(this)}}, context);
-
-    qDebug()<<m_player->errorString();
+    m_playerObj = m_player->create(contextPlayer);
 }
 
-QQmlComponent *ControllerImage::playerView() const {
-    return m_player;
-    //    return "qrc:/image/ImagePlayer.qml";
+QObject *ControllerImage::playerView() const {
+    return m_playerObj;
 }
 
-QQmlComponent *ControllerImage::playlistView() {
-    return m_playlist;
-    //	return "qrc:/image/ImagePlaylist.qml";
+QObject *ControllerImage::playlistView() {
+    return m_playlistObj;
 }
 
 void ControllerImage::setPlaylist(PlaylistPointer p) {

@@ -16,7 +16,6 @@ Item {
         propagateComposedEvents: true
         onClicked: function(mouse) {
             mouse.accepted = false
-            //            root.clicked(index)
         }
     }
 
@@ -32,10 +31,6 @@ Item {
     SplitView.onFillHeightChanged: {
         if(!SplitView.fillHeight)
             SplitView.preferredHeight = SplitView.view.height / SplitView.view.count
-    }
-
-    function setLibraryIndex(index) {
-        //        viewRep.itemAt(viewBar.currentIndex).setIndex(index)
     }
 
     ColumnLayout {
@@ -89,8 +84,6 @@ Item {
             }
 
 
-
-
             Repeater {
                 id: viewRep
                 Component.onCompleted:  {
@@ -98,20 +91,17 @@ Item {
                     model = _tabWrapper.get(id);
                 }
 
-                Loader {
-                    id: playerLoader
-                    active: true
+                Item {
+                    id: pRoot
+                    property Item rPlayer: model.player
+                        Item {
 
-                    sourceComponent: model.player
+                        }
 
-                    property string id: model.id
-
-                    property Playlist pl: model.playlist
-
-                    onPlChanged: console.log(pl)
-                    visible: true
-
-                    property Media media
+                    onRPlayerChanged: {
+                        pRoot.children[0] = rPlayer
+                        rPlayer.anchors.fill = pRoot
+                    }
                 }
             }
         }

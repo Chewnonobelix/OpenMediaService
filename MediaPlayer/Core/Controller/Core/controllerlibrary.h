@@ -43,8 +43,8 @@ public:
 
 public:
     Q_INVOKABLE void setPlaylistIndex(QString, int);
-    Q_INVOKABLE QQmlComponent* playerComp(QString);
-    Q_INVOKABLE QQmlComponent* playlistComp(QString = "");
+    Q_INVOKABLE QObject *playerComp(QString);
+    Q_INVOKABLE QObject* playlistComp(QString = "");
 
 public slots:
 	void onUpdateLibrary();

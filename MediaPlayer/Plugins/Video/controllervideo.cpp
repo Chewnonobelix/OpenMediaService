@@ -2,15 +2,15 @@
 
 void ControllerVideo::exec() {}
 
-QQmlComponent * ControllerVideo::playerView() const {
+QObject * ControllerVideo::playerView() const {
     static QQmlComponent ret(&(s_engine->qmlEngine()), "qrc:/video/VideoPlayer.qml");
-    return &ret;
+    return ret.create();
 //	return "qrc:/video/VideoPlayer.qml";
 }
 
-QQmlComponent *ControllerVideo::playlistView() {
+QObject *ControllerVideo::playlistView() {
     static QQmlComponent ret(&(s_engine->qmlEngine()), "qrc:/video/VideoPlaylist.qml");
-	return &ret;
+    return ret.create();
 	//	return "qrc:/video/VideoPlaylist.qml";
 }
 

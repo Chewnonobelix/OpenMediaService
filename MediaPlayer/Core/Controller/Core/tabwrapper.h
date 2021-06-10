@@ -27,7 +27,7 @@ public:
     Q_INVOKABLE QPointer<TabManager> get(QString);
 
     void setPlaylist(PlaylistPointer);
-    void setPlayer(QQmlComponent*);
+    void setPlayer(QObject*);
     Q_INVOKABLE QUuid currentId() const;
 
 public slots:

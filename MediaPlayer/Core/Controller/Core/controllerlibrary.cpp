@@ -95,12 +95,12 @@ void ControllerLibrary::setPlaylistIndex(QString id, int index)
     }
 }
 
-QQmlComponent* ControllerLibrary::playerComp(QString id)
+QObject* ControllerLibrary::playerComp(QString id)
 {
     return m_plugins.contains(QUuid::fromString(id)) ? m_plugins[QUuid::fromString(id)]->playerView() : nullptr;
 }
 
-QQmlComponent* ControllerLibrary::playlistComp(QString id)
+QObject* ControllerLibrary::playlistComp(QString id)
 {
     auto uid = id.isEmpty() ? s_tabWrapper->currentId() : QUuid::fromString(id);
     return m_plugins.contains(uid) ? m_plugins[uid]->playlistView() : nullptr;

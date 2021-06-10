@@ -91,7 +91,6 @@ ApplicationWindow {
 
 
 			onCurrentIndexChanged: {
-//                splitView.currentLibrary.currentIndex = currentIndex
                 model.currentIndex = currentIndex
                 if(playlist.currentIndex !== -1) {
                     playlist.currentIndex = -1
@@ -149,7 +148,6 @@ ApplicationWindow {
 
 				onClicked: {
                     playlist.model = controller.playlist
-//                    splitView.currentItem.setLibraryIndex(index)
 				}
 
 				onDoubleClicked:  {
@@ -275,14 +273,16 @@ ApplicationWindow {
 			width: root.width
 
             onOpened: {
-                playLoad.sourceComponent = _librariesModel.controller(libraryView.currentIndex).playlistComp(_tabWrapper.currentId())
-                playLoad.active = playLoad.sourceComponent !== null
+                playLoad.children[0] = _librariesModel.controller(libraryView.currentIndex).playlistComp(_tabWrapper.currentId())
+                playLoad.children[0].anchors.fill = playLoad
             }
 
-			Loader {
+            Item {
                 id: playLoad
 				anchors.fill: parent
-                active: false
+
+                Item {
+                }
 			}
 		}
 
@@ -314,24 +314,6 @@ ApplicationWindow {
 				anchors.fill: parent
 				orientation: Qt.Horizontal
 
-//				property ControllerLibrary currentLibrary
-
-//                onCurrentLibraryChanged: {
-//                }
-
-//                function onClicked(lib) {
-//					currentLibrary = lib
-//                    if(lib) {
-//                        playlist.model = lib.playlist
-//                        libraryView.currentIndex = currentLibrary.currentIndex
-//                    }
-//				}
-
-                function onSelection(lib, pl) {
-//                    currentIndex = lib
-//                    currentItem = itemAt(index)
-                }
-
 				property var component;
 				property var sprite;
 
@@ -341,6 +323,7 @@ ApplicationWindow {
 						finishCreation();
 					else
 						component.statusChanged.connect(finishCreation);
+
 				}
 
 				function finishCreation() {
@@ -353,7 +336,6 @@ ApplicationWindow {
 						else {
 							addItem(sprite)
                             sprite.index = count - 1
-                            sprite.onTabSelection.connect(onSelection)
 						}
 					} else if (component.status === Component.Error) {
 						// Error Handling
@@ -364,8 +346,6 @@ ApplicationWindow {
 
 				Component.onCompleted:  {
 					addNew()
-//					currentLibrary = itemAt(0).currentLibrary
-//                    playlist.model = currentLibrary.playlist
                 }
 			}
 		}

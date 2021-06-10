@@ -34,7 +34,7 @@ QPointer<TabManager>& TabWrapper::current()
     return *it;
 }
 
-void TabWrapper::setPlayer(QQmlComponent * p)
+void TabWrapper::setPlayer(QObject *p)
 {
     auto tab = current();
     (*tab)[m_current].player = p;

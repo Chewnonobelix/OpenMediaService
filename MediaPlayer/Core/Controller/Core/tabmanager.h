@@ -18,7 +18,7 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
     struct Data {
         QUuid id = QUuid::createUuid();
         PlaylistPointer playlist = PlaylistPointer();
-        QQmlComponent* player = nullptr;
+        QObject* player = nullptr;
 
         void setPlaylist(PlaylistPointer);
     };
