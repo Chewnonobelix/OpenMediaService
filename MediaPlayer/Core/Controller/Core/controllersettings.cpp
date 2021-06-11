@@ -35,3 +35,13 @@ QString ControllerSettings::db() const
 {
     return m_settings->value("Database/name", "DataJson").toString();
 }
+
+void ControllerSettings::setValue(QString key, QVariant value)
+{
+    m_settings->setValue(key, value);
+}
+
+QVariant ControllerSettings::value(QString key) const
+{
+    return m_settings->value(key);
+}
