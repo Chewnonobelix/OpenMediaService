@@ -13,7 +13,6 @@ MediaWindow {
 
 	width: 400
 	height: 600
-	//    property Library currentLibrary: _libraries.currentLibrary
 
 	Connections {
 		target: _libraries.currentLibrary

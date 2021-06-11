@@ -77,7 +77,6 @@ QStringList LibrairyImageModel::modelAt(int index) {
     if (index == 0)
         ret = m_model[0].uniqueKeys();
     else {
-        // ret = m_model[index].uniqueKeys();
         auto ti = m_indexes[index - 1];
         auto vals =
                 ti >= 0 ? m_model[index - 1].values(m_model[index - 1].uniqueKeys()[ti])

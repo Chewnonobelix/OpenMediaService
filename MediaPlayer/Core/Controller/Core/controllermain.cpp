@@ -47,12 +47,14 @@ void ControllerMain::exec() {
 
     setDb(s_settings->db());
 
-    auto *context = new QQmlContext(engine().rootContext(), this);
+    auto root = engine().rootContext();
+    root->setContextProperty("_plugins", &s_manager);
+    root->setContextProperty("_settings", s_settings);
+
+    auto *context = new QQmlContext(root, this);
 
     context->setContextProperty("_main", this);
     context->setContextProperty("_db", db());
-    context->setContextProperty("_plugins", &s_manager);
-    context->setContextProperty("_settings", s_settings);
     context->setContextProperty("_tabWrapper", s_tabWrapper);
 
     m_librariesModel = new LibraryDataModel;

@@ -25,7 +25,6 @@ Item {
 
 
         onWheel: function(wheel){
-            console.log("wheel")
 			if(wheel.angleDelta.y > 0) {
                 _image.onCurrentIndexChanged(-1)
 			}

@@ -52,7 +52,7 @@ void TabWrapper::setPlaylist(int pli)
     (*tab)[m_current].playlistIndex = pli;
     auto index = tab->indexOf(m_current);
     auto modelIndex = tab->index(index, 0);
-    emit tab->dataChanged(modelIndex, modelIndex, {int(TabManager::TabRole::PlaylistRole), int(TabManager::TabRole::PLaylistIndex)});
+    emit tab->dataChanged(modelIndex, modelIndex, {int(TabManager::TabRole::PLaylistIndex)});
 }
 
 QUuid TabWrapper::currentId() const

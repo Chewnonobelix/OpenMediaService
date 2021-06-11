@@ -17,13 +17,10 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
 
     struct Data {
         QUuid id = QUuid::createUuid();
-        PlaylistPointer playlist = PlaylistPointer();
         QObject* player = nullptr;
 
         int playlistIndex = -1;
         int libIndex = -1;
-
-        void setPlaylist(PlaylistPointer);
     };
 
     QList<Data> m_model;
@@ -31,7 +28,7 @@ class MEDIAPLAYERCORE_EXPORT TabManager : public QAbstractListModel {
     QUuid m_id = QUuid::createUuid();
 
 public:
-    enum class TabRole {PlayerRole = Qt::UserRole +1, IdRole, PlaylistRole, DataRole, LibraryIndex, PLaylistIndex};
+    enum class TabRole {PlayerRole = Qt::UserRole +1, IdRole, DataRole, LibraryIndex, PLaylistIndex};
 
     TabManager() = default;
 	~TabManager() = default;

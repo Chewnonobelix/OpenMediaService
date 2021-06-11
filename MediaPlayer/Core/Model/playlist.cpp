@@ -58,25 +58,6 @@ void PlayList::clear() {
 	emit countChanged();
 }
 
-// void PlayList::play(int index) {
-//	if (isShuffle()) {
-//		QSet<int> temp;
-//		QRandomGenerator random;
-
-//		while (temp.count() != count()) {
-//			int it = random.bounded(0, count());
-//			if (temp.contains(it))
-//				continue;
-//			temp << it;
-//			m_readOrder << (it);
-//		}
-//	} else {
-//		for (auto it = index; it < count(); it++) {
-//			m_readOrder << (it);
-//		}
-//	}
-//}
-
 MediaPointer PlayList::next() {
 	MediaPointer ret;
 

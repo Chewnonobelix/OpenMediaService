@@ -64,17 +64,13 @@ Item {
         height: root.height * .90
         StackLayout {
             anchors.fill: parent
-//            implicitWidth: width > 0 ? width : 1
-//            implicitHeight: height > 0 ? height : 1
 
             currentIndex: displayType.currentIndex
 
             ImageList {
-                //                anchors.fill: parent
             }
 
             ImageLibrairyPlaylist {
-                //                anchors.fill: parent
             }
         }
     }

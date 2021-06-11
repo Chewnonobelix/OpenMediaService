@@ -92,7 +92,7 @@ bool PluginManager::setData(const QModelIndex& index, const QVariant& data, int 
 QStringList PluginManager::pluginsName() const
 {
     QStringList ret;
-   for(auto it: m_liste) {
+    for(auto it: m_liste) {
         ret<<it.name;
     }
 
@@ -101,7 +101,7 @@ QStringList PluginManager::pluginsName() const
 
 MediaRole PluginManager::pluginRole(QString name) const
 {
-    MediaRole ret;
+    MediaRole ret = MediaRole::Undefined;
     std::for_each(m_liste.begin(), m_liste.end(), [&ret, name](auto it) {
         if(name == it.name)
             ret = it.role;
@@ -112,7 +112,7 @@ MediaRole PluginManager::pluginRole(QString name) const
 
 bool PluginManager::pluginEnable(QString name) const
 {
-    bool ret;
+    bool ret = false;
     std::for_each(m_liste.begin(), m_liste.end(), [&ret, name](auto it) {
         if(name == it.name)
             ret = it.enable;

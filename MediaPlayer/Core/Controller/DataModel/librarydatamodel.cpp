@@ -70,13 +70,6 @@ ControllerLibrary *LibraryDataModel::controller(int index) {
     return m_libraries[index].controller;
 }
 
-QQmlComponent *LibraryDataModel::playlistComponent(int index) {
-    if (index >= rowCount() || index < 0)
-        return nullptr;
-
-    return nullptr;
-}
-
 void LibraryDataModel::sort(int, Qt::SortOrder order) {
     auto l = m_libraries;
 
@@ -124,13 +117,6 @@ void LibraryDataModel::onUpdateLibraries() {
 void LibraryDataModel::setCurrentIndex(int index) {
     m_currentIndex = index;
     emit currentIndexChanged();
-
-    if(index > -1)
-    {
-    }
-    else
-    {
-    }
 }
 
 int LibraryDataModel::currentIndex() const { return m_currentIndex; }

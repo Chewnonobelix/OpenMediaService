@@ -1,10 +1,5 @@
 #include "tabmanager.h"
 
-void TabManager::Data::setPlaylist(PlaylistPointer pl)
-{
-
-}
-
 void TabManager::addTab()
 {
     m_model<<Data{};
@@ -27,8 +22,6 @@ QVariant TabManager::data(const QModelIndex &index, int role) const {
         return m_model[row].id;
     case TabRole::PlayerRole:
         return QVariant::fromValue(m_model[row].player);
-    case TabRole::PlaylistRole:
-        return QVariant::fromValue(m_model[row].playlist.data());
     case TabRole::DataRole:
         return QVariant::fromValue(m_model[row]);
     case TabRole::PLaylistIndex:
@@ -48,7 +41,7 @@ QHash<int, QByteArray> TabManager::roleNames() const {
                                        {int(TabRole::DataRole), "data"},
                                        {int(TabRole::LibraryIndex), "libIndex"},
                                        {int(TabRole::PLaylistIndex), "playlistIndex"},
-                                       {int(TabRole::PlaylistRole), "playlist"}};
+                                       };
     return ret;
 }
 
