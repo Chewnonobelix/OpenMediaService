@@ -35,5 +35,6 @@ public:
 
 signals:
     void dbChanged();
+    void settingsChanged();
 };
 

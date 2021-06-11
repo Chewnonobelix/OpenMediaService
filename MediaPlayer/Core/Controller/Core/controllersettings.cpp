@@ -39,6 +39,7 @@ QString ControllerSettings::db() const
 void ControllerSettings::setValue(QString key, QVariant value)
 {
     m_settings->setValue(key, value);
+    emit settingsChanged();
 }
 
 QVariant ControllerSettings::value(QString key) const

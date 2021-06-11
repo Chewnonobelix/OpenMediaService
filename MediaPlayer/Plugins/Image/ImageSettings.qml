@@ -12,16 +12,29 @@ Item {
         columns: 3
         rows: 2
         MediaCombobox {
+            Component.onCompleted: {
+                console.log(_settings.value("Image/Ratio"))
+                if(_settings.value("Image/Ratio") === "Fit") {
+                    currentIndex = 0
+                }
+                else if(_settings.value("Image/Ratio") === "Fill") {
+                    currentIndex = 1
+                }
+                else {
+                    currentIndex = 2
+                }
+            }
             id: aspectRatio
 
-            model: ["Fill", "Fit", "Custom"]
+            model: ["Fit", "Fill", "Custom"]
 
-            onCurrentIndexChanged: {
+            onCurrentTextChanged: {
                 _settings.setValue("Image/Ratio", currentText)
             }
         }
 
         SpinBox {
+            Component.onCompleted: value = _settings.value("Image/Width")
             id: imageWidth
             enabled: aspectRatio.currentIndex === 2
 
@@ -32,6 +45,7 @@ Item {
             onValueChanged: _settings.setValue("Image/Width", value)
         }
         SpinBox {
+            Component.onCompleted: value = _settings.value("Image/Height")
             id: imageHeight
             enabled: aspectRatio.currentIndex === 2
 
