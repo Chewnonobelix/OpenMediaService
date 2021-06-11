@@ -19,8 +19,8 @@ private:
     ImageListModel m_listModel;
 
 	QTimer m_timer;
-	QPointer<QQmlComponent> m_playlist;
-    QPointer<QQmlComponent> m_player;
+    static QPointer<QQmlComponent> s_playlist;
+    static QPointer<QQmlComponent> s_player;
     QPointer<QObject> m_playlistObj;
     QPointer<QObject> m_playerObj;
     QQmlContext*  context = nullptr;
