@@ -15,11 +15,10 @@ Item {
         anchors.fill: parent
         propagateComposedEvents: true
         onClicked: function(mouse) {
+            _tabWrapper.setCurrentTab(viewRep.itemAt(viewBar.currentIndex).id)
             mouse.accepted = false
         }
     }
-
-    signal tabSelection (int indexLib, int plyalistLib)
 
     SplitView.fillHeight: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Horizontal
     SplitView.fillWidth: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Vertical
