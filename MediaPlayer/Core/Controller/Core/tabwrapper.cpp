@@ -46,10 +46,9 @@ void TabWrapper::setPlayer(int lib, QObject *p)
     emit tab->dataChanged(modelIndex, modelIndex, {int(TabManager::TabRole::PlayerRole), int(TabManager::TabRole::LibraryIndex)});
 }
 
-void TabWrapper::setPlaylist(int pli, PlaylistPointer pl)
+void TabWrapper::setPlaylist(int pli)
 {
     auto tab = current();
-    (*tab)[m_current].setPlaylist(pl);
     (*tab)[m_current].playlistIndex = pli;
     auto index = tab->indexOf(m_current);
     auto modelIndex = tab->index(index, 0);

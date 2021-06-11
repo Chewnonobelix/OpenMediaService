@@ -10,6 +10,7 @@ class ControllerImage : public AbstractController, public InterfacePlugins {
 	Q_OBJECT
 	Q_INTERFACES(InterfacePlugins)
     Q_PLUGIN_METADATA(IID "com.chewnonobelix.MediaPlayer.Image")
+    Q_DISABLE_COPY(ControllerImage)
 
 private:
 	PlaylistPointer m_current;

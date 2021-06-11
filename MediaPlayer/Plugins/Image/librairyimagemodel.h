@@ -12,6 +12,7 @@
 
 class LibrairyImageModel : public QAbstractListModel {
 	Q_OBJECT
+    Q_DISABLE_COPY(LibrairyImageModel)
 
 	Q_PROPERTY(int size READ size NOTIFY sizeChanged)
     Q_PROPERTY(PlayList* playlist READ playlist)
@@ -32,7 +33,6 @@ private:
     PlayList* playlist() const;
 public:
 	LibrairyImageModel() = default;
-	LibrairyImageModel(const LibrairyImageModel &);
 	~LibrairyImageModel() = default;
 
 	void setPlaylist(PlaylistPointer);

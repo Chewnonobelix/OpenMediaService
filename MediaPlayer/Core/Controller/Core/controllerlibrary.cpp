@@ -63,7 +63,7 @@ void ControllerLibrary::onCurrentPlaylistChanged() {
     auto plugin = m_plugins[s_tabWrapper->currentId()];
     if (plugin && p) {
 
-        s_tabWrapper->setPlaylist(m_playlist.currentIndex(), p);
+        s_tabWrapper->setPlaylist(m_playlist.currentIndex());
         plugin->setPlaylist(p);
     }
 }
@@ -91,7 +91,7 @@ void ControllerLibrary::setPlaylistIndex(QString id, int index)
         m_plugins[QUuid::fromString(id)]->setPlaylist(m_playlist[index]);
         m_plugins[QUuid::fromString(id)]->setID(QUuid::fromString(id));
 
-        s_tabWrapper->setPlaylist(index, m_playlist[index]);
+        s_tabWrapper->setPlaylist(index);
     }
 }
 

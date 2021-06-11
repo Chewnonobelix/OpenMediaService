@@ -17,9 +17,6 @@ AbstractController::AbstractController() : QObject() {
     }
 }
 
-AbstractController::AbstractController(const AbstractController &) : QObject() {
-}
-
 InterfaceSaver *AbstractController::db() { return s_db; }
 
 void AbstractController::setDb(QString name) {

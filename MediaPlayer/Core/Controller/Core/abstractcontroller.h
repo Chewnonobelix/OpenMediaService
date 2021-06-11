@@ -14,11 +14,11 @@
 
 class MEDIAPLAYERCORE_EXPORT AbstractController : public QObject {
 	Q_OBJECT
+    Q_DISABLE_COPY(AbstractController)
 
 public:
 	AbstractController();
-	AbstractController(const AbstractController &);
-	~AbstractController() = default;
+    ~AbstractController() = default;
 
 	virtual void exec() = 0;
 

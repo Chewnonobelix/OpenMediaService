@@ -11,6 +11,7 @@
 class MEDIAPLAYERCORE_EXPORT TabWrapper: public QObject
 {
     Q_OBJECT
+    Q_DISABLE_COPY(TabWrapper)
 
 private:
     QMap<QUuid, QPointer<TabManager>> m_model;
@@ -25,7 +26,7 @@ public:
     QPointer<TabManager> get(QUuid);
     Q_INVOKABLE QPointer<TabManager> get(QString);
 
-    void setPlaylist(int, PlaylistPointer);
+    void setPlaylist(int);
     void setPlayer(int, QObject*);
     Q_INVOKABLE QUuid currentId() const;
     TabManager *current();

@@ -27,11 +27,11 @@ void ControllerMain::exec() {
                                                              "Playlist", "Cpp owner");
 
     qDebug() << "LibraryDataModel"
-					 << qmlRegisterType<LibraryDataModel>("MediaPlayer.Model", 1, 0,
-                                                          "LibraryDataModel");
+                     << qmlRegisterUncreatableType<LibraryDataModel>("MediaPlayer.Model", 1, 0,
+                                                          "LibraryDataModel", "Cpp owner");
     qDebug() << "ControllerLibrary"
-					 << qmlRegisterType<ControllerLibrary>("MediaPlayer.Model", 1, 0,
-                                                           "ControllerLibrary");
+                     << qmlRegisterUncreatableType<ControllerLibrary>("MediaPlayer.Model", 1, 0,
+                                                           "ControllerLibrary", "Cpp owner");
     qDebug() << "MediaRole QML"
 					 << qmlRegisterUncreatableMetaObject(
                             MediaPlayerGlobal::staticMetaObject, "MediaPlayer", 1, 0,
@@ -42,8 +42,8 @@ void ControllerMain::exec() {
 					 << qmlRegisterUncreatableType<InterfacePlugins>(
                             "InterfacePlugin", 1, 0, "InterfacePlugin", "Interface type");
 
-    qDebug() << "TabManager" << qmlRegisterType<TabManager>("MediaPlayer.Model", 1, 0,
-                                                            "TabManager");
+    qDebug() << "TabManager" << qmlRegisterUncreatableType<TabManager>("MediaPlayer.Model", 1, 0,
+                                                            "TabManager", "Cpp owner");
 
     setDb(s_settings->db());
 
