@@ -10,16 +10,15 @@ import MediaPlayer.Components 1.0
 Item {
     id: root
 
+    property int index: -1
     MouseArea {
         anchors.fill: parent
         propagateComposedEvents: true
         onClicked: function(mouse) {
+            _tabWrapper.setCurrentTab(viewRep.itemAt(viewBar.currentIndex).id)
             mouse.accepted = false
-            root.clicked(currentLibrary)
         }
     }
-
-    signal clicked (ControllerLibrary lib)
 
     SplitView.fillHeight: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Horizontal
     SplitView.fillWidth: SplitView.view.count == 1 || SplitView.view.orientation === Qt.Vertical
@@ -33,11 +32,6 @@ Item {
             SplitView.preferredHeight = SplitView.view.height / SplitView.view.count
     }
 
-    property ControllerLibrary currentLibrary: repModel.at(0)
-
-    onCurrentLibraryChanged:  {
-        root.clicked(currentLibrary)
-    }
     ColumnLayout {
         anchors.fill: parent
 
@@ -57,8 +51,9 @@ Item {
 
                 MediaTabButton {
                     text: qsTr("Tab ") + modelData
+
                     onClicked: {
-                        currentLibrary = repModel.at(modelData)
+                        _tabWrapper.setCurrentTab(view.itemAt(modelData).id)
                     }
                 }
             }
@@ -68,11 +63,10 @@ Item {
 
                 Component.onCompleted: onClicked()
                 onClicked:  {
-                             tabRepeater.model = viewBar.currentIndex + 1
+                    tabRepeater.model = viewBar.currentIndex + 1
                     viewBar.currentIndex = viewBar.currentIndex - 1
-                    repModel.addTab()
-                    root.currentLibrary = repModel.at(viewBar.currentIndex)
-                    }
+                    viewRep.model.addTab()
+                }
             }
         }
 
@@ -89,38 +83,27 @@ Item {
             }
 
 
-
             Repeater {
                 id: viewRep
-                model: TabManager {
-                    id: repModel
+                Component.onCompleted:  {
+                    var id = _tabWrapper.create()
+                    model = _tabWrapper.get(id);
                 }
 
-                 Loader {
-                     id: playerLoader
-                     active: true
+                Item {
+                    id: pRoot
+                    property string id: model.id
+                    property Item rPlayer: model.player
+                        Item {
 
-                     visible: true
+                        }
 
-                     property string idScreen: model.id
-                     property Media media
-                     Connections {
-                         target: model
-
-                         function onPlayerComponentChanged() {
-                             sourceComponent = model.playerComponent
-
-                         }
-
-                         function onPlay(media) {
-                             playerLoader.media = media
-                         }
-                     }
-
-                     Component.onCompleted: {
-                     }
-                 }
-             }
-         }
-     }
- }
+                    onRPlayerChanged: {
+                        pRoot.children[0] = rPlayer
+                        rPlayer.anchors.fill = pRoot
+                    }
+                }
+            }
+        }
+    }
+}

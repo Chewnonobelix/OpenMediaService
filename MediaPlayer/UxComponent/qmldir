@@ -1,4 +1,5 @@
 module MediaPlayer.Components
+singleton StyleSheet 1.0 qrc:/StyleSheet.qml
 MediaButton 1.0 qrc:/MediaButton.qml
 MediaLabel 1.0 qrc:/MediaLabel.qml
 MediaHeader 1.0 qrc:/MediaHeader.qml

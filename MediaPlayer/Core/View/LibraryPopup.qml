@@ -25,21 +25,34 @@ Popup {
 
 		MediaCombobox {
 			id: libraryType
+            Component.onCompleted: {
+                var list = _plugins.pluginsName()
+                for(var it in list) {
+                    var role = _plugins.pluginRole(list[it])
+                    typeModel.append({"name": list[it], "role": role})
+                }
+                currentIndex = 0
+            }
 
-            model: _plugins
+
+            model: ListModel {
+                id: typeModel
+            }
+
+            editable: false
 			textRole: "name"
 			valueRole: "role"
 
             delegate: ItemDelegate {
                 text: name
-                enabled: enable
-                visible: enable
+                enabled: _plugins.pluginEnable(name)
+                visible: _plugins.pluginEnable(name)
                 width: libraryType.width
 
                 MouseArea {
                     anchors.fill: parent
                     acceptedButtons: Qt.NoButton
-                    cursorShape: enable ? Qt.PointingHandCursor : Qt.ArrowCursor
+                    cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
                 }
              }
 		}

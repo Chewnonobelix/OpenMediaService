@@ -193,9 +193,9 @@ ImageListModel::TristateOrder ImageListModel::nextOrder(TristateOrder order) {
     return TristateOrder::NoOrder;
 }
 
-bool ImageListModel::setData(const QModelIndex &index, const QVariant &value, int) {
+bool ImageListModel::setData(const QModelIndex &index, const QVariant &value, int role) {
     if(m_columns[index.column()].name == "rating")
         (*m_model)[m_sortList[index.row()]]->setRating(value.toInt());
-
+    emit dataChanged(index, index, {role});
     return true;
 }

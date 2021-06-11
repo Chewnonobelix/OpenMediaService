@@ -14,6 +14,7 @@
 #include "tabmanager.h"
 #include <Controller/Plugins/pluginmanager.h>
 #include "controllersettings.h"
+#include <Controller/DataModel/librarydatamodel.h>
 
 class MEDIAPLAYERCORE_EXPORT ControllerMain : public AbstractController {
 	Q_OBJECT
@@ -23,7 +24,7 @@ private:
 	int m_currentTab = 0;
 
 	QQmlApplicationEngine &engine();
-	TabManager m_tabsManager;
+    QPointer<LibraryDataModel> m_librariesModel;
 
 public:
 	ControllerMain();

@@ -69,7 +69,7 @@ void MediaTest::test_id()
 void MediaTest::test_count()
 {
     QVERIFY(model1.count() != count);
-    QSignalSpy spy(&model1, SIGNAL(countChanged(int)));
+    QSignalSpy spy(&model1, SIGNAL(countChanged()));
     model1.setCount(count);
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.count(), count);
@@ -110,7 +110,7 @@ void MediaTest::test_added()
 void MediaTest::test_lastFinish()
 {
     QVERIFY(model1.lastFinish() != lastFinish);
-    QSignalSpy spy(&model1, SIGNAL(lastFinishChanged(QDateTime)));
+    QSignalSpy spy(&model1, SIGNAL(lastFinishChanged()));
     model1.setLastFinish(lastFinish);
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.lastFinish(), lastFinish);
@@ -119,7 +119,7 @@ void MediaTest::test_lastFinish()
 void MediaTest::test_currentRead()
 {
     QVERIFY(model1.currentRead() != currentRead);
-    QSignalSpy spy(&model1, SIGNAL(currentReadChanged(double)));
+    QSignalSpy spy(&model1, SIGNAL(currentReadChanged()));
     model1.setCurrentRead(currentRead);
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.currentRead(), currentRead);
@@ -128,7 +128,7 @@ void MediaTest::test_currentRead()
 void MediaTest::test_rating()
 {
     QVERIFY(model1.rating() != rate);
-    QSignalSpy spy(&model1, SIGNAL(ratingChanged(int)));
+    QSignalSpy spy(&model1, SIGNAL(ratingChanged()));
     model1.setRating(rate);
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.rating(), rate);
@@ -137,7 +137,7 @@ void MediaTest::test_rating()
 void MediaTest::test_lastProbed()
 {
     QVERIFY(model1.lastProbed() != lastProbed);
-    QSignalSpy spy(&model1, SIGNAL(lastProbedChanged(QDateTime)));
+    QSignalSpy spy(&model1, SIGNAL(lastProbedChanged()));
     model1.setLastProbed(lastProbed);
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.lastProbed(), lastProbed);

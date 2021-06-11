@@ -9,7 +9,7 @@
 class ControllerImage : public AbstractController, public InterfacePlugins {
 	Q_OBJECT
 	Q_INTERFACES(InterfacePlugins)
-	Q_PLUGIN_METADATA(IID "com.chewnonobelix.MediaPlayer.Image")
+    Q_PLUGIN_METADATA(IID "com.chewnonobelix.MediaPlayer.Image")
 
 private:
 	PlaylistPointer m_current;
@@ -20,16 +20,18 @@ private:
 	QTimer m_timer;
 	QPointer<QQmlComponent> m_playlist;
     QPointer<QQmlComponent> m_player;
+    QPointer<QObject> m_playlistObj;
+    QPointer<QObject> m_playerObj;
+    QQmlContext*  context = nullptr;
 
 public:
 	ControllerImage() = default;
-	ControllerImage(const ControllerImage &) = default;
 	~ControllerImage() override = default;
 
 	void exec() override;
 
-    QQmlComponent * playerView() const override;
-	QQmlComponent *playlistView() override;
+    QObject * playerView() const override;
+    QObject *playlistView() override;
     QUrl settingsView() const override;
 
 	void setPlaylist(PlaylistPointer) override;
@@ -46,5 +48,5 @@ public slots:
 	void onTimeout();
 
 signals:
-	void play(QString);
+    void play(QString);
 };

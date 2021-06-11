@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-
+import Qt.labs.qmlmodels
 import MediaPlayer.Components 1.0
 
 Item {
@@ -65,73 +65,57 @@ Item {
 
         property int currentRow: -1
 
-        delegate: MediaLabel {
-            text:  column !== 5 ? display : ""
-            clip: true
-            horizontalAlignment: Qt.AlignLeft
 
-            anchors {
-                leftMargin: 2
-                rightMargin: 2
-            }
+        function unselectedGradient(index) {
+            return index % 2 ? StyleSheet.unselected1 : StyleSheet.unselected2
+        }
 
-            Rating {
-                z:15
-                visible: column === 5
-                rating: visible ? display : 0
-                anchors.fill: parent
+        DelegateChooser {
+            id: chooser
+            role: "type"
+            DelegateChoice {
+                column: 5
+                Rectangle {
+                    gradient: row === table.currentRow ? StyleSheet.selected : table.unselectedGradient(row)
 
-                onRatingChanged: {
-                    display = rating
-                }
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                propagateComposedEvents: true
-                onClicked: table.currentRow = row
-
-                onDoubleClicked: _imageListModel.play(index)
-            }
-
-            background: Rectangle {
-                property Gradient selected: Gradient {
-                    GradientStop {
-                        color: "black"
-                        position: 0.0
-                    }
-
-                    GradientStop {
-                        color: "darkblue"
-                        position: 0.40
-                    }
-
-                    GradientStop {
-                        color: "aqua"
-                        position: 0.5
-                    }
-
-                    GradientStop {
-                        color: "darkblue"
-                        position: 0.60
-                    }
-
-                    GradientStop {
-                        color: "black"
-                        position: 1.0
+                    Rating {
+                        z:1
+                        rating: display
+                        anchors.fill: parent
+                        onRatingChanged: {
+                            display = rating
+                        }
                     }
                 }
+            }
 
-                property Gradient unselected: Gradient {
-                    GradientStop {
-                        color: row % 2 ? "grey" : Qt.lighter("grey", 0.5)
+            DelegateChoice {
+                MediaLabel {
+                    text:  display
+                    clip: true
+                    horizontalAlignment: Qt.AlignLeft
+
+                    anchors {
+                        leftMargin: 2
+                        rightMargin: 2
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        propagateComposedEvents: true
+                        onClicked: table.currentRow = row
+
+                        onDoubleClicked: _imageListModel.play(index)
+                    }
+
+                    background: Rectangle {
+                        gradient: row === table.currentRow ? StyleSheet.selected : table.unselectedGradient(row)
                     }
                 }
-
-                gradient: row === table.currentRow ? selected : unselected
-
             }
         }
+
+        delegate: chooser
     }
 }

@@ -14,8 +14,8 @@ public:
 
 	void exec() override;
 
-    QQmlComponent * playerView() const override;
-	QQmlComponent *playlistView() override;
+    QObject * playerView() const override;
+    QObject *playlistView() override;
     QUrl settingsView() const override;
     void setPlaylist(PlaylistPointer) override;
 	void setMedia(MediaPointer) override;

@@ -36,6 +36,7 @@ Item {
                     onClicked:  {
                         _image.playing()
                         playLayout.currentIndex = 1
+
                     }
                 }
                 MediaButton {

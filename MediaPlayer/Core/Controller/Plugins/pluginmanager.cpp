@@ -2,9 +2,9 @@
 #include <Controller/Core/abstractcontroller.h>
 
 void PluginManager::init() {
-	QDir dir;
-	dir.cd("Plugins");
-	auto list = dir.entryInfoList({"*.dll"});
+    QDir dir;
+    dir.cd("Plugins");
+    auto list = dir.entryInfoList({"*.dll"});
 
     auto toString = [](auto r) {
         switch(r) {
@@ -25,16 +25,16 @@ void PluginManager::init() {
         }
     };
 
-	for (auto it : list) {
-		QPluginLoader loader(it.absoluteFilePath());
-		auto obj = dynamic_cast<InterfacePlugins *>(loader.instance());
-		QSharedPointer<InterfacePlugins> p(obj);
+    for (auto it : list) {
+        QPluginLoader loader(it.absoluteFilePath());
+        auto obj = dynamic_cast<InterfacePlugins *>(loader.instance());
+        QSharedPointer<InterfacePlugins> p(obj);
 
         m_plugins[p->role()] = {p, true};
-		p->exec();
+        p->exec();
 
-        m_liste << Plugin {toString(p->role()), p->role(), p, AbstractController::m_settings->plugin(toString(p->role()))};
-	}
+        m_liste << Plugin {toString(p->role()), p->role(), p, AbstractController::s_settings->plugin(toString(p->role()))};
+    }
 }
 
 QSharedPointer<InterfacePlugins>
@@ -79,11 +79,44 @@ QHash<int, QByteArray> PluginManager::roleNames() const
 
 int PluginManager::rowCount(QModelIndex const&) const
 {
-    return m_plugins.size();
+    return m_liste.size();
 }
 
 bool PluginManager::setData(const QModelIndex& index, const QVariant& data, int role)
 {
     m_liste[index.row()].enable = data.toBool();
+    emit dataChanged(index, index, {role});
     return true;
+}
+
+QStringList PluginManager::pluginsName() const
+{
+    QStringList ret;
+   for(auto it: m_liste) {
+        ret<<it.name;
+    }
+
+    return ret;
+}
+
+MediaRole PluginManager::pluginRole(QString name) const
+{
+    MediaRole ret;
+    std::for_each(m_liste.begin(), m_liste.end(), [&ret, name](auto it) {
+        if(name == it.name)
+            ret = it.role;
+    });
+
+    return ret;
+}
+
+bool PluginManager::pluginEnable(QString name) const
+{
+    bool ret;
+    std::for_each(m_liste.begin(), m_liste.end(), [&ret, name](auto it) {
+        if(name == it.name)
+            ret = it.enable;
+    });
+
+    return ret;
 }

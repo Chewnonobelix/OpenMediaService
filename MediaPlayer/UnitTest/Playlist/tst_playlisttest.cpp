@@ -41,7 +41,7 @@ void PlaylistTest::test_id()
 void PlaylistTest::test_name()
 {
     QVERIFY(model1.name() != name);
-    QSignalSpy spy(&model1, SIGNAL(nameChanged(QString)));
+    QSignalSpy spy(&model1, SIGNAL(nameChanged()));
     model1.setName(name);
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.name(), name);    

@@ -26,10 +26,11 @@ DESTDIR += $$OUT_PWD/../../Application/Ux/MediaPlayer/$$NAME
 QML_IMPORT_MAJOR_VERSION = 1
 QML_IMPORT_NAME = MediaPlayer.$$NAME
 # Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH = "$${OUT_PWD}/../Application/Ux"
+QML_IMPORT_PATH = $${OUT_PWD}/../../Application/Ux
 
+message($$OUT_PWD)
 # Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH = $$QML_IMPORT_PATH
+QML_DESIGNER_IMPORT_PATH = $${OUT_PWD}/../../Application/Ux
 
 DISTFILES = qmldir
 DLLDESTDIR += $$OUT_PWD/../../Application/Plugins

@@ -6,6 +6,7 @@
 #include "../../mediaplayercore_global.h"
 
 #include <Controller/Data/interfacesaver.h>
+#include <Controller/Core/controllerlibrary.h>
 
 #include "Model/global.h"
 #include "Model/library.h"
@@ -17,13 +18,19 @@ class MEDIAPLAYERCORE_EXPORT LibraryDataModel : public QAbstractListModel {
 								 currentIndexChanged)
 
 private:
+    struct Data {
+        LibraryPointer library;
+        QPointer<ControllerLibrary> controller;
+    };
+
 	enum LibraryRoles {
 		MediaRole = Qt::UserRole + 1,
 		NameRole,
 		IndexRole,
-		IdRole
+        IdRole,
+        ControllerRole
 	};
-	QList<LibraryPointer> m_libraries;
+    QList<Data> m_libraries;
 	int m_currentIndex = -1;
 
 protected:
@@ -37,8 +44,6 @@ public:
 	LibraryDataModel &operator=(const LibraryDataModel &);
 	LibraryPointer operator[](QUuid) const;
 
-	friend bool operator!=(const LibraryDataModel &, const LibraryDataModel &);
-
 	QVariant data(const QModelIndex &index, int role) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
@@ -46,6 +51,8 @@ public:
 	void sort(int, Qt::SortOrder) override;
 
 	Q_INVOKABLE Library *at(int);
+    Q_INVOKABLE ControllerLibrary * controller(int);
+    Q_INVOKABLE QQmlComponent * playlistComponent(int);
 	Q_INVOKABLE void clear();
 	void setCurrentIndex(int);
 	int currentIndex() const;

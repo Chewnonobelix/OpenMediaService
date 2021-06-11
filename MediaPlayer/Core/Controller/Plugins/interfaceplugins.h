@@ -9,13 +9,16 @@
 #include <Model/media.h>
 
 class MEDIAPLAYERCORE_EXPORT InterfacePlugins {
+private:
+    QUuid m_tabId;
+
 public:
 	InterfacePlugins() = default;
 	InterfacePlugins(const InterfacePlugins &) = default;
 	virtual ~InterfacePlugins() = default;
 
-    virtual QQmlComponent* playerView() const = 0;
-	virtual QQmlComponent *playlistView() = 0;
+    virtual QObject* playerView() const = 0;
+    virtual QObject *playlistView() = 0;
     virtual QUrl settingsView() const = 0;
 
 	virtual void setPlaylist(PlaylistPointer) = 0;
@@ -26,6 +29,9 @@ public:
 
 	virtual void exec() = 0;
 	virtual QSharedPointer<InterfacePlugins> clone() const = 0;
+
+    QUuid id() const;
+    void setID(QUuid);
 };
 
 Q_DECLARE_INTERFACE(InterfacePlugins, "InterfacePlugins/1.0")

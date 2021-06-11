@@ -3,125 +3,152 @@
 LibraryDataModel::LibraryDataModel() : QAbstractListModel() {}
 
 LibraryDataModel::LibraryDataModel(const LibraryDataModel &l)
-		: QAbstractListModel(), m_libraries(l.m_libraries) {
-	sort(0, Qt::AscendingOrder);
+    : QAbstractListModel(), m_libraries(l.m_libraries) {
+    sort(0, Qt::AscendingOrder);
 }
 
 int LibraryDataModel::rowCount(const QModelIndex &) const {
-	return m_libraries.size();
+    return m_libraries.size();
 }
 
 QVariant LibraryDataModel::data(const QModelIndex &index, int role) const {
-	if (index.row() < 0 || index.row() >= m_libraries.count())
-		return QVariant();
+    if (index.row() < 0 || index.row() >= m_libraries.count())
+        return QVariant();
 
-	auto lib = m_libraries[index.row()];
+    auto lib = m_libraries[index.row()];
 
-	if (role == MediaRole)
-		return QVariant::fromValue(lib->role());
-	else if (role == NameRole)
-		return lib->name();
-	else if (role == IndexRole)
-		return index.row();
-	else if (role == IdRole)
-		return QVariant::fromValue(lib->id());
+    if (role == MediaRole)
+        return QVariant::fromValue(lib.library->role());
+    else if (role == NameRole)
+        return lib.library->name();
+    else if (role == IndexRole)
+        return index.row();
+    else if (role == IdRole)
+        return QVariant::fromValue(lib.library->id());
+    else if (role == ControllerRole) {
+        return QVariant::fromValue(lib.controller.data());
+    }
 
-	return QVariant::fromValue(lib.data());
+    return QVariant::fromValue(lib.library.data());
 }
 
 QHash<int, QByteArray> LibraryDataModel::roleNames() const {
-	QHash<int, QByteArray> roles;
-	roles[MediaRole] = "role";
-	roles[NameRole] = "name";
-	roles[IndexRole] = "index";
-	roles[IdRole] = "id";
-	return roles;
+    QHash<int, QByteArray> roles;
+    roles[MediaRole] = "role";
+    roles[NameRole] = "name";
+    roles[IndexRole] = "index";
+    roles[IdRole] = "id";
+    roles[ControllerRole] = "controller";
+    return roles;
 }
 
 void LibraryDataModel::insertData(LibraryPointer l) {
-	beginInsertRows(QModelIndex(), rowCount(), rowCount() + 1);
-	m_libraries << l;
-	insertRow(rowCount());
-	setData(index(rowCount() - 1),
-					QVariant::fromValue(m_libraries.last().data()));
-	endInsertRows();
+    beginInsertRows(QModelIndex(), rowCount(), rowCount() + 1);
+    m_libraries << Data{l, new ControllerLibrary};
+    QJSEngine::setObjectOwnership(m_libraries.last().controller, QJSEngine::CppOwnership);
+    QJSEngine::setObjectOwnership(l.data(), QJSEngine::CppOwnership);
+
+    m_libraries.last().controller->exec();
+    m_libraries.last().controller->setCurrentLibrary(l);
+    insertRow(rowCount());
+    setData(index(rowCount() - 1),
+            QVariant::fromValue(m_libraries.last().library.data()));
+    endInsertRows();
 }
 
 Library *LibraryDataModel::at(int index) {
-	if (index >= rowCount() || index < 0)
-		return nullptr;
+    if (index >= rowCount() || index < 0)
+        return nullptr;
 
-	return m_libraries[index].data();
+    return m_libraries[index].library.data();
+}
+
+ControllerLibrary *LibraryDataModel::controller(int index) {
+    if (index >= rowCount() || index < 0)
+        return nullptr;
+
+    return m_libraries[index].controller;
+}
+
+QQmlComponent *LibraryDataModel::playlistComponent(int index) {
+    if (index >= rowCount() || index < 0)
+        return nullptr;
+
+    return nullptr;
 }
 
 void LibraryDataModel::sort(int, Qt::SortOrder order) {
-	auto l = m_libraries;
+    auto l = m_libraries;
 
-	std::sort(l.begin(), l.end(), [order](LibraryPointer l1, LibraryPointer l2) {
-		if (order == Qt::DescendingOrder) {
-			return !(l1 < l2);
-		} else {
-			return l1 < l2;
-		}
-	});
+    std::sort(l.begin(), l.end(), [order](auto l1, auto l2) {
+        if (order == Qt::DescendingOrder) {
+            return !(l1.library < l2.library);
+        } else {
+            return l1.library < l2.library;
+        }
+    });
 
-	clear();
-	for (auto it : l)
-		insertData(it);
+    clear();
+    for (auto it : l)
+        insertData(it.library);
 }
 
 void LibraryDataModel::clear() {
-	beginRemoveRows(QModelIndex(), 0, rowCount());
-	removeRows(0, rowCount());
-	m_libraries.clear();
-	endRemoveRows();
+    beginRemoveRows(QModelIndex(), 0, rowCount());
+    removeRows(0, rowCount());
+    m_libraries.clear();
+    endRemoveRows();
 }
 
 LibraryDataModel &LibraryDataModel::operator=(const LibraryDataModel &ldm) {
-	clear();
-	for (auto it : ldm.m_libraries)
-		insertData(it);
-	m_currentIndex = ldm.m_currentIndex;
+    clear();
+    for (auto it : ldm.m_libraries)
+        insertData(it.library);
+    m_currentIndex = ldm.m_currentIndex;
 
-	return *this;
+    return *this;
 }
 
-bool operator!=(const LibraryDataModel &l1, const LibraryDataModel &l2) {
-	return l1.m_libraries != l2.m_libraries;
-}
 
 void LibraryDataModel::onUpdateLibraries() {
-	clear();
-	setCurrentIndex(-1);
+    clear();
+    setCurrentIndex(-1);
 
-	if (!sender())
-		return;
+    if (!sender())
+        return;
 
-	for (auto it : ((InterfaceSaver *)sender())->selectLibrary().values())
-		insertData(it);
+    for (auto it : ((InterfaceSaver *)sender())->selectLibrary().values())
+        insertData(it);
 }
 
 void LibraryDataModel::setCurrentIndex(int index) {
-	m_currentIndex = index;
-	emit currentIndexChanged();
-	if (index > -1)
-		emit currentModelChanged(m_libraries[index]);
-	else
-		emit currentModelChanged(LibraryPointer());
+    m_currentIndex = index;
+    emit currentIndexChanged();
+
+    if(index > -1)
+    {
+    }
+    else
+    {
+    }
 }
 
 int LibraryDataModel::currentIndex() const { return m_currentIndex; }
 
 int LibraryDataModel::indexOf(LibraryPointer lp) const {
-	return m_libraries.indexOf(lp);
+    auto it = std::find_if(m_libraries.begin(), m_libraries.end(), [lp](auto d) {
+        return  lp == d.library;
+    });
+
+    return std::distance(m_libraries.begin(), it);
 }
 
 LibraryPointer LibraryDataModel::operator[](QUuid id) const {
-	LibraryPointer ret;
+    LibraryPointer ret;
 
-	for (auto it : m_libraries)
-		if (it->id() == id)
-			ret = it;
+    for (auto it : m_libraries)
+        if (it.library->id() == id)
+            ret = it.library;
 
-	return ret;
+    return ret;
 }

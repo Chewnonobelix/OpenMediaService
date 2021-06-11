@@ -1,24 +1,17 @@
 #include "tabmanager.h"
 
+void TabManager::Data::setPlaylist(PlaylistPointer pl)
+{
+
+}
 
 void TabManager::addTab()
 {
-    auto p = QSharedPointer<ControllerLibrary>::create();
-    p->exec();
-    m_tabs[QUuid::fromString(p->id())] = p;
-    m_ids<<QUuid::fromString(p->id());
-
+    m_model<<Data{};
     beginInsertRows(QModelIndex(), rowCount() - 1, rowCount()-1);
     insertRows(rowCount()- 1, 1);
     endInsertRows();
-}
-
-QQmlComponent *TabManager::player(QString id) const {
-    return m_tabs[QUuid::fromString(id)]->playerComponent();
-}
-
-QQmlComponent *TabManager::playlist(QString id) const {
-    return m_tabs[QUuid::fromString(id)]->playlistComponent();
+    emit clicked(m_model.last().id.toString());
 }
 
 QVariant TabManager::data(const QModelIndex &index, int role) const {
@@ -27,30 +20,98 @@ QVariant TabManager::data(const QModelIndex &index, int role) const {
         return QVariant();
 
     auto roleEnum = TabRole(role);
-    auto id = m_ids[row];
 
-    switch(roleEnum) {
+    switch(roleEnum)
+    {
+    case TabRole::IdRole:
+        return m_model[row].id;
     case TabRole::PlayerRole:
-        return QVariant::fromValue(player(id.toString()));
+        return QVariant::fromValue(m_model[row].player);
     case TabRole::PlaylistRole:
-        return QVariant::fromValue(playlist(id.toString()));
-    case TabRole::ModelRole:
-        return QVariant::fromValue(m_tabs[id].data());
+        return QVariant::fromValue(m_model[row].playlist.data());
+    case TabRole::DataRole:
+        return QVariant::fromValue(m_model[row]);
+    case TabRole::PLaylistIndex:
+        return m_model[row].playlistIndex;
+    case TabRole::LibraryIndex:
+        return m_model[row].libIndex;
     }
 
     return QVariant();
 }
 
-ControllerLibrary* TabManager::at(int index) const {
-    return index >= 0 && index < rowCount() ? m_tabs[m_ids[index]].data() : nullptr;
-}
-
-int TabManager::rowCount(const QModelIndex &) const { return m_tabs.size(); }
+int TabManager::rowCount(const QModelIndex &) const { return m_model.size(); }
 
 QHash<int, QByteArray> TabManager::roleNames() const {
-    static QHash<int, QByteArray> ret{{int(TabRole::PlaylistRole), "playlist"},
-                                      {int(TabRole::PlayerRole), "player"},
-                                      {int(TabRole::ModelRole), "model"}};
+    static QHash<int, QByteArray> ret {{int(TabRole::PlayerRole), "player"},
+                                       {int(TabRole::IdRole), "id"},
+                                       {int(TabRole::DataRole), "data"},
+                                       {int(TabRole::LibraryIndex), "libIndex"},
+                                       {int(TabRole::PLaylistIndex), "playlistIndex"},
+                                       {int(TabRole::PlaylistRole), "playlist"}};
+    return ret;
+}
+
+bool TabManager::removeTab(QUuid)
+{
+    return false;
+}
+
+bool TabManager::moveTab(QUuid, int)
+{
+    return false;
+}
+
+bool TabManager::contains(QUuid id) const
+{
+    auto it = std::find_if(m_model.begin(), m_model.end(), [id](Data d) {
+            return id == d.id;
+    });
+
+    return it != m_model.end();
+}
+
+TabManager::Data& TabManager::operator[](QUuid id)
+{
+    auto it = std::find_if(m_model.begin(), m_model.end(), [id](Data d) {
+            return id == d.id;
+    });
+
+    return *it;
+}
+
+QUuid TabManager::id() const
+{
+    return m_id;
+}
+
+int TabManager::indexOf(QUuid id) const
+{
+    auto ret = -1;
+    for(auto i = 0; i < m_model.size(); i++)
+        if(m_model[i].id == id)
+            ret = i;
 
     return ret;
+
+}
+
+bool TabManager::setData(const QModelIndex &index, const QVariant & value, int role)
+{
+    auto e = TabRole(role);
+
+    switch(e)
+    {
+    case TabRole::LibraryIndex:
+        m_model[index.row()].libIndex = value.toInt();
+        break;
+    case TabRole::PLaylistIndex:
+        m_model[index.row()].playlistIndex = value.toInt();
+        break;
+    default:
+        break;
+    }
+
+    emit dataChanged(index, index, {role});
+    return true;
 }
