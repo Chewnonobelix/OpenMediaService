@@ -101,7 +101,7 @@ MediaWindow {
                     textRole: "display"
                     valueRole: "db"
                     currentIndex: -1
-                    onCurrentValueChanged: _settings.setDb(currentValue)
+                    onActivated: _settings.setDb(currentValue)
 
                     Component.onCompleted: currentIndex = indexOfValue(_settings.db())
                 }
@@ -120,7 +120,7 @@ MediaWindow {
                             text: name
                             checked: enable
 
-                            onCheckedChanged: {
+                            onClicked: {
                                 enable = checked
                                 _settings.setPlugin(name, enable)
                             }
