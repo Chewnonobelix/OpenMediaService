@@ -28,7 +28,7 @@ Item {
 
             model: ["Fit", "Fill", "Custom"]
 
-            onCurrentTextChanged: {
+            onActivated: {
                 _settings.setValue("Image/Ratio", currentText)
             }
         }
@@ -42,7 +42,7 @@ Item {
             to: 1920
 
             editable: true
-            onValueChanged: _settings.setValue("Image/Width", value)
+            onValueModified: _settings.setValue("Image/Width", value)
         }
         SpinBox {
             Component.onCompleted: value = _settings.value("Image/Height")
@@ -53,7 +53,7 @@ Item {
             to: 1080
 
             editable: true
-            onValueChanged: _settings.setValue("Image/Height", value)
+            onValueModified: _settings.setValue("Image/Height", value)
         }
 
         ListView {
