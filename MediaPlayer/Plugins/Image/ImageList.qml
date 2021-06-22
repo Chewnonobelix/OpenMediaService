@@ -75,7 +75,7 @@ Item {
             id: chooser
             role: "type"
             DelegateChoice {
-                column: 5
+                column: _imageListModel.columnOf("rating")
                 Rectangle {
                     gradient: row === table.currentRow ? StyleSheet.selected : table.unselectedGradient(row)
 

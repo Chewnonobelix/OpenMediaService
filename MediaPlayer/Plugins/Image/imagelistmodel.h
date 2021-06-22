@@ -29,6 +29,7 @@ private:
                                {"Last play", "lastPlayed", ImageListRole::LastPlayRole, TristateOrder::NoOrder},
                                {"Rating", "rating", ImageListRole::RatingRole, TristateOrder::NoOrder},
                                {"Ext", "ext", ImageListRole::ExtensionRole, TristateOrder::NoOrder}};
+
     Q_INVOKABLE TristateOrder nextOrder(TristateOrder);
 
 public:
@@ -48,5 +49,7 @@ public:
     Q_INVOKABLE void sort(int, TristateOrder order = TristateOrder::NoOrder);
 
     QHash<int, QByteArray> roleNames() const override;
+
+    Q_INVOKABLE int columnOf(QString) const;
 };
 

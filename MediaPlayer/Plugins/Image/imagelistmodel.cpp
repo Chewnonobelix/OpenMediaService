@@ -202,3 +202,14 @@ bool ImageListModel::setData(const QModelIndex &index, const QVariant &value, in
     emit dataChanged(index, index, {role});
     return true;
 }
+
+int ImageListModel::columnOf(QString name) const
+{
+    auto ret = 0;
+    for(auto it = 0; it < m_columns.count(); it++) {
+        if(m_columns[it].name == name)
+            ret = it;
+    }
+
+    return ret;
+}
