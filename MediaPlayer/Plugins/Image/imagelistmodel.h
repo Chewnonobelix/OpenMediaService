@@ -10,7 +10,8 @@ class ImageListModel: public QAbstractTableModel
     Q_DISABLE_COPY(ImageListModel)
 
 private:
-    enum class ImageListRole{DisplayRole = Qt::UserRole +1, RatingRole, FileRole, ExtensionRole, PathRole, CountRole, AddedRole, LastPlayRole, Fullpath, IndexRole, OrderRole};
+    enum class ImageListRole{DisplayRole = Qt::UserRole +1, RatingRole, FileRole, ExtensionRole, PathRole, CountRole,
+                             AddedRole, LastPlayRole, Fullpath, IndexRole, OrderRole, EnableRole};
     enum class TristateOrder{NoOrder, AscendingOrder, DescendingOrder};
 
     struct Column {
@@ -18,6 +19,7 @@ private:
         QString name;
         ImageListRole role;
         TristateOrder order;
+        bool enable = true;
     };
 
     PlaylistPointer m_model;
