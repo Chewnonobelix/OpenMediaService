@@ -28,7 +28,6 @@ QML_IMPORT_NAME = MediaPlayer.$$NAME
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH = $${OUT_PWD}/../../Application/Ux
 
-message($$OUT_PWD)
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH = $${OUT_PWD}/../../Application/Ux
 

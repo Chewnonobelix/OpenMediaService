@@ -23,6 +23,7 @@ void ImageListModel::setPLaylist(PlaylistPointer p)
         for(auto it = 0; it < p->count(); it++)
             m_sortList<<it;
 
+    sort(0);
 }
 
 int ImageListModel::rowCount(const QModelIndex&) const
@@ -70,6 +71,8 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const {
         case ImageListRole::RatingRole:
             return current->rating();
             break;
+        case ImageListRole::OrderRole:
+            return QVariant::fromValue(current->role());
         default:
             break;
         }
@@ -87,11 +90,10 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const {
 
     return QVariant();
 }
-void ImageListModel::sort(int col) {
-    auto old = m_columns[col].order;
+void ImageListModel::sort(int col, TristateOrder order) {
     for(auto& it: m_columns)
         it.order = TristateOrder::NoOrder;
-    m_columns[col].order = nextOrder(old);
+    m_columns[col].order = order;
 
     for(auto i = 0; i < m_sortList.count(); i ++)
     {
@@ -142,6 +144,7 @@ QHash<int, QByteArray> ImageListModel::roleNames() const
                                          {int(ImageListRole::ExtensionRole), "extension"},
                                          {int(ImageListRole::Fullpath), "fullpath"},
                                          {int(ImageListRole::IndexRole), "index"},
+                                         {int(ImageListRole::OrderRole), "order"},
                                          {int(ImageListRole::CountRole), "count"}};
     return ret;
 }

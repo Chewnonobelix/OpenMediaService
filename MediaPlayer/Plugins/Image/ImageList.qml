@@ -21,7 +21,8 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    _imageListModel.sort(column)
+                    var no = _imageListModel.nextOrder(order)
+                    _imageListModel.sort(column, no)
                 }
             }
         }
