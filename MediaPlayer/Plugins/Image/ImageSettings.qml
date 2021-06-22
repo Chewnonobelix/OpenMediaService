@@ -13,7 +13,6 @@ Item {
         rows: 2
         MediaCombobox {
             Component.onCompleted: {
-                console.log(_settings.value("Image/Ratio"))
                 if(_settings.value("Image/Ratio") === "Fit") {
                     currentIndex = 0
                 }
@@ -34,24 +33,25 @@ Item {
         }
 
         SpinBox {
-            Component.onCompleted: value = _settings.value("Image/Width")
+            Component.onCompleted: if(_settings.value("Image/Width")) value = _settings.value("Image/Width")
             id: imageWidth
             enabled: aspectRatio.currentIndex === 2
 
             from: 1
             to: 1920
 
+            value: to
             editable: true
             onValueModified: _settings.setValue("Image/Width", value)
         }
         SpinBox {
-            Component.onCompleted: value = _settings.value("Image/Height")
+            Component.onCompleted: if(_settings.value("Image/Height")) value = _settings.value("Image/Height")
             id: imageHeight
             enabled: aspectRatio.currentIndex === 2
 
             from: 1
             to: 1080
-
+            value: to
             editable: true
             onValueModified: _settings.setValue("Image/Height", value)
         }

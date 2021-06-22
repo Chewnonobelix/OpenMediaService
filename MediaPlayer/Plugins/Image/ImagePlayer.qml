@@ -12,7 +12,6 @@ Item {
             display.fillMode = Image.Stretch
         }
         else {
-            console.log("Wesh")
             display.fillMode = Image.Pad
             display.sourceSize.width = _settings.value("Image/Width")
             display.sourceSize.height = _settings.value("Image/Height")
@@ -36,10 +35,6 @@ Item {
         target: _settings
 
         function onSettingsChanged() {
-            console.log(_settings.value("Image/Ratio"))
-            console.log(_settings.value("Image/Width"))
-            console.log(_settings.value("Image/Height"))
-            console.log(display.sourceSize)
             set()
         }
     }
