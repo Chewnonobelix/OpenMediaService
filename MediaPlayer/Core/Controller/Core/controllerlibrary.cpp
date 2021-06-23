@@ -70,13 +70,6 @@ void ControllerLibrary::onCurrentPlaylistChanged() {
 
 QString ControllerLibrary::id() const { return m_id.toString(); }
 
-void ControllerLibrary::onPlay(MediaPointer m)
-{
-    auto src = (InterfacePlugins*)sender();
-
-    emit play(src->id(), m.data());
-}
-
 void ControllerLibrary::setPlaylistIndex(QString id, int index)
 {
     if(index == -1 && m_plugins.contains(QUuid::fromString(id)))
