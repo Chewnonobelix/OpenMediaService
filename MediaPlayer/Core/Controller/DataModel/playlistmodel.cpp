@@ -112,10 +112,10 @@ PlaylistPointer PlaylistModel::operator[](int index) const {
 
 void PlaylistModel::editPlaylist() const
 {
-    auto context = new QQmlContext(AbstractController::s_engine->qmlEngine().rootContext());
+    auto context = new QQmlContext(AbstractController::engine()->qmlEngine().rootContext());
     context->setContextProperty("_playlist", current().data());
     qDebug() << "Playlist context";
-    AbstractController::s_engine->createWindow(QUrl(QStringLiteral("/PlaylistView.qml")), context);
+    AbstractController::engine()->createWindow(QUrl(QStringLiteral("/PlaylistView.qml")), context);
 }
 
 void PlaylistModel::onPlaylistNameChanged()

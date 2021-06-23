@@ -8,10 +8,10 @@ void ControllerLibrary::exec() {
 PlaylistModel *ControllerLibrary::playlist() { return &m_playlist; }
 
 void ControllerLibrary::open() {
-    auto context = new QQmlContext(s_engine->qmlEngine().rootContext());
+    auto context = new QQmlContext(engine()->qmlEngine().rootContext());
     context->setContextProperty("_libraries", this);
     qDebug() << "Library context";
-    s_engine->createWindow(QUrl(QStringLiteral("/LibraryView.qml")), context);
+    engine()->createWindow(QUrl(QStringLiteral("/LibraryView.qml")), context);
 }
 
 void ControllerLibrary::addSourceDir(QString source) {
