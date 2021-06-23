@@ -124,13 +124,13 @@ void PlaylistModel::onPlaylistNameChanged()
     int i = 0;
 
     QModelIndex ind;
-    for(; i < m_smarts.size(); i++)
+    for(; i < m_smarts.size() && !ind.isValid(); i++)
     {
         if(pl->name() == m_smarts[i]->name())
             ind = index(i);
     }
 
-    for(; i < (m_normals.size() + m_smarts.size()); i++)
+    for(; i < (m_normals.size() + m_smarts.size()) && !ind.isValid(); i++)
     {
         if(pl->name() == m_normals[i - m_smarts.size()]->name())
             ind = index(i);
