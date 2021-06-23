@@ -9,7 +9,16 @@ import MediaPlayer.Components 1.0
 Popup {
 	id: root
 
-	onOpened: libraryName.clear()
+    onOpened: {
+        libraryName.clear()
+        typeModel.clear()
+        var list = _plugins.pluginsName()
+        for(var it in list) {
+            var role = _plugins.pluginRole(list[it])
+            if(_plugins.pluginEnable(list[it]))
+                typeModel.append({"name": list[it], "role": role})
+        }
+    }
 	GridLayout {
 		anchors.fill: parent
 		rows: 2
@@ -26,12 +35,6 @@ Popup {
 		MediaCombobox {
 			id: libraryType
             Component.onCompleted: {
-                var list = _plugins.pluginsName()
-                for(var it in list) {
-                    var role = _plugins.pluginRole(list[it])
-                    typeModel.append({"name": list[it], "role": role})
-                }
-                currentIndex = 0
             }
 
 
@@ -45,8 +48,6 @@ Popup {
 
             delegate: ItemDelegate {
                 text: name
-                enabled: _plugins.pluginEnable(name)
-                visible: _plugins.pluginEnable(name)
                 width: libraryType.width
 
                 MouseArea {

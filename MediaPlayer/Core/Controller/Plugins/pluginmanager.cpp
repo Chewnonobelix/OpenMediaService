@@ -31,7 +31,6 @@ void PluginManager::init() {
         QSharedPointer<InterfacePlugins> p(obj);
 
         m_plugins[p->role()] = {p, true};
-        p->exec();
 
         m_liste << Plugin {toString(p->role()), p->role(), p, AbstractController::s_settings->plugin(toString(p->role()))};
     }

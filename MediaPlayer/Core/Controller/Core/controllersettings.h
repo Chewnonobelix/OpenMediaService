@@ -30,7 +30,11 @@ public:
     Q_INVOKABLE void setDb(QString);
     Q_INVOKABLE QString db() const;
 
+    Q_INVOKABLE void setValue(QString, QVariant);
+    Q_INVOKABLE QVariant value(QString) const;
+
 signals:
     void dbChanged();
+    void settingsChanged();
 };
 

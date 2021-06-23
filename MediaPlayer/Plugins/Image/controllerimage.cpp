@@ -1,5 +1,8 @@
 #include "controllerimage.h"
 
+QPointer<QQmlComponent> ControllerImage::s_player = nullptr;
+QPointer<QQmlComponent> ControllerImage::s_playlist = nullptr;
+
 void ControllerImage::exec() {
     auto* root = s_engine->qmlEngine().rootContext();
     context = new QQmlContext(root);
@@ -17,13 +20,15 @@ void ControllerImage::exec() {
     connect(&m_timer, &QTimer::timeout, this, &ControllerImage::onTimeout);
     m_timer.setInterval(2000);
 
-    m_playlist = new QQmlComponent(&(s_engine->qmlEngine()),
+    if(!s_playlist)
+        s_playlist = new QQmlComponent(&(s_engine->qmlEngine()),
                                    QUrl("qrc:/image/ImagePlaylist.qml"));
-    m_playlistObj = m_playlist->create(contextPlaylist);
+    m_playlistObj = s_playlist->create(contextPlaylist);
 
-    m_player = new QQmlComponent(&(s_engine->qmlEngine()),
+    if(!s_player)
+         s_player = new QQmlComponent(&(s_engine->qmlEngine()),
                                  QUrl("qrc:/image/ImagePlayer.qml"));
-    m_playerObj = m_player->create(contextPlayer);
+    m_playerObj = s_player->create(contextPlayer);
 }
 
 QObject *ControllerImage::playerView() const {

@@ -10,7 +10,8 @@ class ImageListModel: public QAbstractTableModel
     Q_DISABLE_COPY(ImageListModel)
 
 private:
-    enum class ImageListRole{DisplayRole = Qt::UserRole +1, RatingRole, FileRole, ExtensionRole, PathRole, CountRole, AddedRole, LastPlayRole, Fullpath, IndexRole};
+    enum class ImageListRole{DisplayRole = Qt::UserRole +1, RatingRole, FileRole, ExtensionRole, PathRole, CountRole,
+                             AddedRole, LastPlayRole, Fullpath, IndexRole, OrderRole, EnableRole};
     enum class TristateOrder{NoOrder, AscendingOrder, DescendingOrder};
 
     struct Column {
@@ -18,6 +19,7 @@ private:
         QString name;
         ImageListRole role;
         TristateOrder order;
+        bool enable = true;
     };
 
     PlaylistPointer m_model;
@@ -29,7 +31,8 @@ private:
                                {"Last play", "lastPlayed", ImageListRole::LastPlayRole, TristateOrder::NoOrder},
                                {"Rating", "rating", ImageListRole::RatingRole, TristateOrder::NoOrder},
                                {"Ext", "ext", ImageListRole::ExtensionRole, TristateOrder::NoOrder}};
-    TristateOrder nextOrder(TristateOrder);
+
+    Q_INVOKABLE TristateOrder nextOrder(TristateOrder);
 
 public:
     ImageListModel() = default;
@@ -45,8 +48,10 @@ public:
 
     QVariant data(const QModelIndex&, int) const override;
     bool setData(const QModelIndex &, const QVariant &, int role = Qt::EditRole) override;
-    Q_INVOKABLE void sort(int);
+    Q_INVOKABLE void sort(int, TristateOrder order = TristateOrder::NoOrder);
 
     QHash<int, QByteArray> roleNames() const override;
+
+    Q_INVOKABLE int columnOf(QString) const;
 };
 

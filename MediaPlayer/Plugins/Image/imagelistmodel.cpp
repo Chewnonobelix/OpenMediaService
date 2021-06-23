@@ -23,6 +23,7 @@ void ImageListModel::setPLaylist(PlaylistPointer p)
         for(auto it = 0; it < p->count(); it++)
             m_sortList<<it;
 
+    sort(0);
 }
 
 int ImageListModel::rowCount(const QModelIndex&) const
@@ -70,6 +71,8 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const {
         case ImageListRole::RatingRole:
             return current->rating();
             break;
+        case ImageListRole::OrderRole:
+            return QVariant::fromValue(current->role());
         default:
             break;
         }
@@ -81,17 +84,18 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const {
         return current->path();
     case ImageListRole::IndexRole:
         return m_model->indexOf(current);
+    case ImageListRole::EnableRole:
+        return currentCol.enable;
     default:
         break;
     }
 
     return QVariant();
 }
-void ImageListModel::sort(int col) {
-    auto old = m_columns[col].order;
+void ImageListModel::sort(int col, TristateOrder order) {
     for(auto& it: m_columns)
         it.order = TristateOrder::NoOrder;
-    m_columns[col].order = nextOrder(old);
+    m_columns[col].order = order;
 
     for(auto i = 0; i < m_sortList.count(); i ++)
     {
@@ -142,6 +146,7 @@ QHash<int, QByteArray> ImageListModel::roleNames() const
                                          {int(ImageListRole::ExtensionRole), "extension"},
                                          {int(ImageListRole::Fullpath), "fullpath"},
                                          {int(ImageListRole::IndexRole), "index"},
+                                         {int(ImageListRole::OrderRole), "order"},
                                          {int(ImageListRole::CountRole), "count"}};
     return ret;
 }
@@ -198,4 +203,15 @@ bool ImageListModel::setData(const QModelIndex &index, const QVariant &value, in
         (*m_model)[m_sortList[index.row()]]->setRating(value.toInt());
     emit dataChanged(index, index, {role});
     return true;
+}
+
+int ImageListModel::columnOf(QString name) const
+{
+    auto ret = 0;
+    for(auto it = 0; it < m_columns.count(); it++) {
+        if(m_columns[it].name == name)
+            ret = it;
+    }
+
+    return ret;
 }

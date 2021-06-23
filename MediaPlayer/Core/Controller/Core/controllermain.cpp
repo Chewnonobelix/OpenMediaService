@@ -4,7 +4,6 @@ ControllerMain::ControllerMain() : AbstractController() {
     engine().addImportPath(QStringLiteral(QML_IMPORT_PATH));
     qDebug() << QStringLiteral(QML_IMPORT_PATH)
              << engine().importPathList();
-    s_manager.init();
 }
 
 void ControllerMain::exec() {
@@ -66,7 +65,6 @@ void ControllerMain::exec() {
     s_engine->createWindow(QUrl("/Main.qml"), context);
 
     connect(s_settings, &ControllerSettings::dbChanged, this, &ControllerMain::onDbChanged);
-    emit db()->librariesChanged();
 
     connect(m_librariesModel, &LibraryDataModel::currentIndexChanged, [this]() {
         auto index = m_librariesModel->currentIndex();
@@ -91,6 +89,9 @@ void ControllerMain::exec() {
                 m_librariesModel->controller(lib)->setModelIndex(play);
         }
     });
+
+    s_manager.init();
+    emit db()->librariesChanged();
 }
 
 QQmlApplicationEngine &ControllerMain::engine() {
