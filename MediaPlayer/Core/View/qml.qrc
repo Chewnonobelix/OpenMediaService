@@ -8,5 +8,6 @@
         <file>LibraryPopup.qml</file>
         <file>Settings.qml</file>
         <file>MediaMenuBar.qml</file>
+        <file>PlaylistView.qml</file>
     </qresource>
 </RCC>

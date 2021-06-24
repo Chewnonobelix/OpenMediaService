@@ -27,13 +27,13 @@ public:
 	static PluginManager s_manager;
     static QPointer<ControllerSettings> s_settings;
     static QPointer<TabWrapper> s_tabWrapper;
-
+    static QPointer<LiveQmlEngine>& engine();
 signals:
 
 protected:
-	static QPointer<LiveQmlEngine> s_engine;
 
 private:
 	static InterfaceSaver *s_db;
 	static QThread *s_dbThread;
+    static QPointer<LiveQmlEngine> s_engine;
 };

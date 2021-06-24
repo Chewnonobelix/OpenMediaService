@@ -38,3 +38,8 @@ void AbstractController::setDb(QString name) {
 
     emit s_db->librariesChanged();
 }
+
+QPointer<LiveQmlEngine>& AbstractController::engine()
+{
+    return s_engine;
+}

@@ -221,6 +221,12 @@ ApplicationWindow {
                     onClicked: drawPlay.open()
 				}
 
+                MenuItem {
+                    text: "Edit"
+
+                    onClicked: playlist.model.editPlaylist()
+                }
+
 				MenuItem {
 					text: "Add smart playlist"
                     onClicked: _librariesModel.controller(libraryView.currentIndex).addPlaylist(true)

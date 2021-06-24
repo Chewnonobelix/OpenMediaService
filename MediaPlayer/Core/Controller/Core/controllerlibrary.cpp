@@ -8,10 +8,10 @@ void ControllerLibrary::exec() {
 PlaylistModel *ControllerLibrary::playlist() { return &m_playlist; }
 
 void ControllerLibrary::open() {
-    auto context = new QQmlContext(s_engine->qmlEngine().rootContext());
+    auto context = new QQmlContext(engine()->qmlEngine().rootContext());
     context->setContextProperty("_libraries", this);
     qDebug() << "Library context";
-    s_engine->createWindow(QUrl(QStringLiteral("/LibraryView.qml")), context);
+    engine()->createWindow(QUrl(QStringLiteral("/LibraryView.qml")), context);
 }
 
 void ControllerLibrary::addSourceDir(QString source) {
@@ -69,13 +69,6 @@ void ControllerLibrary::onCurrentPlaylistChanged() {
 }
 
 QString ControllerLibrary::id() const { return m_id.toString(); }
-
-void ControllerLibrary::onPlay(MediaPointer m)
-{
-    auto src = (InterfacePlugins*)sender();
-
-    emit play(src->id(), m.data());
-}
 
 void ControllerLibrary::setPlaylistIndex(QString id, int index)
 {

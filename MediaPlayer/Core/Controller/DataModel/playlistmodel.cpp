@@ -41,6 +41,9 @@ QHash<int, QByteArray> PlaylistModel::roleNames() const {
 void PlaylistModel::sort(int, Qt::SortOrder) {}
 
 void PlaylistModel::setSmart(QList<SmartPlaylistPointer> s) {
+    for(auto it: m_smarts)
+        it->disconnect(SIGNAL(nameChanged()));
+
     beginRemoveRows(QModelIndex(), 0, m_smarts.size() - 1);
     removeRows(0, m_smarts.size() - 1);
     endRemoveRows();
@@ -51,9 +54,16 @@ void PlaylistModel::setSmart(QList<SmartPlaylistPointer> s) {
     beginInsertRows(QModelIndex(), 0, m_smarts.size() - 1);
     insertRows(0, m_smarts.size() - 1);
     endInsertRows();
+
+    for(auto it: m_smarts)
+        connect(it.data(), &PlayList::nameChanged, this, &PlaylistModel::onPlaylistNameChanged);
+
 }
 
 void PlaylistModel::setNormal(QList<PlaylistPointer> n) {
+    for(auto it: m_normals)
+        it->disconnect(SIGNAL(nameChanged()));
+
     beginRemoveRows(QModelIndex(), m_smarts.size() - 1, m_normals.size() - 1);
     removeRows(m_smarts.size() - 1, m_normals.size() - 1);
     endRemoveRows();
@@ -64,6 +74,9 @@ void PlaylistModel::setNormal(QList<PlaylistPointer> n) {
     beginInsertRows(QModelIndex(), m_smarts.size() - 1, m_normals.size() - 1);
     insertRows(m_smarts.size() - 1, m_normals.size() - 1);
     endInsertRows();
+
+    for(auto it: m_normals)
+        connect(it.data(), &PlayList::nameChanged, this, &PlaylistModel::onPlaylistNameChanged);
 }
 
 int PlaylistModel::currentIndex() const { return m_currentIndex; }
@@ -95,4 +108,33 @@ void PlaylistModel::onLibraryChanged(LibraryPointer l) {
 PlaylistPointer PlaylistModel::operator[](int index) const {
     return index < m_smarts.size() ? m_smarts[index]
                                      : m_normals[index - m_smarts.size()];
+}
+
+void PlaylistModel::editPlaylist() const
+{
+    auto context = new QQmlContext(AbstractController::engine()->qmlEngine().rootContext());
+    context->setContextProperty("_playlist", current().data());
+    qDebug() << "Playlist context";
+    AbstractController::engine()->createWindow(QUrl(QStringLiteral("/PlaylistView.qml")), context);
+}
+
+void PlaylistModel::onPlaylistNameChanged()
+{
+    auto pl = dynamic_cast<PlayList*>(sender());
+    int i = 0;
+
+    QModelIndex ind;
+    for(; i < m_smarts.size() && !ind.isValid(); i++)
+    {
+        if(pl->name() == m_smarts[i]->name())
+            ind = index(i);
+    }
+
+    for(; i < (m_normals.size() + m_smarts.size()) && !ind.isValid(); i++)
+    {
+        if(pl->name() == m_normals[i - m_smarts.size()]->name())
+            ind = index(i);
+    }
+
+    emit dataChanged(ind, ind, {int(PlaylistRole::NameRole)});
 }

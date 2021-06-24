@@ -3,12 +3,12 @@
 void ControllerVideo::exec() {}
 
 QObject * ControllerVideo::playerView() const {
-    static QQmlComponent ret(&(s_engine->qmlEngine()), "qrc:/video/VideoPlayer.qml");
+    static QQmlComponent ret(&(engine()->qmlEngine()), "qrc:/video/VideoPlayer.qml");
     return ret.create();
 }
 
 QObject *ControllerVideo::playlistView() {
-    static QQmlComponent ret(&(s_engine->qmlEngine()), "qrc:/video/VideoPlaylist.qml");
+    static QQmlComponent ret(&(engine()->qmlEngine()), "qrc:/video/VideoPlaylist.qml");
     return ret.create();
 }
 

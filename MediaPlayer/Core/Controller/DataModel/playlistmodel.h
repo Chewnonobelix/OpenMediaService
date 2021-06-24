@@ -5,6 +5,7 @@
 
 #include <Model/library.h>
 #include <Model/smartplaylist.h>
+#include <Controller/Core/abstractcontroller.h>
 
 class MEDIAPLAYERCORE_EXPORT PlaylistModel : public QAbstractListModel {
 	Q_OBJECT
@@ -31,6 +32,8 @@ public:
 	PlaylistPointer current() const;
 	PlaylistPointer operator[](int) const;
 
+    Q_INVOKABLE void editPlaylist() const;
+
 public:
 	QVariant data(const QModelIndex &index, int role) const override;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -39,8 +42,8 @@ public:
 
 public slots:
 	void onLibraryChanged(LibraryPointer);
+    void onPlaylistNameChanged();
 
 signals:
     void currentIndexChanged();
-	void displayChanged(QQmlComponent *);
 };

@@ -4,7 +4,7 @@ QPointer<QQmlComponent> ControllerImage::s_player = nullptr;
 QPointer<QQmlComponent> ControllerImage::s_playlist = nullptr;
 
 void ControllerImage::exec() {
-    auto* root = s_engine->qmlEngine().rootContext();
+    auto* root = engine()->qmlEngine().rootContext();
     context = new QQmlContext(root);
     context->setContextProperty("_imageLibrairyModel", &m_model);
     context->setContextProperty("_imageListModel", &m_listModel);
@@ -21,12 +21,12 @@ void ControllerImage::exec() {
     m_timer.setInterval(2000);
 
     if(!s_playlist)
-        s_playlist = new QQmlComponent(&(s_engine->qmlEngine()),
+        s_playlist = new QQmlComponent(&(engine()->qmlEngine()),
                                    QUrl("qrc:/image/ImagePlaylist.qml"));
     m_playlistObj = s_playlist->create(contextPlaylist);
 
     if(!s_player)
-         s_player = new QQmlComponent(&(s_engine->qmlEngine()),
+         s_player = new QQmlComponent(&(engine()->qmlEngine()),
                                  QUrl("qrc:/image/ImagePlayer.qml"));
     m_playerObj = s_player->create(contextPlayer);
 }

@@ -42,6 +42,7 @@ public:
     QString id() const;
     bool containView(QUuid) const;
     void setModelIndex(int);
+
 public:
     Q_INVOKABLE void setPlaylistIndex(QString, int);
     Q_INVOKABLE QObject *playerComp(QString);
@@ -50,9 +51,7 @@ public:
 public slots:
 	void onUpdateLibrary();
     void onCurrentPlaylistChanged();
-    void onPlay(MediaPointer);
 
 signals:
 	void libraryChanged();
-    void play(QUuid, Media*);
 };

@@ -62,7 +62,7 @@ void ControllerMain::exec() {
     connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
             &LibraryDataModel::onUpdateLibraries);
 
-    s_engine->createWindow(QUrl("/Main.qml"), context);
+    AbstractController::engine()->createWindow(QUrl("/Main.qml"), context);
 
     connect(s_settings, &ControllerSettings::dbChanged, this, &ControllerMain::onDbChanged);
 
@@ -95,7 +95,7 @@ void ControllerMain::exec() {
 }
 
 QQmlApplicationEngine &ControllerMain::engine() {
-    return s_engine->qmlEngine();
+    return AbstractController::engine()->qmlEngine();
 }
 
 void ControllerMain::onDbChanged()
