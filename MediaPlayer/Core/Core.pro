@@ -27,6 +27,7 @@ SOURCES += \
         Controller/Data/interfacesaver.cpp \
         Controller/DataModel/librarydatamodel.cpp \
         Controller/DataModel/playlistmodel.cpp \
+        Controller/DataModel/smartmodel.cpp \
         Controller/Plugins/interfaceplugins.cpp \
         Controller/Plugins/pluginmanager.cpp \
         Model/smartplaylist.cpp \
@@ -63,6 +64,7 @@ HEADERS += \
     Controller/Data/interfacesaver.h \
     Controller/DataModel/librarydatamodel.h \
     Controller/DataModel/playlistmodel.h \
+    Controller/DataModel/smartmodel.h \
     Controller/Plugins/interfaceplugins.h \
     Controller/Plugins/pluginmanager.h \
     Model/smartplaylist.h \

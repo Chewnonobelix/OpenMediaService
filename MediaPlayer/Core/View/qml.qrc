@@ -9,5 +9,6 @@
         <file>Settings.qml</file>
         <file>MediaMenuBar.qml</file>
         <file>PlaylistView.qml</file>
+        <file>SmartRule.qml</file>
     </qresource>
 </RCC>

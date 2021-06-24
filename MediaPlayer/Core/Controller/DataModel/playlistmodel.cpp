@@ -114,6 +114,8 @@ void PlaylistModel::editPlaylist() const
 {
     auto context = new QQmlContext(AbstractController::engine()->qmlEngine().rootContext());
     context->setContextProperty("_playlist", current().data());
+    context->setContextProperty("_smart", !current().dynamicCast<SmartPlaylist>().isNull());
+
     qDebug() << "Playlist context";
     AbstractController::engine()->createWindow(QUrl(QStringLiteral("/PlaylistView.qml")), context);
 }
