@@ -5,8 +5,8 @@
 
 #include <Core/naryexpression.h>
 #include <Core/valueexpression.h>
-#include <Operation/conjonctiveform.h>
-#include <Operation/disjonctiveform.h>
+#include <Operation/Logic/conjonctiveform.h>
+#include <Operation/Logic/disjonctiveform.h>
 
 #include "playlist.h"
 
