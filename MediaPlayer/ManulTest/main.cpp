@@ -2,6 +2,8 @@
 #include <Operation/Arithmetic/additionexpression.h>
 #include <Core/valueexpression.h>
 #include "testexp.h"
+#include <QVariant>
+#include <QDate>
 
 int main(int argc, char *argv[])
 {
@@ -16,5 +18,8 @@ int main(int argc, char *argv[])
     qDebug()<<te.evaluate();
     j = 4;
     qDebug()<<te.evaluate();
+
+    QVariant a1(123), a2("12");
+    qDebug()<<(QVariant::compare(a1, a2) == QPartialOrdering::Less);
     return a.exec();
 }

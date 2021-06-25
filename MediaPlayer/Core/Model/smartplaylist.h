@@ -7,6 +7,10 @@
 #include <Core/valueexpression.h>
 #include <Operation/Logic/conjonctiveform.h>
 #include <Operation/Logic/disjonctiveform.h>
+#include <Operation/Comparaison/equalexpression.h>
+#include <Operation/Comparaison/inferiorexpression.h>
+#include <Operation/Comparaison/superiorexpression.h>
+#include <Operation/Logic/orexpression.h>
 
 #include "playlist.h"
 
@@ -27,28 +31,30 @@ class MEDIAPLAYERCORE_EXPORT SmartPlaylist : public PlayList {
 private:
     static QMultiMap<QString, QString> s_ops;
 
-
-
     struct AbstractRule {
-        virtual QSharedPointer<Expression<bool>> create() const = 0;
+        virtual QSharedPointer<Expression<bool>> create() = 0;
     };
 
     struct Rule: public AbstractRule {
         QString field;
-        QString value;
+        QVariant value;
+        QVariant toTest;
         QString op;
 
-        QSharedPointer<Expression<bool>> create() const override;
+        QSharedPointer<Expression<bool>> create() override;
     };
 
     struct Group: public AbstractRule {
         QString op;
-        QVector<std::unique_ptr<AbstractRule>> list;
+        QList<std::unique_ptr<AbstractRule>> list;
 
-        QSharedPointer<Expression<bool>> create() const override;
+        QSharedPointer<Expression<bool>> create() override;
     };
 
     bool isValid(MediaPointer) const;
+
+    QList<Rule> m_rules;
+    QSharedPointer<Expression<bool>> m_expression;
 
 public:
     SmartPlaylist() = default;

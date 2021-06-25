@@ -5,8 +5,10 @@ QMultiMap<QString, QString> SmartPlaylist::s_ops = {{"number", "inferior"},
                                                     {"number", "superior"},
                                                     {"number", "esuperior"},
                                                     {"number", "equal"},
+                                                    {"number", "born"},
                                                     {"all", "equal"},
-                                                    {"all", "not"},
+                                                    {"all", "inList"},
+                                                    {"pre", "not"},
                                                     {"string", "contain"},
                                                     {"string", "start"},
                                                     {"string", "end"},
@@ -14,34 +16,15 @@ QMultiMap<QString, QString> SmartPlaylist::s_ops = {{"number", "inferior"},
                                                     {"group", "and"},
                                                     {"group", "or"}
                                                    };
-namespace N {
-template<>
-QString type (double) {
-    return "number";
-}
 
-template<>
-QString type (int) {
-    return "number";
-}
+bool SmartPlaylist::isValid(MediaPointer) const {
+    if(m_rules.isEmpty())
+        return true;
+    if(m_expression.isNull())
+        return false;
 
-template<>
-QString type (QDate) {
-    return "number";
+    return m_expression->evaluate();
 }
-
-template<>
-QString type (QDateTime) {
-    return "number";
-}
-
-template<>
-QString type (QString) {
-    return "string";
-}
-}
-
-bool SmartPlaylist::isValid(MediaPointer) const { return true; }
 
 void SmartPlaylist::append(MediaPointer m, int p) {
     if (isValid(m))
@@ -53,13 +36,53 @@ void SmartPlaylist::onMediaChanged(MediaPointer m) {
         append(m);
 }
 
-QSharedPointer<Expression<bool>> SmartPlaylist::Rule::create() const
+
+QSharedPointer<Expression<bool>> SmartPlaylist::Rule::create()
 {
-    auto ret = QSharedPointer<ValueExpression<bool>>::create();
+    QSharedPointer<ComparaisonExpression<QVariant&>> ret;
+    if(op == "inferior") {
+        ret = QSharedPointer<InferiorExpression<QVariant&>>::create();
+        ValueExpression<QVariant&> v1(value), v2(toTest);
+        ret->setE1(v1.clone());
+        ret->setE2(v2.clone());
+    }
+    if(op == "superior") {
+        ret = QSharedPointer<SuperiorExpression<QVariant&>>::create();
+        ValueExpression<QVariant&> v1(value), v2(toTest);
+        ret->setE1(v1.clone());
+        ret->setE2(v2.clone());
+    }
+    if(op == "einferior") {
+        auto inf = QSharedPointer<InferiorExpression<QVariant&>>::create();
+        ValueExpression<QVariant&> v1(value), v2(toTest);
+        inf->setE1(v1.clone());
+        inf->setE2(v2.clone());
+        auto equal = QSharedPointer<EqualExpression<QVariant&>>::create();
+        equal->setE1(v1.clone());
+        equal->setE2(v2.clone());
+        auto eor = QSharedPointer<OrExpression>::create();
+        eor->setE1(equal->clone());
+        eor->setE2(inf->clone());
+        return eor;
+    }
+    if(op == "esuperior") {
+        auto sup = QSharedPointer<SuperiorExpression<QVariant&>>::create();
+        ValueExpression<QVariant&> v1(value), v2(toTest);
+        sup->setE1(v1.clone());
+        sup->setE2(v2.clone());
+        auto equal = QSharedPointer<EqualExpression<QVariant&>>::create();
+        equal->setE1(v1.clone());
+        equal->setE2(v2.clone());
+        auto eor = QSharedPointer<OrExpression>::create();
+        eor->setE1(equal->clone());
+        eor->setE2(sup->clone());
+        return eor;
+    }
+
     return ret;
 }
 
-QSharedPointer<Expression<bool>> SmartPlaylist::Group::create() const
+QSharedPointer<Expression<bool>> SmartPlaylist::Group::create()
 {
     QSharedPointer<NaryExpression<bool>> ret;
     if(op == "and")
