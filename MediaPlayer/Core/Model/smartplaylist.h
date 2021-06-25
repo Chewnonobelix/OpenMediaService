@@ -18,13 +18,6 @@ class SmartPlaylist;
 
 typedef QSharedPointer<SmartPlaylist> SmartPlaylistPointer;
 
-namespace N{
-template<typename  T>
-QString type(T) {
-    return "all";
-}
-}
-
 class MEDIAPLAYERCORE_EXPORT SmartPlaylist : public PlayList {
     Q_OBJECT
 
