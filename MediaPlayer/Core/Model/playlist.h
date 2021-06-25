@@ -18,7 +18,7 @@ typedef QSharedPointer<PlayList> PlaylistPointer;
 
 class MEDIAPLAYERCORE_EXPORT PlayList : public QObject,
         public MetaData,
-        private QList<MediaPointer> {
+        public QList<MediaPointer> {
     Q_OBJECT
 
     Q_PROPERTY(QUuid id READ id CONSTANT)
