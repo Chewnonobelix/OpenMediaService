@@ -5,6 +5,7 @@ SUBDIRS = \
     Core \
     DesignLibrary \
     ExpressionLibrary \
+    ManulTest \
     Plugins \
     UnitTest \
     UxComponent
