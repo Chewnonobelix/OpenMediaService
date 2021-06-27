@@ -41,7 +41,7 @@ QSharedPointer<Expression<bool>> SmartPlaylist::Rule::create()
 {
     QSharedPointer<ComparaisonExpression<QVariant&>> ret;
     if(op == "inferior") {
-        ret = QSharedPointer<InferiorExpression<QVariant&>>::create();
+//        ret = QSharedPointer<InferiorExpression<QVariant&>>::create();
         ValueExpression<QVariant&> v1(value), v2(toTest);
         ret->setE1(v1.clone());
         ret->setE2(v2.clone());
@@ -53,30 +53,30 @@ QSharedPointer<Expression<bool>> SmartPlaylist::Rule::create()
         ret->setE2(v2.clone());
     }
     if(op == "einferior") {
-        auto inf = QSharedPointer<InferiorExpression<QVariant&>>::create();
-        ValueExpression<QVariant&> v1(value), v2(toTest);
-        inf->setE1(v1.clone());
-        inf->setE2(v2.clone());
-        auto equal = QSharedPointer<EqualExpression<QVariant&>>::create();
-        equal->setE1(v1.clone());
-        equal->setE2(v2.clone());
-        auto eor = QSharedPointer<OrExpression>::create();
-        eor->setE1(equal->clone());
-        eor->setE2(inf->clone());
-        return eor;
+//        auto inf = QSharedPointer<InferiorExpression<QVariant&>>::create();
+//        ValueExpression<QVariant&> v1(value), v2(toTest);
+//        inf->setE1(v1.clone());
+//        inf->setE2(v2.clone());
+//        auto equal = QSharedPointer<EqualExpression<QVariant&>>::create();
+//        equal->setE1(v1.clone());
+//        equal->setE2(v2.clone());
+//        auto eor = QSharedPointer<OrExpression>::create();
+//        eor->setE1(equal->clone());
+//        eor->setE2(inf->clone());
+//        return eor;
     }
     if(op == "esuperior") {
-        auto sup = QSharedPointer<SuperiorExpression<QVariant&>>::create();
-        ValueExpression<QVariant&> v1(value), v2(toTest);
-        sup->setE1(v1.clone());
-        sup->setE2(v2.clone());
-        auto equal = QSharedPointer<EqualExpression<QVariant&>>::create();
-        equal->setE1(v1.clone());
-        equal->setE2(v2.clone());
-        auto eor = QSharedPointer<OrExpression>::create();
-        eor->setE1(equal->clone());
-        eor->setE2(sup->clone());
-        return eor;
+//        auto sup = QSharedPointer<SuperiorExpression<QVariant&>>::create();
+//        ValueExpression<QVariant&> v1(value), v2(toTest);
+//        sup->setE1(v1.clone());
+//        sup->setE2(v2.clone());
+//        auto equal = QSharedPointer<EqualExpression<QVariant&>>::create();
+//        equal->setE1(v1.clone());
+//        equal->setE2(v2.clone());
+//        auto eor = QSharedPointer<OrExpression>::create();
+//        eor->setE1(equal->clone());
+//        eor->setE2(sup->clone());
+//        return eor;
     }
 
     return ret;

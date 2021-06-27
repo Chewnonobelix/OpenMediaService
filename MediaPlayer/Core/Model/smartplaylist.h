@@ -12,6 +12,8 @@
 #include <Operation/Comparaison/superiorexpression.h>
 #include <Operation/Logic/orexpression.h>
 
+#include "Expression/variantsuperiorexpression.h"
+
 #include "playlist.h"
 
 class SmartPlaylist;

@@ -30,6 +30,9 @@ SOURCES += \
         Controller/DataModel/smartmodel.cpp \
         Controller/Plugins/interfaceplugins.cpp \
         Controller/Plugins/pluginmanager.cpp \
+        Model/Expression/endexpression.cpp \
+        Model/Expression/startexpression.cpp \
+        Model/Expression/variantsuperiorexpression.cpp \
         Model/smartplaylist.cpp \
         Model\global.cpp \
         Model\library.cpp \
@@ -67,6 +70,9 @@ HEADERS += \
     Controller/DataModel/smartmodel.h \
     Controller/Plugins/interfaceplugins.h \
     Controller/Plugins/pluginmanager.h \
+    Model/Expression/endexpression.h \
+    Model/Expression/startexpression.h \
+    Model/Expression/variantsuperiorexpression.h \
     Model/smartplaylist.h \
     Model\global.h \
     Model\library.h \
