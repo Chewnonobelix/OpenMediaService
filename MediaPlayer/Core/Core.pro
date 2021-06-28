@@ -32,6 +32,8 @@ SOURCES += \
         Controller/Plugins/pluginmanager.cpp \
         Model/Expression/endexpression.cpp \
         Model/Expression/startexpression.cpp \
+        Model/Expression/variantequalexpression.cpp \
+        Model/Expression/variantinferiorexpression.cpp \
         Model/Expression/variantsuperiorexpression.cpp \
         Model/smartplaylist.cpp \
         Model\global.cpp \
@@ -72,6 +74,8 @@ HEADERS += \
     Controller/Plugins/pluginmanager.h \
     Model/Expression/endexpression.h \
     Model/Expression/startexpression.h \
+    Model/Expression/variantequalexpression.h \
+    Model/Expression/variantinferiorexpression.h \
     Model/Expression/variantsuperiorexpression.h \
     Model/smartplaylist.h \
     Model\global.h \
