@@ -13,6 +13,8 @@
 #include <Operation/Logic/orexpression.h>
 
 #include "Expression/variantsuperiorexpression.h"
+#include "Expression/variantinferiorexpression.h"
+#include "Expression/variantequalexpression.h"
 
 #include "playlist.h"
 
@@ -25,7 +27,7 @@ class MEDIAPLAYERCORE_EXPORT SmartPlaylist : public PlayList {
 
 private:
     static QMultiMap<QString, QString> s_ops;
-
+    enum class Op {Superior, Inferior, Equal, Not, InferiorEqual, SuperiorEqual, Limit, And, Or, List, RegExp, Contain, Start, End};
     struct AbstractRule {
         virtual QSharedPointer<Expression<bool>> create() = 0;
     };
@@ -34,14 +36,14 @@ private:
         QString field;
         QVariant value;
         QVariant toTest;
-        QString op;
+        Op op;
 
         QSharedPointer<Expression<bool>> create() override;
     };
 
     struct Group: public AbstractRule {
         QString op;
-        QList<std::unique_ptr<AbstractRule>> list;
+        QList<QSharedPointer<AbstractRule>> list;
 
         QSharedPointer<Expression<bool>> create() override;
     };
