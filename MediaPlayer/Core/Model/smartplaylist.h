@@ -18,6 +18,9 @@
 
 #include "playlist.h"
 
+#include "Smart/smartgroup.h"
+#include "Smart/smartrule.h"
+
 class SmartPlaylist;
 
 typedef QSharedPointer<SmartPlaylist> SmartPlaylistPointer;
@@ -27,30 +30,10 @@ class MEDIAPLAYERCORE_EXPORT SmartPlaylist : public PlayList {
 
 private:
     static QMultiMap<QString, QString> s_ops;
-    enum class Op {Superior, Inferior, Equal, Not, InferiorEqual, SuperiorEqual, Limit, And, Or, List, RegExp, Contain, Start, End};
-    struct AbstractRule {
-        virtual QSharedPointer<Expression<bool>> create() = 0;
-    };
-
-    struct Rule: public AbstractRule {
-        QString field;
-        QVariant value;
-        QVariant toTest;
-        Op op;
-
-        QSharedPointer<Expression<bool>> create() override;
-    };
-
-    struct Group: public AbstractRule {
-        QString op;
-        QList<QSharedPointer<AbstractRule>> list;
-
-        QSharedPointer<Expression<bool>> create() override;
-    };
 
     bool isValid(MediaPointer) const;
 
-    QList<Rule> m_rules;
+    QList<SmartRule> m_rules;
     QSharedPointer<Expression<bool>> m_expression;
 
 public:

@@ -10,5 +10,6 @@
         <file>MediaMenuBar.qml</file>
         <file>PlaylistView.qml</file>
         <file>SmartRule.qml</file>
+        <file>GroupRule.qml</file>
     </qresource>
 </RCC>

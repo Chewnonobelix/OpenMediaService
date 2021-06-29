@@ -35,6 +35,9 @@ SOURCES += \
         Model/Expression/variantequalexpression.cpp \
         Model/Expression/variantinferiorexpression.cpp \
         Model/Expression/variantsuperiorexpression.cpp \
+        Model/Smart/abstractrule.cpp \
+        Model/Smart/smartgroup.cpp \
+        Model/Smart/smartrule.cpp \
         Model/smartplaylist.cpp \
         Model\global.cpp \
         Model\library.cpp \
@@ -77,6 +80,9 @@ HEADERS += \
     Model/Expression/variantequalexpression.h \
     Model/Expression/variantinferiorexpression.h \
     Model/Expression/variantsuperiorexpression.h \
+    Model/Smart/abstractrule.h \
+    Model/Smart/smartgroup.h \
+    Model/Smart/smartrule.h \
     Model/smartplaylist.h \
     Model\global.h \
     Model\library.h \
