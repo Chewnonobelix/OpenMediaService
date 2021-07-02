@@ -24,6 +24,8 @@ public:
 private slots:
     void initTestCase();
     void cleanupTestCase();
+    void test_addRule();
+    void test_addGroup();
     void test_setRule();
     void test_addValid();
     void test_addInvalid();
@@ -55,6 +57,27 @@ void SmartPlaylistTest::cleanupTestCase()
 
 }
 
+void SmartPlaylistTest::test_addRule()
+{
+    QVERIFY(group.count() == 0);
+    auto rule = group.add().dynamicCast<SmartRule>();
+    QCOMPARE(rule.isNull(), false);
+    QCOMPARE(group.count(), 1);
+
+    rule = group[group.count() - 1].dynamicCast<SmartRule>();
+    rule->setField("count");
+    rule->setValue(1);
+    rule->setOp(AbstractRule::Op::Inferior);
+}
+
+void SmartPlaylistTest::test_addGroup()
+{
+    QVERIFY(group.count() == 1);
+    auto rule = group.add(true).dynamicCast<SmartGroup>();
+    QCOMPARE(rule.isNull(), false);
+    QCOMPARE(group.count(), 2);
+}
+
 void SmartPlaylistTest::test_setRule()
 {
     QVERIFY(spl1->rules().compare(group.clone()) == QPartialOrdering::Unordered);
@@ -64,6 +87,7 @@ void SmartPlaylistTest::test_setRule()
 
 void SmartPlaylistTest::test_addValid()
 {
+    QVERIFY(spl1->rules()[0].dynamicCast<SmartRule>()->field() == "count");
     QVERIFY(spl1->count() == 0);
     spl1->append(m1);
     QCOMPARE(spl1->count(), 1);
