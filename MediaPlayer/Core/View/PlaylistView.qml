@@ -37,21 +37,13 @@ MediaWindow {
             Layout.fillWidth: true
         }
 
-        ListView {
-            header: MediaLabel {
-                text: "Smart rules"
-            }
+        GroupRule {
 
             visible: _smart
             Layout.columnSpan: 2
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            delegate: SmartRule {
-                pname: name
-                pop: op
-                pvalue: value
-            }
         }
     }
 }

@@ -8,11 +8,6 @@ import MediaPlayer.Components 1.0
 
 Item {
     id: root
-
-    property string pname
-    property string pop
-    property string pvalue
-
     RowLayout {
         anchors.fill: parent
 

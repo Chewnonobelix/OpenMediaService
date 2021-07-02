@@ -11,5 +11,6 @@
         <file>PlaylistView.qml</file>
         <file>SmartRule.qml</file>
         <file>GroupRule.qml</file>
+        <file>Node.qml</file>
     </qresource>
 </RCC>
