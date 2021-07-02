@@ -18,14 +18,15 @@ QMultiMap<QString, QString> SmartPlaylist::s_ops = {{"number", "inferior"},
                                                    };
 
 bool SmartPlaylist::isValid(MediaPointer m) const {
-    if(m_rules.isEmpty())
+    if(m_rules.count() == 0)
         return true;
+
     if(m_expression.isNull())
         return false;
 
-    for(auto it: m_rules) {
-        it.setToTest(m->metaData<QVariant>(it.field()));
-    }
+//    for(auto it: m_rules) {
+//        it.setToTest(m->metaData<QVariant>(it.field()));
+//    }
 
     return m_expression->evaluate();
 }
