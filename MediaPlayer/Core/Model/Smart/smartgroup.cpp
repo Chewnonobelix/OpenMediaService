@@ -62,12 +62,14 @@ AbstractRule::Op SmartGroup::op() const
     return m_op;
 }
 
-void SmartGroup::add(bool group)
+QSharedPointer<AbstractRule> SmartGroup::add(bool group)
 {
     if(group)
         m_list<<QSharedPointer<SmartGroup>::create();
     else
         m_list<<QSharedPointer<SmartRule>::create();
+
+    return m_list.last();
 }
 
 void SmartGroup::remove(int i)

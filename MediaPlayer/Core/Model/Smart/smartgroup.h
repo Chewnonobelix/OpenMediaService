@@ -25,7 +25,7 @@ public:
     bool setOp(Op);
     Op op() const;
 
-    void add(bool = false);
+    QSharedPointer<AbstractRule> add(bool = false);
     void remove(int);
     QSharedPointer<AbstractRule> operator[](int) const;
     int count() const;
