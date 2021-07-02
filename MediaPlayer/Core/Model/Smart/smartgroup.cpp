@@ -1,5 +1,31 @@
 #include "smartgroup.h"
 
+SmartGroup::SmartGroup(const SmartGroup& g): AbstractRule(g), m_op(g.op())
+{
+    for(auto it: g.m_list) {
+        m_list<<it->clone();
+    }
+}
+
+QPartialOrdering SmartGroup::compare(QSharedPointer<AbstractRule> other) const
+{
+    auto ret =  QPartialOrdering::Equivalent;
+
+    auto g = other.dynamicCast<SmartGroup>();
+    ret = !g.isNull() && (g->count() == count()) && (g->op() == op()) ? QPartialOrdering::Equivalent : QPartialOrdering::Unordered;
+
+    for(auto it = 0; it < m_list.count() && ret == QPartialOrdering::Equivalent; it++) {
+        ret = m_list[it]->compare((*g)[it]);
+    }
+
+    return ret;
+}
+
+QSharedPointer<AbstractRule> SmartGroup::clone() const
+{
+    return DesignPattern::factory<SmartGroup>(*this);
+}
+
 QSharedPointer<Expression<bool>> SmartGroup::create()
 {
     QSharedPointer<NaryExpression<bool>> ret;
