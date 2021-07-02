@@ -15,12 +15,22 @@ QVariant& SmartRule::value()
     return m_value;
 }
 
+QVariant SmartRule::value() const
+{
+    return m_value;
+}
+
 void SmartRule::setValue(QVariant newvalue)
 {
     m_value = newvalue;
 }
 
 QVariant& SmartRule::toTest()
+{
+    return m_toTest;
+}
+
+QVariant SmartRule::toTest() const
 {
     return m_toTest;
 }
@@ -90,5 +100,19 @@ QSharedPointer<Expression<bool>> SmartRule::create()
     default:
         break;
     }
+    return ret;
+}
+
+QSharedPointer<AbstractRule> SmartRule::clone() const
+{
+    return DesignPattern::factory<SmartRule>(*this);
+}
+
+QPartialOrdering SmartRule::compare(QSharedPointer<AbstractRule> other) const
+{
+    auto r = other.dynamicCast<SmartRule>();
+    auto ret = !r.isNull() && (field() == r->field()) &&
+            (value() == r->value()) && (toTest() == r->toTest()) &&
+            (op() == r->op()) ? QPartialOrdering::Equivalent : QPartialOrdering::Unordered;
     return ret;
 }
