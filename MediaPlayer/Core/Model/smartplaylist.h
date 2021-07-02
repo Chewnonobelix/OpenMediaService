@@ -44,6 +44,7 @@ public:
     SmartGroup rules() const;
     void setRules(SmartGroup);
 
+    Q_INVOKABLE void rebuild();
 public slots:
     void append(MediaPointer, int = -1) override;
     void onMediaChanged(MediaPointer);

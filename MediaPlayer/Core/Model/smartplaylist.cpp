@@ -49,5 +49,11 @@ SmartGroup SmartPlaylist::rules() const
 void SmartPlaylist::setRules(SmartGroup rule)
 {
     m_rules = rule;
+    rebuild();
+}
+
+void SmartPlaylist::rebuild()
+{
+    m_expression = m_rules.create();
 }
 
