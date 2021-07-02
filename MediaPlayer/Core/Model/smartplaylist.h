@@ -33,7 +33,7 @@ private:
 
     bool isValid(MediaPointer) const;
 
-    QList<SmartRule> m_rules;
+    SmartGroup m_rules;
     QSharedPointer<Expression<bool>> m_expression;
 
 public:
@@ -41,6 +41,8 @@ public:
     using PlayList::PlayList;
     SmartPlaylist(const SmartPlaylist &) = default;
     ~SmartPlaylist() = default;
+    SmartGroup rules() const;
+    void setRules(SmartGroup);
 
 public slots:
     void append(MediaPointer, int = -1) override;

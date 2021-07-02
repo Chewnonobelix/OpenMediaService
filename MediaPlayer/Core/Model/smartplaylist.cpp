@@ -40,5 +40,13 @@ void SmartPlaylist::onMediaChanged(MediaPointer m) {
         append(m);
 }
 
+SmartGroup SmartPlaylist::rules() const
+{
+    return m_rules;
+}
 
+void SmartPlaylist::setRules(SmartGroup rule)
+{
+    m_rules = rule;
+}
 
