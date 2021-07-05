@@ -33,6 +33,8 @@ void SmartPlaylist::append(MediaPointer m, int p)
 {
     if (isValid(m))
         PlayList::append(m, p);
+    else
+        removeAll(m);
 }
 
 void SmartPlaylist::onMediaChanged(MediaPointer m) {
