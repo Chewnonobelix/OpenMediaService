@@ -31,12 +31,11 @@ QSharedPointer<Expression<bool>> SmartGroup::create()
     QSharedPointer<NaryExpression<bool>> ret;
 
     switch(op()) {
-    case AbstractRule::Op::And:
-        ret = QSharedPointer<ConjonctiveForm>::create();
-        break;
     case AbstractRule::Op::Or:
         ret = QSharedPointer<DisjonctiveForm>::create();
+    case AbstractRule::Op::And:
     default:
+        ret = QSharedPointer<ConjonctiveForm>::create();
         break;
     }
     for(auto& it: m_list)
