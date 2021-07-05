@@ -104,6 +104,7 @@ void SmartPlaylistTest::test_modify()
 {
     QVERIFY(spl1->count() == 1);
     m1->setCount(count3);
+    spl1->onMediaChanged(m1);
     QCOMPARE(spl1->count(), 0);
 }
 
