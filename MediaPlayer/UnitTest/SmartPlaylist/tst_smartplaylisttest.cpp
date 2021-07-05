@@ -62,11 +62,11 @@ void SmartPlaylistTest::test_addRule()
     QVERIFY(group.count() == 0);
     auto rule = group.add().dynamicCast<SmartRule>();
     QCOMPARE(rule.isNull(), false);
-    QCOMPARE(group.count(), count2);
+    QCOMPARE(group.count(), count1);
 
     rule = group[group.count() - 1].dynamicCast<SmartRule>();
     rule->setField("count");
-    rule->setValue(1);
+    rule->setValue(count2);
     rule->setOp(AbstractRule::Op::Inferior);
 }
 
