@@ -58,22 +58,22 @@ QSharedPointer<Expression<bool>> SmartRule::create()
     case Op::Inferior: {
         ret = QSharedPointer<InferiorExpression<QVariant&>>::create();
         ValueExpression<QVariant&> v1(value()), v2(toTest());
-        ret->setE1(v1.clone());
-        ret->setE2(v2.clone());
+        ret->setE1(v2.clone());
+        ret->setE2(v1.clone());
         break;
     }
     case Op::Superior: {
         ret = QSharedPointer<SuperiorExpression<QVariant&>>::create();
         ValueExpression<QVariant&> v1(value()), v2(toTest());
-        ret->setE1(v1.clone());
-        ret->setE2(v2.clone());
+        ret->setE1(v2.clone());
+        ret->setE2(v1.clone());
         break;
     }
     case Op::InferiorEqual: {
         auto inf = QSharedPointer<InferiorExpression<QVariant&>>::create();
         ValueExpression<QVariant&> v1(value()), v2(toTest());
-        inf->setE1(v1.clone());
-        inf->setE2(v2.clone());
+        inf->setE1(v2.clone());
+        inf->setE2(v1.clone());
         auto equal = QSharedPointer<EqualExpression<QVariant&>>::create();
         equal->setE1(v1.clone());
         equal->setE2(v2.clone());
@@ -86,8 +86,8 @@ QSharedPointer<Expression<bool>> SmartRule::create()
     case Op::SuperiorEqual: {
         auto sup = QSharedPointer<SuperiorExpression<QVariant&>>::create();
         ValueExpression<QVariant&> v1(value()), v2(toTest());
-        sup->setE1(v1.clone());
-        sup->setE2(v2.clone());
+        sup->setE1(v2.clone());
+        sup->setE2(v1.clone());
         auto equal = QSharedPointer<EqualExpression<QVariant&>>::create();
         equal->setE1(v1.clone());
         equal->setE2(v2.clone());
