@@ -26,6 +26,7 @@ public:
     QSharedPointer<Expression<bool>> create() override;
     QSharedPointer<AbstractRule> clone() const override;
     QPartialOrdering compare(QSharedPointer<AbstractRule>) const override;
+    void set(MediaPointer) override;
 
     QString field() const;
     void setField(QString);

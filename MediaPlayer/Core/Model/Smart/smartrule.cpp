@@ -116,3 +116,8 @@ QPartialOrdering SmartRule::compare(QSharedPointer<AbstractRule> other) const
             (op() == r->op()) ? QPartialOrdering::Equivalent : QPartialOrdering::Unordered;
     return ret;
 }
+
+void SmartRule::set(MediaPointer m)
+{
+    setToTest(m->metaData<QVariant>(field()));
+}

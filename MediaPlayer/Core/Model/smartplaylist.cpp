@@ -17,21 +17,20 @@ QMultiMap<QString, QString> SmartPlaylist::s_ops = {{"number", "inferior"},
                                                     {"group", "or"}
                                                    };
 
-bool SmartPlaylist::isValid(MediaPointer m) const {
+bool SmartPlaylist::isValid(MediaPointer m)
+{
     if(m_rules.count() == 0)
         return true;
 
     if(m_expression.isNull())
         return false;
 
-//    for(auto it: m_rules) {
-//        it.setToTest(m->metaData<QVariant>(it.field()));
-//    }
-
+    m_rules.set(m);
     return m_expression->evaluate();
 }
 
-void SmartPlaylist::append(MediaPointer m, int p) {
+void SmartPlaylist::append(MediaPointer m, int p)
+{
     if (isValid(m))
         PlayList::append(m, p);
 }

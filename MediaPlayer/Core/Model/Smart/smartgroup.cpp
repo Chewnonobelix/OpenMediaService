@@ -89,3 +89,9 @@ int SmartGroup::count() const
 {
     return m_list.count();
 }
+
+void SmartGroup::set(MediaPointer m)
+{
+    for(auto it: m_list)
+        it->set(m);
+}

@@ -31,7 +31,7 @@ class MEDIAPLAYERCORE_EXPORT SmartPlaylist : public PlayList {
 private:
     static QMultiMap<QString, QString> s_ops;
 
-    bool isValid(MediaPointer) const;
+    bool isValid(MediaPointer);
 
     SmartGroup m_rules;
     QSharedPointer<Expression<bool>> m_expression;
