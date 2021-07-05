@@ -4,5 +4,5 @@ SUBDIRS += \
     Library \
     Media \
     Playlist \
-    SmartPlaylistTest \
+    SmartPlaylist \
     TestXml
