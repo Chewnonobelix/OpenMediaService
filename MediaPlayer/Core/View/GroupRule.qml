@@ -29,10 +29,8 @@ Item {
                 text: "Smart rules"
             }
 
-            delegate: Loader {
-                source: type === "group" ? "GroupRule.qml" : "SmartRule.qml"
-
-                    }
+            delegate: SmartRule {
+                fields: field
             }
         }
     }
