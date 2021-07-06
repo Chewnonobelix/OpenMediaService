@@ -59,12 +59,12 @@ void SmartPlaylistTest::cleanupTestCase()
 
 void SmartPlaylistTest::test_addRule()
 {
-    QVERIFY(group.count() == 0);
+    QVERIFY(group.count() == 1);
     auto rule = group.add().dynamicCast<SmartRule>();
     QCOMPARE(rule.isNull(), false);
-    QCOMPARE(group.count(), count1);
+    QCOMPARE(group.count(), count2);
 
-    rule = group[group.count() - 1].dynamicCast<SmartRule>();
+    rule = (group)[0].dynamicCast<SmartRule>();
     rule->setField("count");
     rule->setValue(count2);
     rule->setOp(AbstractRule::Op::Inferior);
@@ -72,10 +72,10 @@ void SmartPlaylistTest::test_addRule()
 
 void SmartPlaylistTest::test_addGroup()
 {
-    QVERIFY(group.count() == 1);
+    QVERIFY(group.count() == 2);
     auto rule = group.add(true).dynamicCast<SmartGroup>();
     QCOMPARE(rule.isNull(), false);
-    QCOMPARE(group.count(), 2);
+    QCOMPARE(group.count(), 3);
 }
 
 void SmartPlaylistTest::test_setRule()
@@ -89,6 +89,7 @@ void SmartPlaylistTest::test_addValid()
 {
     QVERIFY(spl1->rules()[0].dynamicCast<SmartRule>()->field() == "count");
     QVERIFY(spl1->count() == 0);
+    qDebug()<<spl1->rules()[0].dynamicCast<SmartRule>()<<spl1->rules()[0].dynamicCast<SmartGroup>();
     spl1->append(m1);
     QCOMPARE(spl1->count(), 1);
 }
