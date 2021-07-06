@@ -29,6 +29,7 @@ public:
     QSharedPointer<AbstractRule> add(bool = false);
     void remove(int);
     QSharedPointer<AbstractRule> operator[](int) const;
+    QSharedPointer<AbstractRule> operator[](int);
     int count() const;
 };
 

@@ -89,6 +89,14 @@ QSharedPointer<AbstractRule> SmartGroup::operator[](int i) const
     return QSharedPointer<AbstractRule>();
 }
 
+QSharedPointer<AbstractRule> SmartGroup::operator[](int i)
+{
+    if(i < m_list.count() && i >= 0)
+        return m_list[i];
+
+    return QSharedPointer<AbstractRule>();
+}
+
 int SmartGroup::count() const
 {
     return m_list.count();
