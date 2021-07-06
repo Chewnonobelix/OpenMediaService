@@ -19,6 +19,7 @@ Item {
         }
 
         ListView {
+            id: list
             anchors.fill: parent
             model: SmartModel {
                 group: root.groups
