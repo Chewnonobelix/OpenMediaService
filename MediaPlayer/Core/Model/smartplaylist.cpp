@@ -51,6 +51,7 @@ void SmartPlaylist::setRules(SmartGroup rule)
 {
     m_rules = rule;
     rebuild();
+    emit rulesChanged();
 }
 
 void SmartPlaylist::rebuild()

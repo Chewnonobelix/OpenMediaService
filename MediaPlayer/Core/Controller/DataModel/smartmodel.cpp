@@ -7,7 +7,7 @@ SmartModel::SmartModel(QObject *parent)
 
 int SmartModel::rowCount(const QModelIndex &) const
 {
-    return m_model->count();
+    return m_model.count();
 }
 
 QVariant SmartModel::data(const QModelIndex &index, int role) const
@@ -15,7 +15,7 @@ QVariant SmartModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    auto model = (*m_model)[index.row()];
+    auto model = (m_model)[index.row()];
 
     auto group = model.dynamicCast<SmartGroup>();
     auto rule = model.dynamicCast<SmartRule>();
@@ -39,7 +39,7 @@ bool SmartModel::setData(const QModelIndex &index, const QVariant &value, int ro
     return false;
 }
 
-void SmartModel::setModel(SmartGroup * m)
+void SmartModel::setModel(SmartGroup m)
 {
     m_model = m;
 }
@@ -52,4 +52,15 @@ QHash<int, QByteArray> SmartModel::roleNames() const
                                         };
 
     return ret;
+}
+
+SmartGroup SmartModel::group() const
+{
+    return m_model;
+}
+
+void SmartModel::setGroup(SmartGroup g)
+{
+    m_model = g;
+    emit groupChanged();
 }

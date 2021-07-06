@@ -28,6 +28,8 @@ typedef QSharedPointer<SmartPlaylist> SmartPlaylistPointer;
 class MEDIAPLAYERCORE_EXPORT SmartPlaylist : public PlayList {
     Q_OBJECT
 
+    Q_PROPERTY(SmartGroup rule READ rules WRITE setRules NOTIFY rulesChanged)
+
 private:
     static QMultiMap<QString, QString> s_ops;
 
@@ -48,4 +50,7 @@ public:
 public slots:
     void append(MediaPointer, int = -1) override;
     void onMediaChanged(MediaPointer);
+
+signals:
+    void rulesChanged();
 };

@@ -8,8 +8,10 @@ class SmartModel : public QAbstractListModel
 {
     Q_OBJECT
     enum class SmartRole {OpRole = Qt::UserRole + 1, TypeRole};
+    Q_PROPERTY(SmartGroup group READ group WRITE setGroup NOTIFY groupChanged)
+
 private:
-    SmartGroup* m_model;
+    SmartGroup m_model;
 
 public:
     explicit SmartModel(QObject *parent = nullptr);
@@ -23,7 +25,15 @@ public:
 
     QHash<int, QByteArray> roleNames() const override;
 
-    Q_INVOKABLE void setModel(SmartGroup*);
+    Q_INVOKABLE void setModel(SmartGroup);
+
+public:
+    SmartGroup group() const;
+    void setGroup(SmartGroup);
+
+signals:
+    void groupChanged();
+
 private:
 };
 
