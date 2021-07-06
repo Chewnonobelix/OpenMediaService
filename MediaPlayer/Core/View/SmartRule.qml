@@ -8,11 +8,16 @@ import MediaPlayer.Components 1.0
 
 Item {
     id: root
+
+    property var fields
+
     RowLayout {
         anchors.fill: parent
 
         MediaCombobox {
             id: field
+
+            model: fields
         }
 
         MediaCombobox {
@@ -27,6 +32,12 @@ Item {
             id: add
 
             text: "+"
+        }
+
+        MediaButton {
+            id: addGroup
+
+            text: "_"
         }
 
         MediaButton {
