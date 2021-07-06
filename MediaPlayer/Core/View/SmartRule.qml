@@ -25,10 +25,14 @@ Item {
 
         MediaButton {
             id: add
+
+            text: "+"
         }
 
         MediaButton {
             id: remove
+
+            text: "-"
         }
     }
 }
