@@ -14,7 +14,7 @@ private:
     QList<QSharedPointer<AbstractRule>> m_list;
 
 public:
-    SmartGroup() = default;
+    SmartGroup();
     SmartGroup(const SmartGroup&);
     ~SmartGroup() = default;
 

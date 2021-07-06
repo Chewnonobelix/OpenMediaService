@@ -16,7 +16,7 @@ private:
     QString m_field;
     QVariant m_value;
     QVariant m_toTest;
-    Op m_op;
+    Op m_op = Op::Undefined;
 
 public:
     SmartRule() = default;

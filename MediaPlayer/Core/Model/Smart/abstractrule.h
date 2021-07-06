@@ -7,8 +7,10 @@
 
 class AbstractRule
 {
+    Q_GADGET
 public:
-    enum class Op {Superior, Inferior, Equal, Not, InferiorEqual, SuperiorEqual, Limit, And, Or, List, RegExp, Contain, Start, End};
+    enum class Op {Undefined, Superior, Inferior, Equal, Not, InferiorEqual, SuperiorEqual, Limit, And, Or, List, RegExp, Contain, Start, End};
+    Q_ENUM(Op)
 
     virtual void set(MediaPointer) = 0;
     virtual QSharedPointer<Expression<bool>> create() = 0;

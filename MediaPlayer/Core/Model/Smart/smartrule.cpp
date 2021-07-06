@@ -98,6 +98,7 @@ QSharedPointer<Expression<bool>> SmartRule::create()
         break;
     }
     default:
+        return QSharedPointer<ValueExpression<bool>>::create(true);
         break;
     }
     return ret;
@@ -110,6 +111,9 @@ QSharedPointer<AbstractRule> SmartRule::clone() const
 
 QPartialOrdering SmartRule::compare(QSharedPointer<AbstractRule> other) const
 {
+    if(field().isEmpty() || !value().isValid())
+        return QPartialOrdering::Equivalent;
+
     auto r = other.dynamicCast<SmartRule>();
     auto ret = !r.isNull() && (field() == r->field()) &&
             (value() == r->value()) && (toTest() == r->toTest()) &&
