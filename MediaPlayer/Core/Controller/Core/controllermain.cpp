@@ -29,7 +29,7 @@ void ControllerMain::exec() {
                                                              "SmartPlaylist", "Cpp owner");
 
     qDebug() << "SmartGroup"
-                     << qmlRegisterUncreatableType<SmartPlaylist>("MediaPlayer", 1, 0,
+                     << qmlRegisterUncreatableType<SmartGroup>("MediaPlayer", 1, 0,
                                                                   "SmartGroup", "Cpp owner");
 
     qDebug() << "LibraryDataModel"
