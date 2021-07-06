@@ -10,7 +10,9 @@ MediaWindow {
     id: root
     flags: Qt.Dialog
 
-    Component.onCompleted: visible = true
+    Component.onCompleted: {
+        visible = true
+    }
 
     title: "Playlist " + (_playlist ? _playlist.name : "")
 
@@ -44,6 +46,7 @@ MediaWindow {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
+            groups: _playlist.rule
         }
     }
 }

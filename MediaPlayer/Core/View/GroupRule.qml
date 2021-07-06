@@ -10,7 +10,7 @@ import MediaPlayer.Components 1.0
 
 Item {
     id: root
-
+    property SmartGroup groups
     GroupBox {
         anchors.fill: parent
 
@@ -20,24 +20,18 @@ Item {
 
         ListView {
             anchors.fill: parent
+            model: SmartModel {
+                group: root.groups
+            }
+
             header: MediaLabel {
                 text: "Smart rules"
             }
 
-            delegate: DelegateChooser {
-                role: "type"
-                DelegateChoice {
-                    roleValue: "group"
-                    Node {
+            delegate: Loader {
+                source: type === "group" ? "GroupRule.qml" : "SmartRule.qml"
 
                     }
-                }
-                DelegateChoice {
-                    roleValue: "rule"
-                    SmartRule {
-
-                    }
-                }
             }
         }
     }
