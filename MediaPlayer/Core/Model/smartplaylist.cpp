@@ -54,6 +54,18 @@ void SmartPlaylist::setRules(SmartGroup rule)
     emit rulesChanged();
 }
 
+SmartGroup* SmartPlaylist::rulesp()
+{
+    return &m_rules;
+}
+
+void SmartPlaylist::setRulesp(SmartGroup* rule)
+{
+    m_rules = *rule;
+    rebuild();
+    emit rulesChanged();
+}
+
 void SmartPlaylist::rebuild()
 {
     m_expression = m_rules.create();

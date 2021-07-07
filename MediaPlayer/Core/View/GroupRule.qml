@@ -10,27 +10,29 @@ import MediaPlayer.Components 1.0
 
 Item {
     id: root
-    property SmartGroup groups
-    GroupBox {
+    property var groups: null
+    TableView {
+        id: list
         anchors.fill: parent
-
-        label: MediaCombobox {
-            model: ["And", "Or"]
+        clip: true
+        model: SmartModel {
+            group: root.groups
         }
 
-        ListView {
-            id: list
-            anchors.fill: parent
-            model: SmartModel {
-                group: root.groups
+
+        delegate: DelegateChooser {
+            role: "type"
+            DelegateChoice {
+                roleValue: "rule"
+                SmartRule {
+                }
             }
 
-            header: MediaLabel {
-                text: "Smart rules"
-            }
-
-            delegate: SmartRule {
-                fields: field
+            DelegateChoice {
+                roleValue: "group"
+                MediaCombobox {
+                    model: ["Or", "And"]
+                }
             }
         }
     }
