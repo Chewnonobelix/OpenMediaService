@@ -80,7 +80,7 @@ void SmartPlaylistTest::test_addGroup()
 
 void SmartPlaylistTest::test_setRule()
 {
-    QVERIFY(spl1->rules().isNull());
+    QVERIFY(spl1->rules()->compare(group) == QPartialOrdering::Unordered);
     auto ret = spl1->setRules(group);
     QCOMPARE(ret, true);
     QCOMPARE(spl1->rules()->compare(group), QPartialOrdering::Equivalent);
