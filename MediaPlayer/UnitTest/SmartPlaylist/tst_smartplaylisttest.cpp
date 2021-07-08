@@ -8,7 +8,7 @@ const MD5 id1 = "id1", id2 = "id2";
 const QString path1 = QStringLiteral(TESTDATA) + "/porte_d_eternite.jpg";
 const QString path2 = QStringLiteral(TESTDATA) + "/121813.jpg";
 int count1 = 1, count2 = 2, count3 = 3;
-SmartGroup group;
+SmartGroupPointer group;
 
 class SmartPlaylistTest : public QObject
 {
@@ -49,7 +49,7 @@ void SmartPlaylistTest::initTestCase()
     m1->setCount(count1);
     m2->setCount(count2);
     spl1 = SmartPlaylistPointer::create();
-
+    group = SmartGroupPointer::create();
 }
 
 void SmartPlaylistTest::cleanupTestCase()
@@ -59,12 +59,12 @@ void SmartPlaylistTest::cleanupTestCase()
 
 void SmartPlaylistTest::test_addRule()
 {
-    QVERIFY(group.count() == 1);
-    auto rule = group.add().dynamicCast<SmartRule>();
+    QVERIFY(group->count() == 1);
+    auto rule = group->add().dynamicCast<SmartRule>();
     QCOMPARE(rule.isNull(), false);
-    QCOMPARE(group.count(), count2);
+    QCOMPARE(group->count(), count2);
 
-    rule = (group)[0].dynamicCast<SmartRule>();
+    rule = (*group)[0].dynamicCast<SmartRule>();
     rule->setField("count");
     rule->setValue(count2);
     rule->setOp(AbstractRule::Op::Inferior);
@@ -72,24 +72,25 @@ void SmartPlaylistTest::test_addRule()
 
 void SmartPlaylistTest::test_addGroup()
 {
-    QVERIFY(group.count() == 2);
-    auto rule = group.add(true).dynamicCast<SmartGroup>();
+    QVERIFY(group->count() == 2);
+    auto rule = group->add(true).dynamicCast<SmartGroup>();
     QCOMPARE(rule.isNull(), false);
-    QCOMPARE(group.count(), 3);
+    QCOMPARE(group->count(), 3);
 }
 
 void SmartPlaylistTest::test_setRule()
 {
-    QVERIFY(spl1->rules().compare(group.clone()) == QPartialOrdering::Unordered);
-    spl1->setRules(group);
-    QCOMPARE(spl1->rules().compare(group.clone()), QPartialOrdering::Equivalent);
+    QVERIFY(spl1->rules().isNull());
+    auto ret = spl1->setRules(group);
+    QCOMPARE(ret, true);
+    QCOMPARE(spl1->rules()->compare(group), QPartialOrdering::Equivalent);
 }
 
 void SmartPlaylistTest::test_addValid()
 {
-    QVERIFY(spl1->rules()[0].dynamicCast<SmartRule>()->field() == "count");
+    QVERIFY((*spl1->rules())[0].dynamicCast<SmartRule>()->field() == "count");
     QVERIFY(spl1->count() == 0);
-    qDebug()<<spl1->rules()[0].dynamicCast<SmartRule>()<<spl1->rules()[0].dynamicCast<SmartGroup>();
+    qDebug()<<(*spl1->rules())[0].dynamicCast<SmartRule>()<<(*spl1->rules())[0].dynamicCast<SmartGroup>();
     spl1->append(m1);
     QCOMPARE(spl1->count(), 1);
 }
