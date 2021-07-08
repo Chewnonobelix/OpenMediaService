@@ -24,18 +24,18 @@ public:
     ~SmartRule() = default;
 
     QSharedPointer<Expression<bool>> create() override;
-    QSharedPointer<AbstractRule> clone() const override;
-    QPartialOrdering compare(QSharedPointer<AbstractRule>) const override;
-    void set(MediaPointer) override;
+    AbstractRulePointer clone() const override;
+    QPartialOrdering compare(AbstractRulePointer) const override;
+    bool set(MediaPointer) override;
 
     QString field() const;
-    void setField(QString);
+    bool setField(QString);
     QVariant& value();
     QVariant value() const;
-    void setValue(QVariant);
+    bool setValue(QVariant);
     QVariant& toTest();
     QVariant toTest() const;
-    void setToTest(QVariant);
+    bool setToTest(QVariant);
     Op op() const;
-    void setOp(Op);
+    bool setOp(Op);
 };

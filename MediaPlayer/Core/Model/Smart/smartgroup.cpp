@@ -5,11 +5,8 @@ SmartGroup::SmartGroup()
     add();
 }
 
-SmartGroup::SmartGroup(const SmartGroup& g): AbstractRule(g), m_op(g.op())
+SmartGroup::SmartGroup(const SmartGroup& g): AbstractRule(g), m_op(g.op()), m_list(g.m_list)
 {
-    for(auto it: g.m_list) {
-        m_list<<it->clone();
-    }
 }
 
 QPartialOrdering SmartGroup::compare(QSharedPointer<AbstractRule> other) const
@@ -75,10 +72,12 @@ QSharedPointer<AbstractRule> SmartGroup::add(bool group)
     return m_list.last();
 }
 
-void SmartGroup::remove(int i)
+bool SmartGroup::remove(int i)
 {
+    auto count = m_list.count();
     if(i < m_list.count() && i >= 0)
         m_list.removeAt(i);
+    return count == (m_list.count() + 1);
 }
 
 QSharedPointer<AbstractRule> SmartGroup::operator[](int i) const
@@ -102,8 +101,10 @@ int SmartGroup::count() const
     return m_list.count();
 }
 
-void SmartGroup::set(MediaPointer m)
+bool SmartGroup::set(MediaPointer m)
 {
+    auto ret = true;
     for(auto it: m_list)
-        it->set(m);
+        ret &= it->set(m);
+    return ret;
 }

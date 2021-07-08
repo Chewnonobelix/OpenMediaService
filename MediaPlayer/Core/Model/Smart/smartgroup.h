@@ -8,6 +8,10 @@
 #include "abstractrule.h"
 #include "smartrule.h"
 
+class SmartGroup;
+
+using SmartGroupPointer = QSharedPointer<SmartGroup>;
+
 class MEDIAPLAYERCORE_EXPORT SmartGroup: public AbstractRule {
 private:
     Op m_op;
@@ -21,13 +25,13 @@ public:
     QSharedPointer<Expression<bool>> create() override;
     QSharedPointer<AbstractRule> clone() const override;
     QPartialOrdering compare(QSharedPointer<AbstractRule>) const override;
-    void set(MediaPointer) override;
+    bool set(MediaPointer) override;
 
     bool setOp(Op);
     Op op() const;
 
     QSharedPointer<AbstractRule> add(bool = false);
-    void remove(int);
+    bool remove(int);
     QSharedPointer<AbstractRule> operator[](int) const;
     QSharedPointer<AbstractRule> operator[](int);
     int count() const;

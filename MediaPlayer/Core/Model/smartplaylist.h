@@ -28,13 +28,12 @@ typedef QSharedPointer<SmartPlaylist> SmartPlaylistPointer;
 class MEDIAPLAYERCORE_EXPORT SmartPlaylist : public PlayList {
     Q_OBJECT
 
-
 private:
     static QMultiMap<QString, QString> s_ops;
 
     bool isValid(MediaPointer);
 
-    SmartGroup m_rules;
+    SmartGroupPointer m_rules;
     QSharedPointer<Expression<bool>> m_expression;
 
 
@@ -43,12 +42,10 @@ public:
     using PlayList::PlayList;
     SmartPlaylist(const SmartPlaylist &) = default;
     ~SmartPlaylist() = default;
-    SmartGroup rules() const;
-    void setRules(SmartGroup);
-    Q_INVOKABLE SmartGroup* rulesp();
-    Q_INVOKABLE void setRulesp(SmartGroup*);
+    SmartGroupPointer rules() const;
+    bool setRules(SmartGroupPointer);
 
-    Q_INVOKABLE void rebuild();
+    Q_INVOKABLE bool rebuild();
 public slots:
     void append(MediaPointer, int = -1) override;
     void onMediaChanged(MediaPointer);

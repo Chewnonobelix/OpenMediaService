@@ -19,13 +19,13 @@ QMultiMap<QString, QString> SmartPlaylist::s_ops = {{"number", "inferior"},
 
 bool SmartPlaylist::isValid(MediaPointer m)
 {
-    if(m_rules.count() == 0)
+    if(m_rules->count() == 0)
         return true;
 
     if(m_expression.isNull())
         return false;
 
-    m_rules.set(m);
+    m_rules->set(m);
     return m_expression->evaluate();
 }
 
@@ -42,32 +42,26 @@ void SmartPlaylist::onMediaChanged(MediaPointer m) {
         append(m);
 }
 
-SmartGroup SmartPlaylist::rules() const
+SmartGroupPointer SmartPlaylist::rules() const
 {
     return m_rules;
 }
 
-void SmartPlaylist::setRules(SmartGroup rule)
+bool SmartPlaylist::setRules(SmartGroupPointer rule)
 {
-    m_rules = rule;
-    rebuild();
-    emit rulesChanged();
+    auto ret = m_rules != rule;
+    if(ret) {
+        m_rules = rule;
+        ret &= rebuild();
+        emit rulesChanged();
+    }
+    return ret;
 }
 
-SmartGroup* SmartPlaylist::rulesp()
+bool SmartPlaylist::rebuild()
 {
-    return &m_rules;
-}
+    m_expression = m_rules->create();
 
-void SmartPlaylist::setRulesp(SmartGroup* rule)
-{
-    m_rules = *rule;
-    rebuild();
-    emit rulesChanged();
-}
-
-void SmartPlaylist::rebuild()
-{
-    m_expression = m_rules.create();
+    return !m_expression.isNull();
 }
 
