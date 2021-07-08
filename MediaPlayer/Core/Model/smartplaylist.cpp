@@ -47,6 +47,11 @@ SmartGroupPointer SmartPlaylist::rules() const
     return m_rules;
 }
 
+SmartGroup* SmartPlaylist::rule() const
+{
+    return m_rules.data();
+}
+
 bool SmartPlaylist::setRules(SmartGroupPointer rule)
 {
     auto ret = m_rules != rule;

@@ -15,10 +15,12 @@ Item {
         id: list
         anchors.fill: parent
         clip: true
-        model: SmartModel {
-            group: root.groups
-        }
+        model: _smartModel
 
+
+        columnWidthProvider: function(c) {
+            return root.width / 10
+        }
 
         delegate: DelegateChooser {
             role: "type"
@@ -30,8 +32,22 @@ Item {
 
             DelegateChoice {
                 roleValue: "group"
-                MediaCombobox {
-                    model: ["Or", "And"]
+                RowLayout {
+                    MediaCombobox {
+                        model: ["Or", "And"]
+                    }
+                    MediaButton {
+                        text: "+"
+
+                        onClicked: list.model.add(row, false)
+                    }
+                    MediaButton {
+                        text: "_"
+                        onClicked: list.model.add(row, true)
+                    }
+                    MediaButton {
+                        text: "-"
+                    }
                 }
             }
         }

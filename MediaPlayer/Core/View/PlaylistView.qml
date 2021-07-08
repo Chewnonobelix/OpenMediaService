@@ -46,7 +46,7 @@ MediaWindow {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-                groups: _playlist.rulesp()
+                groups: _playlist.rule()
         }
     }
 }

@@ -6,6 +6,7 @@
 #include <Model/library.h>
 #include <Model/smartplaylist.h>
 #include <Controller/Core/abstractcontroller.h>
+#include <Controller/DataModel/smartmodel.h>
 
 class MEDIAPLAYERCORE_EXPORT PlaylistModel : public QAbstractListModel {
 	Q_OBJECT
@@ -17,6 +18,7 @@ private:
 	QList<SmartPlaylistPointer> m_smarts;
 	QList<PlaylistPointer> m_normals;
 	int m_currentIndex = -1;
+    SmartModel m_smartModel;
 
 public:
 	PlaylistModel() = default;
@@ -32,7 +34,7 @@ public:
 	PlaylistPointer current() const;
 	PlaylistPointer operator[](int) const;
 
-    Q_INVOKABLE void editPlaylist() const;
+    Q_INVOKABLE void editPlaylist();
 
 public:
 	QVariant data(const QModelIndex &index, int role) const override;

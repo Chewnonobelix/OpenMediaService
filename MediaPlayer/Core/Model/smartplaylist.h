@@ -33,9 +33,8 @@ private:
 
     bool isValid(MediaPointer);
 
-    SmartGroupPointer m_rules;
+    SmartGroupPointer m_rules = SmartGroupPointer::create();
     QSharedPointer<Expression<bool>> m_expression;
-
 
 public:
     SmartPlaylist() = default;
@@ -43,6 +42,7 @@ public:
     SmartPlaylist(const SmartPlaylist &) = default;
     ~SmartPlaylist() = default;
     SmartGroupPointer rules() const;
+    SmartGroup* rule() const;
     bool setRules(SmartGroupPointer);
 
     Q_INVOKABLE bool rebuild();

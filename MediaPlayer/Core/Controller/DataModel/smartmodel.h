@@ -8,7 +8,6 @@ class SmartModel : public QAbstractTableModel
 {
     Q_OBJECT
     enum class SmartRole {OpRole = Qt::UserRole + 1, TypeRole, FieldRole};
-    Q_PROPERTY(SmartGroup* group READ group WRITE setGroup NOTIFY groupChanged)
 
     struct Flat {
       int depth = 0;
@@ -17,11 +16,11 @@ class SmartModel : public QAbstractTableModel
     };
 
 private:
-    SmartGroup* m_model = nullptr;
+    SmartGroupPointer m_model;
     QList<Flat> m_flat;
     int m_depth = 0;
 
-    QList<Flat> toFlat(SmartGroup&, int = 1);
+    QList<Flat> toFlat(SmartGroupPointer, int = 1);
 public:
     explicit SmartModel(QObject *parent = nullptr);
 
@@ -35,11 +34,10 @@ public:
 
     QHash<int, QByteArray> roleNames() const override;
 
-    Q_INVOKABLE void setModel(SmartGroup*);
-
+    Q_INVOKABLE void setModel(SmartGroupPointer);
+    Q_INVOKABLE void add(int, bool);
 public:
     SmartGroup* group() const;
-    void setGroup(SmartGroup*);
 
 signals:
     void groupChanged();

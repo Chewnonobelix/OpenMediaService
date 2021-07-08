@@ -27,23 +27,5 @@ Item {
         MediaTextEdit {
             id: value
         }
-
-        MediaButton {
-            id: add
-
-            text: "+"
-        }
-
-        MediaButton {
-            id: addGroup
-
-            text: "_"
-        }
-
-        MediaButton {
-            id: remove
-
-            text: "-"
-        }
     }
 }

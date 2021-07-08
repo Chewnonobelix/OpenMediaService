@@ -110,12 +110,15 @@ PlaylistPointer PlaylistModel::operator[](int index) const {
                                      : m_normals[index - m_smarts.size()];
 }
 
-void PlaylistModel::editPlaylist() const
+void PlaylistModel::editPlaylist()
 {
     auto context = new QQmlContext(AbstractController::engine()->qmlEngine().rootContext());
     context->setContextProperty("_playlist", current().data());
     context->setContextProperty("_smart", !current().dynamicCast<SmartPlaylist>().isNull());
+    context->setContextProperty("_smartModel", &m_smartModel);
 
+    if(!current().dynamicCast<SmartPlaylist>().isNull())
+        m_smartModel.setModel(current().dynamicCast<SmartPlaylist>()->rules());
     qDebug() << "Playlist context";
     AbstractController::engine()->createWindow(QUrl(QStringLiteral("/PlaylistView.qml")), context);
 }
