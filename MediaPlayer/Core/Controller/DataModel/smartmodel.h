@@ -7,7 +7,7 @@
 class SmartModel : public QAbstractTableModel
 {
     Q_OBJECT
-    enum class SmartRole {OpRole = Qt::UserRole + 1, TypeRole, FieldRole};
+    enum class SmartRole {OpRole = Qt::UserRole + 1, TypeRole, FieldRole, IdRole};
 
     struct Flat {
       int depth = 0;
@@ -21,6 +21,10 @@ private:
     int m_depth = 0;
 
     QList<Flat> toFlat(SmartGroupPointer, int = 1);
+
+    void clear();
+    void restore();
+
 public:
     explicit SmartModel(QObject *parent = nullptr);
 
@@ -36,6 +40,7 @@ public:
 
     Q_INVOKABLE void setModel(SmartGroupPointer);
     Q_INVOKABLE void add(int, bool);
+    Q_INVOKABLE bool remove(QString);
 public:
     SmartGroup* group() const;
 

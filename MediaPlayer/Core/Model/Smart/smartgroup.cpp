@@ -69,15 +69,18 @@ QSharedPointer<AbstractRule> SmartGroup::add(bool group)
     else
         m_list<<QSharedPointer<SmartRule>::create();
 
+    m_list.last()->setParent(sharedFromThis());
     return m_list.last();
 }
 
-bool SmartGroup::remove(int i)
+bool SmartGroup::remove(QUuid id)
 {
-    auto count = m_list.count();
-    if(i < m_list.count() && i >= 0)
-        m_list.removeAt(i);
-    return count == (m_list.count() + 1);
+    auto it = m_list.removeIf([id](AbstractRulePointer p) {
+        return p->id() == id;
+    });
+
+    qDebug()<<"Removed"<<it;
+    return it > 0;
 }
 
 QSharedPointer<AbstractRule> SmartGroup::operator[](int i) const

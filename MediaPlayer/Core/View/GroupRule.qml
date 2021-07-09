@@ -10,7 +10,6 @@ import MediaPlayer.Components 1.0
 
 Item {
     id: root
-    property var groups: null
     TableView {
         id: list
         anchors.fill: parent
@@ -22,11 +21,20 @@ Item {
             return root.width / 10
         }
 
+        rowHeightProvider: function(c) { return root.height * .2}
         delegate: DelegateChooser {
             role: "type"
             DelegateChoice {
                 roleValue: "rule"
-                SmartRule {
+                RowLayout {
+
+                    MediaButton {
+                        text: "-"
+
+                        onClicked: console.log("Remove rule", _smartModel.remove(id), id)
+                    }
+                    SmartRule {
+                    }
                 }
             }
 
@@ -47,6 +55,7 @@ Item {
                     }
                     MediaButton {
                         text: "-"
+                        onClicked: console.log("Remove group", _smartModel.remove(id))
                     }
                 }
             }

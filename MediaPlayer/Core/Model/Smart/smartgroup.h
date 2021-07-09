@@ -31,7 +31,7 @@ public:
     Op op() const;
 
     QSharedPointer<AbstractRule> add(bool = false);
-    bool remove(int);
+    bool remove(QUuid);
     QSharedPointer<AbstractRule> operator[](int) const;
     QSharedPointer<AbstractRule> operator[](int);
     int count() const;

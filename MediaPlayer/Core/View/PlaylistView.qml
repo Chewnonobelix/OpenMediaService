@@ -43,10 +43,8 @@ MediaWindow {
 
             visible: _smart
             Layout.columnSpan: 2
-            Layout.fillHeight: true
+            Layout.preferredHeight: root.height * .90
             Layout.fillWidth: true
-
-                groups: _playlist.rule()
         }
     }
 }
