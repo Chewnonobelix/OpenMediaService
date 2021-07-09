@@ -1,14 +1,14 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-    Application \
-    Core \
     DesignLibrary \
     ExpressionLibrary \
-    ManulTest \
+    UxComponent \
+    Core \
     Plugins \
     UnitTest \
-    UxComponent
+    ManulTest \
+    Application \
 
 Application.depends = Core
 UnitTest.depends = Core Plugins
