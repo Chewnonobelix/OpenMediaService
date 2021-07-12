@@ -20,3 +20,6 @@ include(../global.pri)
 
 RESOURCES += \
 	image.qrc
+
+DISTFILES += \
+    imagerules.json

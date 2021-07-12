@@ -21,7 +21,7 @@ private:
     SmartModel m_smartModel;
 
 public:
-	PlaylistModel() = default;
+    PlaylistModel();
 	PlaylistModel(const PlaylistModel &);
 	~PlaylistModel() = default;
 

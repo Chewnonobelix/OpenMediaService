@@ -26,6 +26,7 @@ public:
 
 	virtual MediaRole role() const = 0;
 	virtual QStringList filters() const = 0;
+    virtual QString rules() const = 0;
 
 	virtual void exec() = 0;
 	virtual QSharedPointer<InterfacePlugins> clone() const = 0;

@@ -1,7 +1,7 @@
 #include "smartmodel.h"
 
-SmartModel::SmartModel(QObject *parent)
-    : QAbstractTableModel(parent)
+SmartModel::SmartModel(PluginManager & manager, QObject *parent)
+    : QAbstractTableModel(parent), m_manager(manager)
 {
 }
 
@@ -27,6 +27,8 @@ QVariant SmartModel::data(const QModelIndex &index, int role) const
         return index.column() == model.depth ? model.type : QVariant();
     case SmartRole::IdRole:
         return model.rule->id();
+    case SmartRole::FieldRole:
+        return m_types.keys();
     default:
         break;
     }
@@ -80,7 +82,6 @@ QList<SmartModel::Flat> SmartModel::toFlat(SmartGroupPointer g, int depth)
     for(auto i = 0; i < g->count(); i++) {
         if(!(*g)[i].dynamicCast<SmartRule>().isNull()) {
             ret << Flat{depth, "rule", (*g)[i]};
-            j++;
         }
         else {
             ret << toFlat((*g)[i].dynamicCast<SmartGroup>(), depth+1);
@@ -147,4 +148,20 @@ void SmartModel::restore()
     beginInsertColumns(QModelIndex(), 0, columnCount() + 1);
     insertColumns(0, columnCount() + 1);
     endInsertColumns();
+}
+
+void SmartModel::setRole(MediaPlayerGlobal::MediaRole r)
+{
+    m_role = r;
+
+    QFile f("./Rules/"+m_manager[r]->rules());
+    f.open(QIODevice::ReadOnly);
+    auto json = QJsonDocument::fromJson(f.readAll());
+    f.close();
+    m_types.clear();
+    auto array = json.array();
+
+    for(auto it: array) {
+        m_types[it.toObject()["name"].toString()] = it.toObject()["type"].toVariant().value<AbstractRule::Type>();
+    }
 }

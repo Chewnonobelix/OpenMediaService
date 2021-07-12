@@ -48,8 +48,7 @@ void ControllerLibrary::setCurrentLibrary(LibraryPointer lib) {
     emit libraryChanged();
 
     m_current->probe()->setFilters(s_manager[m_current->role()]->filters());
-    m_playlist.setSmart(m_current->smartPlaylist().values());
-    m_playlist.setNormal(m_current->playlist().values());
+    m_playlist.onLibraryChanged(m_current);
 }
 
 void ControllerLibrary::onUpdateLibrary() {
