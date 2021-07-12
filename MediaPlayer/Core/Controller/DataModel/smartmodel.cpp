@@ -165,3 +165,14 @@ void SmartModel::setRole(MediaPlayerGlobal::MediaRole r)
         m_types[it.toObject()["name"].toString()] = it.toObject()["type"].toVariant().value<AbstractRule::Type>();
     }
 }
+
+QList<QString> SmartModel::ops(QString field) const
+{
+    auto type = m_types[field];
+    auto opss = AbstractRule::s_ops.values(type);
+    QStringList ret;
+    for(auto it: opss) {
+        ret<<QMetaEnum::fromType<AbstractRule::Op>().valueToKeys(int(it));
+    }
+    return ret;
+}

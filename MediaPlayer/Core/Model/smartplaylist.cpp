@@ -1,21 +1,5 @@
 #include "smartplaylist.h"
 
-QMultiMap<QString, QString> SmartPlaylist::s_ops = {{"number", "inferior"},
-                                                    {"number", "einferior"},
-                                                    {"number", "superior"},
-                                                    {"number", "esuperior"},
-                                                    {"number", "equal"},
-                                                    {"number", "limit"}, //TODO
-                                                    {"all", "equal"},
-                                                    {"all", "inList"}, //TODO
-                                                    {"pre", "not"}, //TODO
-                                                    {"string", "contain"}, //TODO
-                                                    {"string", "start"}, //TODO
-                                                    {"string", "end"}, //TODO
-                                                    {"string", "reg"}, //TODO
-                                                    {"group", "and"},
-                                                    {"group", "or"}
-                                                   };
 
 SmartPlaylist::SmartPlaylist()
 {

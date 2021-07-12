@@ -22,6 +22,8 @@ Item {
 
         MediaCombobox {
             id: op
+
+            model: _smartModel.ops(field.currentText)
         }
 
         MediaTextEdit {

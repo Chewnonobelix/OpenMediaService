@@ -50,6 +50,7 @@ public:
     Q_INVOKABLE void add(int, bool);
     Q_INVOKABLE bool remove(QString);
     void setRole(MediaPlayerGlobal::MediaRole);
+    Q_INVOKABLE QList<QString> ops(QString) const;
 public:
     SmartGroup* group() const;
 

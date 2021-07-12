@@ -29,7 +29,6 @@ class MEDIAPLAYERCORE_EXPORT SmartPlaylist : public PlayList {
     Q_OBJECT
 
 private:
-    static QMultiMap<QString, QString> s_ops;
 
     bool isValid(MediaPointer);
 
