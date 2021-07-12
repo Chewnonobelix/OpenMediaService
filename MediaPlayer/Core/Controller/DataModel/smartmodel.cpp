@@ -72,14 +72,11 @@ void SmartModel::setModel(SmartGroupPointer g)
 
 QList<SmartModel::Flat> SmartModel::toFlat(SmartGroupPointer g, int depth)
 {
-    static int j = 0;
-    if(depth == 1)
-        j = 0;
     m_depth = std::max(m_depth, depth);
 
     QList<SmartModel::Flat> ret;
     ret << Flat{depth-1, "group", g};
-    j++;
+
     for(auto i = 0; i < g->count(); i++) {
         if(!(*g)[i].dynamicCast<SmartRule>().isNull()) {
             ret << Flat{depth, "rule", (*g)[i]};
@@ -90,7 +87,6 @@ QList<SmartModel::Flat> SmartModel::toFlat(SmartGroupPointer g, int depth)
         }
     }
 
-    qDebug()<<"Build"<<j<<ret.count();
     return ret;
 }
 
@@ -117,13 +113,11 @@ bool SmartModel::remove(QString i)
     auto count = m_flat.count();
 
     auto it = std::find_if(m_flat.begin(), m_flat.end(), [i](Flat f) {
-            qDebug()<<f.rule->id()<<i<<(f.rule->id() == QUuid::fromString(i));
             return f.rule->id() == QUuid::fromString(i);
     });
 
 
     auto ret = (it != m_flat.end()) && it->rule->parent() ? it->rule->parent().dynamicCast<SmartGroup>()->remove(QUuid::fromString(i)) : false;
-    qDebug()<<count<<m_flat.count()<<ret<<(it->rule->parent());
     m_flat.clear();
     m_flat = toFlat(m_model);
     emit groupChanged();

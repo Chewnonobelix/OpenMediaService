@@ -1,14 +1,5 @@
 #include "smartgroup.h"
 
-SmartGroup::SmartGroup()
-{
-    add();
-}
-
-SmartGroup::SmartGroup(const SmartGroup& g): AbstractRule(g), m_op(g.op()), m_list(g.m_list)
-{
-}
-
 QPartialOrdering SmartGroup::compare(QSharedPointer<AbstractRule> other) const
 {
     auto ret =  QPartialOrdering::Equivalent;
@@ -79,7 +70,6 @@ bool SmartGroup::remove(QUuid id)
         return p->id() == id;
     });
 
-    qDebug()<<"Removed"<<it;
     return it > 0;
 }
 

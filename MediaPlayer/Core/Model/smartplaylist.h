@@ -37,7 +37,7 @@ private:
     QSharedPointer<Expression<bool>> m_expression;
 
 public:
-    SmartPlaylist() = default;
+    SmartPlaylist();
     using PlayList::PlayList;
     SmartPlaylist(const SmartPlaylist &) = default;
     ~SmartPlaylist() = default;

@@ -18,8 +18,8 @@ private:
     QList<QSharedPointer<AbstractRule>> m_list;
 
 public:
-    SmartGroup();
-    SmartGroup(const SmartGroup&);
+    SmartGroup() = default;
+    SmartGroup(const SmartGroup&) = default;
     ~SmartGroup() = default;
 
     QSharedPointer<Expression<bool>> create() override;

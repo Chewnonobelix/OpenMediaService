@@ -17,6 +17,11 @@ QMultiMap<QString, QString> SmartPlaylist::s_ops = {{"number", "inferior"},
                                                     {"group", "or"}
                                                    };
 
+SmartPlaylist::SmartPlaylist()
+{
+    m_rules->add();
+}
+
 bool SmartPlaylist::isValid(MediaPointer m)
 {
     if(m_rules->count() == 0)
