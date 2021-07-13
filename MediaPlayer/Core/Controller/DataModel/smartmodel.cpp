@@ -27,8 +27,14 @@ QVariant SmartModel::data(const QModelIndex &index, int role) const
         return index.column() == model.depth ? model.type : QVariant();
     case SmartRole::IdRole:
         return model.rule->id();
-    case SmartRole::FieldRole:
+    case SmartRole::FieldsRole:
         return m_types.keys();
+    case SmartRole::OpRole:
+        return keyToString(model.rule.dynamicCast<SmartRule>()->op());
+    case SmartRole::FieldRole:
+        return model.rule.dynamicCast<SmartRule>()->field();
+    case SmartRole::ValueRole:
+        return model.rule.dynamicCast<SmartRule>()->value();
     default:
         break;
     }
@@ -38,7 +44,27 @@ QVariant SmartModel::data(const QModelIndex &index, int role) const
 
 bool SmartModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+    qDebug()<<"pre Set"<<value<<role<<index;
+
+
     if (data(index, role) != value) {
+        qDebug()<<"Set"<<value<<role<<index;
+        auto model = m_flat[index.row()].rule.dynamicCast<SmartRule>();
+        switch(SmartRole(role)) {
+        case SmartRole::FieldRole:
+            model->setField(value.toString());
+            break;
+        case SmartRole::OpRole:
+            model->setOp(stringToOp(value.toString()));
+            break;
+        case SmartRole::ValueRole:
+            model->setValue(value);
+            break;
+        default:
+            return false;
+            break;
+        }
+
         emit dataChanged(index, index, QVector<int>() << role);
         return true;
     }
@@ -49,9 +75,10 @@ QHash<int, QByteArray> SmartModel::roleNames() const
 {
     static QHash<int, QByteArray> ret = {{int(SmartRole::OpRole), "op"},
                                          {int(SmartRole::TypeRole), "type"},
+                                         {int(SmartRole::FieldsRole), "fields"},
                                          {int(SmartRole::FieldRole), "field"},
-                                         {int(SmartRole::IdRole), "id"},
-
+                                         {int(SmartRole::ValueRole), "value"},
+                                         {int(SmartRole::IdRole), "id"}
                                         };
 
     return ret;
@@ -115,7 +142,7 @@ bool SmartModel::remove(QString i)
 
     auto it = std::find_if(m_flat.begin(), m_flat.end(), [i](Flat f) {
             return f.rule->id() == QUuid::fromString(i);
-    });
+});
 
 
     auto ret = (it != m_flat.end()) && it->rule->parent() ? it->rule->parent().dynamicCast<SmartGroup>()->remove(QUuid::fromString(i)) : false;
@@ -172,7 +199,96 @@ QList<QString> SmartModel::ops(QString field) const
     auto opss = AbstractRule::s_ops.values(type);
     QStringList ret;
     for(auto it: opss) {
-        ret<<QMetaEnum::fromType<AbstractRule::Op>().valueToKeys(int(it));
+        ret<<keyToString(it);
     }
+    return ret;
+}
+
+QString SmartModel::keyToString(AbstractRule::Op op) const
+{
+    QString ret;
+    switch (op)
+    {
+    case AbstractRule::Op::Equal:
+        ret = "Equal";
+        break;
+    case AbstractRule::Op::Superior:
+        ret = "Superior";
+        break;
+    case AbstractRule::Op::Inferior:
+        ret = "Inferior";
+        break;
+    case AbstractRule::Op::Not:
+        ret = "Not";
+        break;
+    case AbstractRule::Op::InferiorEqual:
+        ret = "Inferior or equal";
+        break;
+    case AbstractRule::Op::SuperiorEqual:
+        ret = "Superior or equal";
+        break;
+    case AbstractRule::Op::Limit:
+        ret = "Limit";
+        break;
+    case AbstractRule::Op::And:
+        ret = "And";
+        break;
+    case AbstractRule::Op::Or:
+        ret = "Or";
+        break;
+    case AbstractRule::Op::List:
+        ret = "List";
+        break;
+    case AbstractRule::Op::RegExp:
+        ret = "Regular expression";
+        break;
+    case AbstractRule::Op::Contain:
+        ret = "Contain";
+        break;
+    case AbstractRule::Op::Start:
+        ret = "Start with";
+        break;
+    case AbstractRule::Op::End:
+        ret = "End with";
+        break;
+    case AbstractRule::Op::Undefined:
+        break;
+    }
+    return ret;
+}
+
+AbstractRule::Op SmartModel::stringToOp(QString text) const
+{
+    auto ret = AbstractRule::Op::Undefined;
+
+    if(text == "Superior")
+        ret = AbstractRule::Op::Superior;
+    else if(text == "Inferior")
+        ret = AbstractRule::Op::Inferior;
+    else if(text == "Equal")
+        ret = AbstractRule::Op::Equal;
+    else if(text == "Not")
+        ret = AbstractRule::Op::Not;
+    else if(text == "Inferior or equal")
+        ret = AbstractRule::Op::InferiorEqual;
+    else if(text == "Superior or equal")
+        ret = AbstractRule::Op::SuperiorEqual;
+    else if(text == "Limit")
+        ret = AbstractRule::Op::Limit;
+    else if(text == "And")
+        ret = AbstractRule::Op::And;
+    else if(text == "Or")
+        ret = AbstractRule::Op::Or;
+    else if(text == "List")
+        ret = AbstractRule::Op::List;
+    else if(text == "Regular expression")
+        ret = AbstractRule::Op::RegExp;
+    else if(text == "Contain")
+        ret = AbstractRule::Op::Contain;
+    else if(text == "Start with")
+        ret = AbstractRule::Op::Start;
+    else if(text == "End with")
+        ret = AbstractRule::Op::End;
+
     return ret;
 }

@@ -11,7 +11,7 @@ class SmartModel : public QAbstractTableModel
     Q_OBJECT
     Q_PROPERTY(MediaPlayerGlobal::MediaRole role WRITE setRole)
 
-    enum class SmartRole {OpRole = Qt::UserRole + 1, TypeRole, FieldRole, IdRole};
+    enum class SmartRole {OpRole = Qt::UserRole + 1, TypeRole, FieldsRole, IdRole, FieldRole, ValueRole};
 
     struct Flat {
       int depth = 0;
@@ -32,6 +32,9 @@ private:
 
     void clear();
     void restore();
+
+    QString keyToString(AbstractRule::Op) const;
+    AbstractRule::Op stringToOp(QString) const;
 
 public:
     explicit SmartModel(PluginManager&, QObject *parent = nullptr);

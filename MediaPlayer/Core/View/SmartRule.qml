@@ -15,17 +15,29 @@ Item {
         MediaCombobox {
             id: fieldCombo
 
-            model: field
+            currentIndex: find(field)
+            model: fields
+
+            onActivated: field = currentText
         }
 
         MediaCombobox {
             id: opCombo
+            currentIndex: find(op)
+
+            onCurrentIndexChanged:  {
+                console.log(op, find(op))
+            }
 
             model: _smartModel.ops(fieldCombo.currentText)
+            onActivated: op = currentText
         }
 
         MediaTextEdit {
             id: valueEdit
+
+            text: value ? value : ""
+            onEditingFinished: value = text
         }
     }
 }
