@@ -34,7 +34,7 @@ Item {
                         onClicked: console.log("Remove rule", _smartModel.remove(id), id)
                     }
                     SmartRule {
-                        fields: field
+
                     }
                 }
             }

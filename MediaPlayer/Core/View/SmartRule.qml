@@ -9,25 +9,23 @@ import MediaPlayer.Components 1.0
 Item {
     id: root
 
-    property var fields
-
     RowLayout {
         anchors.fill: parent
 
         MediaCombobox {
-            id: field
+            id: fieldCombo
 
-            model: fields
+            model: field
         }
 
         MediaCombobox {
-            id: op
+            id: opCombo
 
-            model: _smartModel.ops(field.currentText)
+            model: _smartModel.ops(fieldCombo.currentText)
         }
 
         MediaTextEdit {
-            id: value
+            id: valueEdit
         }
     }
 }
