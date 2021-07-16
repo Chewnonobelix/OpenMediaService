@@ -91,3 +91,10 @@ void PlayList::setCurrentIndex(int index) {
 	m_currentIndex = index;
 	emit currentIndexChanged();
 }
+
+void PlayList::set()
+{
+    connect(this, &PlayList::nameChanged, this, &PlayList::playlistChanged);
+    connect(this, &PlayList::countChanged, this, &PlayList::playlistChanged);
+    connect(this, &PlayList::isShuffleChanged, this, &PlayList::playlistChanged);
+}

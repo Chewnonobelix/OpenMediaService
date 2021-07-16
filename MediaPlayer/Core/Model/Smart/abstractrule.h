@@ -2,6 +2,7 @@
 
 #include <Core/expression.h>
 #include <designpattern.h>
+#include <metadata.h>
 
 #include <Model/media.h>
 
@@ -10,10 +11,9 @@ class AbstractRule;
 
 using AbstractRulePointer = QSharedPointer<AbstractRule>;
 
-class AbstractRule: public QEnableSharedFromThis<AbstractRule>
+class AbstractRule: public MetaData, public QEnableSharedFromThis<AbstractRule>
 {
     Q_GADGET
-    QUuid m_id = QUuid::createUuid();
     AbstractRulePointer m_parent;
 
 public:
@@ -27,7 +27,13 @@ public:
 
     static QMultiMap<Type, Op> s_ops;
 
-    inline QUuid id() const {return m_id;}
+
+    AbstractRule();
+    using MetaData::MetaData;
+
+    using MetaData::operator QJsonObject;
+
+    inline QUuid id() const {return metaData<QUuid>("id");}
     virtual bool set(MediaPointer) = 0;
     virtual QSharedPointer<Expression<bool>> create() = 0;
     virtual AbstractRulePointer clone() const = 0;

@@ -60,12 +60,14 @@ public:
     Q_INVOKABLE MediaPointer prev();
     void setReadOrder(QList<int>);
 
+    virtual void set();
 signals:
     void nameChanged();
     void countChanged();
     void isShuffleChanged();
     void play(MediaPointer);
     void currentIndexChanged();
+    void playlistChanged();
 
 public slots:
     Q_INVOKABLE virtual void append(MediaPointer, int = -1);

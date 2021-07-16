@@ -18,9 +18,13 @@ private:
     QList<QSharedPointer<AbstractRule>> m_list;
 
 public:
-    SmartGroup() = default;
+    SmartGroup();
     SmartGroup(const SmartGroup&) = default;
     ~SmartGroup() = default;
+
+    SmartGroup(const QJsonObject&);
+
+    operator QJsonObject() const override;
 
     QSharedPointer<Expression<bool>> create() override;
     QSharedPointer<AbstractRule> clone() const override;

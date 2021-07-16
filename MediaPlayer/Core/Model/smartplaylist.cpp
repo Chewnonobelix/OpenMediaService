@@ -6,6 +6,20 @@ SmartPlaylist::SmartPlaylist()
     m_rules->add();
 }
 
+SmartPlaylist::SmartPlaylist(const QJsonObject& json): PlayList(json)
+{
+    m_rules = DesignPattern::factory<SmartGroup>(json["smart"].toObject());
+}
+
+SmartPlaylist::operator QJsonObject() const
+{
+    auto ret = PlayList::operator QJsonObject();
+
+    ret["smart"] = (QJsonObject)(*m_rules);
+
+    return ret;
+}
+
 bool SmartPlaylist::isValid(MediaPointer m)
 {
     if(m_rules->count() == 0)
@@ -59,3 +73,8 @@ bool SmartPlaylist::rebuild()
     return !m_expression.isNull();
 }
 
+void SmartPlaylist::set()
+{
+    PlayList::set();
+    connect(this, &SmartPlaylist::rulesChanged, this, &PlayList::playlistChanged);
+}

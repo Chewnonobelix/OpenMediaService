@@ -1,5 +1,35 @@
 #include "smartgroup.h"
 
+SmartGroup::SmartGroup(): AbstractRule() {}
+SmartGroup::SmartGroup(const QJsonObject& json): AbstractRule(json)
+{
+    auto array = json["list"].toArray();
+
+    for(auto it: array) {
+        auto obj = it.toObject();
+        if(obj["isGroup"].toBool(false))
+            m_list<<DesignPattern::factory<SmartGroup>(obj);
+        else
+            m_list<<DesignPattern::factory<SmartRule>(obj);
+    }
+}
+
+SmartGroup::operator QJsonObject() const
+{
+    auto ret = AbstractRule::operator QJsonObject();
+
+    ret["isGroup"] = true;
+    QJsonArray array;
+
+    for(auto it: m_list)
+    {
+        array<<(QJsonObject)(*it);
+    }
+
+    ret["list"] = array;
+    return ret;
+}
+
 QPartialOrdering SmartGroup::compare(QSharedPointer<AbstractRule> other) const
 {
     auto ret =  QPartialOrdering::Equivalent;
@@ -41,7 +71,7 @@ bool SmartGroup::setOp(Op o)
     switch(o) {
     case AbstractRule::Op::And:
     case AbstractRule::Op::Or:
-        m_op = o;
+        setMetadata("op", o);
         return true;
     default:
         return false;
@@ -50,7 +80,7 @@ bool SmartGroup::setOp(Op o)
 
 AbstractRule::Op SmartGroup::op() const
 {
-    return m_op;
+    return metaData<AbstractRule::Op>("op");
 }
 
 QSharedPointer<AbstractRule> SmartGroup::add(bool group)

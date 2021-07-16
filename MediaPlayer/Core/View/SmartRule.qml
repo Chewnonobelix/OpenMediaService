@@ -25,10 +25,6 @@ Item {
             id: opCombo
             currentIndex: find(op)
 
-            onCurrentIndexChanged:  {
-                console.log(op, find(op))
-            }
-
             model: _smartModel.ops(fieldCombo.currentText)
             onActivated: op = currentText
         }

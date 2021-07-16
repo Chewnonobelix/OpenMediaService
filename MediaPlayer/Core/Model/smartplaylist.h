@@ -38,13 +38,18 @@ private:
 public:
     SmartPlaylist();
     using PlayList::PlayList;
+    SmartPlaylist(const QJsonObject&);
     SmartPlaylist(const SmartPlaylist &) = default;
     ~SmartPlaylist() = default;
+
+    operator QJsonObject() const override;
+
     SmartGroupPointer rules() const;
     SmartGroup* rule() const;
     bool setRules(SmartGroupPointer);
 
     Q_INVOKABLE bool rebuild();
+    void set() override;
 public slots:
     void append(MediaPointer, int = -1) override;
     void onMediaChanged(MediaPointer);

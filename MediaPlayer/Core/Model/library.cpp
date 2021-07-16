@@ -226,7 +226,8 @@ bool Library::addSmartPlaylist(SmartPlaylistPointer smart) {
         m_smartPlaylist[smart->id()] = smart;
     }
 
-    connect(smart.data(), &PlayList::nameChanged, this, &Library::libraryChanged);
+//    smart->set();
+    connect(smart.data(), &PlayList::playlistChanged, this, &Library::libraryChanged);
     emit playlistCountChanged();
     return !ret;
 }
@@ -259,7 +260,8 @@ bool Library::addPlaylist(PlaylistPointer play) {
     if (!ret) {
         m_playlist[play->id()] = play;
     }
-    connect(play.data(), &PlayList::nameChanged, this, &Library::libraryChanged);
+//    play->set();
+    connect(play.data(), &PlayList::playlistChanged, this, &Library::libraryChanged);
 
     emit playlistCountChanged();
     return !ret;

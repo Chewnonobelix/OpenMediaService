@@ -13,15 +13,15 @@
 
 class MEDIAPLAYERCORE_EXPORT SmartRule: public AbstractRule {
 private:
-    QString m_field;
-    QVariant m_value;
     QVariant m_toTest;
-    Op m_op = Op::Undefined;
 
 public:
     SmartRule() = default;
     SmartRule(const SmartRule&) = default;
     ~SmartRule() = default;
+
+    using AbstractRule::AbstractRule;
+    using AbstractRule::operator QJsonObject;
 
     QSharedPointer<Expression<bool>> create() override;
     AbstractRulePointer clone() const override;
@@ -29,13 +29,13 @@ public:
     bool set(MediaPointer) override;
 
     QString field() const;
-    bool setField(QString);
+    void setField(QString);
     QVariant& value();
     QVariant value() const;
-    bool setValue(QVariant);
+    void setValue(QVariant);
     QVariant& toTest();
     QVariant toTest() const;
-    bool setToTest(QVariant);
+    void setToTest(QVariant);
     Op op() const;
-    bool setOp(Op);
+    void setOp(Op);
 };

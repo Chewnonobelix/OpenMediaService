@@ -16,3 +16,9 @@ QMultiMap<AbstractRule::Type, AbstractRule::Op> AbstractRule::s_ops = {{Type::Nu
 //                                                    {"group", "and"},
 //                                                    {"group", "or"}
                                                    };
+
+
+AbstractRule::AbstractRule()
+{
+    setMetadata("id", QUuid::createUuid());
+}

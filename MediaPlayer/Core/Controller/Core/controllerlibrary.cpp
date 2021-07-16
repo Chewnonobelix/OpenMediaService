@@ -41,6 +41,9 @@ void ControllerLibrary::removePlaylist(QString id) {
 Library *ControllerLibrary::library() const { return m_current.data(); }
 
 void ControllerLibrary::setCurrentLibrary(LibraryPointer lib) {
+    if(lib.isNull())
+        return;
+
     m_current = lib;
     connect(m_current.data(), &Library::libraryChanged, this,
                     &ControllerLibrary::onUpdateLibrary, Qt::UniqueConnection);

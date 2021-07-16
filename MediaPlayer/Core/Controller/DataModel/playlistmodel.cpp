@@ -2,7 +2,12 @@
 //#include <Controller/Core/controllerlibrary.h>
 
 PlaylistModel::PlaylistModel(): m_smartModel(AbstractController::s_manager)
-{}
+{
+    connect(&m_smartModel, &SmartModel::groupChanged, [this]() {
+       auto pl = current();
+       emit pl->playlistChanged();
+    });
+}
 
 PlaylistModel::PlaylistModel(const PlaylistModel &) : QAbstractListModel(), m_smartModel(AbstractController::s_manager) {}
 
