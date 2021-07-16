@@ -12,14 +12,12 @@ void SmartRule::setField(QString newfield)
 
 QVariant& SmartRule::value()
 {
-    static QVariant t;
-    return t;
-//    return metaData<QVariant>("value");;
+    return metaData<QVariant>("value");
 }
 
 QVariant SmartRule::value() const
 {
-    return metaData<QVariant>("value");;
+    return metaData<QVariant>("value");
 }
 
 void SmartRule::setValue(QVariant newvalue)
