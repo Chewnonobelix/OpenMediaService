@@ -53,6 +53,7 @@ void SmartRule::setOp(Op newop)
 QSharedPointer<Expression<bool>> SmartRule::create()
 {
     QSharedPointer<ComparaisonExpression<QVariant&>> ret;
+    QSharedPointer<Expression<bool>> vret;
 
     switch(op()) {
     case Op::Inferior: {
@@ -60,6 +61,7 @@ QSharedPointer<Expression<bool>> SmartRule::create()
         ValueExpression<QVariant&> v1(value()), v2(toTest());
         ret->setE1(v2.clone());
         ret->setE2(v1.clone());
+        vret = ret;
         break;
     }
     case Op::Superior: {
@@ -67,6 +69,7 @@ QSharedPointer<Expression<bool>> SmartRule::create()
         ValueExpression<QVariant&> v1(value()), v2(toTest());
         ret->setE1(v2.clone());
         ret->setE2(v1.clone());
+        vret = ret;
         break;
     }
     case Op::InferiorEqual: {
@@ -80,7 +83,7 @@ QSharedPointer<Expression<bool>> SmartRule::create()
         auto eor = QSharedPointer<OrExpression>::create();
         eor->setE1(equal->clone());
         eor->setE2(inf->clone());
-        return eor;
+        vret = eor;
         break;
     }
     case Op::SuperiorEqual: {
@@ -94,14 +97,22 @@ QSharedPointer<Expression<bool>> SmartRule::create()
         auto eor = QSharedPointer<OrExpression>::create();
         eor->setE1(equal->clone());
         eor->setE2(sup->clone());
-        return eor;
+        vret = eor;
         break;
     }
+    case Op::Equal:
+    case Op::Not:
+    case Op::Limit:
+    case Op::List:
+    case Op::RegExp:
+    case Op::Contain:
+    case Op::Start:
+    case Op::End:
     default:
-        return QSharedPointer<ValueExpression<bool>>::create(true);
+        vret = QSharedPointer<ValueExpression<bool>>::create(true);
         break;
     }
-    return ret;
+    return vret;
 }
 
 QSharedPointer<AbstractRule> SmartRule::clone() const
