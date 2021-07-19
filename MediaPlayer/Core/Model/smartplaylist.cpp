@@ -9,6 +9,12 @@ SmartPlaylist::SmartPlaylist()
 SmartPlaylist::SmartPlaylist(const QJsonObject& json): PlayList(json)
 {
     m_rules = DesignPattern::factory<SmartGroup>(json["smart"].toObject());
+
+    for(auto it = 0; it < m_rules->count() ; it ++) {
+        (*m_rules)[it]->setParent(m_rules);
+    }
+
+    rebuild();
 }
 
 SmartPlaylist::operator QJsonObject() const

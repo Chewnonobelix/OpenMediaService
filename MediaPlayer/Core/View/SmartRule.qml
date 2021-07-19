@@ -15,16 +15,18 @@ Item {
         MediaCombobox {
             id: fieldCombo
 
-            currentIndex: find(field)
-            model: fields
+            Component.onCompleted: {
+                model = fields
+                currentIndex = find(field)
+            }
 
             onActivated: field = currentText
         }
 
         MediaCombobox {
             id: opCombo
-            currentIndex: find(op)
 
+            onModelChanged: currentIndex = find(op)
             model: _smartModel.ops(fieldCombo.currentText)
             onActivated: op = currentText
         }

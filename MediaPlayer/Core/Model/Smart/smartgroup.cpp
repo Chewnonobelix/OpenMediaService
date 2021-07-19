@@ -11,6 +11,13 @@ SmartGroup::SmartGroup(const QJsonObject& json): AbstractRule(json)
             m_list<<DesignPattern::factory<SmartGroup>(obj);
         else
             m_list<<DesignPattern::factory<SmartRule>(obj);
+
+        auto g = m_list.last().dynamicCast<SmartGroup>();
+        if(g) {
+            for(auto it = 0; it < g->count() ; it ++) {
+                (*g)[it]->setParent(g);
+            }
+        }
     }
 }
 

@@ -44,11 +44,7 @@ QVariant SmartModel::data(const QModelIndex &index, int role) const
 
 bool SmartModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    qDebug()<<"pre Set"<<value<<role<<index;
-
-
     if (data(index, role) != value) {
-        qDebug()<<"Set"<<value<<role<<index;
         auto model = m_flat[index.row()].rule.dynamicCast<SmartRule>();
         switch(SmartRole(role)) {
         case SmartRole::FieldRole:
@@ -64,6 +60,7 @@ bool SmartModel::setData(const QModelIndex &index, const QVariant &value, int ro
             return false;
             break;
         }
+        emit groupChanged();
 
         emit dataChanged(index, index, QVector<int>() << role);
         return true;
@@ -94,8 +91,6 @@ void SmartModel::setModel(SmartGroupPointer g)
     clear();
     m_model = g;
     m_flat = toFlat(m_model);
-    emit groupChanged();
-
     restore();
 }
 
