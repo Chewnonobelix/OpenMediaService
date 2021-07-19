@@ -226,8 +226,10 @@ bool Library::addSmartPlaylist(SmartPlaylistPointer smart) {
         m_smartPlaylist[smart->id()] = smart;
     }
 
-//    smart->set();
+    smart->set();
     connect(smart.data(), &PlayList::playlistChanged, this, &Library::libraryChanged);
+    connect(smart.data(), &SmartPlaylist::rulesChanged, this, &Library::onSmartPlaylistChanged);
+
     emit playlistCountChanged();
     return !ret;
 }
@@ -260,7 +262,7 @@ bool Library::addPlaylist(PlaylistPointer play) {
     if (!ret) {
         m_playlist[play->id()] = play;
     }
-//    play->set();
+    play->set();
     connect(play.data(), &PlayList::playlistChanged, this, &Library::libraryChanged);
 
     emit playlistCountChanged();
@@ -289,4 +291,25 @@ int Library::playlistCount() const {
     return m_playlist.count() + m_smartPlaylist.count();
 }
 
-void Library::onMediaChanged() { emit mediasChanged(); }
+void Library::onMediaChanged() {
+    auto m = ((Media*)sender())->sharedFromThis();
+
+    for(auto it: m_smartPlaylist)
+        it->append(m);
+
+    emit mediasChanged();
+}
+
+void Library::onSmartPlaylistChanged()
+{
+    auto smart = ((SmartPlaylist*)sender())->sharedFromThis().dynamicCast<SmartPlaylist>();
+
+    qDebug()<<"Wesh"<<m_medias.count();
+    if(smart)
+        qDebug()<<smart->count();
+    for(auto it: m_medias) {
+        smart->append(it);
+    }
+    if(smart)
+        qDebug()<<smart->count();
+}

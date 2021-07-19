@@ -83,6 +83,7 @@ public slots:
 
 	void onProbedChanged();
 	void onMediaChanged();
+    void onSmartPlaylistChanged();
 
 signals:
 	void nameChanged();

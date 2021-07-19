@@ -50,6 +50,7 @@ public:
 
     Q_INVOKABLE bool rebuild();
     void set() override;
+
 public slots:
     void append(MediaPointer, int = -1) override;
     void onMediaChanged(MediaPointer);

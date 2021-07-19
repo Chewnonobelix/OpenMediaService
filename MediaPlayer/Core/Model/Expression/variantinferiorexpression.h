@@ -14,6 +14,7 @@ public:
 
     bool evaluate() const override
     {
+        qDebug()<<"Inferior"<<this->e1()->evaluate()<<this->e2()->evaluate();
         return QVariant::compare(this->e1()->evaluate(), this->e2()->evaluate()) == QPartialOrdering::Less;
     }
 };

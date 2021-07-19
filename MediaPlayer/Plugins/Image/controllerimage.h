@@ -49,6 +49,7 @@ public slots:
     void playing(int = -1);
 	void stop();
 	void onTimeout();
+    void onPlaylistChanged();
 
 signals:
     void play(QString);

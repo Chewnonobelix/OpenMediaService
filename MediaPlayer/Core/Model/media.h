@@ -11,6 +11,7 @@
 #include <QSharedPointer>
 #include <QString>
 #include <QVariant>
+#include <QEnableSharedFromThis>
 
 #include <mediaplayercore_global.h>
 
@@ -24,7 +25,7 @@ class Media;
 
 typedef QSharedPointer<Media> MediaPointer;
 
-class MEDIAPLAYERCORE_EXPORT Media : public QObject, public MetaData {
+class MEDIAPLAYERCORE_EXPORT Media : public QObject, public MetaData, public QEnableSharedFromThis<Media> {
 	Q_OBJECT
 
 	Q_PROPERTY(MD5 id READ id CONSTANT)

@@ -4,8 +4,8 @@
 PlaylistModel::PlaylistModel(): m_smartModel(AbstractController::s_manager)
 {
     connect(&m_smartModel, &SmartModel::groupChanged, [this]() {
-       auto pl = current();
-       emit pl->playlistChanged();
+       auto pl = current().dynamicCast<SmartPlaylist>();
+       emit pl->rulesChanged();
     });
 }
 

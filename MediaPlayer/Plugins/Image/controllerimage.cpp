@@ -40,13 +40,17 @@ QObject *ControllerImage::playlistView() {
 }
 
 void ControllerImage::setPlaylist(PlaylistPointer p) {
+    m_current->disconnect(SIGNAL(playlistChanged()), this, SLOT(onPlaylistChanged()));
     m_current = p;
     m_model.setPlaylist(p);
     m_listModel.setPLaylist(p);
 
-    if(p)
+    if(p) {
         connect(m_current.data(), &PlayList::play, this, &ControllerImage::setMedia,
                 Qt::UniqueConnection);
+        connect(m_current.data(), SIGNAL(playlistChanged()), this, SLOT(onPlaylistChanged()));
+
+    }
 }
 
 void ControllerImage::setMedia(MediaPointer m) {
@@ -94,4 +98,11 @@ QUrl ControllerImage::settingsView() const {
 QString ControllerImage::rules() const
 {
     return "imagerules.json";
+}
+
+void ControllerImage::onPlaylistChanged()
+{
+    auto pl = ((PlayList*)sender())->sharedFromThis();
+    qDebug()<<"Changed"<<pl->name();
+    setPlaylist(pl);
 }
