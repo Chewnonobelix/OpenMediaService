@@ -31,8 +31,10 @@ class MEDIAPLAYERCORE_EXPORT PlayList : public QObject,
                currentIndexChanged)
 
 private:
-    QList<int> m_readOrder;
     int m_currentIndex = -1;
+
+protected:
+    QList<int> m_readOrder;
 
 public:
     PlayList() = default;

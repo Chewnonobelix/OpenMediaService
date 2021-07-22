@@ -41,10 +41,17 @@ bool SmartPlaylist::isValid(MediaPointer m)
 
 void SmartPlaylist::append(MediaPointer m, int p)
 {
-    if (isValid(m))
-        PlayList::append(m, p);
-    else
+    if (!isValid(m)) {
         removeAll(m);
+
+        for(auto& it: m_readOrder)
+            it--;
+    }
+    else if(!contains(m)) {
+        PlayList::append(m, p);
+        for(auto& it: m_readOrder)
+            it++;
+    }
 
     emit playlistChanged();
 }

@@ -61,9 +61,8 @@ void PlayList::clear() {
 MediaPointer PlayList::next() {
 	MediaPointer ret;
 
-	if (currentIndex() < m_readOrder.count() - 1) {
-		setCurrentIndex(currentIndex() + 1);
-		auto index = m_readOrder[currentIndex()];
+    if (!m_readOrder.isEmpty()) {
+        auto index = m_readOrder.takeFirst();
 		ret = at(index);
         emit play(ret);
     }
