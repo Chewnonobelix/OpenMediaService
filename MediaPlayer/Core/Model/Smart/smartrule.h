@@ -14,10 +14,12 @@
 class MEDIAPLAYERCORE_EXPORT SmartRule: public AbstractRule {
 private:
     QVariant m_toTest;
+    QVariant m_value;
 
 public:
     SmartRule() = default;
     SmartRule(const SmartRule&) = default;
+    SmartRule(const QJsonObject&);
     ~SmartRule() = default;
 
     using AbstractRule::AbstractRule;

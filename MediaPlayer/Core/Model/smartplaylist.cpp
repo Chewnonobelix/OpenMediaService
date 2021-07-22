@@ -35,7 +35,7 @@ bool SmartPlaylist::isValid(MediaPointer m)
         return false;
 
     m_rules->set(m);
-    qDebug()<<"Proute"<<name()<<m->path()<<m_expression->evaluate();
+
     return m_expression->evaluate();
 }
 
@@ -45,6 +45,8 @@ void SmartPlaylist::append(MediaPointer m, int p)
         PlayList::append(m, p);
     else
         removeAll(m);
+
+    emit playlistChanged();
 }
 
 void SmartPlaylist::onMediaChanged(MediaPointer m) {

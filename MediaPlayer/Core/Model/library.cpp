@@ -149,6 +149,7 @@ bool Library::removeSourceDir(QString source) {
 bool Library::addMedia(MediaPointer p) {
     m_medias[p->id()] = p;
     connect(p.data(), &Media::mediaChanged, this, &Library::libraryChanged);
+    connect(p.data(), &Media::mediaChanged, this, &Library::onMediaChanged);
     emit mediasChanged(p);
     return true;
 }
@@ -176,6 +177,7 @@ bool Library::addNMedia(QString path, MD5 md) {
 
     connect(m_medias[md].data(), &Media::mediaChanged, this,
             &Library::libraryChanged);
+    connect(m_medias[md].data(), &Media::mediaChanged, this, &Library::onMediaChanged);
 
     emit mediasChanged(m_medias[md]);
     return m_medias[md]->paths().contains(path);

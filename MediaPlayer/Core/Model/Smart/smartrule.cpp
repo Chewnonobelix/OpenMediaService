@@ -1,5 +1,10 @@
 #include "smartrule.h"
 
+SmartRule::SmartRule(const QJsonObject& json): AbstractRule(json)
+{
+    m_value = json["value"].toVariant();
+}
+
 QString SmartRule::field() const
 {
     return metaData<QString>("field");
@@ -12,7 +17,7 @@ void SmartRule::setField(QString newfield)
 
 QVariant& SmartRule::value()
 {
-    return metaData<QVariant>("value");
+    return m_value;
 }
 
 QVariant SmartRule::value() const
@@ -23,6 +28,7 @@ QVariant SmartRule::value() const
 void SmartRule::setValue(QVariant newvalue)
 {
     setMetadata("value", newvalue);
+    m_value = newvalue;
 }
 
 QVariant& SmartRule::toTest()

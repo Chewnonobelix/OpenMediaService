@@ -18,7 +18,7 @@ class Library;
 
 typedef QSharedPointer<Library> LibraryPointer;
 
-class MEDIAPLAYERCORE_EXPORT Library : public QObject, public MetaData {
+class MEDIAPLAYERCORE_EXPORT Library : public QObject, public MetaData, public QEnableSharedFromThis<Library> {
 	Q_OBJECT
 
 	Q_PROPERTY(QUuid id READ id CONSTANT)
