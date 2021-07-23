@@ -18,7 +18,8 @@ typedef QSharedPointer<PlayList> PlaylistPointer;
 
 class MEDIAPLAYERCORE_EXPORT PlayList : public QObject,
         public MetaData,
-        private QList<MediaPointer> {
+        public QEnableSharedFromThis<PlayList>,
+        public QList<MediaPointer> {
     Q_OBJECT
 
     Q_PROPERTY(QUuid id READ id CONSTANT)
@@ -30,8 +31,10 @@ class MEDIAPLAYERCORE_EXPORT PlayList : public QObject,
                currentIndexChanged)
 
 private:
-    QList<int> m_readOrder;
     int m_currentIndex = -1;
+
+protected:
+    QList<int> m_readOrder;
 
 public:
     PlayList() = default;
@@ -60,12 +63,14 @@ public:
     Q_INVOKABLE MediaPointer prev();
     void setReadOrder(QList<int>);
 
+    virtual void set();
 signals:
     void nameChanged();
     void countChanged();
     void isShuffleChanged();
     void play(MediaPointer);
     void currentIndexChanged();
+    void playlistChanged();
 
 public slots:
     Q_INVOKABLE virtual void append(MediaPointer, int = -1);

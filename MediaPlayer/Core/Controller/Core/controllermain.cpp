@@ -24,10 +24,22 @@ void ControllerMain::exec() {
     qDebug() << "Playlist"
                      << qmlRegisterUncreatableType<PlayList>("MediaPlayer", 1, 0,
                                                              "Playlist", "Cpp owner");
+    qDebug() << "SmartPlaylist"
+                     << qmlRegisterUncreatableType<SmartPlaylist>("MediaPlayer", 1, 0,
+                                                             "SmartPlaylist", "Cpp owner");
+
+    qDebug() << "SmartGroup"
+                     << qmlRegisterUncreatableType<SmartGroup>("MediaPlayer", 1, 0,
+                                                                  "SmartGroup", "Cpp owner");
 
     qDebug() << "LibraryDataModel"
                      << qmlRegisterUncreatableType<LibraryDataModel>("MediaPlayer.Model", 1, 0,
                                                           "LibraryDataModel", "Cpp owner");
+
+    qDebug() << "SmartModel"
+                     << qmlRegisterType<SmartModel>("MediaPlayer.Model", 1, 0,
+                                                                     "SmartModel");
+
     qDebug() << "ControllerLibrary"
                      << qmlRegisterUncreatableType<ControllerLibrary>("MediaPlayer.Model", 1, 0,
                                                            "ControllerLibrary", "Cpp owner");
@@ -44,6 +56,7 @@ void ControllerMain::exec() {
     qDebug() << "TabManager" << qmlRegisterUncreatableType<TabManager>("MediaPlayer.Model", 1, 0,
                                                             "TabManager", "Cpp owner");
 
+    qDebug() << "AbstractRule" << qmlRegisterUncreatableType<AbstractRule>("MediaPlayer.Model", 1, 0, "AbstractRule", "Cpp owner");
     setDb(s_settings->db());
 
     auto root = engine().rootContext();

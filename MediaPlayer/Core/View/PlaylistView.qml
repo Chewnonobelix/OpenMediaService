@@ -10,22 +10,41 @@ MediaWindow {
     id: root
     flags: Qt.Dialog
 
-    Component.onCompleted: visible = true
+    Component.onCompleted: {
+        visible = true
+    }
 
     title: "Playlist " + (_playlist ? _playlist.name : "")
 
+    width: 400
+    height: 600
 
     GridLayout {
         anchors.fill: parent
+        columns:  2
 
         MediaLabel {
             text: "Playlist name"
+
+            Layout.preferredWidth: root.width * .20
+            Layout.preferredHeight: root.height * .10
         }
 
         MediaTextEdit {
             text: _playlist ? _playlist.name : ""
 
             onEditingFinished: _playlist.name = text
+
+            Layout.preferredHeight: root.height * .10
+            Layout.fillWidth: true
+        }
+
+        GroupRule {
+
+            visible: _smart
+            Layout.columnSpan: 2
+            Layout.preferredHeight: root.height * .90
+            Layout.fillWidth: true
         }
     }
 }

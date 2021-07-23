@@ -61,9 +61,8 @@ void PlayList::clear() {
 MediaPointer PlayList::next() {
 	MediaPointer ret;
 
-	if (currentIndex() < m_readOrder.count() - 1) {
-		setCurrentIndex(currentIndex() + 1);
-		auto index = m_readOrder[currentIndex()];
+    if (!m_readOrder.isEmpty()) {
+        auto index = m_readOrder.takeFirst();
 		ret = at(index);
         emit play(ret);
     }
@@ -90,4 +89,11 @@ int PlayList::currentIndex() const { return m_currentIndex; }
 void PlayList::setCurrentIndex(int index) {
 	m_currentIndex = index;
 	emit currentIndexChanged();
+}
+
+void PlayList::set()
+{
+    connect(this, &PlayList::nameChanged, this, &PlayList::playlistChanged);
+    connect(this, &PlayList::countChanged, this, &PlayList::playlistChanged);
+    connect(this, &PlayList::isShuffleChanged, this, &PlayList::playlistChanged);
 }

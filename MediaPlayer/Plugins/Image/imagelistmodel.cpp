@@ -86,6 +86,8 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const {
         return m_model->indexOf(current);
     case ImageListRole::EnableRole:
         return currentCol.enable;
+    case ImageListRole::OrderRole:
+        return QVariant::fromValue(current->role());
     default:
         break;
     }

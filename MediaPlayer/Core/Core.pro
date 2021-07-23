@@ -27,8 +27,17 @@ SOURCES += \
         Controller/Data/interfacesaver.cpp \
         Controller/DataModel/librarydatamodel.cpp \
         Controller/DataModel/playlistmodel.cpp \
+        Controller/DataModel/smartmodel.cpp \
         Controller/Plugins/interfaceplugins.cpp \
         Controller/Plugins/pluginmanager.cpp \
+        Model/Expression/endexpression.cpp \
+        Model/Expression/startexpression.cpp \
+        Model/Expression/variantequalexpression.cpp \
+        Model/Expression/variantinferiorexpression.cpp \
+        Model/Expression/variantsuperiorexpression.cpp \
+        Model/Smart/abstractrule.cpp \
+        Model/Smart/smartgroup.cpp \
+        Model/Smart/smartrule.cpp \
         Model/smartplaylist.cpp \
         Model\global.cpp \
         Model\library.cpp \
@@ -63,8 +72,17 @@ HEADERS += \
     Controller/Data/interfacesaver.h \
     Controller/DataModel/librarydatamodel.h \
     Controller/DataModel/playlistmodel.h \
+    Controller/DataModel/smartmodel.h \
     Controller/Plugins/interfaceplugins.h \
     Controller/Plugins/pluginmanager.h \
+    Model/Expression/endexpression.h \
+    Model/Expression/startexpression.h \
+    Model/Expression/variantequalexpression.h \
+    Model/Expression/variantinferiorexpression.h \
+    Model/Expression/variantsuperiorexpression.h \
+    Model/Smart/abstractrule.h \
+    Model/Smart/smartgroup.h \
+    Model/Smart/smartrule.h \
     Model/smartplaylist.h \
     Model\global.h \
     Model\library.h \

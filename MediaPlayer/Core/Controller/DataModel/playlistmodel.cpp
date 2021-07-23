@@ -1,7 +1,15 @@
 #include "playlistmodel.h"
 //#include <Controller/Core/controllerlibrary.h>
 
-PlaylistModel::PlaylistModel(const PlaylistModel &) : QAbstractListModel() {}
+PlaylistModel::PlaylistModel(): m_smartModel(AbstractController::s_manager)
+{
+    connect(&m_smartModel, &SmartModel::groupChanged, [this]() {
+       auto pl = current().dynamicCast<SmartPlaylist>();
+       emit pl->rulesChanged();
+    });
+}
+
+PlaylistModel::PlaylistModel(const PlaylistModel &) : QAbstractListModel(), m_smartModel(AbstractController::s_manager) {}
 
 QVariant PlaylistModel::data(const QModelIndex &index, int role) const {
     if (index.row() >= rowCount() || index.row() < 0)
@@ -103,6 +111,7 @@ void PlaylistModel::onLibraryChanged(LibraryPointer l) {
     setSmart(l->smartPlaylist().values());
     setNormal(l->playlist().values());
     setCurrentIndex(index);
+    m_smartModel.setRole(l->role());
 }
 
 PlaylistPointer PlaylistModel::operator[](int index) const {
@@ -110,10 +119,15 @@ PlaylistPointer PlaylistModel::operator[](int index) const {
                                      : m_normals[index - m_smarts.size()];
 }
 
-void PlaylistModel::editPlaylist() const
+void PlaylistModel::editPlaylist()
 {
     auto context = new QQmlContext(AbstractController::engine()->qmlEngine().rootContext());
     context->setContextProperty("_playlist", current().data());
+    context->setContextProperty("_smart", !current().dynamicCast<SmartPlaylist>().isNull());
+    context->setContextProperty("_smartModel", &m_smartModel);
+
+    if(!current().dynamicCast<SmartPlaylist>().isNull())
+        m_smartModel.setModel(current().dynamicCast<SmartPlaylist>()->rules());
     qDebug() << "Playlist context";
     AbstractController::engine()->createWindow(QUrl(QStringLiteral("/PlaylistView.qml")), context);
 }

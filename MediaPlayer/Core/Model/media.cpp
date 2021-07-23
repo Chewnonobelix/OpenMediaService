@@ -5,6 +5,11 @@ Media::Media(MD5 id, QString path) : QObject(nullptr) {
 	if (!path.isEmpty())
 		m_path << path;
 
+    setCount(0);
+    setLastFinish(QDateTime());
+    setMetadata("tag", QStringList());
+    setMetadata("bookmark", QStringList());
+
 	set();
 }
 
