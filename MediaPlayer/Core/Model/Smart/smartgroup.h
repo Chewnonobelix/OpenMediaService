@@ -31,8 +31,8 @@ public:
     QPartialOrdering compare(QSharedPointer<AbstractRule>) const override;
     bool set(MediaPointer) override;
 
-    bool setOp(Op);
-    Op op() const;
+    bool setOp(Op) override;
+    Op op() const override;
 
     QSharedPointer<AbstractRule> add(bool = false);
     bool remove(QUuid);

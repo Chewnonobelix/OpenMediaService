@@ -38,6 +38,6 @@ public:
     QVariant& toTest();
     QVariant toTest() const;
     void setToTest(QVariant);
-    Op op() const;
-    void setOp(Op);
+    Op op() const override;
+    bool setOp(Op) override;
 };

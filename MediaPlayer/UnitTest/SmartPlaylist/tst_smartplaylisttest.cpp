@@ -90,7 +90,6 @@ void SmartPlaylistTest::test_addValid()
 {
     QVERIFY((*spl1->rules())[0].dynamicCast<SmartRule>()->field() == "count");
     QVERIFY(spl1->count() == 0);
-    qDebug()<<(*spl1->rules())[0].dynamicCast<SmartRule>()<<(*spl1->rules())[0].dynamicCast<SmartGroup>();
     spl1->append(m1);
     QCOMPARE(spl1->count(), 1);
 }

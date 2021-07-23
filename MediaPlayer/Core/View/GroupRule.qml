@@ -43,7 +43,15 @@ Item {
                 roleValue: "group"
                 RowLayout {
                     MediaCombobox {
+                        Component.onCompleted:  {
+                            currentIndex = find(op) > -1 ? find(op) : 0
+                        }
+
                         model: ["Or", "And"]
+
+                        onActivated: {
+                            op = currentText
+                        }
                     }
                     MediaButton {
                         text: "+"

@@ -306,12 +306,7 @@ void Library::onSmartPlaylistChanged()
 {
     auto smart = ((SmartPlaylist*)sender())->sharedFromThis().dynamicCast<SmartPlaylist>();
 
-    qDebug()<<"Wesh"<<m_medias.count();
-    if(smart)
-        qDebug()<<smart->count();
     for(auto it: m_medias) {
         smart->append(it);
     }
-    if(smart)
-        qDebug()<<smart->count();
 }

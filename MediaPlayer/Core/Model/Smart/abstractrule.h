@@ -38,7 +38,8 @@ public:
     virtual QSharedPointer<Expression<bool>> create() = 0;
     virtual AbstractRulePointer clone() const = 0;
     virtual QPartialOrdering compare(AbstractRulePointer) const = 0;
-
+    virtual Op op() const = 0;
+    virtual bool setOp(Op) = 0;
     inline AbstractRulePointer parent() const {return m_parent;}
     inline bool setParent(AbstractRulePointer p) {
         auto ret = m_parent != p;

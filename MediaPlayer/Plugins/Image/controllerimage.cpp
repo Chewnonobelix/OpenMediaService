@@ -103,6 +103,5 @@ QString ControllerImage::rules() const
 void ControllerImage::onPlaylistChanged()
 {
     auto pl = ((PlayList*)sender())->sharedFromThis();
-    qDebug()<<"Changed"<<pl->name();
     setPlaylist(pl);
 }

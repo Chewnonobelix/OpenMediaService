@@ -51,9 +51,11 @@ AbstractRule::Op SmartRule::op() const
     return metaData<AbstractRule::Op>("op");
 }
 
-void SmartRule::setOp(Op newop)
+bool SmartRule::setOp(Op newop)
 {
     setMetadata("op", newop);
+
+    return true;
 }
 
 QSharedPointer<Expression<bool>> SmartRule::create()

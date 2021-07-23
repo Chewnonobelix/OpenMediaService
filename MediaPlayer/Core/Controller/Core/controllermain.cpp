@@ -56,6 +56,7 @@ void ControllerMain::exec() {
     qDebug() << "TabManager" << qmlRegisterUncreatableType<TabManager>("MediaPlayer.Model", 1, 0,
                                                             "TabManager", "Cpp owner");
 
+    qDebug() << "AbstractRule" << qmlRegisterUncreatableType<AbstractRule>("MediaPlayer.Model", 1, 0, "AbstractRule", "Cpp owner");
     setDb(s_settings->db());
 
     auto root = engine().rootContext();
