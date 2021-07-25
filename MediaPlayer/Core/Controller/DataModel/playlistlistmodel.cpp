@@ -1,6 +1,6 @@
-#include "imagelistmodel.h"
+#include "playlistlistmodel.h"
 
-void ImageListModel::setPLaylist(PlaylistPointer p)
+void PlaylistListModel::setPlaylist(PlaylistPointer p)
 {
     beginRemoveRows(QModelIndex(), 0, rowCount());
     removeRows(0, rowCount());
@@ -26,16 +26,16 @@ void ImageListModel::setPLaylist(PlaylistPointer p)
     sort(0);
 }
 
-int ImageListModel::rowCount(const QModelIndex&) const
+int PlaylistListModel::rowCount(const QModelIndex&) const
 {
     return m_sortList.size();
 }
 
-int ImageListModel::columnCount(const QModelIndex&) const {
+int PlaylistListModel::columnCount(const QModelIndex&) const {
     return m_columns.size();
 }
 
-QVariant ImageListModel::data(const QModelIndex& index, int role) const {
+QVariant PlaylistListModel::data(const QModelIndex& index, int role) const {
     auto row = index.row(), col = index.column();
 
     if((row < 0 || row >= rowCount()) || (col < 0 || col >= columnCount()))
@@ -94,7 +94,7 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const {
 
     return QVariant();
 }
-void ImageListModel::sort(int col, TristateOrder order) {
+void PlaylistListModel::sort(int col, TristateOrder order) {
     for(auto& it: m_columns)
         it.order = TristateOrder::NoOrder;
     m_columns[col].order = order;
@@ -137,7 +137,7 @@ void ImageListModel::sort(int col, TristateOrder order) {
     endInsertRows();
 }
 
-QHash<int, QByteArray> ImageListModel::roleNames() const
+QHash<int, QByteArray> PlaylistListModel::roleNames() const
 {
     static QHash<int, QByteArray> ret = {{int(ImageListRole::DisplayRole), "display"},
                                          {int(ImageListRole::RatingRole), "rating"},
@@ -153,7 +153,7 @@ QHash<int, QByteArray> ImageListModel::roleNames() const
     return ret;
 }
 
-QStringList ImageListModel::columnModel() const {
+QStringList PlaylistListModel::columnModel() const {
     QStringList ret;
     for(auto it: m_columns)
         ret<<it.name;
@@ -161,12 +161,12 @@ QStringList ImageListModel::columnModel() const {
     return ret;
 }
 
-QVariant ImageListModel::headerData(int section, Qt::Orientation, int) const
+QVariant PlaylistListModel::headerData(int section, Qt::Orientation, int) const
 {
     return columnModel()[section];
 }
 
-void ImageListModel::play(int index)
+void PlaylistListModel::play(int index)
 {
     QList<int> read;
     for(auto it = 0; it < m_model->count(); it++)
@@ -187,7 +187,7 @@ void ImageListModel::play(int index)
     m_model->next();
 }
 
-ImageListModel::TristateOrder ImageListModel::nextOrder(TristateOrder order) {
+PlaylistListModel::TristateOrder PlaylistListModel::nextOrder(TristateOrder order) {
     switch (order) {
     case TristateOrder::NoOrder:
         return TristateOrder::AscendingOrder;
@@ -200,14 +200,14 @@ ImageListModel::TristateOrder ImageListModel::nextOrder(TristateOrder order) {
     return TristateOrder::NoOrder;
 }
 
-bool ImageListModel::setData(const QModelIndex &index, const QVariant &value, int role) {
+bool PlaylistListModel::setData(const QModelIndex &index, const QVariant &value, int role) {
     if(m_columns[index.column()].name == "rating")
         (*m_model)[m_sortList[index.row()]]->setRating(value.toInt());
     emit dataChanged(index, index, {role});
     return true;
 }
 
-int ImageListModel::columnOf(QString name) const
+int PlaylistListModel::columnOf(QString name) const
 {
     auto ret = 0;
     for(auto it = 0; it < m_columns.count(); it++) {

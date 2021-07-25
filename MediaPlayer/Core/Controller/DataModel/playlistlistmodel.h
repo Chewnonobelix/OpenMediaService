@@ -2,12 +2,14 @@
 
 #include <QAbstractTableModel>
 
+#include <mediaplayercore_global.h>
+
 #include "Model/playlist.h"
 
-class ImageListModel: public QAbstractTableModel
+class MEDIAPLAYERCORE_EXPORT PlaylistListModel: public QAbstractTableModel
 {
     Q_OBJECT
-    Q_DISABLE_COPY(ImageListModel)
+    Q_DISABLE_COPY(PlaylistListModel)
 
 private:
     enum class ImageListRole{DisplayRole = Qt::UserRole +1, RatingRole, FileRole, ExtensionRole, PathRole, CountRole,
@@ -35,9 +37,9 @@ private:
     Q_INVOKABLE TristateOrder nextOrder(TristateOrder);
 
 public:
-    ImageListModel() = default;
+    PlaylistListModel() = default;
 
-    void setPLaylist(PlaylistPointer);
+    void setPlaylist(PlaylistPointer);
     Q_INVOKABLE QStringList columnModel() const;
 
     Q_INVOKABLE void play(int);

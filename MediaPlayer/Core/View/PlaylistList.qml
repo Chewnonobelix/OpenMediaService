@@ -21,8 +21,8 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    var no = _imageListModel.nextOrder(order)
-                    _imageListModel.sort(column, no)
+                    var no = _PlaylistListModel.nextOrder(order)
+                    _PlaylistListModel.sort(column, no)
                 }
             }
         }
@@ -54,7 +54,7 @@ Item {
             bottom: root.bottom
         }
 
-        model: _imageListModel
+        model: _PlaylistListModel
 
 
         interactive: false
@@ -75,7 +75,7 @@ Item {
             id: chooser
             role: "type"
             DelegateChoice {
-                column: _imageListModel.columnOf("rating")
+                column: _PlaylistListModel.columnOf("rating")
                 Rectangle {
                     gradient: row === table.currentRow ? StyleSheet.selected : table.unselectedGradient(row)
 
@@ -107,7 +107,7 @@ Item {
                         propagateComposedEvents: true
                         onClicked: table.currentRow = row
 
-                        onDoubleClicked: _imageListModel.play(index)
+                        onDoubleClicked: _PlaylistListModel.play(index)
                     }
 
                     background: Rectangle {

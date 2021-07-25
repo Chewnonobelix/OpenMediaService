@@ -22,7 +22,7 @@ void ControllerImage::exec() {
 
     if(!s_playlist)
         s_playlist = new QQmlComponent(&(engine()->qmlEngine()),
-                                   QUrl("qrc:/image/ImagePlaylist.qml"));
+                                   QUrl("qrc:/ImagePlaylist.qml"));
     m_playlistObj = s_playlist->create(contextPlaylist);
 
     if(!s_player)
@@ -43,7 +43,7 @@ void ControllerImage::setPlaylist(PlaylistPointer p) {
     m_current->disconnect(SIGNAL(playlistChanged()), this, SLOT(onPlaylistChanged()));
     m_current = p;
     m_model.setPlaylist(p);
-    m_listModel.setPLaylist(p);
+    m_listModel.setPlaylist(p);
 
     if(p) {
         connect(m_current.data(), &PlayList::play, this, &ControllerImage::setMedia,
