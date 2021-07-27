@@ -7,7 +7,7 @@ void ControllerImage::exec() {
     auto* root = engine()->qmlEngine().rootContext();
     context = new QQmlContext(root);
     context->setContextProperty("_imageLibrairyModel", &m_model);
-    context->setContextProperty("_imageListModel", &m_listModel);
+    context->setContextProperty("_playlistListModel", &m_listModel);
     context->setContextProperty("_image", this);
 
     auto contextPlayer = new QQmlContext(context);
@@ -22,7 +22,7 @@ void ControllerImage::exec() {
 
     if(!s_playlist)
         s_playlist = new QQmlComponent(&(engine()->qmlEngine()),
-                                   QUrl("qrc:/ImagePlaylist.qml"));
+                                   QUrl("qrc:/image/ImagePlaylist.qml"));
     m_playlistObj = s_playlist->create(contextPlaylist);
 
     if(!s_player)

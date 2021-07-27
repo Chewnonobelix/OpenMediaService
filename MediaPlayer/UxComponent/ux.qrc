@@ -17,5 +17,6 @@
         <file>Rating.qml</file>
         <file>icon/rating_star.png</file>
         <file>StyleSheet.qml</file>
+        <file>PlaylistList.qml</file>
     </qresource>
 </RCC>

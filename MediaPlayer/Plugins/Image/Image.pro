@@ -20,4 +20,5 @@ RESOURCES += \
 	image.qrc
 
 DISTFILES += \
+    ../../Rules/imagerules.json \
     imagerules.json

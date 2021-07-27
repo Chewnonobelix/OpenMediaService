@@ -1,7 +1,8 @@
 [
-{"name": "count", "type": "Number"} ,
-{"name": "added", "type": "Date"} ,
-{"name": "path", "type": "StringContainer"},
-{"name": "tag", "type": "StringContainer"}
+{"name": "count", "type": "Number", "column": 0, "smart": true} ,
+{"name": "added", "type": "Date", "column": 1, "smart": true} ,
+{"name": "path", "type": "StringContainer", "column": 2, "smart": true},
+{"name": "tag", "type": "StringContainer", "column": 3, "smart": true},
+{"name": "id", "type": "String"}
 ]
 

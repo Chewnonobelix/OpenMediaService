@@ -1,10 +1,12 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Qt.labs.qmlmodels
-import MediaPlayer.Components 1.0
 
 Item {
     id: root
+
+    Component.onCompleted: console.log("Bite")
+
     HorizontalHeaderView {
         id: header
         height: root.height * .10
@@ -21,7 +23,7 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    var no = _PlaylistListModel.nextOrder(order)
+                    var no = _playlistListModel.nextOrder(order)
                     _PlaylistListModel.sort(column, no)
                 }
             }
@@ -54,7 +56,7 @@ Item {
             bottom: root.bottom
         }
 
-        model: _PlaylistListModel
+        model: _playlistListModel
 
 
         interactive: false
@@ -75,7 +77,7 @@ Item {
             id: chooser
             role: "type"
             DelegateChoice {
-                column: _PlaylistListModel.columnOf("rating")
+                column: _playlistListModel.columnOf("rating")
                 Rectangle {
                     gradient: row === table.currentRow ? StyleSheet.selected : table.unselectedGradient(row)
 
@@ -107,7 +109,7 @@ Item {
                         propagateComposedEvents: true
                         onClicked: table.currentRow = row
 
-                        onDoubleClicked: _PlaylistListModel.play(index)
+                        onDoubleClicked: _playlistListModel.play(index)
                     }
 
                     background: Rectangle {
