@@ -5,8 +5,6 @@ import Qt.labs.qmlmodels
 Item {
     id: root
 
-    Component.onCompleted: console.log("Bite")
-
     HorizontalHeaderView {
         id: header
         height: root.height * .10
@@ -24,7 +22,7 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     var no = _playlistListModel.nextOrder(order)
-                    _PlaylistListModel.sort(column, no)
+                    _playlistListModel.sort(column, no)
                 }
             }
         }
@@ -83,7 +81,7 @@ Item {
 
                     Rating {
                         z:1
-                        rating: display
+                        Component.onCompleted: rating = display
                         anchors.fill: parent
                         onRatingChanged: {
                             display = rating
@@ -109,7 +107,9 @@ Item {
                         propagateComposedEvents: true
                         onClicked: table.currentRow = row
 
-                        onDoubleClicked: _playlistListModel.play(index)
+                        onDoubleClicked: {
+                            _playlistListModel.play(index)
+                        }
                     }
 
                     background: Rectangle {

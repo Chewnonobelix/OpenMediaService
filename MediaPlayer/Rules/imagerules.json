@@ -1,8 +1,8 @@
 [
-{"name": "count", "type": "Number", "column": 0, "smart": true} ,
-{"name": "added", "type": "Date", "column": 1, "smart": true} ,
-{"name": "path", "type": "StringContainer", "column": 2, "smart": true},
-{"name": "tag", "type": "StringContainer", "column": 3, "smart": true},
-{"name": "id", "type": "String"}
+{"name": "count", "type": "Number", "column": 0, "smart": true, "display": "Count"} ,
+{"name": "added", "type": "Date", "column": 1, "smart": true, "display": "Added"} ,
+{"name": "sources", "type": "StringContainer", "column": 2, "smart": true, "display": "Paths"},
+{"name": "tag", "type": "StringContainer", "column": 3, "smart": true, "display": "Tag"},
+{"name": "rating", "type": "Number", "display": "Rating"}
 ]
 

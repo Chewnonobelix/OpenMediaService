@@ -14,6 +14,13 @@ void ControllerImage::exec() {
     auto contextPlaylist = new QQmlContext(context);
 
 
+    QFile file("./Rules/"+rules());
+    if(file.open(QIODevice::ReadOnly)) {
+        auto json = QJsonDocument::fromJson(file.readAll());
+        m_listModel.iniColumn(json);
+        file.close();
+    }
+
     qDebug() << "Image context";
     connect(&m_model, &LibrairyImageModel::imageChanged, this,
             &ControllerImage::setMedia);

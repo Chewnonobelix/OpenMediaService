@@ -1,6 +1,8 @@
 #include "abstractrule.h"
 
-QMultiMap<AbstractRule::Type, AbstractRule::Op> AbstractRule::s_ops = {{Type::Number, Op::Inferior},
+using namespace MediaPlayerGlobal;
+
+QMultiMap<Type, AbstractRule::Op> AbstractRule::s_ops = {{Type::Number, Op::Inferior},
                                                     {Type::Number, Op::InferiorEqual},
                                                     {Type::Number, Op::Superior},
                                                     {Type::Number, Op::SuperiorEqual},

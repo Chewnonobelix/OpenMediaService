@@ -185,7 +185,7 @@ void SmartModel::setRole(MediaPlayerGlobal::MediaRole r)
 
     for(auto it: array) {
         if(it.toObject()["smart"].toBool(false))
-            m_types[it.toObject()["name"].toString()] = it.toObject()["type"].toVariant().value<AbstractRule::Type>();
+            m_types[it.toObject()["name"].toString()] = it.toObject()["type"].toVariant().value<MediaPlayerGlobal::Type>();
     }
 }
 

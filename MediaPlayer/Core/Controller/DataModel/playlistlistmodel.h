@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QAbstractTableModel>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
 
 #include <mediaplayercore_global.h>
 
@@ -12,27 +15,20 @@ class MEDIAPLAYERCORE_EXPORT PlaylistListModel: public QAbstractTableModel
     Q_DISABLE_COPY(PlaylistListModel)
 
 private:
-    enum class ImageListRole{DisplayRole = Qt::UserRole +1, RatingRole, FileRole, ExtensionRole, PathRole, CountRole,
-                             AddedRole, LastPlayRole, Fullpath, IndexRole, OrderRole, EnableRole};
+    enum class ListRole{DisplayRole = Qt::UserRole +1, FileRole, ExtensionRole, IndexRole};
     enum class TristateOrder{NoOrder, AscendingOrder, DescendingOrder};
 
     struct Column {
         QString display;
         QString name;
-        ImageListRole role;
-        TristateOrder order;
+        MediaPlayerGlobal::Type type = MediaPlayerGlobal::Type::String;
+        TristateOrder order = TristateOrder::NoOrder;
         bool enable = true;
     };
 
     PlaylistPointer m_model;
     QList<int> m_sortList;
-    QList<Column> m_columns = {{"File", "file", ImageListRole::FileRole, TristateOrder::NoOrder},
-                               {"Path", "path", ImageListRole::PathRole, TristateOrder::NoOrder},
-                               {"Count", "count", ImageListRole::CountRole, TristateOrder::NoOrder},
-                               {"Added", "added", ImageListRole::AddedRole, TristateOrder::NoOrder},
-                               {"Last play", "lastPlayed", ImageListRole::LastPlayRole, TristateOrder::NoOrder},
-                               {"Rating", "rating", ImageListRole::RatingRole, TristateOrder::NoOrder},
-                               {"Ext", "ext", ImageListRole::ExtensionRole, TristateOrder::NoOrder}};
+    QList<Column> m_columns;
 
     Q_INVOKABLE TristateOrder nextOrder(TristateOrder);
 
@@ -54,6 +50,7 @@ public:
 
     QHash<int, QByteArray> roleNames() const override;
 
+    void iniColumn(QJsonDocument);
     Q_INVOKABLE int columnOf(QString) const;
 };
 

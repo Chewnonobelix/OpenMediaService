@@ -26,7 +26,7 @@ private:
     int m_depth = 0;
     MediaPlayerGlobal::MediaRole m_role;
     PluginManager& m_manager;
-    QMap<QString, AbstractRule::Type> m_types;
+    QMap<QString, MediaPlayerGlobal::Type> m_types;
 
     QList<Flat> toFlat(SmartGroupPointer, int = 1);
 

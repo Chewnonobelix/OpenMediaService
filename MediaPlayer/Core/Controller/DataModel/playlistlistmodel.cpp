@@ -44,54 +44,29 @@ QVariant PlaylistListModel::data(const QModelIndex& index, int role) const {
     auto current = (*m_model)[m_sortList[row]];
     auto currentCol = m_columns[col];
 
-    if(role < int(ImageListRole::FileRole)) {
-        switch(currentCol.role) {
-        case ImageListRole::FileRole:
+    switch(ListRole(role)) {
+    case ListRole::DisplayRole:
+        if(currentCol.name == "file") {
             return current->path().split("/").last();
-            break;
-        case ImageListRole::PathRole: {
-            auto last = current->path().lastIndexOf("/");
-            return current->path().mid(0, last);
         }
-            break;
-        case ImageListRole::CountRole:
-            return current->count();
-            break;
-        case ImageListRole::AddedRole:
-            return current->added().toString("dd-MM-yyyy");
-            break;
-        case ImageListRole::LastPlayRole:
-            return current->lastFinish().toString("dd-MM-yyyy hh:mm:ss");
-            break;
-        case ImageListRole::ExtensionRole: {
+        else if(currentCol.name == "ext") {
             auto last = current->path().lastIndexOf(".");
             return current->path().mid(last);
-            break;
         }
-        case ImageListRole::RatingRole:
-            return current->rating();
-            break;
-        case ImageListRole::OrderRole:
-            return QVariant::fromValue(current->role());
-        default:
-            break;
+        else if(currentCol.type == MediaPlayerGlobal::Type::StringContainer) {
+            return current->metaData<QStringList>(currentCol.name);
         }
-    }
+        else {
+            return current->metaData<QVariant>(currentCol.name);
+        }
 
-    auto erole = ImageListRole(role);
-    switch(erole) {
-    case ImageListRole::Fullpath:
-        return current->path();
-    case ImageListRole::IndexRole:
+    case ListRole::IndexRole:
         return m_model->indexOf(current);
-    case ImageListRole::EnableRole:
-        return currentCol.enable;
-    case ImageListRole::OrderRole:
-        return QVariant::fromValue(current->role());
+        break;
+
     default:
         break;
     }
-
     return QVariant();
 }
 void PlaylistListModel::sort(int col, TristateOrder order) {
@@ -139,24 +114,18 @@ void PlaylistListModel::sort(int col, TristateOrder order) {
 
 QHash<int, QByteArray> PlaylistListModel::roleNames() const
 {
-    static QHash<int, QByteArray> ret = {{int(ImageListRole::DisplayRole), "display"},
-                                         {int(ImageListRole::RatingRole), "rating"},
-                                         {int(ImageListRole::FileRole), "file"},
-                                         {int(ImageListRole::PathRole), "path"},
-                                         {int(ImageListRole::AddedRole), "added"},
-                                         {int(ImageListRole::LastPlayRole), "lastPlay"},
-                                         {int(ImageListRole::ExtensionRole), "extension"},
-                                         {int(ImageListRole::Fullpath), "fullpath"},
-                                         {int(ImageListRole::IndexRole), "index"},
-                                         {int(ImageListRole::OrderRole), "order"},
-                                         {int(ImageListRole::CountRole), "count"}};
+    static QHash<int, QByteArray> ret = {{int(ListRole::DisplayRole), "display"},
+                                         {int(ListRole::FileRole), "file"},
+                                         {int(ListRole::ExtensionRole), "extension"},
+                                         {int(ListRole::IndexRole), "index"}
+                                        };
     return ret;
 }
 
 QStringList PlaylistListModel::columnModel() const {
     QStringList ret;
     for(auto it: m_columns)
-        ret<<it.name;
+        ret<<it.display;
 
     return ret;
 }
@@ -179,6 +148,12 @@ void PlaylistListModel::play(int index)
         for(auto i = 1; i < read.size(); i++) {
             auto r = generator.bounded(i, int(read.count()));
             read.swapItemsAt(i, r);
+        }
+    }
+    else
+    {
+        for(auto i = 0; i < index; i++) {
+            read.takeFirst();
         }
     }
 
@@ -209,11 +184,23 @@ bool PlaylistListModel::setData(const QModelIndex &index, const QVariant &value,
 
 int PlaylistListModel::columnOf(QString name) const
 {
-    auto ret = 0;
+    auto ret = m_columns.size();
     for(auto it = 0; it < m_columns.count(); it++) {
         if(m_columns[it].name == name)
             ret = it;
     }
 
     return ret;
+}
+
+void PlaylistListModel::iniColumn(QJsonDocument obj)
+{
+    auto array = obj.array();
+
+    m_columns << Column{"File", "file"}<< Column {"Ext", "ext"};
+    for(auto it: array) {
+        auto iobj = it.toObject();
+        Column c {iobj["display"].toString(), iobj["name"].toString(), iobj["type"].toVariant().value<MediaPlayerGlobal::Type>()};
+        m_columns<<c;
+    }
 }
