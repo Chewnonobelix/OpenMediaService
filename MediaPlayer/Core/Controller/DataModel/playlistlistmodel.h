@@ -15,7 +15,7 @@ class MEDIAPLAYERCORE_EXPORT PlaylistListModel: public QAbstractTableModel
     Q_DISABLE_COPY(PlaylistListModel)
 
 private:
-    enum class ListRole{DisplayRole = Qt::UserRole +1, FileRole, ExtensionRole, IndexRole};
+    enum class ListRole{DisplayRole = Qt::UserRole +1, FileRole, ExtensionRole, IndexRole, OrderRole};
     enum class TristateOrder{NoOrder, AscendingOrder, DescendingOrder};
 
     struct Column {
@@ -46,7 +46,7 @@ public:
 
     QVariant data(const QModelIndex&, int) const override;
     bool setData(const QModelIndex &, const QVariant &, int role = Qt::EditRole) override;
-    Q_INVOKABLE void sort(int, TristateOrder order = TristateOrder::NoOrder);
+    Q_INVOKABLE void sort(int);
 
     QHash<int, QByteArray> roleNames() const override;
 

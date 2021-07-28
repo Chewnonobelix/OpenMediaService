@@ -63,16 +63,22 @@ QVariant PlaylistListModel::data(const QModelIndex& index, int role) const {
     case ListRole::IndexRole:
         return m_model->indexOf(current);
         break;
-
+    case ListRole::OrderRole:
+        return QVariant::fromValue(currentCol.order);
+        break;
     default:
         break;
     }
     return QVariant();
 }
-void PlaylistListModel::sort(int col, TristateOrder order) {
+void PlaylistListModel::sort(int col) {
+
+    auto order = m_columns[col].order;
+
     for(auto& it: m_columns)
         it.order = TristateOrder::NoOrder;
-    m_columns[col].order = order;
+
+    m_columns[col].order = nextOrder(order);
 
     for(auto i = 0; i < m_sortList.count(); i ++)
     {
@@ -116,6 +122,7 @@ QHash<int, QByteArray> PlaylistListModel::roleNames() const
 {
     static QHash<int, QByteArray> ret = {{int(ListRole::DisplayRole), "display"},
                                          {int(ListRole::FileRole), "file"},
+                                         {int(ListRole::OrderRole), "order"},
                                          {int(ListRole::ExtensionRole), "extension"},
                                          {int(ListRole::IndexRole), "index"}
                                         };

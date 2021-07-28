@@ -21,8 +21,7 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    var no = _playlistListModel.nextOrder(order)
-                    _playlistListModel.sort(column, no)
+                    _playlistListModel.sort(column)
                 }
             }
         }
@@ -81,7 +80,7 @@ Item {
 
                     Rating {
                         z:1
-                        Component.onCompleted: rating = display
+//                        Component.onCompleted: rating = display
                         anchors.fill: parent
                         onRatingChanged: {
                             display = rating
@@ -105,8 +104,9 @@ Item {
                         anchors.fill: parent
                         hoverEnabled: true
                         propagateComposedEvents: true
-                        onClicked: table.currentRow = row
-
+                        onClicked: {
+                            table.currentRow = row
+                        }
                         onDoubleClicked: {
                             _playlistListModel.play(index)
                         }
