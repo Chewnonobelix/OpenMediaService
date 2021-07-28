@@ -62,7 +62,7 @@ void MediaTest::cleanupTestCase()
 void MediaTest::test_id()
 {
     QVERIFY(model1.id() != id);
-    model1.setId(id);
+    QVERIFY(model1.setId(id));
     QCOMPARE(model1.id(), id);
 }
 
@@ -70,7 +70,7 @@ void MediaTest::test_count()
 {
     QVERIFY(model1.count() != count);
     QSignalSpy spy(&model1, SIGNAL(countChanged()));
-    model1.setCount(count);
+    QVERIFY(model1.setCount(count));
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.count(), count);
 }
@@ -78,14 +78,14 @@ void MediaTest::test_count()
 void MediaTest::test_role()
 {
     QVERIFY(model1.role() != role);
-    model1.setRole(role);
+    QVERIFY(model1.setRole(role));
     QCOMPARE(model1.role(), role);
 }
 
 void MediaTest::test_paths()
 {
     QVERIFY(model1.paths().isEmpty());
-    model1.setPath(path);
+    QVERIFY(model1.setPath(path));
     QCOMPARE(model1.paths().first(), path);
 }
 
@@ -96,14 +96,14 @@ void MediaTest::test_isAvailable()
 
 void MediaTest::test_removePath()
 {
-    model1.removePath(path);
+    QVERIFY(model1.removePath(path));
     QCOMPARE(model1.isAvailable(), false);
 }
 
 void MediaTest::test_added()
 {
     QVERIFY(model1.added() != added);
-    model1.setAdded(added);
+    QVERIFY(model1.setAdded(added));
     QCOMPARE(model1.added(), added);
 }
 
@@ -111,7 +111,7 @@ void MediaTest::test_lastFinish()
 {
     QVERIFY(model1.lastFinish() != lastFinish);
     QSignalSpy spy(&model1, SIGNAL(lastFinishChanged()));
-    model1.setLastFinish(lastFinish);
+    QVERIFY(model1.setLastFinish(lastFinish));
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.lastFinish(), lastFinish);
 }
@@ -120,7 +120,7 @@ void MediaTest::test_currentRead()
 {
     QVERIFY(model1.currentRead() != currentRead);
     QSignalSpy spy(&model1, SIGNAL(currentReadChanged()));
-    model1.setCurrentRead(currentRead);
+    QVERIFY(model1.setCurrentRead(currentRead));
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.currentRead(), currentRead);
 }
@@ -129,7 +129,7 @@ void MediaTest::test_rating()
 {
     QVERIFY(model1.rating() != rate);
     QSignalSpy spy(&model1, SIGNAL(ratingChanged()));
-    model1.setRating(rate);
+    QVERIFY(model1.setRating(rate));
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.rating(), rate);
 }
@@ -138,7 +138,7 @@ void MediaTest::test_lastProbed()
 {
     QVERIFY(model1.lastProbed() != lastProbed);
     QSignalSpy spy(&model1, SIGNAL(lastProbedChanged()));
-    model1.setLastProbed(lastProbed);
+    QVERIFY(model1.setLastProbed(lastProbed));
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.lastProbed(), lastProbed);
 }
