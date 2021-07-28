@@ -9,6 +9,7 @@ Media::Media(MD5 id, QString path) : QObject(nullptr) {
     setLastFinish(QDateTime());
     setMetadata("tag", QStringList());
     setMetadata("bookmark", QStringList());
+    setRating(0);
 
 	set();
 }

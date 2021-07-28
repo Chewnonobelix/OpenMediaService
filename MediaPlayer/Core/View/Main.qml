@@ -64,7 +64,7 @@ ApplicationWindow {
 			enabled: libraryView.currentIndex !== -1
 
 			onClicked: {
-				_db.removeLibrary(_libraries.currentLibrary.id)
+                _db.removeLibrary(_librariesModel.at(libraryView.currentIndex).id)
 			}
 		}
 

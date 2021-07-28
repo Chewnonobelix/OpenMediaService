@@ -2,9 +2,9 @@
 
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/Plugins/interfaceplugins.h>
+#include <Controller/DataModel/playlistlistmodel.h>
 
 #include "librairyimagemodel.h"
-#include "imagelistmodel.h"
 
 class ControllerImage : public AbstractController, public InterfacePlugins {
 	Q_OBJECT
@@ -16,7 +16,7 @@ private:
 	PlaylistPointer m_current;
 
     LibrairyImageModel m_model;
-    ImageListModel m_listModel;
+    PlaylistListModel m_listModel;
 
 	QTimer m_timer;
     static QPointer<QQmlComponent> s_playlist;

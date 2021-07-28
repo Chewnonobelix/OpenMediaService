@@ -1,6 +1,6 @@
-#include "imagelistmodel.h"
+#include "playlistlistmodel.h"
 
-void ImageListModel::setPLaylist(PlaylistPointer p)
+void PlaylistListModel::setPlaylist(PlaylistPointer p)
 {
     beginRemoveRows(QModelIndex(), 0, rowCount());
     removeRows(0, rowCount());
@@ -26,16 +26,16 @@ void ImageListModel::setPLaylist(PlaylistPointer p)
     sort(0);
 }
 
-int ImageListModel::rowCount(const QModelIndex&) const
+int PlaylistListModel::rowCount(const QModelIndex&) const
 {
     return m_sortList.size();
 }
 
-int ImageListModel::columnCount(const QModelIndex&) const {
+int PlaylistListModel::columnCount(const QModelIndex&) const {
     return m_columns.size();
 }
 
-QVariant ImageListModel::data(const QModelIndex& index, int role) const {
+QVariant PlaylistListModel::data(const QModelIndex& index, int role) const {
     auto row = index.row(), col = index.column();
 
     if((row < 0 || row >= rowCount()) || (col < 0 || col >= columnCount()))
@@ -44,60 +44,41 @@ QVariant ImageListModel::data(const QModelIndex& index, int role) const {
     auto current = (*m_model)[m_sortList[row]];
     auto currentCol = m_columns[col];
 
-    if(role < int(ImageListRole::FileRole)) {
-        switch(currentCol.role) {
-        case ImageListRole::FileRole:
+    switch(ListRole(role)) {
+    case ListRole::DisplayRole:
+        if(currentCol.name == "file") {
             return current->path().split("/").last();
-            break;
-        case ImageListRole::PathRole: {
-            auto last = current->path().lastIndexOf("/");
-            return current->path().mid(0, last);
         }
-            break;
-        case ImageListRole::CountRole:
-            return current->count();
-            break;
-        case ImageListRole::AddedRole:
-            return current->added().toString("dd-MM-yyyy");
-            break;
-        case ImageListRole::LastPlayRole:
-            return current->lastFinish().toString("dd-MM-yyyy hh:mm:ss");
-            break;
-        case ImageListRole::ExtensionRole: {
+        else if(currentCol.name == "ext") {
             auto last = current->path().lastIndexOf(".");
             return current->path().mid(last);
-            break;
         }
-        case ImageListRole::RatingRole:
-            return current->rating();
-            break;
-        case ImageListRole::OrderRole:
-            return QVariant::fromValue(current->role());
-        default:
-            break;
+        else if(currentCol.type == MediaPlayerGlobal::Type::StringContainer) {
+            return current->metaData<QStringList>(currentCol.name);
         }
-    }
+        else {
+            return current->metaData<QVariant>(currentCol.name);
+        }
 
-    auto erole = ImageListRole(role);
-    switch(erole) {
-    case ImageListRole::Fullpath:
-        return current->path();
-    case ImageListRole::IndexRole:
+    case ListRole::IndexRole:
         return m_model->indexOf(current);
-    case ImageListRole::EnableRole:
-        return currentCol.enable;
-    case ImageListRole::OrderRole:
-        return QVariant::fromValue(current->role());
+        break;
+    case ListRole::OrderRole:
+        return QVariant::fromValue(currentCol.order);
+        break;
     default:
         break;
     }
-
     return QVariant();
 }
-void ImageListModel::sort(int col, TristateOrder order) {
+void PlaylistListModel::sort(int col) {
+
+    auto order = m_columns[col].order;
+
     for(auto& it: m_columns)
         it.order = TristateOrder::NoOrder;
-    m_columns[col].order = order;
+
+    m_columns[col].order = nextOrder(order);
 
     for(auto i = 0; i < m_sortList.count(); i ++)
     {
@@ -137,36 +118,31 @@ void ImageListModel::sort(int col, TristateOrder order) {
     endInsertRows();
 }
 
-QHash<int, QByteArray> ImageListModel::roleNames() const
+QHash<int, QByteArray> PlaylistListModel::roleNames() const
 {
-    static QHash<int, QByteArray> ret = {{int(ImageListRole::DisplayRole), "display"},
-                                         {int(ImageListRole::RatingRole), "rating"},
-                                         {int(ImageListRole::FileRole), "file"},
-                                         {int(ImageListRole::PathRole), "path"},
-                                         {int(ImageListRole::AddedRole), "added"},
-                                         {int(ImageListRole::LastPlayRole), "lastPlay"},
-                                         {int(ImageListRole::ExtensionRole), "extension"},
-                                         {int(ImageListRole::Fullpath), "fullpath"},
-                                         {int(ImageListRole::IndexRole), "index"},
-                                         {int(ImageListRole::OrderRole), "order"},
-                                         {int(ImageListRole::CountRole), "count"}};
+    static QHash<int, QByteArray> ret = {{int(ListRole::DisplayRole), "display"},
+                                         {int(ListRole::FileRole), "file"},
+                                         {int(ListRole::OrderRole), "order"},
+                                         {int(ListRole::ExtensionRole), "extension"},
+                                         {int(ListRole::IndexRole), "index"}
+                                        };
     return ret;
 }
 
-QStringList ImageListModel::columnModel() const {
+QStringList PlaylistListModel::columnModel() const {
     QStringList ret;
     for(auto it: m_columns)
-        ret<<it.name;
+        ret<<it.display;
 
     return ret;
 }
 
-QVariant ImageListModel::headerData(int section, Qt::Orientation, int) const
+QVariant PlaylistListModel::headerData(int section, Qt::Orientation, int) const
 {
     return columnModel()[section];
 }
 
-void ImageListModel::play(int index)
+void PlaylistListModel::play(int index)
 {
     QList<int> read;
     for(auto it = 0; it < m_model->count(); it++)
@@ -181,13 +157,19 @@ void ImageListModel::play(int index)
             read.swapItemsAt(i, r);
         }
     }
+    else
+    {
+        for(auto i = 0; i < index; i++) {
+            read.takeFirst();
+        }
+    }
 
     m_model->setReadOrder(read);
     m_model->setCurrentIndex(index-1);
     m_model->next();
 }
 
-ImageListModel::TristateOrder ImageListModel::nextOrder(TristateOrder order) {
+PlaylistListModel::TristateOrder PlaylistListModel::nextOrder(TristateOrder order) {
     switch (order) {
     case TristateOrder::NoOrder:
         return TristateOrder::AscendingOrder;
@@ -200,20 +182,32 @@ ImageListModel::TristateOrder ImageListModel::nextOrder(TristateOrder order) {
     return TristateOrder::NoOrder;
 }
 
-bool ImageListModel::setData(const QModelIndex &index, const QVariant &value, int role) {
+bool PlaylistListModel::setData(const QModelIndex &index, const QVariant &value, int role) {
     if(m_columns[index.column()].name == "rating")
         (*m_model)[m_sortList[index.row()]]->setRating(value.toInt());
     emit dataChanged(index, index, {role});
     return true;
 }
 
-int ImageListModel::columnOf(QString name) const
+int PlaylistListModel::columnOf(QString name) const
 {
-    auto ret = 0;
+    auto ret = m_columns.size();
     for(auto it = 0; it < m_columns.count(); it++) {
         if(m_columns[it].name == name)
             ret = it;
     }
 
     return ret;
+}
+
+void PlaylistListModel::iniColumn(QJsonDocument obj)
+{
+    auto array = obj.array();
+
+    m_columns << Column{"File", "file"}<< Column {"Ext", "ext"};
+    for(auto it: array) {
+        auto iobj = it.toObject();
+        Column c {iobj["display"].toString(), iobj["name"].toString(), iobj["type"].toVariant().value<MediaPlayerGlobal::Type>()};
+        m_columns<<c;
+    }
 }

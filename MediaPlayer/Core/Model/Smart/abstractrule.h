@@ -4,8 +4,11 @@
 #include <designpattern.h>
 #include <metadata.h>
 
+#include <Model/global.h>
 #include <Model/media.h>
 
+
+using namespace MediaPlayerGlobal;
 
 class AbstractRule;
 
@@ -20,10 +23,6 @@ public:
     enum class Op {Undefined, Superior, Inferior, Equal, Not, InferiorEqual, SuperiorEqual, Limit, And, Or,
                    List, RegExp, Contain, Start, End};
     Q_ENUM(Op)
-
-    enum class Type {Number = 2, String = 4, Date = 6, Container = 1,
-                    NumberContainer = Number | Container, StringContainer = String | Container};
-    Q_FLAG(Type)
 
     static QMultiMap<Type, Op> s_ops;
 

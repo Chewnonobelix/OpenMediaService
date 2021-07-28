@@ -7,12 +7,19 @@ void ControllerImage::exec() {
     auto* root = engine()->qmlEngine().rootContext();
     context = new QQmlContext(root);
     context->setContextProperty("_imageLibrairyModel", &m_model);
-    context->setContextProperty("_imageListModel", &m_listModel);
+    context->setContextProperty("_playlistListModel", &m_listModel);
     context->setContextProperty("_image", this);
 
     auto contextPlayer = new QQmlContext(context);
     auto contextPlaylist = new QQmlContext(context);
 
+
+    QFile file("./Rules/"+rules());
+    if(file.open(QIODevice::ReadOnly)) {
+        auto json = QJsonDocument::fromJson(file.readAll());
+        m_listModel.iniColumn(json);
+        file.close();
+    }
 
     qDebug() << "Image context";
     connect(&m_model, &LibrairyImageModel::imageChanged, this,
@@ -43,7 +50,7 @@ void ControllerImage::setPlaylist(PlaylistPointer p) {
     m_current->disconnect(SIGNAL(playlistChanged()), this, SLOT(onPlaylistChanged()));
     m_current = p;
     m_model.setPlaylist(p);
-    m_listModel.setPLaylist(p);
+    m_listModel.setPlaylist(p);
 
     if(p) {
         connect(m_current.data(), &PlayList::play, this, &ControllerImage::setMedia,

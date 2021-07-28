@@ -67,7 +67,7 @@ Item {
 
             currentIndex: displayType.currentIndex
 
-            ImageList {
+            PlaylistList {
             }
 
             ImageLibrairyPlaylist {

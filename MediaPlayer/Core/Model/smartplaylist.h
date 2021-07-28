@@ -2,6 +2,9 @@
 
 #include <QList>
 #include <QDateTime>
+#include <QThread>
+#include <QPointer>
+#include <QQueue>
 
 #include <Core/naryexpression.h>
 #include <Core/valueexpression.h>
@@ -34,6 +37,8 @@ private:
 
     SmartGroupPointer m_rules = SmartGroupPointer::create();
     QSharedPointer<Expression<bool>> m_expression;
+    QPointer<QThread> m_thread = nullptr;
+    QQueue<MediaPointer> m_queue;;
 
 public:
     SmartPlaylist();

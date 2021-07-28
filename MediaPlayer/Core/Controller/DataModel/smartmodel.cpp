@@ -184,7 +184,8 @@ void SmartModel::setRole(MediaPlayerGlobal::MediaRole r)
     auto array = json.array();
 
     for(auto it: array) {
-        m_types[it.toObject()["name"].toString()] = it.toObject()["type"].toVariant().value<AbstractRule::Type>();
+        if(it.toObject()["smart"].toBool(false))
+            m_types[it.toObject()["name"].toString()] = it.toObject()["type"].toVariant().value<MediaPlayerGlobal::Type>();
     }
 }
 
