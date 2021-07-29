@@ -57,7 +57,7 @@ public:
     void set() override;
 
 public slots:
-    void append(MediaPointer, int = -1) override;
+    bool append(MediaPointer, int = -1) override;
     void onMediaChanged(MediaPointer);
 
 signals:

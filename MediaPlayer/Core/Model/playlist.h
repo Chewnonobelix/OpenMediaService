@@ -50,18 +50,18 @@ public:
     using QList<MediaPointer>::indexOf;
 
     QUuid id() const;
-    void setId(QUuid);
+    bool setId(QUuid);
     QString name() const;
-    void setName(QString);
+    bool setName(QString);
     bool isShuffle() const;
-    void setShuffle(bool);
+    bool setShuffle(bool);
     int currentIndex() const;
-    void setCurrentIndex(int);
+    bool setCurrentIndex(int);
 
     //	Q_INVOKABLE void play(int = 0);
     Q_INVOKABLE MediaPointer next();
     Q_INVOKABLE MediaPointer prev();
-    void setReadOrder(QList<int>);
+    bool setReadOrder(QList<int>);
 
     virtual void set();
 signals:
@@ -73,9 +73,9 @@ signals:
     void playlistChanged();
 
 public slots:
-    Q_INVOKABLE virtual void append(MediaPointer, int = -1);
-    Q_INVOKABLE void remove(int);
+    Q_INVOKABLE virtual bool append(MediaPointer, int = -1);
+    Q_INVOKABLE bool remove(int);
     Q_INVOKABLE MediaPointer at(int i) const;
-    Q_INVOKABLE void swap(int, int);
-    Q_INVOKABLE void clear();
+    Q_INVOKABLE bool swap(int, int);
+    Q_INVOKABLE bool clear();
 };

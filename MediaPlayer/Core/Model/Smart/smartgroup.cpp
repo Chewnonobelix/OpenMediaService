@@ -62,6 +62,7 @@ QSharedPointer<Expression<bool>> SmartGroup::create()
     switch(op()) {
     case AbstractRule::Op::Or:
         ret = QSharedPointer<DisjonctiveForm>::create();
+        break;
     case AbstractRule::Op::And:
     default:
         ret = QSharedPointer<ConjonctiveForm>::create();
