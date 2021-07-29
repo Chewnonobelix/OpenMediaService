@@ -1,6 +1,6 @@
 QT += quick xml core qml
 
-CONFIG += c++17
+CONFIG += c++20
 
 TEMPLATE = lib
 DEFINES += MEDIAPLAYERCORE_LIBRARY

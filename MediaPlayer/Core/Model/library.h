@@ -51,20 +51,20 @@ public:
 	friend bool operator<(LibraryPointer, LibraryPointer);
 
 	QUuid id() const;
-	void setId(QUuid);
+    bool setId(QUuid);
 	QString name() const;
-	void setName(QString);
+    bool setName(QString);
 	MediaPlayerGlobal::MediaRole role() const;
-	void setRole(MediaPlayerGlobal::MediaRole);
+    bool setRole(MediaPlayerGlobal::MediaRole);
 	bool isShared() const;
-	void setShared(bool);
+    bool setShared(bool);
 	Q_INVOKABLE QStringList sourceDir() const;
 	int mediaCount() const;
 	LibraryProbe *probe();
 	int playlistCount() const;
 
 public slots:
-	Q_INVOKABLE void scan();
+    Q_INVOKABLE bool scan();
 
 	Q_INVOKABLE bool addNMedia(QString, MD5 = "");
 	Q_INVOKABLE bool addMedia(MediaPointer);

@@ -1,7 +1,7 @@
 TEMPLATE = lib
 TARGET = UxComponents
 QT += qml quick
-CONFIG += plugin c++17
+CONFIG += plugin c++20
 
 TARGET = $$qtLibraryTarget($$TARGET)
 uri = MediaPlayer.Components

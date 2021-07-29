@@ -34,7 +34,7 @@ private slots:
 void PlaylistTest::test_id()
 {
     QVERIFY(model1.id() != id);
-    model1.setId(id);
+    QVERIFY(model1.setId(id));
     QCOMPARE(model1.id(), id);    
 }
 
@@ -42,7 +42,7 @@ void PlaylistTest::test_name()
 {
     QVERIFY(model1.name() != name);
     QSignalSpy spy(&model1, SIGNAL(nameChanged()));
-    model1.setName(name);
+    QVERIFY(model1.setName(name));
     QCOMPARE(spy.count(), 1);
     QCOMPARE(model1.name(), name);    
 }
@@ -51,9 +51,9 @@ void PlaylistTest::test_add()
 {
     QVERIFY(model1.isEmpty());
     QSignalSpy spy(&model1, SIGNAL(countChanged()));
-    model1.append(m1);    
-    model1.append(m2);    
-    model1.append(m3);
+    QVERIFY(model1.append(m1));
+    QVERIFY(model1.append(m2));
+    QVERIFY(model1.append(m3));
     QCOMPARE(spy.count(), 3);
 }
 
@@ -66,7 +66,7 @@ void PlaylistTest::test_remove()
 {
     QVERIFY(!model1.isEmpty());
     QSignalSpy spy(&model1, SIGNAL(countChanged()));
-    model1.remove(2);    
+    QVERIFY(model1.remove(2));
     QCOMPARE(spy.count(), 1);}
 
 void PlaylistTest::test_count()
@@ -85,7 +85,7 @@ void PlaylistTest::test_swap()
 {
     QVERIFY(model1.at(0) == m1);
     QSignalSpy spy(&model1, SIGNAL(countChanged()));
-    model1.swap(0,1);
+    QVERIFY(model1.swap(0,1));
     QCOMPARE(spy.count(), 1);    
     QCOMPARE(model1.at(0), m2);
 }

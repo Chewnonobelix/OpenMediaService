@@ -88,9 +88,11 @@ bool SmartPlaylist::isValid(MediaPointer m)
     return m_expression->evaluate();
 }
 
-void SmartPlaylist::append(MediaPointer m, int)
+bool SmartPlaylist::append(MediaPointer m, int)
 {
+    //TODO add future
     m_queue.enqueue(m);
+    return true;
 }
 
 void SmartPlaylist::onMediaChanged(MediaPointer m) {

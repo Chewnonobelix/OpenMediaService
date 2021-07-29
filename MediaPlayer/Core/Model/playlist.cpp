@@ -1,7 +1,7 @@
 #include "playlist.h"
 
 PlayList::PlayList(const PlayList &p)
-		: QObject(nullptr), MetaData(p), QList(p) {}
+        : QObject(nullptr), MetaData(p), QEnableSharedFromThis<PlayList>(), QList(p) {}
 
 PlayList &PlayList::operator=(const PlayList &p) {
 	MetaData &m = *this;
@@ -14,48 +14,57 @@ PlayList &PlayList::operator=(const PlayList &p) {
 
 QUuid PlayList::id() const { return metaData<QUuid>("id"); }
 
-void PlayList::setId(QUuid id) { setMetadata("id", id); }
+bool PlayList::setId(QUuid id) { return setMetadata("id", id); }
 
 QString PlayList::name() const { return metaData<QString>("name"); }
 
-void PlayList::setName(QString name) {
-	setMetadata("name", name);
+bool PlayList::setName(QString name) {
+    auto ret = setMetadata("name", name);
 	emit nameChanged();
+    return ret;
 }
 
 bool PlayList::isShuffle() const { return metaData<bool>("isShuffle"); }
 
-void PlayList::setShuffle(bool s) {
-	setMetadata("isShuffle", s);
+bool PlayList::setShuffle(bool s) {
+    auto ret = setMetadata("isShuffle", s);
 	emit isShuffleChanged();
+    return ret;
 }
 
-void PlayList::append(MediaPointer m, int index) {
-	if (index == -1)
+bool PlayList::append(MediaPointer m, int index) {
+    //TODO
+    if (index == -1)
 		QList<MediaPointer>::append(m);
 	else
 		insert(index, m);
 
 	emit countChanged();
+    return true;
 }
 
-void PlayList::remove(int index) {
-	removeAt(index);
+bool PlayList::remove(int index) {
+    //TODO
+    removeAt(index);
 
 	emit countChanged();
+    return true;
 }
 
 MediaPointer PlayList::at(int i) const { return (*this)[i]; }
 
-void PlayList::swap(int i, int j) {
+bool PlayList::swap(int i, int j) {
+    //TODO
 	swapItemsAt(i, j);
 
 	emit countChanged();
+    return true;
 }
 
-void PlayList::clear() {
+bool PlayList::clear() {
 	QList<MediaPointer>::clear();
 	emit countChanged();
+    return isEmpty();
 }
 
 MediaPointer PlayList::next() {
@@ -82,13 +91,23 @@ MediaPointer PlayList::prev() {
 	return ret;
 }
 
-void PlayList::setReadOrder(QList<int> order) { m_readOrder = order; }
+bool PlayList::setReadOrder(QList<int> order) {
+    if(m_readOrder == order)
+        return false;
+
+    m_readOrder = order;
+    return true;
+}
 
 int PlayList::currentIndex() const { return m_currentIndex; }
 
-void PlayList::setCurrentIndex(int index) {
-	m_currentIndex = index;
+bool PlayList::setCurrentIndex(int index) {
+    if(m_currentIndex == index)
+        return false;
+
+    m_currentIndex = index;
 	emit currentIndexChanged();
+    return true;
 }
 
 void PlayList::set()

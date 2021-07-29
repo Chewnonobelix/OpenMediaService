@@ -58,27 +58,27 @@ public:
     friend MEDIAPLAYERCORE_EXPORT CompareState compare(MediaPointer, MediaPointer, QString);
 	
 	MD5 id() const;
-	void setId(MD5 id);
+    bool setId(MD5 id);
 	MediaPlayerGlobal::MediaRole role() const;
-	void setRole(MediaPlayerGlobal::MediaRole role);
+    bool setRole(MediaPlayerGlobal::MediaRole role);
 	QString path() const;
 	QList<QString> paths() const;
-	void setPath(QString path);
-	void removePath(QString path);
+    bool setPath(QString path);
+    bool removePath(QString path);
 	int nbPath() const;
 	bool isAvailable() const;
 	int count() const;
-	void setCount(int count);
+    bool setCount(int count);
 	int rating() const;
-	void setRating(int rate);
+    bool setRating(int rate);
 	QDate added() const;
-	void setAdded(QDate added);
+    bool setAdded(QDate added);
 	QDateTime lastFinish() const;
-	void setLastFinish(QDateTime lastFinish);
+    bool setLastFinish(QDateTime lastFinish);
 	double currentRead() const;
-	void setCurrentRead(double currentRead);
+    bool setCurrentRead(double currentRead);
 	QDateTime lastProbed() const;
-	void setLastProbed(QDateTime);
+    bool setLastProbed(QDateTime);
 
 	static MediaPointer createMedia(MD5, QString path = "");
 
