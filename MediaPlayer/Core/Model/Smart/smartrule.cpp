@@ -44,7 +44,7 @@ QVariant SmartRule::toTest() const
 bool SmartRule::setToTest(QVariant newtoTest)
 {
     auto ret = m_toTest != newtoTest;
-    if(m_toTest == newtoTest)
+    if(ret)
         m_toTest = newtoTest;
     return ret;
 }

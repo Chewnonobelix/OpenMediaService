@@ -79,8 +79,7 @@ bool SmartGroup::setOp(Op o)
     switch(o) {
     case AbstractRule::Op::And:
     case AbstractRule::Op::Or:
-        setMetadata("op", o);
-        return true;
+        return setMetadata("op", o);;
     default:
         return false;
     }
