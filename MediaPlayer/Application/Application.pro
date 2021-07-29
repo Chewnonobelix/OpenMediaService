@@ -1,6 +1,6 @@
 QT += quick xml core qml
 
-CONFIG += c++17
+CONFIG += c++20
 
 INCLUDEPATH += ../DesignLibrary/DesignPattern ../ExpressionLibrary/LibExpression ../Core
 
