@@ -31,13 +31,13 @@ public:
     bool set(MediaPointer) override;
 
     QString field() const;
-    void setField(QString);
+    bool setField(QString);
     QVariant& value();
     QVariant value() const;
-    void setValue(QVariant);
+    bool setValue(QVariant);
     QVariant& toTest();
     QVariant toTest() const;
-    void setToTest(QVariant);
+    bool setToTest(QVariant);
     Op op() const override;
     bool setOp(Op) override;
 };

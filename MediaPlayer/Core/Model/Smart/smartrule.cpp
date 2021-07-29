@@ -10,9 +10,9 @@ QString SmartRule::field() const
     return metaData<QString>("field");
 }
 
-void SmartRule::setField(QString newfield)
+bool SmartRule::setField(QString newfield)
 {
-    setMetadata("field", newfield);
+    return setMetadata("field", newfield);
 }
 
 QVariant& SmartRule::value()
@@ -25,10 +25,10 @@ QVariant SmartRule::value() const
     return metaData<QVariant>("value");
 }
 
-void SmartRule::setValue(QVariant newvalue)
+bool SmartRule::setValue(QVariant newvalue)
 {
-    setMetadata("value", newvalue);
     m_value = newvalue;
+    return setMetadata("value", newvalue);
 }
 
 QVariant& SmartRule::toTest()
@@ -41,9 +41,12 @@ QVariant SmartRule::toTest() const
     return m_toTest;
 }
 
-void SmartRule::setToTest(QVariant newtoTest)
+bool SmartRule::setToTest(QVariant newtoTest)
 {
+    auto ret = m_toTest != newtoTest;
+    if(m_toTest == newtoTest)
         m_toTest = newtoTest;
+    return ret;
 }
 
 AbstractRule::Op SmartRule::op() const
@@ -53,9 +56,7 @@ AbstractRule::Op SmartRule::op() const
 
 bool SmartRule::setOp(Op newop)
 {
-    setMetadata("op", newop);
-
-    return true;
+    return setMetadata("op", newop);
 }
 
 QSharedPointer<Expression<bool>> SmartRule::create()
@@ -142,7 +143,5 @@ QPartialOrdering SmartRule::compare(AbstractRulePointer other) const
 
 bool SmartRule::set(MediaPointer m)
 {
-    setToTest(m->metaData<QVariant>(field()));
-
-    return true;
+    return setToTest(m->metaData<QVariant>(field()));
 }

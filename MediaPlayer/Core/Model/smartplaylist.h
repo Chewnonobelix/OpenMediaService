@@ -38,7 +38,7 @@ private:
     SmartGroupPointer m_rules = SmartGroupPointer::create();
     QSharedPointer<Expression<bool>> m_expression;
     QPointer<QThread> m_thread = nullptr;
-    QQueue<MediaPointer> m_queue;;
+    QQueue<MediaPointer> m_queue;
 
 public:
     SmartPlaylist();
