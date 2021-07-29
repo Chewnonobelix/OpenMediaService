@@ -2,7 +2,7 @@
 
 Library::Library() { set(); }
 
-Library::Library(const Library &l) : QObject(nullptr), MetaData(l) { set(); }
+Library::Library(const Library &l) : QObject(nullptr), MetaData(l), QEnableSharedFromThis<Library>() { set(); }
 
 Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l) {
 

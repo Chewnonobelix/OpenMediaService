@@ -1,7 +1,7 @@
 #include "playlist.h"
 
 PlayList::PlayList(const PlayList &p)
-		: QObject(nullptr), MetaData(p), QList(p) {}
+        : QObject(nullptr), MetaData(p), QEnableSharedFromThis<PlayList>(), QList(p) {}
 
 PlayList &PlayList::operator=(const PlayList &p) {
 	MetaData &m = *this;

@@ -9,7 +9,6 @@
 class SmartModel : public QAbstractTableModel
 {
     Q_OBJECT
-    Q_PROPERTY(MediaPlayerGlobal::MediaRole role WRITE setRole)
 
     enum class SmartRole {OpRole = Qt::UserRole + 1, TypeRole, FieldsRole, IdRole, FieldRole, ValueRole};
 
