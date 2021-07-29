@@ -2,9 +2,21 @@
 
 LibraryProbe::LibraryProbe() {}
 
-void LibraryProbe::setSourceDir(QStringList list) { m_sourceDir = list; }
+bool LibraryProbe::setSourceDir(QStringList list) {
+    auto ret = m_sourceDir != list;
 
-void LibraryProbe::setRole(MediaPlayerGlobal::MediaRole role) { m_role = role; }
+    if(ret)
+        m_sourceDir = list;
+
+    return ret;
+}
+
+bool LibraryProbe::setRole(MediaPlayerGlobal::MediaRole role) {
+    auto ret = m_role != role;
+    if(ret)
+        m_role = role;
+    return ret;
+}
 
 void LibraryProbe::onMediaFind(QString, MD5) {
     m_current++;
@@ -23,11 +35,19 @@ double LibraryProbe::current() const {
     return (m_current * 10000 / m_total) / 100.0;
 }
 
-void LibraryProbe::setPaths(QSet<QString> paths) { m_paths = paths; }
+bool LibraryProbe::setPaths(QSet<QString> paths) {
+    auto ret = m_paths != paths;
+
+    if(ret)
+        m_paths = paths;
+
+    return ret;
+}
 
 bool LibraryProbe::isRunning() const { return current() < 100.0; }
 
-void LibraryProbe::probe() {
+bool LibraryProbe::probe() {
+    //TODO
     connect(this, &LibraryProbe::mediaFind, this, &LibraryProbe::onMediaFind,
             Qt::UniqueConnection);
 
@@ -128,13 +148,20 @@ void LibraryProbe::probe() {
 
         last->start();
     }
+
+    return true;
 }
 
 QDateTime LibraryProbe::lastProbed() const { return m_lastProbed; }
 
-void LibraryProbe::setLastProbed(QDateTime lp) {
-    m_lastProbed = lp;
-    emit lastProbedChanged();
+bool LibraryProbe::setLastProbed(QDateTime lp) {
+    bool ret = m_lastProbed != lp;
+
+    if(m_lastProbed != lp) {
+        m_lastProbed = lp;
+        emit lastProbedChanged();
+    }
+    return ret;
 }
 
 bool LibraryProbe::isValid(QString path) const {
@@ -143,4 +170,9 @@ bool LibraryProbe::isValid(QString path) const {
     return m_filters.contains(suffix);
 }
 
-void LibraryProbe::setFilters(QStringList filters) { m_filters = filters; }
+bool LibraryProbe::setFilters(QStringList filters) {
+    bool ret = m_filters != filters;
+    if(m_filters != filters)
+        m_filters = filters;
+    return ret;
+}

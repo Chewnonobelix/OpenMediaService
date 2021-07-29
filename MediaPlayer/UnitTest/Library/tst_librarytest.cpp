@@ -44,28 +44,28 @@ void LibraryTest::cleanupTestCase() {}
 
 void LibraryTest::test_id() {
 	QVERIFY(model1.id() != id);
-	model1.setId(id);
+    QVERIFY(model1.setId(id));
 	QCOMPARE(model1.id(), id);
 }
 
 void LibraryTest::test_name() {
 	QVERIFY(model1.name() != name);
 	QSignalSpy spy(&model1, SIGNAL(nameChanged()));
-	model1.setName(name);
+    QVERIFY(model1.setName(name));
 	QCOMPARE(spy.count(), 1);
 	QCOMPARE(model1.name(), name);
 }
 
 void LibraryTest::test_role() {
 	QVERIFY(model1.role() != role);
-	model1.setRole(role);
+    QVERIFY(model1.setRole(role));
 	QCOMPARE(model1.role(), role);
 }
 
 void LibraryTest::test_isShared() {
 	QVERIFY(model1.isShared() != shared);
 	QSignalSpy spy(&model1, SIGNAL(isSharedChanged()));
-	model1.setShared(shared);
+    QVERIFY(model1.setShared(shared));
 	QCOMPARE(spy.count(), 1);
 	QCOMPARE(model1.isShared(), shared);
 }
@@ -73,7 +73,7 @@ void LibraryTest::test_isShared() {
 void LibraryTest::test_lastProbed() {
 	QVERIFY(model1.probe()->lastProbed() != lastprobed);
 	QSignalSpy spy(model1.probe(), SIGNAL(lastProbedChanged()));
-	model1.probe()->setLastProbed(lastprobed);
+    QVERIFY(model1.probe()->setLastProbed(lastprobed));
 	QCOMPARE(spy.count(), 1);
 	QCOMPARE(model1.probe()->lastProbed(), lastprobed);
 }

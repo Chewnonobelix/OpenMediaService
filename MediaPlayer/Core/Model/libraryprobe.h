@@ -47,19 +47,19 @@ public:
 	LibraryProbe();
 	~LibraryProbe() = default;
 
-	void setSourceDir(QStringList);
-	void setRole(MediaPlayerGlobal::MediaRole);
-	void setPaths(QSet<QString>);
+    bool setSourceDir(QStringList);
+    bool setRole(MediaPlayerGlobal::MediaRole);
+    bool setPaths(QSet<QString>);
 	QDateTime lastProbed() const;
-	void setLastProbed(QDateTime);
+    bool setLastProbed(QDateTime);
 
-	void probe();
+    bool probe();
 
 	double current() const;
 	bool isRunning() const;
 
 	bool isValid(QString path) const;
-	void setFilters(QStringList);
+    bool setFilters(QStringList);
 
 signals:
 	void mediaFind(QString, MD5);

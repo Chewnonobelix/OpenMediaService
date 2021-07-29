@@ -80,7 +80,8 @@ Library &Library::operator=(const Library &l) {
     return *this;
 }
 
-void Library::scan() {
+bool Library::scan() {
+    //TODO
     QSet<QString> paths;
     for (auto it : m_medias)
         for (auto it2 : it->paths())
@@ -90,32 +91,36 @@ void Library::scan() {
     m_probe.setSourceDir(sourceDir());
     m_probe.setRole(role());
     m_probe.probe();
+
+    return true;
 }
 
 QUuid Library::id() const { return metaData<QUuid>("id"); }
 
-void Library::setId(QUuid id) { setMetadata("id", id); }
+bool Library::setId(QUuid id) { return setMetadata("id", id); }
 
 QString Library::name() const { return metaData<QString>("name"); }
 
-void Library::setName(QString name) {
-    setMetadata("name", name);
+bool Library::setName(QString name) {
+    auto ret = setMetadata("name", name);
     emit nameChanged();
+    return ret;
 }
 
 MediaPlayerGlobal::MediaRole Library::role() const {
     return metaData<MediaPlayerGlobal::MediaRole>("role");
 }
 
-void Library::setRole(MediaPlayerGlobal::MediaRole role) {
-    setMetadata("role", role);
+bool Library::setRole(MediaPlayerGlobal::MediaRole role) {
+    return setMetadata("role", role);
 }
 
 bool Library::isShared() const { return metaData<bool>("shared"); }
 
-void Library::setShared(bool shared) {
-    setMetadata("shared", shared);
+bool Library::setShared(bool shared) {
+    auto ret = setMetadata("shared", shared);
     emit isSharedChanged();
+    return ret;
 }
 
 QStringList Library::sourceDir() const {
