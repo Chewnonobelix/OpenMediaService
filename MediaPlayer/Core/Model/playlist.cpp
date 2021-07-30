@@ -116,3 +116,10 @@ void PlayList::set()
     connect(this, &PlayList::countChanged, this, &PlayList::playlistChanged);
     connect(this, &PlayList::isShuffleChanged, this, &PlayList::playlistChanged);
 }
+
+bool PlayList::contains(MD5 id) const
+{
+    return std::find(begin(), end(), [id](MediaPointer m) {
+        return m->id() == id;
+    }) != end();
+}
