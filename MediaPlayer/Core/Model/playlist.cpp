@@ -119,7 +119,26 @@ void PlayList::set()
 
 bool PlayList::contains(MD5 id) const
 {
-    return std::find(begin(), end(), [id](MediaPointer m) {
+    return std::find_if(begin(), end(), [id](MediaPointer m) {
         return m->id() == id;
     }) != end();
+}
+
+bool PlayList::replace(MediaPointer m)
+{
+    auto ret = contains(m->id());
+
+    if(ret) {
+        (*this)[indexOf(m->id())] = m;
+    }
+
+    return ret;
+}
+
+int PlayList::indexOf(MD5 id) const
+{
+    auto it = std::find_if(begin(), end(), [id](MediaPointer m) {
+            return m->id() == id;
+    });
+    return std::distance(begin(), it);
 }

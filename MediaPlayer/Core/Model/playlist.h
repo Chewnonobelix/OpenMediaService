@@ -60,6 +60,9 @@ public:
     bool setCurrentIndex(int);
 
     bool contains(MD5) const;
+    bool replace(MediaPointer);
+    int indexOf(MD5) const;
+
     //	Q_INVOKABLE void play(int = 0);
     Q_INVOKABLE MediaPointer next();
     Q_INVOKABLE MediaPointer prev();
