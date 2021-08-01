@@ -12,6 +12,32 @@ PlayList &PlayList::operator=(const PlayList &p) {
 	return *this;
 }
 
+PlayList::PlayList(const QJsonObject& json): QObject(nullptr), MetaData(json), QEnableSharedFromThis<PlayList>(),
+    QList()
+{
+    auto array = json["medias"].toArray();
+
+    for(auto it: array) {
+        append(factory<Media>(it.toObject()));
+    }
+}
+
+
+PlayList::operator QJsonObject() const
+{
+    QJsonObject ret = MetaData::operator QJsonObject();
+
+    QJsonArray array;
+
+    for(auto it: *this) {
+        array<<QJsonObject(*it);
+    }
+
+    ret["medias"] = array;
+
+    return ret;
+}
+
 QUuid PlayList::id() const { return metaData<QUuid>("id"); }
 
 bool PlayList::setId(QUuid id) { return setMetadata("id", id); }

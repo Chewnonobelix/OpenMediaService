@@ -40,8 +40,10 @@ public:
     PlayList() = default;
     using MetaData::MetaData;
     PlayList(const PlayList &);
+    PlayList(const QJsonObject&);
     ~PlayList() = default;
 
+    operator QJsonObject() const override;
     PlayList &operator=(const PlayList &);
 
     using QList<MediaPointer>::count;
