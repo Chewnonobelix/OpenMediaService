@@ -45,6 +45,20 @@ void Library::set() {
             Qt::QueuedConnection);
     connect(&m_probe, &LibraryProbe::currentChanged, this,
             &Library::onProbedChanged);
+
+    m_replacer = QThread::create([this]() {
+        auto list = m_playlist.values();
+        for(auto it: m_smartPlaylist)
+            list<<it;
+
+        for(auto it: m_medias) {
+            for(auto it2: list) {
+                it2->replace(it);
+            }
+        }
+    });
+
+    m_replacer->start();
 }
 
 Library::operator QJsonObject() const {
