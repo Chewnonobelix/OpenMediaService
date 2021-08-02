@@ -40,14 +40,17 @@ public:
     PlayList() = default;
     using MetaData::MetaData;
     PlayList(const PlayList &);
+    PlayList(const QJsonObject&);
     ~PlayList() = default;
 
+    operator QJsonObject() const override;
     PlayList &operator=(const PlayList &);
 
     using QList<MediaPointer>::count;
     using QList<MediaPointer>::isEmpty;
     using QList<MediaPointer>::operator[];
     using QList<MediaPointer>::indexOf;
+    using QList<MediaPointer>::contains;
 
     QUuid id() const;
     bool setId(QUuid);
@@ -57,6 +60,10 @@ public:
     bool setShuffle(bool);
     int currentIndex() const;
     bool setCurrentIndex(int);
+
+    bool contains(MD5) const;
+    bool replace(MediaPointer);
+    int indexOf(MD5) const;
 
     //	Q_INVOKABLE void play(int = 0);
     Q_INVOKABLE MediaPointer next();

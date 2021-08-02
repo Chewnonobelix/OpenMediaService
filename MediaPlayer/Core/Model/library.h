@@ -38,6 +38,8 @@ private:
 
 	void set();
 
+    QPointer<QThread> m_replacer = nullptr;
+
 public:
 	Library();
 	using MetaData::MetaData;

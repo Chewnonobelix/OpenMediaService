@@ -12,6 +12,32 @@ PlayList &PlayList::operator=(const PlayList &p) {
 	return *this;
 }
 
+PlayList::PlayList(const QJsonObject& json): QObject(nullptr), MetaData(json), QEnableSharedFromThis<PlayList>(),
+    QList()
+{
+    auto array = json["medias"].toArray();
+
+    for(auto it: array) {
+        append(factory<Media>(it.toObject()));
+    }
+}
+
+
+PlayList::operator QJsonObject() const
+{
+    QJsonObject ret = MetaData::operator QJsonObject();
+
+    QJsonArray array;
+
+    for(auto it: *this) {
+        array<<QJsonObject(*it);
+    }
+
+    ret["medias"] = array;
+
+    return ret;
+}
+
 QUuid PlayList::id() const { return metaData<QUuid>("id"); }
 
 bool PlayList::setId(QUuid id) { return setMetadata("id", id); }
@@ -115,4 +141,30 @@ void PlayList::set()
     connect(this, &PlayList::nameChanged, this, &PlayList::playlistChanged);
     connect(this, &PlayList::countChanged, this, &PlayList::playlistChanged);
     connect(this, &PlayList::isShuffleChanged, this, &PlayList::playlistChanged);
+}
+
+bool PlayList::contains(MD5 id) const
+{
+    return std::find_if(begin(), end(), [id](MediaPointer m) {
+        return m->id() == id;
+    }) != end();
+}
+
+bool PlayList::replace(MediaPointer m)
+{
+    auto ret = contains(m->id());
+
+    if(ret) {
+        (*this)[indexOf(m->id())] = m;
+    }
+
+    return ret;
+}
+
+int PlayList::indexOf(MD5 id) const
+{
+    auto it = std::find_if(begin(), end(), [id](MediaPointer m) {
+            return m->id() == id;
+    });
+    return std::distance(begin(), it);
 }
