@@ -32,7 +32,12 @@ int PlaylistListModel::rowCount(const QModelIndex&) const
 }
 
 int PlaylistListModel::columnCount(const QModelIndex&) const {
-    return m_columns.size();
+    auto ret = 0;
+    for(auto it: m_columns)
+        if(it.enable)
+            ret ++;
+
+    return ret;
 }
 
 QVariant PlaylistListModel::data(const QModelIndex& index, int role) const {
@@ -121,9 +126,7 @@ void PlaylistListModel::sort(int col) {
 QHash<int, QByteArray> PlaylistListModel::roleNames() const
 {
     static QHash<int, QByteArray> ret = {{int(ListRole::DisplayRole), "display"},
-                                         {int(ListRole::FileRole), "file"},
                                          {int(ListRole::OrderRole), "order"},
-                                         {int(ListRole::ExtensionRole), "extension"},
                                          {int(ListRole::IndexRole), "index"}
                                         };
     return ret;
@@ -200,14 +203,44 @@ int PlaylistListModel::columnOf(QString name) const
     return ret;
 }
 
-void PlaylistListModel::iniColumn(QJsonDocument obj)
+void PlaylistListModel::initColumn(QJsonDocument obj)
 {
     auto array = obj.array();
 
     m_columns << Column{"File", "file"}<< Column {"Ext", "ext"};
     for(auto it: array) {
         auto iobj = it.toObject();
-        Column c {iobj["display"].toString(), iobj["name"].toString(), iobj["type"].toVariant().value<MediaPlayerGlobal::Type>()};
+        Column c {iobj["display"].toString(), iobj["name"].toString(), iobj["type"].toVariant().value<MediaPlayerGlobal::Type>(),
+                 TristateOrder::NoOrder, true};
         m_columns<<c;
     }
+}
+
+QStringList PlaylistListModel::columnList() const
+{
+    QStringList ret;
+    for(auto it: m_columns)
+        ret<<it.display;
+
+    return ret;
+}
+
+bool PlaylistListModel::columnEnable(QString display) const
+{
+    for(auto it: m_columns)
+        if(it.display == display)
+            return it.enable;
+
+    return false;
+}
+
+bool PlaylistListModel::setColumnEnable(QString display, bool enable)
+{
+    for(auto it: m_columns)
+        if(it.display == display) {
+            it.enable = enable;
+            return true;
+        }
+
+    return false;
 }

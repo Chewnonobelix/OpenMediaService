@@ -1,9 +1,40 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Qt.labs.qmlmodels
+import QtQuick.Layouts 1.15
 
 Item {
     id: root
+
+    Menu {
+        width:  500
+        height: 100
+
+        id: columnMenu
+        ScrollView {
+            anchors.fill: parent
+            contentHeight: _playlistListModel.columnList() *  columnMenu.height * 0.08
+            contentWidth:  columnMenu.width
+            ColumnLayout {
+                Repeater {
+                    model: _playlistListModel.columnList()
+                    Item {
+                        Layout.preferredHeight: columnMenu.height * 0.08
+                        Layout.preferredWidth: columnMenu.width
+                        RowLayout {
+                            anchors.fill: parent
+                            MediaCheckbox {
+                                id: columnEnable
+                            }
+                            MediaLabel {
+                                text: modelData
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     HorizontalHeaderView {
         id: header
@@ -20,8 +51,16 @@ Item {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: {
-                    _playlistListModel.sort(column)
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                onClicked: function(mouse){
+                    if(mouse.button === Qt.LeftButton) {
+                        _playlistListModel.sort(column)
+                    }
+                    else {
+                        columnMenu.x = mouseX
+                        columnMenu.y = mouseY
+                        columnMenu.open()
+                    }
                 }
             }
         }
@@ -80,7 +119,7 @@ Item {
 
                     Rating {
                         z:1
-//                        Component.onCompleted: rating = display
+                        //                        Component.onCompleted: rating = display
                         anchors.fill: parent
                         onRatingChanged: {
                             display = rating

@@ -17,7 +17,7 @@ void ControllerImage::exec() {
     QFile file("./Rules/"+rules());
     if(file.open(QIODevice::ReadOnly)) {
         auto json = QJsonDocument::fromJson(file.readAll());
-        m_listModel.iniColumn(json);
+        m_listModel.initColumn(json);
         file.close();
     }
 
