@@ -55,5 +55,6 @@ public:
     Q_INVOKABLE QStringList columnList() const;
     Q_INVOKABLE bool columnEnable(QString) const;
     Q_INVOKABLE bool setColumnEnable(QString, bool);
+    bool resizeColumn();
 };
 

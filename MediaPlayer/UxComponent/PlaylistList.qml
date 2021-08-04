@@ -7,29 +7,30 @@ Item {
     id: root
 
     Menu {
-        width:  500
-        height: 100
+        height: 175
 
         id: columnMenu
-        ScrollView {
+
+        ListView {
+            model: _playlistListModel.columnList()
             anchors.fill: parent
-            contentHeight: _playlistListModel.columnList() *  columnMenu.height * 0.08
-            contentWidth:  columnMenu.width
-            ColumnLayout {
-                Repeater {
-                    model: _playlistListModel.columnList()
-                    Item {
-                        Layout.preferredHeight: columnMenu.height * 0.08
-                        Layout.preferredWidth: columnMenu.width
-                        RowLayout {
-                            anchors.fill: parent
-                            MediaCheckbox {
-                                id: columnEnable
-                            }
-                            MediaLabel {
-                                text: modelData
-                            }
-                        }
+
+            delegate: Item {
+                height: columnMenu.height * 0.10
+                Row {
+                    anchors.fill: parent
+                    MediaCheckbox {
+                        checked: _playlistListModel.columnEnable(modelData)
+                        height: parent.height
+
+                        onClicked: _playlistListModel.setColumnEnable(modelData, checked)
+                    }
+                    MediaLabel {
+                        height: parent.height
+                        text: modelData
+
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Qt.AlignVCenter
                     }
                 }
             }

@@ -34,8 +34,9 @@ int PlaylistListModel::rowCount(const QModelIndex&) const
 int PlaylistListModel::columnCount(const QModelIndex&) const {
     auto ret = 0;
     for(auto it: m_columns)
-        if(it.enable)
+        if(it.enable) {
             ret ++;
+        }
 
     return ret;
 }
@@ -47,7 +48,10 @@ QVariant PlaylistListModel::data(const QModelIndex& index, int role) const {
         return QVariant();
 
     auto current = (*m_model)[m_sortList[row]];
-    auto currentCol = m_columns[col];
+    auto colDisplay = columnModel()[col];
+    auto currentCol = *(std::find_if(m_columns.begin(), m_columns.end(), [colDisplay](Column it) {
+        return it.display == colDisplay;
+    }));
 
     switch(ListRole(role)) {
     case ListRole::DisplayRole:
@@ -76,6 +80,7 @@ QVariant PlaylistListModel::data(const QModelIndex& index, int role) const {
     }
     return QVariant();
 }
+
 void PlaylistListModel::sort(int col) {
 
     auto order = m_columns[col].order;
@@ -135,7 +140,8 @@ QHash<int, QByteArray> PlaylistListModel::roleNames() const
 QStringList PlaylistListModel::columnModel() const {
     QStringList ret;
     for(auto it: m_columns)
-        ret<<it.display;
+        if(it.enable)
+            ret<<it.display;
 
     return ret;
 }
@@ -236,11 +242,26 @@ bool PlaylistListModel::columnEnable(QString display) const
 
 bool PlaylistListModel::setColumnEnable(QString display, bool enable)
 {
-    for(auto it: m_columns)
+    for(auto& it: m_columns)
         if(it.display == display) {
             it.enable = enable;
+            resizeColumn();
             return true;
         }
 
     return false;
+}
+
+bool PlaylistListModel::resizeColumn()
+{
+    beginRemoveColumns(QModelIndex(), 0, m_columns.size());
+    removeColumns(0, m_columns.size());
+    endRemoveColumns();
+
+    beginInsertColumns(QModelIndex(), 0, columnCount());
+    insertColumns(0, columnCount());
+    endInsertColumns();
+
+
+    return true;
 }
