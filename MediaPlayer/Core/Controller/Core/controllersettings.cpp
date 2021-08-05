@@ -46,3 +46,13 @@ QVariant ControllerSettings::value(QString key) const
 {
     return m_settings->value(key);
 }
+
+void ControllerSettings::setPlaylistColumn(QString plId, QString column, bool enable)
+{
+    m_settings->setValue(plId + "/" + column, enable);
+}
+
+bool ControllerSettings::playlistColumn(QString plId, QString column)
+{
+    return m_settings->value(plId + "/" + column, true).toBool();
+}

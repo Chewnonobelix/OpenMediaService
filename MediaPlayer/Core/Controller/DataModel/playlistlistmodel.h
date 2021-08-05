@@ -5,6 +5,8 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
+#include <Controller/Core/abstractcontroller.h>
+
 #include <mediaplayercore_global.h>
 
 #include "Model/playlist.h"

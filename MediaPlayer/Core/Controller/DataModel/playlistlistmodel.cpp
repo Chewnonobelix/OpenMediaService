@@ -11,6 +11,11 @@ void PlaylistListModel::setPlaylist(PlaylistPointer p)
 
     m_model = p;
 
+    for(auto& it: m_columns) {
+        it.enable = AbstractController::s_settings->playlistColumn(p->id().toString(), it.name);
+    }
+
+
     beginInsertRows(QModelIndex(), 0, rowCount());
     insertRows(0, rowCount());
     endInsertRows();
@@ -24,6 +29,7 @@ void PlaylistListModel::setPlaylist(PlaylistPointer p)
             m_sortList<<it;
 
     sort(0);
+
 }
 
 int PlaylistListModel::rowCount(const QModelIndex&) const
@@ -245,6 +251,8 @@ bool PlaylistListModel::setColumnEnable(QString display, bool enable)
     for(auto& it: m_columns)
         if(it.display == display) {
             it.enable = enable;
+            AbstractController::s_settings->setPlaylistColumn(m_model->id().toString(),
+                                                              it.name, enable);
             resizeColumn();
             return true;
         }
@@ -261,7 +269,6 @@ bool PlaylistListModel::resizeColumn()
     beginInsertColumns(QModelIndex(), 0, columnCount());
     insertColumns(0, columnCount());
     endInsertColumns();
-
 
     return true;
 }
