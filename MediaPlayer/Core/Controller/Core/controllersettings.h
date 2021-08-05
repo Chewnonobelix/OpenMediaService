@@ -33,6 +33,9 @@ public:
     Q_INVOKABLE void setValue(QString, QVariant);
     Q_INVOKABLE QVariant value(QString) const;
 
+    Q_INVOKABLE void setPlaylistColumn(QString, QString, bool);
+    Q_INVOKABLE bool playlistColumn(QString, QString);
+
 signals:
     void dbChanged();
     void settingsChanged();

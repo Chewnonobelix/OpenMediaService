@@ -1,9 +1,41 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Qt.labs.qmlmodels
+import QtQuick.Layouts 1.15
 
 Item {
     id: root
+
+    Menu {
+        height: 175
+
+        id: columnMenu
+
+        ListView {
+            model: _playlistListModel.columnList()
+            anchors.fill: parent
+
+            delegate: Item {
+                height: columnMenu.height * 0.10
+                Row {
+                    anchors.fill: parent
+                    MediaCheckbox {
+                        checked: _playlistListModel.columnEnable(modelData)
+                        height: parent.height
+
+                        onClicked: _playlistListModel.setColumnEnable(modelData, checked)
+                    }
+                    MediaLabel {
+                        height: parent.height
+                        text: modelData
+
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Qt.AlignVCenter
+                    }
+                }
+            }
+        }
+    }
 
     HorizontalHeaderView {
         id: header
@@ -20,8 +52,16 @@ Item {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: {
-                    _playlistListModel.sort(column)
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                onClicked: function(mouse){
+                    if(mouse.button === Qt.LeftButton) {
+                        _playlistListModel.sort(column)
+                    }
+                    else {
+                        columnMenu.x = mouseX
+                        columnMenu.y = mouseY
+                        columnMenu.open()
+                    }
                 }
             }
         }
@@ -80,7 +120,7 @@ Item {
 
                     Rating {
                         z:1
-//                        Component.onCompleted: rating = display
+                        //                        Component.onCompleted: rating = display
                         anchors.fill: parent
                         onRatingChanged: {
                             display = rating
