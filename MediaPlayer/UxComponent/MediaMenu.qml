@@ -11,4 +11,17 @@ Menu {
 
         onClicked: root.remove()
     }
+
+    Menu {
+        title: "Add to playlist"
+        MenuItem {
+            text: "Add to new playlist"
+
+            onClicked: _librariesModel.controller(_librariesModel.currentIndex).addPlaylist(false)
+        }
+
+        Repeater {
+
+        }
+    }
 }

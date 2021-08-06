@@ -64,15 +64,17 @@ void ControllerMain::exec() {
     root->setContextProperty("_plugins", &s_manager);
     root->setContextProperty("_settings", s_settings);
 
+
+    m_librariesModel = new LibraryDataModel;
+
+    root->setContextProperty("_librariesModel", m_librariesModel);
+
+
     auto *context = new QQmlContext(root, this);
 
     context->setContextProperty("_main", this);
     context->setContextProperty("_db", db());
     context->setContextProperty("_tabWrapper", s_tabWrapper);
-
-    m_librariesModel = new LibraryDataModel;
-
-    context->setContextProperty("_librariesModel", m_librariesModel);
     connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
             &LibraryDataModel::onUpdateLibraries);
 
