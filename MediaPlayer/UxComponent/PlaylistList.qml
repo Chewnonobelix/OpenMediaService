@@ -79,25 +79,15 @@ Item {
     }
     TableView {
         id: table
-        property int firstRow: 0
 
         Component.onCompleted: _playlistListModel.width = width
 
         interactive: false
-        MouseArea{
-            anchors.fill: parent
-            acceptedButtons: Qt.NoButton
 
-            onWheel: function(wheel) {
-                if(wheel.angleDelta.y < 0 )
-                    table.firstRow++
-                else
-                    table.firstRow--
+        ScrollBar.horizontal: ScrollBar {
+        }
 
-                table.firstRow = Math.max(0, table.firstRow)
-                table.firstRow = Math.min(table.rows, table.firstRow)
-                table.positionViewAtRow(table.firstRow, Qt.AlignCenter)
-            }
+        ScrollBar.vertical: ScrollBar {
         }
 
         anchors {
@@ -109,6 +99,7 @@ Item {
 
         model: _playlistListModel
 
+        clip: true
         Connections {
             target: table
 
@@ -118,7 +109,7 @@ Item {
         }
 
         columnSpacing: width * 0.001
-        property var columnWidth: [width / 7, width / 7,width / 7,width / 7,width / 7,width / 7,width / 7]
+
         columnWidthProvider: function(column) { return _playlistListModel.columnWidth(column) }
 
         property int currentRow: -1
