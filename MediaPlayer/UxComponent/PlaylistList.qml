@@ -42,8 +42,10 @@ Item {
         height: root.height * .10
         width: root.width
         syncView: table
+        interactive: false
 
         delegate: MediaLabel {
+            id: columnDisplay
             text: display
 
             background: Rectangle {
@@ -53,6 +55,16 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
+                pressAndHoldInterval: 50
+                hoverEnabled: true
+                cursorShape: mouseX > width * .95 ? Qt.SplitHCursor : Qt.ArrowCursor
+
+                onMouseXChanged: {
+                    if(pressed && cursorShape === Qt.SplitHCursor) {
+                        _playlistListModel.setColumnWidth(column, mouseX)
+                        table.forceLayout()
+                    }
+                }
                 onClicked: function(mouse){
                     if(mouse.button === Qt.LeftButton) {
                         _playlistListModel.sort(column)
@@ -68,22 +80,15 @@ Item {
     }
     TableView {
         id: table
-        property int firstRow: 0
 
-        MouseArea{
-            anchors.fill: parent
-            acceptedButtons: Qt.NoButton
+        Component.onCompleted: _playlistListModel.width = width
 
-            onWheel: function(wheel) {
-                if(wheel.angleDelta.y < 0 )
-                    table.firstRow++
-                else
-                    table.firstRow--
+        interactive: false
 
-                table.firstRow = Math.max(0, table.firstRow)
-                table.firstRow = Math.min(table.rows, table.firstRow)
-                table.positionViewAtRow(table.firstRow, Qt.AlignCenter)
-            }
+        ScrollBar.horizontal: ScrollBar {
+        }
+
+        ScrollBar.vertical: ScrollBar {
         }
 
         anchors {
@@ -95,13 +100,18 @@ Item {
 
         model: _playlistListModel
 
+        clip: true
+        Connections {
+            target: table
 
-        interactive: false
-        columnSpacing: width * 0.001
-        property var columnWidth: [width / 7, width / 7,width / 7,width / 7,width / 7,width / 7,width / 7]
-        columnWidthProvider: function(column) {
-            return columnWidth[column]
+            function onWidthChanged() {
+                _playlistListModel.width = table.width
+            }
         }
+
+        columnSpacing: width * 0.001
+
+        columnWidthProvider: function(column) { return _playlistListModel.columnWidth(column) }
 
         property int currentRow: -1
 
