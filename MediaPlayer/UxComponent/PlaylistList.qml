@@ -70,8 +70,8 @@ Item {
                         _playlistListModel.sort(column)
                     }
                     else {
-                        columnMenu.x = mouseX
-                        columnMenu.y = mouseY
+                        columnMenu.x = mouse.x
+                        columnMenu.y = mouse.y
                         columnMenu.open()
                     }
                 }
@@ -150,12 +150,23 @@ Item {
                         rightMargin: 2
                     }
 
+                    MediaMenu {
+                        id: mediaMenu
+                    }
+
                     MouseArea {
                         anchors.fill: parent
                         hoverEnabled: true
                         propagateComposedEvents: true
-                        onClicked: {
+                        acceptedButtons: Qt.LeftButton| Qt.RightButton
+                        onClicked: function(mouse) {
                             table.currentRow = row
+
+                            if(mouse.button === Qt.RightButton) {
+                                mediaMenu.x = mouseX
+                                mediaMenu.y = mouseY
+                                mediaMenu.open()
+                            }
                         }
                         onDoubleClicked: {
                             _playlistListModel.play(index)
