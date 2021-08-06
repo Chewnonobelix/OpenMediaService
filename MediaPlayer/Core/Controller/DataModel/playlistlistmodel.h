@@ -28,6 +28,7 @@ private:
         MediaPlayerGlobal::Type type = MediaPlayerGlobal::Type::String;
         TristateOrder order = TristateOrder::NoOrder;
         bool enable = true;
+        int width = -1;
     };
 
     PlaylistPointer m_model;
@@ -65,6 +66,7 @@ public:
     Q_INVOKABLE bool setColumnEnable(QString, bool);
     bool resizeColumn();
     Q_INVOKABLE int columnWidth(int) const;
+    Q_INVOKABLE void setColumnWidth(int, int);
 
 signals:
     void widthChanged();

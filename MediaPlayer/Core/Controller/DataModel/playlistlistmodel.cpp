@@ -13,6 +13,7 @@ void PlaylistListModel::setPlaylist(PlaylistPointer p)
 
     for(auto& it: m_columns) {
         it.enable = AbstractController::s_settings->playlistColumn(p->id().toString(), it.name);
+        it.width = AbstractController::s_settings->playlistColumnWidth(p->id().toString(), it.name);
     }
 
 
@@ -273,9 +274,15 @@ bool PlaylistListModel::resizeColumn()
     return true;
 }
 
-int PlaylistListModel::columnWidth(int) const
+int PlaylistListModel::columnWidth(int index) const
 {
-    return columnCount() > 0 ? width() / columnCount() : 0;
+    auto col = columnList()[index];
+
+    auto it = *std::find_if(m_columns.begin(), m_columns.end(), [col](auto c) {
+        return c.display == col;
+    });
+
+    return it.width > -1 ? it.width : columnCount() > 0 ? width() / columnCount() : 0;
 }
 
 int PlaylistListModel::width() const
@@ -287,4 +294,16 @@ void PlaylistListModel::setWidth(int w)
 {
     m_width = w;
     emit widthChanged();
+}
+
+void PlaylistListModel::setColumnWidth(int index, int width)
+{
+    auto col = columnList()[index];
+
+    auto it = std::find_if(m_columns.begin(), m_columns.end(), [col](auto c) {
+        return c.display == col;
+    });
+
+    it->width = width;
+    AbstractController::s_settings->setPlaylistColumnWidth(m_model->id().toString(), it->name, width);
 }

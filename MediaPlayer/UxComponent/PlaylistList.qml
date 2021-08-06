@@ -42,8 +42,10 @@ Item {
         height: root.height * .10
         width: root.width
         syncView: table
+        interactive: false
 
         delegate: MediaLabel {
+            id: columnDisplay
             text: display
 
             background: Rectangle {
@@ -53,6 +55,15 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
+                pressAndHoldInterval: 50
+                hoverEnabled: true
+                cursorShape: mouseX > width * .95 ? Qt.SplitHCursor : Qt.ArrowCursor
+
+                onMouseXChanged: {
+                    if(pressed && cursorShape === Qt.SplitHCursor) {
+                        _playlistListModel.setColumnWidth(column, mouseX)
+                    }
+                }
                 onClicked: function(mouse){
                     if(mouse.button === Qt.LeftButton) {
                         _playlistListModel.sort(column)
@@ -72,6 +83,7 @@ Item {
 
         Component.onCompleted: _playlistListModel.width = width
 
+        interactive: false
         MouseArea{
             anchors.fill: parent
             acceptedButtons: Qt.NoButton
@@ -105,7 +117,6 @@ Item {
             }
         }
 
-        interactive: false
         columnSpacing: width * 0.001
         property var columnWidth: [width / 7, width / 7,width / 7,width / 7,width / 7,width / 7,width / 7]
         columnWidthProvider: function(column) { return _playlistListModel.columnWidth(column) }

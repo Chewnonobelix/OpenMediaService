@@ -36,6 +36,9 @@ public:
     Q_INVOKABLE void setPlaylistColumn(QString, QString, bool);
     Q_INVOKABLE bool playlistColumn(QString, QString);
 
+    Q_INVOKABLE void setPlaylistColumnWidth(QString, QString, int);
+    Q_INVOKABLE int playlistColumnWidth(QString, QString);
+
 signals:
     void dbChanged();
     void settingsChanged();

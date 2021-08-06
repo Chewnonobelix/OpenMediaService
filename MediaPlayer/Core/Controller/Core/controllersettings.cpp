@@ -56,3 +56,13 @@ bool ControllerSettings::playlistColumn(QString plId, QString column)
 {
     return m_settings->value(plId + "/" + column, true).toBool();
 }
+
+void ControllerSettings::setPlaylistColumnWidth(QString plId, QString column, int width)
+{
+    m_settings->setValue(plId + "/" + column + "Width", width);
+}
+
+int ControllerSettings::playlistColumnWidth(QString plId, QString column)
+{
+    return m_settings->value(plId + "/" + column + "Width", -1).toInt();
+}
