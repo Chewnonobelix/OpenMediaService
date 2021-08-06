@@ -70,6 +70,8 @@ Item {
         id: table
         property int firstRow: 0
 
+        Component.onCompleted: _playlistListModel.width = width
+
         MouseArea{
             anchors.fill: parent
             acceptedButtons: Qt.NoButton
@@ -95,13 +97,18 @@ Item {
 
         model: _playlistListModel
 
+        Connections {
+            target: table
+
+            function onWidthChanged() {
+                _playlistListModel.width = table.width
+            }
+        }
 
         interactive: false
         columnSpacing: width * 0.001
         property var columnWidth: [width / 7, width / 7,width / 7,width / 7,width / 7,width / 7,width / 7]
-        columnWidthProvider: function(column) {
-            return columnWidth[column]
-        }
+        columnWidthProvider: function(column) { return _playlistListModel.columnWidth(column) }
 
         property int currentRow: -1
 

@@ -272,3 +272,19 @@ bool PlaylistListModel::resizeColumn()
 
     return true;
 }
+
+int PlaylistListModel::columnWidth(int) const
+{
+    return columnCount() > 0 ? width() / columnCount() : 0;
+}
+
+int PlaylistListModel::width() const
+{
+    return m_width;
+}
+
+void PlaylistListModel::setWidth(int w)
+{
+    m_width = w;
+    emit widthChanged();
+}

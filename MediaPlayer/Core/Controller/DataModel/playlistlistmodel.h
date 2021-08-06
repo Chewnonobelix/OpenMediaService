@@ -16,6 +16,8 @@ class MEDIAPLAYERCORE_EXPORT PlaylistListModel: public QAbstractTableModel
     Q_OBJECT
     Q_DISABLE_COPY(PlaylistListModel)
 
+    Q_PROPERTY(int width READ width WRITE setWidth NOTIFY widthChanged);
+
 private:
     enum class ListRole{DisplayRole = Qt::UserRole +1, IndexRole, OrderRole};
     enum class TristateOrder{NoOrder, AscendingOrder, DescendingOrder};
@@ -31,8 +33,12 @@ private:
     PlaylistPointer m_model;
     QList<int> m_sortList;
     QList<Column> m_columns;
+    int m_width = 0;
 
     Q_INVOKABLE TristateOrder nextOrder(TristateOrder);
+
+    int width() const;
+    void setWidth(int);
 
 public:
     PlaylistListModel() = default;
@@ -58,5 +64,9 @@ public:
     Q_INVOKABLE bool columnEnable(QString) const;
     Q_INVOKABLE bool setColumnEnable(QString, bool);
     bool resizeColumn();
+    Q_INVOKABLE int columnWidth(int) const;
+
+signals:
+    void widthChanged();
 };
 
