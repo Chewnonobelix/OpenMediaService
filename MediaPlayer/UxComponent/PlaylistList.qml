@@ -62,6 +62,7 @@ Item {
                 onMouseXChanged: {
                     if(pressed && cursorShape === Qt.SplitHCursor) {
                         _playlistListModel.setColumnWidth(column, mouseX)
+                        table.forceLayout()
                     }
                 }
                 onClicked: function(mouse){
