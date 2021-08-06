@@ -150,7 +150,7 @@ Item {
                         rightMargin: 2
                     }
 
-                    Menu {
+                    MediaMenu {
                         id: mediaMenu
                     }
 
