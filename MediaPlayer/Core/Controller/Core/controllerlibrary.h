@@ -36,7 +36,7 @@ public:
 
 	Q_INVOKABLE void addSourceDir(QString);
 	Q_INVOKABLE void removeSourceDir(QString);
-	Q_INVOKABLE void addPlaylist(bool = false);
+    Q_INVOKABLE QUuid addPlaylist(bool = false);
 	Q_INVOKABLE void removePlaylist(QString);
 
     QString id() const;

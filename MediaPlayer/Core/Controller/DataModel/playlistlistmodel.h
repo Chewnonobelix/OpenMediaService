@@ -19,7 +19,7 @@ class MEDIAPLAYERCORE_EXPORT PlaylistListModel: public QAbstractTableModel
     Q_PROPERTY(int width READ width WRITE setWidth NOTIFY widthChanged);
 
 private:
-    enum class ListRole{DisplayRole = Qt::UserRole +1, IndexRole, OrderRole};
+    enum class ListRole{DisplayRole = Qt::UserRole +1, IndexRole, OrderRole, PointerRole};
     enum class TristateOrder{NoOrder, AscendingOrder, DescendingOrder};
 
     struct Column {

@@ -329,3 +329,13 @@ void Library::onSmartPlaylistChanged()
         smart->append(it);
     }
 }
+
+QList<PlayList*> Library::playlistList() const
+{
+    QList<PlayList*> ret;
+
+    for(auto it: m_playlist)
+        ret<<it.data();
+
+    return ret;
+}

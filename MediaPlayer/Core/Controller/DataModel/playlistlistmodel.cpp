@@ -82,6 +82,8 @@ QVariant PlaylistListModel::data(const QModelIndex& index, int role) const {
     case ListRole::OrderRole:
         return QVariant::fromValue(currentCol.order);
         break;
+    case ListRole::PointerRole:
+        return QVariant::fromValue(m_model.data());
     default:
         break;
     }
@@ -139,6 +141,7 @@ QHash<int, QByteArray> PlaylistListModel::roleNames() const
 {
     static QHash<int, QByteArray> ret = {{int(ListRole::DisplayRole), "display"},
                                          {int(ListRole::OrderRole), "order"},
+                                         {int(ListRole::PointerRole), "pointer"},
                                          {int(ListRole::IndexRole), "index"}
                                         };
     return ret;
