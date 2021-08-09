@@ -108,8 +108,31 @@ void PlaylistModel::onLibraryChanged(LibraryPointer l) {
         return;
 
     auto index = currentIndex();
-    setSmart(l->smartPlaylist().values());
-    setNormal(l->playlist().values());
+
+    for(auto it: m_normals)
+        it->disconnect(SIGNAL(nameChanged()));
+
+    for(auto it: m_smarts)
+        it->disconnect(SIGNAL(nameChanged()));
+
+    beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+    removeRows(0, rowCount() - 1);
+    endRemoveRows();
+
+    m_normals.clear();
+    m_smarts.clear();
+    m_normals = l->playlist().values();
+    m_smarts = l->smartPlaylist().values();
+
+    beginInsertRows(QModelIndex(), 0, rowCount() - 1);
+    insertRows(0, rowCount() - 1);
+    endInsertRows();
+
+    for(auto it: m_normals)
+        connect(it.data(), &PlayList::nameChanged, this, &PlaylistModel::onPlaylistNameChanged);
+    for(auto it: m_smarts)
+        connect(it.data(), &PlayList::nameChanged, this, &PlaylistModel::onPlaylistNameChanged);
+
     setCurrentIndex(index);
     m_smartModel.setRole(l->role());
 }
