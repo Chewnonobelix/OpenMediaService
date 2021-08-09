@@ -28,7 +28,9 @@ Menu {
             }
         }
 
+        onOpened: rep.model =  _librariesModel.at(_librariesModel.currentIndex).playlistList()
         Repeater {
+            id: rep
             model: _librariesModel.at(_librariesModel.currentIndex).playlistList()
 
             MenuItem {
