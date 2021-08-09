@@ -339,3 +339,10 @@ QList<PlayList*> Library::playlistList() const
 
     return ret;
 }
+
+bool Library::addToPlaylist(QString pl, Media* m)
+{
+    auto ppl = m_playlist[QUuid::fromString(pl)];
+
+    return ppl->append(m->sharedFromThis());
+}

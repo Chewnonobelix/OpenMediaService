@@ -23,7 +23,8 @@ Menu {
             text: "Add to new playlist"
 
             onClicked:  {
-                t_librariesModel.controller(_librariesModel.currentIndex).addPlaylist(false)
+                var ret = _librariesModel.controller(_librariesModel.currentIndex).addPlaylist(false)
+                _librariesModel.at(_librariesModel.currentIndex).addToPlaylist(ret, media)
             }
         }
 
