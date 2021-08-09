@@ -23,7 +23,7 @@ Menu {
             text: "Add to new playlist"
 
             onClicked:  {
-                console.log(_librariesModel.controller(_librariesModel.currentIndex).addPlaylist(false))
+                t_librariesModel.controller(_librariesModel.currentIndex).addPlaylist(false)
             }
         }
 
@@ -33,7 +33,7 @@ Menu {
             MenuItem {
                 text: modelData.name !== "" ? modelData.name : modelData.id
 
-                onClicked: console.log(modelData.id, media.id)
+                onClicked: modelData.append(media)
             }
         }
     }

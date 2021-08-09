@@ -83,7 +83,7 @@ QVariant PlaylistListModel::data(const QModelIndex& index, int role) const {
         return QVariant::fromValue(currentCol.order);
         break;
     case ListRole::PointerRole:
-        return QVariant::fromValue(m_model.data());
+        return QVariant::fromValue(current.data());
     default:
         break;
     }
