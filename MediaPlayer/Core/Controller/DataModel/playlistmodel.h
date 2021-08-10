@@ -8,6 +8,8 @@
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/DataModel/smartmodel.h>
 
+Q_DECLARE_LOGGING_CATEGORY(playlistlog)
+
 class MEDIAPLAYERCORE_EXPORT PlaylistModel : public QAbstractListModel {
 	Q_OBJECT
 	Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY

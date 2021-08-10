@@ -3,6 +3,9 @@
 QPointer<QQmlComponent> ControllerImage::s_player = nullptr;
 QPointer<QQmlComponent> ControllerImage::s_playlist = nullptr;
 
+Q_LOGGING_CATEGORY(imageerror, "image.error")
+Q_LOGGING_CATEGORY(imagelog, "image.log")
+
 void ControllerImage::exec() {
     auto* root = engine()->qmlEngine().rootContext();
     context = new QQmlContext(root);
@@ -21,7 +24,7 @@ void ControllerImage::exec() {
         file.close();
     }
 
-    qDebug() << "Image context";
+    qCDebug(imagelog) << "Image context";
     connect(&m_model, &LibrairyImageModel::imageChanged, this,
             &ControllerImage::setMedia);
     connect(&m_timer, &QTimer::timeout, this, &ControllerImage::onTimeout);
@@ -36,6 +39,9 @@ void ControllerImage::exec() {
          s_player = new QQmlComponent(&(engine()->qmlEngine()),
                                  QUrl("qrc:/image/ImagePlayer.qml"));
     m_playerObj = s_player->create(contextPlayer);
+
+    qCDebug(imageerror)<<"Image plugins playlist component"<<s_playlist->errorString();
+    qCDebug(imageerror)<<"Image plugins player component"<<s_player->errorString();
 }
 
 QObject *ControllerImage::playerView() const {

@@ -1,62 +1,65 @@
 #include "controllermain.h"
 
+Q_LOGGING_CATEGORY(mainlog, "main.log")
+Q_LOGGING_CATEGORY(mainregister, "main.register")
+
 ControllerMain::ControllerMain() : AbstractController() {
     engine().addImportPath(QStringLiteral(QML_IMPORT_PATH));
-    qDebug() << QStringLiteral(QML_IMPORT_PATH)
-             << engine().importPathList();
+    qCDebug(mainlog) << QStringLiteral(QML_IMPORT_PATH)
+                     << engine().importPathList();
 }
 
 void ControllerMain::exec() {
-    qDebug() << "DataXml" << qRegisterMetaType<DataXml>();
-    qDebug() << "DataJson" << qRegisterMetaType<DataJson>();
-    qDebug() << "MediaPlayer::MediaRole"
-					 << qRegisterMetaType<MediaPlayerGlobal::MediaRole>();
+    qCDebug(mainregister) << "DataXml" << qRegisterMetaType<DataXml>();
+    qCDebug(mainregister) << "DataJson" << qRegisterMetaType<DataJson>();
+    qCDebug(mainregister) << "MediaPlayer::MediaRole"
+                          << qRegisterMetaType<MediaPlayerGlobal::MediaRole>();
 
-    qDebug() << "LibraryProbe"
-					 << qmlRegisterUncreatableType<LibraryProbe>(
-                            "MediaPlayer", 1, 0, "LibraryProbe", "Cpp owner");
-    qDebug() << "Library"
-					 << qmlRegisterUncreatableType<Library>("MediaPlayer", 1, 0,
-                                                            "Library", "Cpp owner");
-    qDebug() << "Media"
-                     << qmlRegisterUncreatableType<Media>("MediaPlayer", 1, 0,
-                                                          "Media", "Cpp owner");
-    qDebug() << "Playlist"
-                     << qmlRegisterUncreatableType<PlayList>("MediaPlayer", 1, 0,
-                                                             "Playlist", "Cpp owner");
-    qDebug() << "SmartPlaylist"
-                     << qmlRegisterUncreatableType<SmartPlaylist>("MediaPlayer", 1, 0,
-                                                             "SmartPlaylist", "Cpp owner");
+    qCDebug(mainregister) << "LibraryProbe"
+                          << qmlRegisterUncreatableType<LibraryProbe>(
+                                 "MediaPlayer", 1, 0, "LibraryProbe", "Cpp owner");
+    qCDebug(mainregister) << "Library"
+                          << qmlRegisterUncreatableType<Library>("MediaPlayer", 1, 0,
+                                                                 "Library", "Cpp owner");
+    qCDebug(mainregister) << "Media"
+                          << qmlRegisterUncreatableType<Media>("MediaPlayer", 1, 0,
+                                                               "Media", "Cpp owner");
+    qCDebug(mainregister) << "Playlist"
+                          << qmlRegisterUncreatableType<PlayList>("MediaPlayer", 1, 0,
+                                                                  "Playlist", "Cpp owner");
+    qCDebug(mainregister) << "SmartPlaylist"
+                          << qmlRegisterUncreatableType<SmartPlaylist>("MediaPlayer", 1, 0,
+                                                                       "SmartPlaylist", "Cpp owner");
 
-    qDebug() << "SmartGroup"
-                     << qmlRegisterUncreatableType<SmartGroup>("MediaPlayer", 1, 0,
-                                                                  "smartGroup", "Cpp owner");
+    qCDebug(mainregister) << "SmartGroup"
+                          << qmlRegisterUncreatableType<SmartGroup>("MediaPlayer", 1, 0,
+                                                                    "smartGroup", "Cpp owner");
 
-    qDebug() << "LibraryDataModel"
-                     << qmlRegisterUncreatableType<LibraryDataModel>("MediaPlayer.Model", 1, 0,
-                                                          "LibraryDataModel", "Cpp owner");
+    qCDebug(mainregister) << "LibraryDataModel"
+                          << qmlRegisterUncreatableType<LibraryDataModel>("MediaPlayer.Model", 1, 0,
+                                                                          "LibraryDataModel", "Cpp owner");
 
-    qDebug() << "SmartModel"
-                     << qmlRegisterType<SmartModel>("MediaPlayer.Model", 1, 0,
-                                                                     "SmartModel");
+    qCDebug(mainregister) << "SmartModel"
+                          << qmlRegisterType<SmartModel>("MediaPlayer.Model", 1, 0,
+                                                         "SmartModel");
 
-    qDebug() << "ControllerLibrary"
-                     << qmlRegisterUncreatableType<ControllerLibrary>("MediaPlayer.Model", 1, 0,
-                                                           "ControllerLibrary", "Cpp owner");
-    qDebug() << "MediaRole QML"
-					 << qmlRegisterUncreatableMetaObject(
-                            MediaPlayerGlobal::staticMetaObject, "MediaPlayer", 1, 0,
-                            "MediaPlayer",
+    qCDebug(mainregister) << "ControllerLibrary"
+                          << qmlRegisterUncreatableType<ControllerLibrary>("MediaPlayer.Model", 1, 0,
+                                                                           "ControllerLibrary", "Cpp owner");
+    qCDebug(mainregister) << "MediaRole QML"
+                          << qmlRegisterUncreatableMetaObject(
+                                 MediaPlayerGlobal::staticMetaObject, "MediaPlayer", 1, 0,
+                                 "MediaPlayer",
 
-                            "Media Player global");
-    qDebug() << "InterfacePLugin"
-					 << qmlRegisterUncreatableType<InterfacePlugins>(
-                            "InterfacePlugin", 1, 0, "InterfacePlugin", "Interface type");
+                                 "Media Player global");
+    qCDebug(mainregister)<< "InterfacePLugin"
+                          << qmlRegisterUncreatableType<InterfacePlugins>(
+                                 "InterfacePlugin", 1, 0, "InterfacePlugin", "Interface type");
 
-    qDebug() << "TabManager" << qmlRegisterUncreatableType<TabManager>("MediaPlayer.Model", 1, 0,
-                                                            "TabManager", "Cpp owner");
+    qCDebug(mainregister) << "TabManager" << qmlRegisterUncreatableType<TabManager>("MediaPlayer.Model", 1, 0,
+                                                                                    "TabManager", "Cpp owner");
 
-    qDebug() << "AbstractRule" << qmlRegisterUncreatableType<AbstractRule>("MediaPlayer.Model", 1, 0, "abstractRule", "Cpp owner");
+    qCDebug(mainregister) << "AbstractRule" << qmlRegisterUncreatableType<AbstractRule>("MediaPlayer.Model", 1, 0, "abstractRule", "Cpp owner");
 
     setDb(s_settings->db());
 

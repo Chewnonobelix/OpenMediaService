@@ -1,9 +1,13 @@
 #pragma once
 
+#include <QLoggingCategory>
+
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/DataModel/playlistmodel.h>
 
 #include <Model/library.h>
+
+Q_DECLARE_LOGGING_CATEGORY(librarylog)
 
 class ControllerLibrary : public AbstractController {
 	Q_OBJECT

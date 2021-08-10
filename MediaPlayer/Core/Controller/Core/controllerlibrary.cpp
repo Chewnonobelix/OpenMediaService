@@ -1,5 +1,7 @@
 #include "controllerlibrary.h"
 
+Q_LOGGING_CATEGORY(librarylog, "library.log")
+
 void ControllerLibrary::exec() {
     connect(&m_playlist, &PlaylistModel::currentIndexChanged, this,
                     &ControllerLibrary::onCurrentPlaylistChanged);
@@ -10,7 +12,7 @@ PlaylistModel *ControllerLibrary::playlist() { return &m_playlist; }
 void ControllerLibrary::open() {
     auto context = new QQmlContext(engine()->qmlEngine().rootContext());
     context->setContextProperty("_libraries", this);
-    qDebug() << "Library context";
+    qCDebug(librarylog) << "Library context";
     engine()->createWindow(QUrl(QStringLiteral("/LibraryView.qml")), context);
 }
 

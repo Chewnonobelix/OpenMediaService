@@ -5,6 +5,8 @@
 #include <QVariant>
 #include <QDate>
 
+Q_LOGGING_CATEGORY(manualtest, "manualtest.log")
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -15,11 +17,11 @@ int main(int argc, char *argv[])
     ValueExpression<int&> v1(i) ,v2(j);
     te.e1 = v1.clone();
     te.e2 = v2.clone();
-    qDebug()<<te.evaluate();
+    qCDebug(manualtest)<<te.evaluate();
     j = 4;
-    qDebug()<<te.evaluate();
+    qCDebug(manualtest)<<te.evaluate();
 
     QVariant a1(123), a2("12");
-    qDebug()<<(QVariant::compare(a1, a2) == QPartialOrdering::Less);
+    qCDebug(manualtest)<<(QVariant::compare(a1, a2) == QPartialOrdering::Less);
     return a.exec();
 }

@@ -4,6 +4,7 @@
 #include <QDomDocument>
 #include <QDomElement>
 #include <QtCore/qglobal.h>
+#include <QLoggingCategory>
 
 #include <mediaplayercore_global.h>
 

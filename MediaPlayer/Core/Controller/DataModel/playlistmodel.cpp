@@ -1,6 +1,8 @@
 #include "playlistmodel.h"
 //#include <Controller/Core/controllerlibrary.h>
 
+Q_LOGGING_CATEGORY(playlistlog, "playlist.log")
+
 PlaylistModel::PlaylistModel(): m_smartModel(AbstractController::s_manager)
 {
     connect(&m_smartModel, &SmartModel::groupChanged, [this]() {
@@ -151,7 +153,7 @@ void PlaylistModel::editPlaylist()
 
     if(!current().dynamicCast<SmartPlaylist>().isNull())
         m_smartModel.setModel(current().dynamicCast<SmartPlaylist>()->rules());
-    qDebug() << "Playlist context";
+    qCDebug(playlistlog) << "Playlist context";
     AbstractController::engine()->createWindow(QUrl(QStringLiteral("/PlaylistView.qml")), context);
 }
 

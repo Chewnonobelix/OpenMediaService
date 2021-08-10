@@ -13,6 +13,7 @@
 #include <QString>
 #include <QThread>
 #include <QTime>
+#include <QLoggingCategory>
 
 #include <mediaplayercore_global.h>
 

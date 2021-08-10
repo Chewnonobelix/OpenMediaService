@@ -1,5 +1,7 @@
 #include "libraryprobe.h"
 
+Q_LOGGING_CATEGORY(libraryprobe, "library.probe")
+
 LibraryProbe::LibraryProbe() {}
 
 bool LibraryProbe::setSourceDir(QStringList list) {
@@ -20,7 +22,7 @@ bool LibraryProbe::setRole(MediaPlayerGlobal::MediaRole role) {
 
 void LibraryProbe::onMediaFind(QString, MD5) {
     m_current++;
-    qDebug() << m_total << m_current << double(m_current) / m_total * 100;
+     qCDebug(libraryprobe) << m_total << m_current << double(m_current) / m_total * 100;
     setLastProbed(QDateTime::currentDateTime());
 
     emit currentChanged();
@@ -56,7 +58,7 @@ bool LibraryProbe::probe() {
     for (auto it : m_filters)
         filters << "*." + it;
 
-    qDebug() << "Probe" << m_filters << filters;
+    qCDebug(libraryprobe) << "Probe" << m_filters << filters;
 
     m_current = 0;
     m_queue.append(m_sourceDir);
@@ -101,7 +103,7 @@ bool LibraryProbe::probe() {
             last->deleteLater();
 
             if (m_threads.count() == 0) {
-                qDebug() << "End probe";
+                 qCDebug(libraryprobe) << "End probe";
                 m_current = m_total - 1;
             }
         });
