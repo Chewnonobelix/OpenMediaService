@@ -1,6 +1,0 @@
-[submodule "DesignLibrary"]
-	path = DesignLibrary
-	url = git@github.com:Chewnonobelix/DesignLibrary.git
-[submodule "ExpressionLibrary"]
-	path = ExpressionLibrary
-	url = git@github.com:Chewnonobelix/ExpressionLibrary.git
