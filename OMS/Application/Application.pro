@@ -4,6 +4,7 @@ CONFIG += c++20
 
 INCLUDEPATH += ../DesignLibrary/DesignPattern ../ExpressionLibrary/LibExpression ../Core
 
+TARGET = OpenMediaService
 
 LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
 LIBS += -L$$OUT_PWD/../ExpressionLibrary/LibExpression/debug -lLibExpression
