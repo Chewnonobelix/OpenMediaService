@@ -17,6 +17,9 @@
 #include <Controller/DataModel/librarydatamodel.h>
 #include <Controller/DataModel/smartmodel.h>
 
+Q_DECLARE_LOGGING_CATEGORY(mainregister)
+Q_DECLARE_LOGGING_CATEGORY(mainlog)
+
 class MEDIAPLAYERCORE_EXPORT ControllerMain : public AbstractController {
 	Q_OBJECT
 	Q_DISABLE_COPY(ControllerMain)

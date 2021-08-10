@@ -1,5 +1,7 @@
 #include "dataxml.h"
 
+Q_LOGGING_CATEGORY(xmllog, "xml.log")
+
 void DataXml::init() {}
 
 void DataXml::adder(QDomElement &el, QString tagname, QString value,
@@ -77,7 +79,7 @@ bool DataXml::createLibrary(QString name, MediaRole role) {
 		return false;
 
 	QFile f("Library/" + ret->id().toString() + ".xml");
-	qDebug() << "Open" << f.fileName() << f.open(QIODevice::ReadWrite);
+    qCDebug(xmllog) << "Open" << f.fileName() << f.open(QIODevice::ReadWrite);
 	QDomDocument doc;
 	doc.setContent(QString("<library />"));
 	auto el = doc.documentElement();
