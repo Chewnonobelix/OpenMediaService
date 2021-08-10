@@ -91,6 +91,8 @@ QVariant PlaylistListModel::data(const QModelIndex& index, int role) const {
 }
 
 void PlaylistListModel::sort(int col) {
+    if(m_columns.count() == 0)
+        return;
 
     auto order = m_columns[col].order;
 

@@ -2,7 +2,7 @@
 
 ControllerSettings::ControllerSettings(LiveQmlEngine& engine): QObject(nullptr), m_engine(engine)
 {
-    m_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Chewnonobelix Inc", "MediaPlayer");
+    m_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Chewnonobelix Inc", "OpenMediaService");
 }
 
 void ControllerSettings::display()
