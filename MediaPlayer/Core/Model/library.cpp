@@ -329,3 +329,20 @@ void Library::onSmartPlaylistChanged()
         smart->append(it);
     }
 }
+
+QList<PlayList*> Library::playlistList() const
+{
+    QList<PlayList*> ret;
+
+    for(auto it: m_playlist)
+        ret<<it.data();
+
+    return ret;
+}
+
+bool Library::addToPlaylist(QString pl, Media* m)
+{
+    auto ppl = m_playlist[QUuid::fromString(pl)];
+
+    return ppl->append(m->sharedFromThis());
+}

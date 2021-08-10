@@ -69,6 +69,11 @@ bool PlayList::append(MediaPointer m, int index) {
     return true;
 }
 
+bool PlayList::append(Media* m, int index)
+{
+    return append(m->sharedFromThis(), index);
+}
+
 bool PlayList::remove(int index) {
     //TODO
     removeAt(index);

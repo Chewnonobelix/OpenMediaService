@@ -152,6 +152,8 @@ Item {
 
                     MediaMenu {
                         id: mediaMenu
+
+                        media: pointer
                     }
 
                     MouseArea {

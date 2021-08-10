@@ -81,6 +81,7 @@ signals:
 
 public slots:
     Q_INVOKABLE virtual bool append(MediaPointer, int = -1);
+    Q_INVOKABLE virtual bool append(Media*, int = -1);
     Q_INVOKABLE bool remove(int);
     Q_INVOKABLE MediaPointer at(int i) const;
     Q_INVOKABLE bool swap(int, int);

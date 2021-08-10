@@ -82,7 +82,8 @@ public slots:
 	Q_INVOKABLE bool addPlaylist(PlaylistPointer);
 	Q_INVOKABLE bool removePlaylist(QString);
 	Q_INVOKABLE QMap<QUuid, PlaylistPointer> playlist(QString = "");
-
+    Q_INVOKABLE QList<PlayList*> playlistList() const;
+    Q_INVOKABLE bool addToPlaylist(QString, Media*);
 	void onProbedChanged();
 	void onMediaChanged();
     void onSmartPlaylistChanged();

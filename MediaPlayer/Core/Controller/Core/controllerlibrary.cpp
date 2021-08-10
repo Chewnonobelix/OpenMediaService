@@ -22,15 +22,19 @@ void ControllerLibrary::removeSourceDir(QString path) {
     m_current->removeSourceDir(path);
 }
 
-void ControllerLibrary::addPlaylist(bool smart) {
+QUuid ControllerLibrary::addPlaylist(bool smart) {
+    QUuid ret;
     if (smart) {
         auto pl = factory<SmartPlaylist>();
         m_current->addSmartPlaylist(pl);
+        ret = pl->id();
     } else {
         auto pl = factory<PlayList>();
         m_current->addPlaylist(pl);
+        ret = pl->id();
     }
 
+    return ret;
 }
 
 void ControllerLibrary::removePlaylist(QString id) {
