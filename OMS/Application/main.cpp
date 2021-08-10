@@ -6,7 +6,7 @@
 
 int main(int argc, char **argv) {
 
-    qSetMessagePattern("%{type} %{message} %{time yyyyMMdd h:mm:ss} %{file} %{function} %{line} %{category}");
+    qSetMessagePattern("%{type} #%{message}# %{time yyyyMMdd h:mm:ss} %{file}/%{function} (%{line}) \"%{category}\"");
 
 	QGuiApplication app(argc, argv);
 	ControllerMain cm;
