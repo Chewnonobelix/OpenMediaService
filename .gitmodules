@@ -1,0 +1,6 @@
+[submodule "OMS/ExpressionLibrary"]
+	path = OMS/ExpressionLibrary
+	url = git@github.com:Chewnonobelix/ExpressionLibrary.git
+[submodule "OMS/DesignLibrary"]
+	path = OMS/DesignLibrary
+	url = git@github.com:Chewnonobelix/DesignLibrary.git
