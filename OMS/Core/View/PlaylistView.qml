@@ -14,7 +14,7 @@ MediaWindow {
         visible = true
     }
 
-    title: "Playlist " + (_playlist ? _playlist.name : "")
+    title: qsTr("Playlist") + " " + (_playlist ? _playlist.name : "")
 
     width: 400
     height: 600
@@ -24,7 +24,7 @@ MediaWindow {
         columns:  2
 
         MediaLabel {
-            text: "Playlist name"
+            text: qsTr("Playlist name")
 
             Layout.preferredWidth: root.width * .20
             Layout.preferredHeight: root.height * .10

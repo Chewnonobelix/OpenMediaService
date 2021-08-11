@@ -12,15 +12,15 @@ Menu {
     property Media media
 
     MenuItem {
-        text: "Remove media"
+        text: qsTr("Remove media")
 
         onClicked: root.remove()
     }
 
     Menu {
-        title: "Add to playlist"
+        title: qsTr("Add to playlist")
         MenuItem {
-            text: "Add to new playlist"
+            text: qsTr("Add to new playlist")
 
             onClicked:  {
                 var ret = _librariesModel.controller(_librariesModel.currentIndex).addPlaylist(false)

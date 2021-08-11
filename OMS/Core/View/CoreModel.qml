@@ -5,26 +5,26 @@ import MediaPlayer.Model 1.0
 
 QtObject {
     property ListModel typeModel: ListModel {
-                id: typeModel
+        id: typeModel
         ListElement {
-            name: "Video"
-						role: MediaPlayer.MediaRole.Video
+            name: qsTr("Video")
+            role: MediaPlayer.MediaRole.Video
         }
-//        ListElement {
-//            name: "Audio"
-//						role: MediaPlayer.MediaRole.Audio
-//        }
-//        ListElement {
-//            name: "Books"
-//						role: MediaPlayer.MediaRole.Books
-//        }
-//        ListElement {
-//            name: "Comics"
-//						role: MediaPlayer.MediaRole.Comics
-//				}
+        //        ListElement {
+        //            name: "Audio"
+        //						role: MediaPlayer.MediaRole.Audio
+        //        }
+        //        ListElement {
+        //            name: "Books"
+        //						role: MediaPlayer.MediaRole.Books
+        //        }
+        //        ListElement {
+        //            name: "Comics"
+        //						role: MediaPlayer.MediaRole.Comics
+        //				}
         ListElement {
-            name: "Image"
-						role: MediaPlayer.MediaRole.Image
+            name: qsTr("Image")
+            role: MediaPlayer.MediaRole.Image
         }
     }
 }

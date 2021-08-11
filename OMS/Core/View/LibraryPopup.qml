@@ -62,7 +62,7 @@ Popup {
 			Layout.preferredHeight: addLibraryPop.height * .5
 			Layout.preferredWidth: addLibraryPop.width * .19
 			enabled: libraryName.acceptableInput
-			text: "Add"
+            text: qsTr("Add")
 			onClicked: {
 				_db.createLibrary(libraryName.text, libraryType.currentValue)
 				addLibraryPop.close()
@@ -71,7 +71,7 @@ Popup {
 		MediaButton {
 			Layout.preferredHeight: addLibraryPop.height * .5
 			Layout.preferredWidth: addLibraryPop.width * .19
-			text: "Close"
+            text: qsTr("Close")
 			onClicked: {
 				addLibraryPop.close()
 			}

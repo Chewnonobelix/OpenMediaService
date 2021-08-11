@@ -20,7 +20,7 @@ Item {
 
             MediaCombobox {
                 id: displayType
-                model: ["List", "Library"]
+                model: [qsTr("List"), qsTr("Library")]
 
                 Layout.preferredHeight: toolbar.height
 
@@ -31,7 +31,7 @@ Item {
                 Layout.preferredHeight: toolbar.height
                 id: playLayout
                 MediaButton {
-                    text: "play"
+                    text: qsTr("play")
 
                     onClicked:  {
                         _image.playing()
@@ -40,7 +40,7 @@ Item {
                     }
                 }
                 MediaButton {
-                    text: "stop"
+                    text: qsTr("stop")
 
                     onClicked:{
                         _image.stop()
@@ -49,7 +49,7 @@ Item {
                 }
             }
             MediaCheckbox {
-                text: "random"
+                text: qsTr("random")
                 Layout.preferredHeight: toolbar.height
             }
         }

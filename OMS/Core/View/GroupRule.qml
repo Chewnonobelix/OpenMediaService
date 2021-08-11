@@ -47,7 +47,7 @@ Item {
                             currentIndex = find(op) > -1 ? find(op) : 0
                         }
 
-                        model: ["Or", "And"]
+                        model: [qsTr("Or"), qsTr("And")]
 
                         onActivated: {
                             op = currentText

@@ -210,44 +210,44 @@ ApplicationWindow {
 				MediaLabel {
 					id: playlistHeader
 					anchors.fill: parent
-                    text: "Playlist: " + (libraryView.currentIndex > -1 ? _librariesModel.at(libraryView.currentIndex).name : "")
+                    text: qsTr("Playlist") + ": " + (libraryView.currentIndex > -1 ? _librariesModel.at(libraryView.currentIndex).name : "")
 				}
 			}
 
 			Menu {
 				id: menu1
 				MenuItem {
-					text: "Open"
+                    text: qsTr("Open")
                     onClicked: drawPlay.open()
 				}
 
                 MenuItem {
-                    text: "Edit"
+                    text: qsTr("Edit")
 
                     onClicked: playlist.model.editPlaylist()
                 }
 
 				MenuItem {
-					text: "Add smart playlist"
+                    text: qsTr("Add smart playlist")
                     onClicked: _librariesModel.controller(libraryView.currentIndex).addPlaylist(true)
 				}
 				MenuItem {
-					text: "Add playlist"
+                    text: qsTr("Add playlist")
                     onClicked: _librariesModel.controller(libraryView.currentIndex).addPlaylist(false)
 				}
 				MenuItem {
-					text: "Remove playlist"
+                    text: qsTr("Remove playlist")
 				}
 			}
 
 			Menu {
 				id: menu2
 				MenuItem {
-					text: "Add smart playlist"
+                    text: qsTr("Add smart playlist")
                     onClicked: _librariesModel.controller(libraryView.currentIndex).addPlaylist(true)
 				}
 				MenuItem {
-					text: "Add playlist"
+                    text: qsTr("Add playlist")
                     onClicked: _librariesModel.controller(libraryView.currentIndex).addPlaylist(false)
 				}
 			}
@@ -302,7 +302,7 @@ ApplicationWindow {
 		Menu {
 			id: splitMenu
 			MenuItem {
-				text: "Split1"
+                text: qsTr("Split1")
 				onClicked: splitView.addNew()
 			}
 		}
