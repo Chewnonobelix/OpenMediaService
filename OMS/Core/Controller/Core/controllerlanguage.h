@@ -1,10 +1,14 @@
 #pragma once
 
 #include <QTranslator>
+#include <QDir>
+#include <QLoggingCategory>
+#include <QCoreApplication>
 
-class ControllerLanguage
+class ControllerLanguage: public QObject
 {
-    Q_GADGET
+    Q_OBJECT
+    Q_DISABLE_COPY(ControllerLanguage)
 
 private:
     QTranslator m_translator;
@@ -12,7 +16,7 @@ private:
     QList<QString> m_language;
 
 public:
-    ControllerLanguage() = default;
+    ControllerLanguage();
     ~ControllerLanguage() = default;
 
     bool setLanguageList(QStringList);

@@ -75,7 +75,12 @@ MediaWindow {
                 title: qsTr("Language")
 
                 MediaCombobox {
+                    Component.onCompleted: {
+                        model = _language.languageList()
+                        currentIndex = indexOfValue(_settings.language())
+                    }
 
+                    onActivated: _settings.setLanguage(currentText)
                 }
             }
 

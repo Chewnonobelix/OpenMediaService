@@ -228,37 +228,37 @@
     <message>
         <location filename="../Core/View/Settings.qml" line="34"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Général</translation>
     </message>
     <message>
         <location filename="../Core/View/Settings.qml" line="75"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Langue</translation>
     </message>
     <message>
         <location filename="../Core/View/Settings.qml" line="88"/>
         <source>Json</source>
-        <translation type="unfinished"></translation>
+        <translation>Json</translation>
     </message>
     <message>
         <location filename="../Core/View/Settings.qml" line="92"/>
         <source>Xml</source>
-        <translation type="unfinished"></translation>
+        <translation>Xml</translation>
     </message>
     <message>
         <location filename="../Core/View/Settings.qml" line="111"/>
         <source>Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugins</translation>
     </message>
     <message>
         <location filename="../Core/View/Settings.qml" line="133"/>
         <source>Sync</source>
-        <translation type="unfinished"></translation>
+        <translation>Sync</translation>
     </message>
     <message>
         <location filename="../Core/View/Settings.qml" line="137"/>
         <source>Stream</source>
-        <translation type="unfinished"></translation>
+        <translation>Stream</translation>
     </message>
 </context>
 <context>
