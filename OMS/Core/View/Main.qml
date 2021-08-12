@@ -302,7 +302,7 @@ ApplicationWindow {
 		Menu {
 			id: splitMenu
 			MenuItem {
-                text: qsTr("Split1")
+                text: qsTr("Split window")
 				onClicked: splitView.addNew()
 			}
 		}
@@ -318,7 +318,7 @@ ApplicationWindow {
 			acceptedButtons: Qt.RightButton
 
 			onClicked: {
-				splitMenu.open()
+                splitMenu.popup(mouseX, mouseY)
 			}
 
 
