@@ -3,11 +3,16 @@
 ControllerSettings::ControllerSettings(LiveQmlEngine& engine): QObject(nullptr), m_engine(engine)
 {
     m_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Chewnonobelix Inc", "OpenMediaService");
+
+    m_language.load(language());
 }
 
 void ControllerSettings::display()
 {
-    m_engine.createWindow(QUrl(QStringLiteral("/Settings.qml")));
+    auto context = new QQmlContext(m_engine.qmlEngine().rootContext());
+    context->setContextProperty("_language", &m_language);
+
+    m_engine.createWindow(QUrl(QStringLiteral("/Settings.qml")), context);
 }
 
 void ControllerSettings::setPlugin(QString name, bool enable) {
@@ -65,4 +70,17 @@ void ControllerSettings::setPlaylistColumnWidth(QString plId, QString column, in
 int ControllerSettings::playlistColumnWidth(QString plId, QString column)
 {
     return m_settings->value(plId + "/" + column + "Width", -1).toInt();
+}
+
+void ControllerSettings::setLanguage(QString lang)
+{
+    if(m_language.load(lang)) {
+        m_settings->setValue("language", lang);
+        m_engine.qmlEngine().retranslate();
+    }
+}
+
+QString ControllerSettings::language() const
+{
+    return m_settings->value("language").toString();
 }

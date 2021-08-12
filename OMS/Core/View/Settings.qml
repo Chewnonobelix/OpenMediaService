@@ -31,7 +31,7 @@ MediaWindow {
 
         MediaButton {
             id: generalTab
-            text: "General"
+            text: qsTr("General")
             onClicked: {
                 tabColumn.currentIndex = 0
             }
@@ -72,10 +72,15 @@ MediaWindow {
         ColumnLayout {
 
             GroupBox {
-                title: "Language"
+                title: qsTr("Language")
 
                 MediaCombobox {
+                    Component.onCompleted: {
+                        model = _language.languageList()
+                        currentIndex = indexOfValue(_settings.language())
+                    }
 
+                    onActivated: _settings.setLanguage(currentText)
                 }
             }
 
@@ -85,11 +90,11 @@ MediaWindow {
                 MediaCombobox {
                     model: ListModel {
                         ListElement {
-                            display: "Json"
+                            display: qsTr("Json")
                             db: "DataJson"
                         }
                         ListElement {
-                            display: "Xml"
+                            display: qsTr("Xml")
                             db: "DataXml"
                         }
                         //                    ListElement {
@@ -108,7 +113,7 @@ MediaWindow {
             }
 
             GroupBox {
-                title: "Plugins"
+                title: qsTr("Plugins")
 
                 ColumnLayout {
                     anchors.fill: parent
@@ -130,11 +135,11 @@ MediaWindow {
             }
 
             GroupBox {
-                title: "Sync"
+                title: qsTr("Sync")
             }
 
             GroupBox {
-                title: "Stream"
+                title: qsTr("Stream")
             }
         }
 

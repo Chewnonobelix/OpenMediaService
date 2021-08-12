@@ -50,7 +50,7 @@ Item {
                 model: 0
 
                 MediaTabButton {
-                    text: qsTr("Tab ") + modelData
+                    text: qsTr("Tab") + " " + modelData
 
                     onClicked: {
                         _tabWrapper.setCurrentTab(view.itemAt(modelData).id)

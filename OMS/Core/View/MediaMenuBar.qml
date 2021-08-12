@@ -9,15 +9,15 @@ MenuBar {
     signal quit()
 
     Menu {
-        title: "File"
+        title: qsTr("File")
 
         MenuItem {
-            text: "Settings"
+            text: qsTr("Settings")
             onClicked: _settings.display()
         }
 
         MenuItem {
-            text: "Quit"
+            text: qsTr("Quit")
 
             onClicked: root.quit()
         }

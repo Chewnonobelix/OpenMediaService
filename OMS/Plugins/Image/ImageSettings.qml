@@ -25,7 +25,7 @@ Item {
             }
             id: aspectRatio
 
-            model: ["Fit", "Fill", "Custom"]
+            model: [qsTr("Fit"), qsTr("Fill"), qsTr("Custom")]
 
             onActivated: {
                 _settings.setValue("Image/Ratio", currentText)

@@ -5,6 +5,7 @@
 #include <liveqmlengine.h>
 
 #include "mediaplayercore_global.h"
+#include "controllerlanguage.h"
 
 class MEDIAPLAYERCORE_EXPORT ControllerSettings: public QObject
 {
@@ -14,6 +15,7 @@ class MEDIAPLAYERCORE_EXPORT ControllerSettings: public QObject
 private:
     QPointer<QSettings> m_settings;
     LiveQmlEngine& m_engine;
+    ControllerLanguage m_language;
 
 public:
     ControllerSettings(LiveQmlEngine&);
@@ -38,6 +40,9 @@ public:
 
     Q_INVOKABLE void setPlaylistColumnWidth(QString, QString, int);
     Q_INVOKABLE int playlistColumnWidth(QString, QString);
+
+    Q_INVOKABLE void setLanguage(QString);
+    Q_INVOKABLE QString language() const;
 
 signals:
     void dbChanged();
