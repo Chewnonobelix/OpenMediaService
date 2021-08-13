@@ -11,12 +11,17 @@ Item {
     id: root
 
     property int index: -1
+
+    signal clicked(int index)
+
     MouseArea {
         anchors.fill: parent
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
         propagateComposedEvents: true
         onClicked: function(mouse) {
             _tabWrapper.setCurrentTab(viewRep.itemAt(viewBar.currentIndex).id)
             mouse.accepted = false
+            root.clicked(root.index)
         }
     }
 

@@ -305,6 +305,8 @@ ApplicationWindow {
                 text: qsTr("Split window")
 				onClicked: splitView.addNew()
 			}
+
+            onOpened: console.log(splitView.currentIndex, _tabWrapper.currentId())
 		}
 
 		MouseArea {
@@ -316,9 +318,10 @@ ApplicationWindow {
 			Layout.fillHeight: true
 			Layout.fillWidth: true
 			acceptedButtons: Qt.RightButton
+            propagateComposedEvents: true
 
-			onClicked: {
-                splitMenu.popup(mouseX, mouseY)
+            onClicked: function(mouse) {
+                splitMenu.popup(mouse.x, mouse.y)
 			}
 
 
@@ -329,6 +332,10 @@ ApplicationWindow {
 
 				property var component;
 				property var sprite;
+
+                function onClicked(index) {
+                    setCurrentIndex(index)
+                }
 
 				function addNew() {
 					component = Qt.createComponent("View.qml");
@@ -349,6 +356,7 @@ ApplicationWindow {
 						else {
 							addItem(sprite)
                             sprite.index = count - 1
+                            sprite.clicked.connect(onClicked)
 						}
 					} else if (component.status === Component.Error) {
 						// Error Handling
