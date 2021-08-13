@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QMap>
 #include <QPointer>
+#include <QLoggingCategory>
 
 #include "mediaplayercore_global.h"
 
@@ -25,6 +26,7 @@ public:
     Q_INVOKABLE QUuid create();
     QPointer<TabManager> get(QUuid);
     Q_INVOKABLE QPointer<TabManager> get(QString);
+    Q_INVOKABLE bool removeManager(QString);
 
     void setPlaylist(int);
     void setPlayer(int, QObject*);

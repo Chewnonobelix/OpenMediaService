@@ -306,7 +306,20 @@ ApplicationWindow {
 				onClicked: splitView.addNew()
 			}
 
-            onOpened: console.log(splitView.currentIndex, _tabWrapper.currentId())
+            MenuItem {
+                text: qsTr("Remove split")
+
+                onClicked: {
+                    console.log("Remove view", _tabWrapper.removeManager(splitView.currentItem.idTab))
+                    splitView.takeItem(splitView.currentIndex)
+
+                    for(var i = 0; i < splitView.count; i++) {
+                        splitView.itemAt(i).index = i
+                    }
+
+                    splitView.setCurrentIndex(0)
+                }
+            }
 		}
 
 		MouseArea {
@@ -335,6 +348,7 @@ ApplicationWindow {
 
                 function onClicked(index) {
                     setCurrentIndex(index)
+                    console.log(index, currentItem)
                 }
 
 				function addNew() {

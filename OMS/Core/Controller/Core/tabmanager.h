@@ -33,7 +33,7 @@ public:
     TabManager() = default;
 	~TabManager() = default;
 
-    QUuid id() const;
+    Q_INVOKABLE QUuid id() const;
 
     Q_INVOKABLE void addTab();
     Q_INVOKABLE bool removeTab(QString id);

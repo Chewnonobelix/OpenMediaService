@@ -11,6 +11,7 @@ Item {
     id: root
 
     property int index: -1
+    property string idTab: viewRep.model.id() ? viewRep.model.id(): ""
 
     signal clicked(int index)
 

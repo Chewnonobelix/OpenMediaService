@@ -1,5 +1,7 @@
 #include "tabwrapper.h"
 
+Q_LOGGING_CATEGORY(tabwrapperlog, "tabwrapper.log")
+
 QUuid TabWrapper::create()
 {
     auto manager = new TabManager;
@@ -58,4 +60,10 @@ void TabWrapper::setPlaylist(int pli)
 QUuid TabWrapper::currentId() const
 {
     return m_current;
+}
+
+bool TabWrapper::removeManager(QString id)
+{
+    auto count = m_model.remove(QUuid::fromString(id)) > 0;
+    return count > 0;
 }
