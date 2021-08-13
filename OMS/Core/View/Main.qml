@@ -348,7 +348,6 @@ ApplicationWindow {
 
                 function onClicked(index) {
                     setCurrentIndex(index)
-                    console.log(index, currentItem)
                 }
 
 				function addNew() {
