@@ -55,6 +55,25 @@ Item {
                     onClicked: {
                         _tabWrapper.setCurrentTab(view.itemAt(modelData).id)
                     }
+
+                    ToolButton {
+                        text: "x"
+
+                        anchors {
+                            right: parent.right
+                            top: parent.top
+                        }
+
+                        onClicked: {
+                            var ret = viewRep.model.removeTab(view.itemAt(modelData).id)
+                            console.log("Remove tab", ret)
+
+                            if(ret) {
+                                viewBar.currentIndex = 0
+                                tabRepeater.model = tabRepeater.model - 1
+                            }
+                        }
+                    }
                 }
             }
 
@@ -94,9 +113,9 @@ Item {
                     id: pRoot
                     property string id: model.id
                     property Item rPlayer: model.player
-                        Item {
+                    Item {
 
-                        }
+                    }
 
                     onRPlayerChanged: {
                         pRoot.children[0] = rPlayer

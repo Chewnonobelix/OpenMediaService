@@ -45,9 +45,13 @@ QHash<int, QByteArray> TabManager::roleNames() const {
     return ret;
 }
 
-bool TabManager::removeTab(QUuid)
+bool TabManager::removeTab(QString id)
 {
-    return false;
+    auto ret = m_model.removeIf([id, this](auto data) {
+        return data.id == QUuid::fromString(id)  && m_model.count() > 1;
+    });
+
+    return ret != 0;
 }
 
 bool TabManager::moveTab(QUuid, int)
