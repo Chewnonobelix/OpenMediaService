@@ -36,7 +36,7 @@ public:
     QUuid id() const;
 
     Q_INVOKABLE void addTab();
-    Q_INVOKABLE bool removeTab(QUuid);
+    Q_INVOKABLE bool removeTab(QString id);
     Q_INVOKABLE bool moveTab(QUuid, int);
 
     bool contains(QUuid) const;
