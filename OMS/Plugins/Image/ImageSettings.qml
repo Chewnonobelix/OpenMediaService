@@ -56,8 +56,16 @@ Item {
             onValueModified: _settings.setValue("Image/Height", value)
         }
 
-        ListView {
-            id: columnOrder
+        MediaLabel {
+
+            text: qsTr("Interval")
+        }
+
+        SpinBox {
+            id: interval
+            Component.onCompleted: value = _settings.value("Image/Interval") ? _settings.value("Image/Interval") : 2
+
+            onValueModified: _settings.setValue("Image/Interval", value)
         }
     }
 }
