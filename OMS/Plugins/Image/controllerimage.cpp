@@ -28,7 +28,9 @@ void ControllerImage::exec() {
     connect(&m_model, &LibrairyImageModel::imageChanged, this,
             &ControllerImage::setMedia);
     connect(&m_timer, &QTimer::timeout, this, &ControllerImage::onTimeout);
-    m_timer.setInterval(2000);
+
+    auto inter = s_settings->value("Image/Interval").toInt() * 1000;
+    m_timer.setInterval(inter == 0 ? 2000 : inter);
 
     if(!s_playlist)
         s_playlist = new QQmlComponent(&(engine()->qmlEngine()),
@@ -97,7 +99,9 @@ void ControllerImage::playing(int index) {
 
 void ControllerImage::stop() { m_timer.stop(); }
 
-void ControllerImage::onTimeout() { m_current->next(); }
+void ControllerImage::onTimeout() {
+    m_current->next();
+}
 
 QSharedPointer<InterfacePlugins> ControllerImage::clone() const {
     return QSharedPointer<ControllerImage>::create();
