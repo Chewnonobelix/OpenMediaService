@@ -24,6 +24,7 @@ SOURCES += \
         Controller/Core/tabmanager.cpp \
         Controller/Core/tabwrapper.cpp \
         Controller/Data/datajson.cpp \
+        Controller/Data/datasql.cpp \
         Controller/Data/dataxml.cpp \
         Controller/Data/interfacesaver.cpp \
         Controller/DataModel/librarydatamodel.cpp \
@@ -77,6 +78,7 @@ HEADERS += \
     Controller/Core/tabmanager.h \
     Controller/Core/tabwrapper.h \
     Controller/Data/datajson.h \
+    Controller/Data/datasql.h \
     Controller/Data/dataxml.h \
     Controller/Data/interfacesaver.h \
     Controller/DataModel/librarydatamodel.h \
