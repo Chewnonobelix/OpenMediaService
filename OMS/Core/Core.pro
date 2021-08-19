@@ -81,6 +81,7 @@ HEADERS += \
     Controller/Data/datasql.h \
     Controller/Data/dataxml.h \
     Controller/Data/interfacesaver.h \
+    Controller/Data/sqlrequest.h \
     Controller/DataModel/librarydatamodel.h \
     Controller/DataModel/orderdisplaymodel.h \
     Controller/DataModel/playlistlistmodel.h \
