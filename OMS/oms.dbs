@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="OMS" id="Project_1b86" database="Sqlite" >
+	<schema name="Default" >
+		<table name="library" prior="Tbl" >
+			<column name="id" type="text" jt="-1" mandatory="y" />
+			<column name="name" type="text" length="100" jt="-1" mandatory="y" />
+			<column name="role" type="integer" jt="4" mandatory="y" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<column name="isShared" type="boolean" jt="-7" mandatory="y" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<index name="Pk_library_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="media" prior="Tbl" >
+			<column name="id" type="text" jt="-1" mandatory="y" />
+			<column name="lib" type="text" jt="-1" />
+			<column name="role" type="integer" jt="4" mandatory="y" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<column name="count" type="integer" jt="4" mandatory="y" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<column name="rating" type="integer" jt="4" mandatory="y" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<column name="added" type="date" jt="91" mandatory="y" >
+				<defo><![CDATA[CURRENT_DATE]]></defo>
+			</column>
+			<column name="lastFinished" type="date" length="100" jt="91" />
+			<column name="currentRead" type="numeric" jt="2" mandatory="y" >
+				<defo><![CDATA[0]]></defo>
+			</column>
+			<index name="Pk_media_id" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_media_library" to_schema="Default" to_table="library" >
+				<fk_column name="lib" pk="id" />
+			</fk>
+		</table>
+		<table name="probe" prior="Tbl" >
+			<column name="lib" type="text" jt="-1" mandatory="y" />
+			<column name="lastProbed" type="datetime" jt="93" mandatory="y" >
+				<defo><![CDATA[CURRENT_TIMESTAMP]]></defo>
+			</column>
+			<index name="Pk_probe_lib" unique="PRIMARY_KEY" >
+				<column name="lib" />
+			</index>
+			<fk name="fk_probe_library" to_schema="Default" to_table="library" delete_action="cascade" update_action="cascade" >
+				<fk_column name="lib" pk="id" />
+			</fk>
+		</table>
+		<table name="sourceDir" prior="Tbl" >
+			<column name="lib" prior="id" type="text" jt="-1" mandatory="y" />
+			<column name="path" type="text" jt="-1" mandatory="y" />
+			<index name="Unq_sourceDir" unique="UNIQUE_KEY" >
+				<column name="lib" />
+				<column name="path" />
+			</index>
+			<fk name="fk_sourcedir_library" to_schema="Default" to_table="library" delete_action="cascade" update_action="cascade" >
+				<fk_column name="lib" pk="id" />
+			</fk>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout_1fb6" show_relation="columns" >
+		<entity schema="Default" name="library" color="BED3F4" x="288" y="224" />
+		<entity schema="Default" name="media" color="C1D8EE" x="720" y="224" />
+		<entity schema="Default" name="probe" color="BED3F4" x="480" y="224" />
+		<entity schema="Default" name="sourceDir" color="BED3F4" x="480" y="432" />
+		<callout x="48" y="80" pointer="Round" >
+			<comment><![CDATA[DbSchema is disconnected from the database.
+New designed tables will be saved to project file and later can be create in any database.
+Right-click the layout to create new tables. Drop this callout from its context menu.]]></comment>
+		</callout>
+		<group name="library" color="ECF0F7" >
+			<entity schema="Default" name="library" />
+			<entity schema="Default" name="probe" />
+			<entity schema="Default" name="sourceDir" />
+		</group>
+		<script name="probe" id="Editor_aa5" language="SQL" >
+			<string><![CDATA[CREATE TABLE probe ( 
+	lib                  text NOT NULL  PRIMARY KEY  ,
+	lastProbed           datetime NOT NULL DEFAULT CURRENT_TIMESTAMP   ,
+	FOREIGN KEY ( lib ) REFERENCES library( id )  
+ );
+]]></string>
+		</script>
+		<script name="probe_001" id="Editor_992" language="SQL" >
+			<string><![CDATA[CREATE TABLE probe ( 
+	lib                  text NOT NULL  PRIMARY KEY  ,
+	lastProbed           datetime NOT NULL DEFAULT CURRENT_TIMESTAMP   ,
+	FOREIGN KEY ( lib ) REFERENCES library( id ) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+]]></string>
+		</script>
+	</layout>
+</project>
