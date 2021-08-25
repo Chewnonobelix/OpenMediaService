@@ -45,12 +45,14 @@ SmartPlaylist::SmartPlaylist(const QJsonObject& json): PlayList(json)
             if(!m_queue.isEmpty()) {
                 auto m = m_queue.dequeue();
                 if (!isValid(m)) {
-                    removeAll(m);
+                    removeIf([m](MediaPointer it) {
+                        return it->id() == m->id();
+                    });
 
                     for(auto& it: m_readOrder)
                         it--;
                 }
-                else if(!contains(m)) {
+                else if(!contains(m->id())) {
                     PlayList::append(m);
                     for(auto& it: m_readOrder)
                         it++;
