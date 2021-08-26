@@ -1,6 +1,5 @@
 DEFINES += AUDIO_LIBRARY
 
-include(../global.pri)
 
 TARGET = Audio
 TARGET = $$qtLibraryTarget($$TARGET)
@@ -11,10 +10,14 @@ NAME = Audio
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    audio_plugin.cpp \
     controlleraudio.cpp
 
 HEADERS += \
     Audio_global.h \
+    audio_plugin.h \
     controlleraudio.h
+
+include(../global.pri)
 
 # Default rules for deployment.

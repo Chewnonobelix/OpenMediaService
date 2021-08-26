@@ -1,6 +1,5 @@
 DEFINES += COMICS_LIBRARY
 
-include(../global.pri)
 
 TARGET = Comics
 TARGET = $$qtLibraryTarget($$TARGET)
@@ -11,8 +10,12 @@ NAME = Comics
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    comics_plugin.cpp \
     controllercomics.cpp
 
 HEADERS += \
     Comics_global.h \
+    comics_plugin.h \
     controllercomics.h
+
+include(../global.pri)

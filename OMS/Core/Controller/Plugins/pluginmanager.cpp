@@ -30,7 +30,7 @@ void PluginManager::init() {
         auto obj = dynamic_cast<InterfacePlugins *>(loader.instance());
         QSharedPointer<InterfacePlugins> p(obj);
 
-        if(p){
+        if(p && p->role() != MediaRole::Undefined){
             m_plugins[p->role()] = {p, true};
 
             m_liste << Plugin {toString(p->role()), p->role(), p, AbstractController::s_settings->plugin(toString(p->role()))};
