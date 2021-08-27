@@ -1,18 +1,18 @@
 #pragma once
 
 #include <QVariant>
+#include <QRegularExpression>
 
 #include <Operation/Comparaison/comparaisonexpression.h>
 
-class EndExpression: public ComparaisonExpression<QVariant&>
+class RegExpression: public ComparaisonExpression<QVariant&>
 {
 public:
-    EndExpression() = default;
-    EndExpression(const EndExpression&) = default;
-    ~EndExpression() = default;
+    RegExpression()= default;
+    RegExpression(const RegExpression&) = default;
+    ~RegExpression() = default;
 
     QSharedPointer<Expression<bool>> clone() const override;
     bool evaluate() const override;
-
 };
 

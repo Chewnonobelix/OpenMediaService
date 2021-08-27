@@ -4,15 +4,14 @@
 
 #include <Operation/Comparaison/comparaisonexpression.h>
 
-class EndExpression: public ComparaisonExpression<QVariant&>
+class ContainExpression: public ComparaisonExpression<QVariant&>
 {
 public:
-    EndExpression() = default;
-    EndExpression(const EndExpression&) = default;
-    ~EndExpression() = default;
+    ContainExpression()= default;
+    ContainExpression(const ContainExpression&) = default;
+    ~ContainExpression() = default;
 
     QSharedPointer<Expression<bool>> clone() const override;
     bool evaluate() const override;
-
 };
 

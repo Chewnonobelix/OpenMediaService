@@ -45,7 +45,7 @@ bool SmartRule::setToTest(QVariant newtoTest)
 {
     auto ret = m_toTest != newtoTest;
     if(ret)
-        m_toTest = newtoTest;
+        m_toTest = newtoTest.toList().isEmpty() ? QVariantList({newtoTest}) : newtoTest.toList();
     return ret;
 }
 

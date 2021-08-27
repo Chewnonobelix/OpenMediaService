@@ -14,7 +14,11 @@ public:
 
     bool evaluate() const override
     {
-        return QVariant::compare(this->e1()->evaluate(), this->e2()->evaluate()) == QPartialOrdering::Equivalent;
+        auto ret = false;
+
+        for(auto it: this->e1()->evaluate().toList())
+            ret |= QVariant::compare(it, this->e2()->evaluate()) == QPartialOrdering::Equivalent;
+        return ret;
     }
 };
 
