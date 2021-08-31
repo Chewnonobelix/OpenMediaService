@@ -11,6 +11,8 @@
 #include <Model/Expression/variantsuperiorexpression.h>
 #include <Model/Expression/variantinferiorexpression.h>
 
+#include <Model/Expression/expressionfactory.h>
+
 class MEDIAPLAYERCORE_EXPORT SmartRule: public AbstractRule {
 private:
     QVariant m_toTest;

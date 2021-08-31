@@ -34,6 +34,7 @@ SOURCES += \
         Controller/Plugins/pluginmanager.cpp \
         Model/Expression/containexpression.cpp \
         Model/Expression/endexpression.cpp \
+        Model/Expression/expressionfactory.cpp \
         Model/Expression/regexpression.cpp \
         Model/Expression/startexpression.cpp \
         Model/Expression/variantequalexpression.cpp \
@@ -83,6 +84,7 @@ HEADERS += \
     Controller/Plugins/pluginmanager.h \
     Model/Expression/containexpression.h \
     Model/Expression/endexpression.h \
+    Model/Expression/expressionfactory.h \
     Model/Expression/regexpression.h \
     Model/Expression/startexpression.h \
     Model/Expression/variantequalexpression.h \
