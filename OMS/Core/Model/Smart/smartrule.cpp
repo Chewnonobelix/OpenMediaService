@@ -68,7 +68,7 @@ QSharedPointer<Expression<bool>> SmartRule::create()
     case Op::Inferior:
         return ExpressionFactory::createInferior(toTest(), value());
         break;
-    case Op::Superior: {
+    case Op::Superior:
         return ExpressionFactory::createSuperior(toTest(), value());
         break;
     case Op::InferiorEqual:
@@ -77,14 +77,24 @@ QSharedPointer<Expression<bool>> SmartRule::create()
     case Op::SuperiorEqual:
         return ExpressionFactory::createSuperiorEqual(toTest(), value());
         break;
+    case Op::RegExp:
+        return ExpressionFactory::createReg(toTest(), value());
+        break;
+    case Op::Contain:
+        return ExpressionFactory::createContain(toTest(), value());
+        break;
+    case Op::Start:
+        return ExpressionFactory::createStart(toTest(), value());
+        break;
+    case Op::End:
+        return ExpressionFactory::createEnd(toTest(), value());
+        break;
     case Op::Equal:
+        return ExpressionFactory::createEqual(toTest(), value());
+        break;
     case Op::Not:
     case Op::Limit:
     case Op::List:
-    case Op::RegExp:
-    case Op::Contain:
-    case Op::Start:
-    case Op::End:
     default:
         vret = QSharedPointer<ValueExpression<bool>>::create(true);
         break;
@@ -111,5 +121,8 @@ QPartialOrdering SmartRule::compare(AbstractRulePointer other) const
 
 bool SmartRule::set(MediaPointer m)
 {
-    return setToTest(m->metaData<QVariant>(field()));
+    if(m->metadataList().contains(field()))
+        return setToTest(m->metaData<QVariant>(field()));
+
+    return false;
 }

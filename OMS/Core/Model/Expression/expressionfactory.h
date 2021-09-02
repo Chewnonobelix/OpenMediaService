@@ -10,8 +10,9 @@
 #include <Core/valueexpression.h>
 #include <Operation/Logic/orexpression.h>
 #include <Operation/Logic/andexpression.h>
+#include <mediaplayercore_global.h>
 
-class ExpressionFactory
+class MEDIAPLAYERCORE_EXPORT ExpressionFactory
 {
 public:
     ExpressionFactory() = default;

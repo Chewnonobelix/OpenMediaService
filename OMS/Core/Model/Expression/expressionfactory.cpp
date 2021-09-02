@@ -21,7 +21,12 @@ QSharedPointer<Expression<bool>> ExpressionFactory::createSuperior(QVariant& toT
 
 QSharedPointer<Expression<bool>> ExpressionFactory::createEqual(QVariant& toTest, QVariant& value)
 {
+    auto ret = QSharedPointer<EqualExpression<QVariant&>>::create();
+    ValueExpression<QVariant&> v1(value), v2(toTest);
+    ret->setE1(v2.clone());
+    ret->setE2(v1.clone());
 
+    return ret;
 }
 
 QSharedPointer<Expression<bool>> ExpressionFactory::createInferiorEqual(QVariant& toTest, QVariant& value)
@@ -58,20 +63,40 @@ QSharedPointer<Expression<bool>> ExpressionFactory::createSuperiorEqual(QVariant
 
 QSharedPointer<Expression<bool>> ExpressionFactory::createStart(QVariant& toTest, QVariant& value)
 {
+    auto ret = QSharedPointer<StartExpression>::create();
+    ValueExpression<QVariant&> v1(value), v2(toTest);
+    ret->setE1(v2.clone());
+    ret->setE2(v1.clone());
 
+    return ret;
 }
 
 QSharedPointer<Expression<bool>> ExpressionFactory::createEnd(QVariant& toTest, QVariant& value)
 {
+    auto ret = QSharedPointer<EndExpression>::create();
+    ValueExpression<QVariant&> v1(value), v2(toTest);
+    ret->setE1(v2.clone());
+    ret->setE2(v1.clone());
 
+    return ret;
 }
 
 QSharedPointer<Expression<bool>> ExpressionFactory::createContain(QVariant& toTest, QVariant& value)
 {
+    auto ret = QSharedPointer<ContainExpression>::create();
+    ValueExpression<QVariant&> v1(value), v2(toTest);
+    ret->setE1(v2.clone());
+    ret->setE2(v1.clone());
 
+    return ret;
 }
 
 QSharedPointer<Expression<bool>> ExpressionFactory::createReg(QVariant& toTest, QVariant& value)
 {
+    auto ret = QSharedPointer<RegExpression>::create();
+    ValueExpression<QVariant&> v1(value), v2(toTest);
+    ret->setE1(v2.clone());
+    ret->setE2(v1.clone());
 
+    return ret;
 }

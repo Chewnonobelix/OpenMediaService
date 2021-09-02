@@ -9,7 +9,12 @@ bool RegExpression::evaluate() const
 {
     auto ret = false;
 
-    for(auto it: this->e1()->evaluate().toList())
-        ret |= it.toString().contains(QRegularExpression(this->e2()->evaluate().toString()));
+    auto v1 = this->e1()->evaluate().toList();
+    auto v2 = this->e2()->evaluate().toList();
+
+    for(auto it: v1)
+        for(auto it2: v2)
+            ret |= it.toString().contains(QRegularExpression(it2.toString()));
+
     return ret;
 }
