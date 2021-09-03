@@ -2,7 +2,16 @@
 
 SmartRule::SmartRule(const QJsonObject& json): AbstractRule(json)
 {
-    m_value = json["value"].toVariant();
+    m_value = json["value"].toArray().toVariantList();
+}
+
+SmartRule::operator QJsonObject() const
+{
+    auto ret = AbstractRule::operator QJsonObject();
+
+    ret["value"] = QJsonArray::fromStringList(value().toStringList());
+
+    return ret;
 }
 
 QString SmartRule::field() const
@@ -64,6 +73,7 @@ QSharedPointer<Expression<bool>> SmartRule::create()
     QSharedPointer<ComparaisonExpression<QVariant&>> ret;
     QSharedPointer<Expression<bool>> vret;
 
+    qDebug()<<op()<<field()<<value();
     switch(op()) {
     case Op::Inferior:
         return ExpressionFactory::createInferior(toTest(), value());

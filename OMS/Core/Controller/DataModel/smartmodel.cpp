@@ -53,8 +53,12 @@ bool SmartModel::setData(const QModelIndex &index, const QVariant &value, int ro
         case SmartRole::OpRole:
             model->setOp(stringToOp(value.toString()));
             break;
-        case SmartRole::ValueRole:
-            model.dynamicCast<SmartRule>()->setValue(value);
+        case SmartRole::ValueRole: {
+            qDebug()<<"Set value"<<value;
+            auto list = value.toString().split("|");
+            qDebug()<<list;
+            model.dynamicCast<SmartRule>()->setValue(list);
+        }
             break;
         default:
             return false;

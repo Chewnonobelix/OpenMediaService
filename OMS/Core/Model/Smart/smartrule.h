@@ -25,7 +25,7 @@ public:
     ~SmartRule() = default;
 
     using AbstractRule::AbstractRule;
-    using AbstractRule::operator QJsonObject;
+    operator QJsonObject() const override;
 
     QSharedPointer<Expression<bool>> create() override;
     AbstractRulePointer clone() const override;
