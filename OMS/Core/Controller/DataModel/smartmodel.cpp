@@ -33,8 +33,15 @@ QVariant SmartModel::data(const QModelIndex &index, int role) const
         return keyToString(model.rule->op());
     case SmartRole::FieldRole:
         return model.rule.dynamicCast<SmartRule>()->field();
-    case SmartRole::ValueRole:
-        return model.rule.dynamicCast<SmartRule>()->value();
+    case SmartRole::ValueRole: {
+        auto value = model.rule.dynamicCast<SmartRule>()->value().toStringList();
+        QString ret;
+        for(auto it: value) {
+            ret += it + "|";
+        }
+        ret.remove(ret.lastIndexOf("|"), 1);
+        return ret;
+    }
     default:
         break;
     }
@@ -54,9 +61,7 @@ bool SmartModel::setData(const QModelIndex &index, const QVariant &value, int ro
             model->setOp(stringToOp(value.toString()));
             break;
         case SmartRole::ValueRole: {
-            qDebug()<<"Set value"<<value;
-            auto list = value.toString().split("|");
-            qDebug()<<list;
+            QStringList list = value.toString().split("|");
             model.dynamicCast<SmartRule>()->setValue(list);
         }
             break;
