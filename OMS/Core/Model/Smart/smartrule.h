@@ -11,6 +11,8 @@
 #include <Model/Expression/variantsuperiorexpression.h>
 #include <Model/Expression/variantinferiorexpression.h>
 
+#include <Model/Expression/expressionfactory.h>
+
 class MEDIAPLAYERCORE_EXPORT SmartRule: public AbstractRule {
 private:
     QVariant m_toTest;
@@ -23,7 +25,7 @@ public:
     ~SmartRule() = default;
 
     using AbstractRule::AbstractRule;
-    using AbstractRule::operator QJsonObject;
+    operator QJsonObject() const override;
 
     QSharedPointer<Expression<bool>> create() override;
     AbstractRulePointer clone() const override;

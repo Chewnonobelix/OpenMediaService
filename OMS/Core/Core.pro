@@ -32,7 +32,10 @@ SOURCES += \
         Controller/DataModel/smartmodel.cpp \
         Controller/Plugins/interfaceplugins.cpp \
         Controller/Plugins/pluginmanager.cpp \
+        Model/Expression/containexpression.cpp \
         Model/Expression/endexpression.cpp \
+        Model/Expression/expressionfactory.cpp \
+        Model/Expression/regexpression.cpp \
         Model/Expression/startexpression.cpp \
         Model/Expression/variantequalexpression.cpp \
         Model/Expression/variantinferiorexpression.cpp \
@@ -79,7 +82,10 @@ HEADERS += \
     Controller/DataModel/smartmodel.h \
     Controller/Plugins/interfaceplugins.h \
     Controller/Plugins/pluginmanager.h \
+    Model/Expression/containexpression.h \
     Model/Expression/endexpression.h \
+    Model/Expression/expressionfactory.h \
+    Model/Expression/regexpression.h \
     Model/Expression/startexpression.h \
     Model/Expression/variantequalexpression.h \
     Model/Expression/variantinferiorexpression.h \
@@ -104,8 +110,8 @@ LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
 LIBS += -L$$OUT_PWD/../ExpressionLibrary/LibExpression/debug -lLibExpression
 LIBS += -L$$OUT_PWD/../Application/Ux -lUxComponents
 
-smart.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//Rules//*.json) $$shell_path($${OUT_PWD}//Rules))
-tr.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//Tr//*.qm) $$shell_path($${OUT_PWD}//Tr))
+smart.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//Rules//*.json) $$shell_path($${OUT_PWD}//..//Application//Rules))
+tr.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//Tr//*.qm) $$shell_path($${OUT_PWD}//..//Application//Tr))
 
 QMAKE_EXTRA_TARGETS += smart tr
 POST_TARGETDEPS += smart tr

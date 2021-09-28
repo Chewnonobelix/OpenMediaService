@@ -7,5 +7,14 @@ QSharedPointer<Expression<bool>> EndExpression::clone() const
 
 bool EndExpression::evaluate() const
 {
-    return e2()->evaluate().endsWith(e1()->evaluate());
+    auto ret = false;
+
+    auto v1 = this->e1()->evaluate().toList();
+    auto v2 = this->e2()->evaluate().toList();
+
+    for(auto it: v1)
+        for(auto it2: v2)
+        ret |= it.toString().endsWith(it2.toString(), Qt::CaseInsensitive);
+
+    return ret;
 }

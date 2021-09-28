@@ -2,7 +2,22 @@
 
 SmartRule::SmartRule(const QJsonObject& json): AbstractRule(json)
 {
-    m_value = json["value"].toVariant();
+    auto value = json["value"].toArray();
+
+    QStringList stringValues;
+
+    for(auto it: value)
+        stringValues<<it.toString();
+
+    setValue(stringValues);
+}
+
+SmartRule::operator QJsonObject() const
+{
+    auto ret = AbstractRule::operator QJsonObject();
+
+    ret["value"] = QJsonArray::fromStringList(m_value.toStringList());
+    return ret;
 }
 
 QString SmartRule::field() const
@@ -45,7 +60,7 @@ bool SmartRule::setToTest(QVariant newtoTest)
 {
     auto ret = m_toTest != newtoTest;
     if(ret)
-        m_toTest = newtoTest;
+        m_toTest = newtoTest.toList().isEmpty() ? QVariantList({newtoTest}) : newtoTest.toList();
     return ret;
 }
 
@@ -65,58 +80,36 @@ QSharedPointer<Expression<bool>> SmartRule::create()
     QSharedPointer<Expression<bool>> vret;
 
     switch(op()) {
-    case Op::Inferior: {
-        ret = QSharedPointer<InferiorExpression<QVariant&>>::create();
-        ValueExpression<QVariant&> v1(value()), v2(toTest());
-        ret->setE1(v2.clone());
-        ret->setE2(v1.clone());
-        vret = ret;
+    case Op::Inferior:
+        return ExpressionFactory::createInferior(toTest(), value());
         break;
-    }
-    case Op::Superior: {
-        ret = QSharedPointer<SuperiorExpression<QVariant&>>::create();
-        ValueExpression<QVariant&> v1(value()), v2(toTest());
-        ret->setE1(v2.clone());
-        ret->setE2(v1.clone());
-        vret = ret;
+    case Op::Superior:
+        return ExpressionFactory::createSuperior(toTest(), value());
         break;
-    }
-    case Op::InferiorEqual: {
-        auto inf = QSharedPointer<InferiorExpression<QVariant&>>::create();
-        ValueExpression<QVariant&> v1(value()), v2(toTest());
-        inf->setE1(v2.clone());
-        inf->setE2(v1.clone());
-        auto equal = QSharedPointer<EqualExpression<QVariant&>>::create();
-        equal->setE1(v1.clone());
-        equal->setE2(v2.clone());
-        auto eor = QSharedPointer<OrExpression>::create();
-        eor->setE1(equal->clone());
-        eor->setE2(inf->clone());
-        vret = eor;
+    case Op::InferiorEqual:
+        return ExpressionFactory::createInferiorEqual(toTest(), value());
         break;
-    }
-    case Op::SuperiorEqual: {
-        auto sup = QSharedPointer<SuperiorExpression<QVariant&>>::create();
-        ValueExpression<QVariant&> v1(value()), v2(toTest());
-        sup->setE1(v2.clone());
-        sup->setE2(v1.clone());
-        auto equal = QSharedPointer<EqualExpression<QVariant&>>::create();
-        equal->setE1(v1.clone());
-        equal->setE2(v2.clone());
-        auto eor = QSharedPointer<OrExpression>::create();
-        eor->setE1(equal->clone());
-        eor->setE2(sup->clone());
-        vret = eor;
+    case Op::SuperiorEqual:
+        return ExpressionFactory::createSuperiorEqual(toTest(), value());
         break;
-    }
+    case Op::RegExp:
+        return ExpressionFactory::createReg(toTest(), value());
+        break;
+    case Op::Contain:
+        return ExpressionFactory::createContain(toTest(), value());
+        break;
+    case Op::Start:
+        return ExpressionFactory::createStart(toTest(), value());
+        break;
+    case Op::End:
+        return ExpressionFactory::createEnd(toTest(), value());
+        break;
     case Op::Equal:
+        return ExpressionFactory::createEqual(toTest(), value());
+        break;
     case Op::Not:
     case Op::Limit:
     case Op::List:
-    case Op::RegExp:
-    case Op::Contain:
-    case Op::Start:
-    case Op::End:
     default:
         vret = QSharedPointer<ValueExpression<bool>>::create(true);
         break;
@@ -143,5 +136,8 @@ QPartialOrdering SmartRule::compare(AbstractRulePointer other) const
 
 bool SmartRule::set(MediaPointer m)
 {
-    return setToTest(m->metaData<QVariant>(field()));
+    if(m->metadataList().contains(field()))
+        return setToTest(m->metaData<QVariant>(field()));
+
+    return false;
 }

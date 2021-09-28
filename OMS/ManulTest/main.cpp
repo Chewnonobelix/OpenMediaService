@@ -23,5 +23,16 @@ int main(int argc, char *argv[])
 
     QVariant a1(123), a2("12");
     qCDebug(manualtest)<<(QVariant::compare(a1, a2) == QPartialOrdering::Less);
+
+    QSet<int> set;
+    set<<1<<2<<3<<1<<2<<4<<5<<6<<7;
+    auto var = QVariant::fromValue(set);
+
+    qDebug()<<var<<var.toList()<<var.value<QList<int>>()<<var.value<QSet<int>>();
+    QList<int> list;
+    list<<1<<2<<3<<1<<2<<4<<5<<6<<7;
+    auto var2 = QVariant::fromValue(list);
+
+    qDebug()<<var2<<var2.toList()<<var2.value<QList<int>>()<<var2.value<QSet<int>>()<<a1.typeName()<<var.typeName()<<a1.toList();
     return a.exec();
 }

@@ -1,8 +1,10 @@
 #pragma once
 
+#include <QVariant>
+
 #include <Operation/Comparaison/comparaisonexpression.h>
 
-class StartExpression: public ComparaisonExpression<QString>
+class StartExpression: public ComparaisonExpression<QVariant&>
 {
 public:
     StartExpression() = default;
