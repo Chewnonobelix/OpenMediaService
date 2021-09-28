@@ -34,11 +34,13 @@ class MEDIAPLAYERCORE_EXPORT SmartPlaylist : public PlayList {
 private:
 
     bool isValid(MediaPointer);
+    QFuture<bool> creating();
 
     SmartGroupPointer m_rules = SmartGroupPointer::create();
     QSharedPointer<Expression<bool>> m_expression;
     QPointer<QThread> m_thread = nullptr;
     QQueue<MediaPointer> m_queue;
+    QFuture<bool> m_results;
 
 public:
     SmartPlaylist();
@@ -57,7 +59,7 @@ public:
     void set() override;
 
 public slots:
-    bool append(MediaPointer, int = -1) override;
+    QFuture<bool> append(MediaPointer, int = -1) override;
     void onMediaChanged(MediaPointer);
 
 signals:

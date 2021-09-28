@@ -90,14 +90,16 @@ void SmartPlaylistTest::test_addValid()
 {
     QVERIFY((*spl1->rules())[0].dynamicCast<SmartRule>()->field() == "count");
     QVERIFY(spl1->count() == 0);
-    QVERIFY(spl1->append(m1));
+    auto fut = spl1->append(m1);
+    QVERIFY(fut.result());
+    qDebug()<<fut.resultCount();
     QCOMPARE(spl1->count(), 1);
 }
 
 void SmartPlaylistTest::test_addInvalid()
 {
     QVERIFY(spl1->count() == 1);
-    QVERIFY(!spl1->append(m2));
+    QVERIFY(!spl1->append(m2).result());
     QCOMPARE(spl1->count(), 1);
 }
 

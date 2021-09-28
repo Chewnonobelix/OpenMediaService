@@ -4,31 +4,6 @@
 SmartPlaylist::SmartPlaylist()
 {
     m_rules->add();
-
-    m_thread = QThread::create([this]() {
-        while(1) {
-            if(!m_queue.isEmpty()) {
-                auto m = m_queue.dequeue();
-                if (!isValid(m)) {
-                    removeAll(m);
-
-                    for(auto& it: m_readOrder)
-                        it--;
-                }
-                else if(!contains(m)) {
-                    PlayList::append(m);
-                    for(auto& it: m_readOrder)
-                        it++;
-                }
-
-                emit playlistChanged();
-            }
-
-            m_thread->msleep(500);
-        }
-    });
-
-    m_thread->start();
 }
 
 SmartPlaylist::SmartPlaylist(const QJsonObject& json): PlayList(json)
@@ -40,32 +15,6 @@ SmartPlaylist::SmartPlaylist(const QJsonObject& json): PlayList(json)
     }
 
     rebuild();
-    m_thread = QThread::create([this]() {
-        while(1) {
-            if(!m_queue.isEmpty()) {
-                auto m = m_queue.dequeue();
-                if (!isValid(m)) {
-                    removeIf([m](MediaPointer it) {
-                        return it->id() == m->id();
-                    });
-
-                    for(auto& it: m_readOrder)
-                        it--;
-                }
-                else if(!contains(m->id())) {
-                    PlayList::append(m);
-                    for(auto& it: m_readOrder)
-                        it++;
-                }
-
-                emit playlistChanged();
-            }
-
-            m_thread->msleep(500);
-        }
-    });
-
-    m_thread->start();
 }
 
 SmartPlaylist::operator QJsonObject() const
@@ -90,11 +39,42 @@ bool SmartPlaylist::isValid(MediaPointer m)
     return m_expression->evaluate();
 }
 
-bool SmartPlaylist::append(MediaPointer m, int)
+QFuture<bool> SmartPlaylist::creating()
 {
-    //TODO add future
+    return QtConcurrent::run([this]() {
+        bool ret = m_queue.isEmpty();
+        while(!m_queue.isEmpty()) {
+            auto m = m_queue.dequeue();
+            if (!isValid(m)) {
+                ret = false;
+                removeIf([m](MediaPointer it) {
+                    return it->id() == m->id();
+                });
+
+                for(auto& it: m_readOrder)
+                    it--;
+            }
+            else if(!contains(m->id())) {
+                ret = PlayList::append(m).result();
+                for(auto& it: m_readOrder)
+                    it++;
+            }
+
+            emit playlistChanged();
+        }
+        return ret;
+
+    });
+}
+
+QFuture<bool> SmartPlaylist::append(MediaPointer m, int)
+{
     m_queue.enqueue(m);
-    return true;
+
+    if(!m_results.isRunning())
+        m_results = creating();
+
+    return m_results;
 }
 
 void SmartPlaylist::onMediaChanged(MediaPointer m) {

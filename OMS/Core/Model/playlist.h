@@ -6,6 +6,8 @@
 #include <QSharedPointer>
 #include <QUuid>
 #include <QVariant>
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
 
 #include <mediaplayercore_global.h>
 
@@ -80,7 +82,7 @@ signals:
     void playlistChanged();
 
 public slots:
-    Q_INVOKABLE virtual bool append(MediaPointer, int = -1);
+    Q_INVOKABLE virtual QFuture<bool> append(MediaPointer, int = -1);
     Q_INVOKABLE virtual bool append(Media*, int = -1);
     Q_INVOKABLE bool remove(int);
     Q_INVOKABLE MediaPointer at(int i) const;
