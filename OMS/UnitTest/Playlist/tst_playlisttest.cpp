@@ -51,9 +51,9 @@ void PlaylistTest::test_add()
 {
     QVERIFY(model1.isEmpty());
     QSignalSpy spy(&model1, SIGNAL(countChanged()));
-    QVERIFY(model1.append(m1));
-    QVERIFY(model1.append(m2));
-    QVERIFY(model1.append(m3));
+    QVERIFY(model1.append(m1).result());
+    QVERIFY(model1.append(m2).result());
+    QVERIFY(model1.append(m3).result());
     QCOMPARE(spy.count(), 3);
 }
 

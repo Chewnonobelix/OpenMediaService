@@ -58,7 +58,7 @@ bool PlayList::setShuffle(bool s) {
     return ret;
 }
 
-bool PlayList::append(MediaPointer m, int index) {
+QFuture<bool> PlayList::append(MediaPointer m, int index) {
     //TODO
     if (index == -1)
 		QList<MediaPointer>::append(m);
@@ -66,12 +66,12 @@ bool PlayList::append(MediaPointer m, int index) {
 		insert(index, m);
 
 	emit countChanged();
-    return true;
+    return QtConcurrent::run([]() {return true;});
 }
 
 bool PlayList::append(Media* m, int index)
 {
-    return append(m->sharedFromThis(), index);
+    return append(m->sharedFromThis(), index).result();
 }
 
 bool PlayList::remove(int index) {

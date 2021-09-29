@@ -4,7 +4,9 @@ Library::Library() { set(); }
 
 Library::Library(const Library &l) : QObject(nullptr), MetaData(l), QEnableSharedFromThis<Library>() { set(); }
 
-Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l) {
+Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l)
+{
+    set();
 
     auto dirs = l["sourceDir"].toArray();
     auto ms = l["medias"].toArray();
@@ -29,10 +31,12 @@ Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l) {
         addMedia(m);
     }
 
+    if(m_replacer)
+        m_replacer->start();
+
     m_probe.setLastProbed(
                 QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
 
-    set();
 }
 
 void Library::set() {
@@ -58,7 +62,6 @@ void Library::set() {
         }
     });
 
-    m_replacer->start();
 }
 
 Library::operator QJsonObject() const {
@@ -344,5 +347,5 @@ bool Library::addToPlaylist(QString pl, Media* m)
 {
     auto ppl = m_playlist[QUuid::fromString(pl)];
 
-    return ppl->append(m->sharedFromThis());
+    return ppl->append(m->sharedFromThis()).result();
 }
