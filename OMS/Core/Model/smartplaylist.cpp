@@ -53,14 +53,15 @@ QFuture<bool> SmartPlaylist::creating()
 
                 for(auto& it: m_readOrder)
                     it--;
+                emit countChanged();
             }
             else if(!contains(m->id())) {
                 ret = PlayList::append(m).result();
                 for(auto& it: m_readOrder)
                     it++;
+                emit countChanged();
             }
 
-            emit playlistChanged();
         }
         return ret;
 
