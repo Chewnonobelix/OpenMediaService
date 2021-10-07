@@ -35,6 +35,7 @@ QUuid ControllerLibrary::addPlaylist(bool smart) {
         m_current->addPlaylist(pl);
         ret = pl->id();
     }
+    m_playlist.onLibraryChanged(m_current);
 
     return ret;
 }
@@ -42,6 +43,7 @@ QUuid ControllerLibrary::addPlaylist(bool smart) {
 void ControllerLibrary::removePlaylist(QString id) {
     m_current->removePlaylist(id);
     m_current->removeSmartPlaylist(id);
+    m_playlist.onLibraryChanged(m_current);
 }
 
 Library *ControllerLibrary::library() const { return m_current.data(); }
@@ -62,7 +64,6 @@ void ControllerLibrary::setCurrentLibrary(LibraryPointer lib) {
 
 void ControllerLibrary::onUpdateLibrary() {
     db()->updateLibrary(m_current);
-    m_playlist.onLibraryChanged(m_current);
 }
 
 void ControllerLibrary::onCurrentPlaylistChanged() {

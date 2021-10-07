@@ -297,7 +297,6 @@ bool Library::removePlaylist(QString id) {
     auto ret = m_playlist.remove(QUuid::fromString(id)) > 0;
     emit playlistCountChanged();
     return ret;
-    ;
 }
 
 QMap<QUuid, PlaylistPointer> Library::playlist(QString id) {

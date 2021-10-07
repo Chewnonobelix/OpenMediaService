@@ -130,7 +130,7 @@ Item {
 
                     Rating {
                         z:1
-                        //                        Component.onCompleted: rating = display
+                        Component.onCompleted: rating = display
                         anchors.fill: parent
                         onRatingChanged: {
                             display = rating
