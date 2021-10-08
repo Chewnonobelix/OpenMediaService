@@ -323,3 +323,12 @@ void PlaylistListModel::setColumnWidth(int index, int width)
     it->width = width;
     AbstractController::s_settings->setPlaylistColumnWidth(m_model->id().toString(), it->name, width);
 }
+
+void PlaylistListModel::update()
+{
+    auto top = index(0,0);
+    auto bottom = index(rowCount(),columnCount());
+
+    emit dataChanged(top, bottom, {int(ListRole::DisplayRole)});
+    qDebug()<<"Ta mère";
+}

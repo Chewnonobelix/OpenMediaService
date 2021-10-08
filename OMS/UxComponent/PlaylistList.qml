@@ -157,6 +157,11 @@ Item {
                         id: mediaMenu
 
                         media: pointer
+
+                        onRatingChanged: {
+                            console.log("prout")
+                            _playlistListModel.update()
+                        }
                     }
 
                     MouseArea {

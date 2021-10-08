@@ -9,7 +9,7 @@ Menu {
     id: root
 
     signal remove()
-    signal pmediaChanged()
+    signal ratingChanged()
 
     property Media media
 
@@ -131,7 +131,10 @@ Menu {
             model: 10
 
             MenuItem {
-                onClicked: media.rating = rat.rating
+                onClicked: {
+                    media.rating = rat.rating
+                    ratingChanged()
+                }
 
                 Rating {
                     id: rat
