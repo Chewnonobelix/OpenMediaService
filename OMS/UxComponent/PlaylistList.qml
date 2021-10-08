@@ -84,6 +84,7 @@ Item {
         Component.onCompleted: _playlistListModel.width = width
 
         interactive: false
+        reuseItems: false
 
         ScrollBar.horizontal: ScrollBar {
         }
@@ -132,6 +133,7 @@ Item {
                         z:1
                         Component.onCompleted: rating = display
                         anchors.fill: parent
+
                         onRatingChanged: {
                             display = rating
                         }

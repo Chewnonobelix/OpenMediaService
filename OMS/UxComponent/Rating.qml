@@ -6,12 +6,13 @@ Item {
     id: root
 
     property int rating: 0
+    property bool editable: true
 
     MouseArea {
         z:10
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
-        cursorShape: Qt.SizeHorCursor
+        cursorShape: editable ? Qt.SizeHorCursor : Qt.PointingHandCursor
     }
 
     Row {
@@ -37,6 +38,7 @@ Item {
         to: 10
         value: rating
 
+        enabled: editable
         anchors {
             fill:parent
         }

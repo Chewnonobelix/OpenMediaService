@@ -9,6 +9,7 @@ Menu {
     id: root
 
     signal remove()
+    signal pmediaChanged()
 
     property Media media
 
@@ -107,6 +108,36 @@ Menu {
                     MenuItem {
                         text: qsTr("Edit")
                     }
+                }
+            }
+        }
+    }
+
+    Menu {
+        title: qsTr("Tag")
+
+        MenuItem {
+            text: qsTr("New tag")
+        }
+
+        Repeater {
+
+        }
+    }
+
+    Menu {
+        title: qsTr("Rating")
+        Repeater {
+            model: 10
+
+            MenuItem {
+                onClicked: media.rating = rat.rating
+
+                Rating {
+                    id: rat
+                    anchors.fill: parent
+                    editable: false
+                    rating: modelData
                 }
             }
         }
