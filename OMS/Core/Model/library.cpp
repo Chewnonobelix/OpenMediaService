@@ -45,6 +45,7 @@ void Library::set() {
     connect(this, &Library::sourceDirChanged, this, &Library::libraryChanged);
     connect(this, &Library::lastUpdateChanged, this, &Library::libraryChanged);
     connect(this, &Library::playlistCountChanged, this, &Library::libraryChanged);
+    connect(this, &Library::tagChanged, this, &Library::libraryChanged);
     connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addNMedia,
             Qt::QueuedConnection);
     connect(&m_probe, &LibraryProbe::currentChanged, this,
@@ -347,4 +348,26 @@ bool Library::addToPlaylist(QString pl, Media* m)
     auto ppl = m_playlist[QUuid::fromString(pl)];
 
     return ppl->append(m->sharedFromThis()).result();
+}
+
+QStringList Library::tag() const
+{
+    return metaData<QStringList>("tag");
+}
+
+void Library::setTag(QStringList tag)
+{
+    setMetadata("tag", tag);
+    emit tagChanged();
+}
+
+void Library::setTag(QString tag)
+{
+    auto tags = metaData<QStringList>("tag");
+    if(tags.contains(tag))
+        tags.removeAll(tag);
+    else
+        tags<<tag;
+
+    setTag(tags);
 }

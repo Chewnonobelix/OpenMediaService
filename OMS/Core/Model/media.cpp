@@ -7,7 +7,7 @@ Media::Media(MD5 id, QString path) : QObject(nullptr) {
 
     setCount(0);
     setLastFinish(QDateTime());
-    setMetadata("tag", QStringList());
+    setMetadata("tags", QStringList());
     setMetadata("bookmark", QStringList());
     setRating(0);
 
@@ -48,6 +48,7 @@ void Media::set() {
     connect(this, &Media::lastFinishChanged, this, &Media::mediaChanged);
     connect(this, &Media::isAvailableChanged, this, &Media::mediaChanged);
     connect(this, &Media::lastProbedChanged, this, &Media::mediaChanged);
+    connect(this, &Media::tagsChanged, this, &Media::mediaChanged);
 }
 
 MD5 Media::id() const { return metaData<MD5>("id"); }
@@ -172,4 +173,33 @@ Media::CompareState compare(MediaPointer m1, MediaPointer m2, QString field)
     else {
         return m1->metaData<QString>(field) < m2->metaData<QString>(field) ? Media::CompareState::InferiorState : m1->metaData<QString>(field) == m2->metaData<QString>(field) ? Media::CompareState::EqualState : Media::CompareState::SuperiorState;
     }
-}	
+}
+
+bool Media::hasTag(QString tag) const
+{
+    return tags().contains(tag);
+}
+
+QStringList Media::tags() const
+{
+    return metaData<QStringList>("tags");
+}
+
+void Media::setTags(QStringList tags)
+{
+    setMetadata("tags", tags);
+    emit tagsChanged();
+}
+
+void Media::setTag(QString tag)
+{
+    auto tagss = tags();
+    if(hasMetadata(tag))
+        tagss.removeAll(tag);
+    else
+        tagss<<tag;
+
+    setTags(tagss);
+
+    emit tagsChanged();
+}

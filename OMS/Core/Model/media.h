@@ -38,7 +38,7 @@ class MEDIAPLAYERCORE_EXPORT Media : public QObject, public MetaData, public QEn
 								 currentReadChanged)
     Q_PROPERTY(QStringList paths READ paths CONSTANT)
 	Q_PROPERTY(int rating READ rating WRITE setRating NOTIFY ratingChanged)
-
+    Q_PROPERTY(QStringList tags READ tags NOTIFY tagsChanged)
 private:
 	QSet<QString> m_path;
 
@@ -79,6 +79,10 @@ public:
     bool setCurrentRead(double currentRead);
 	QDateTime lastProbed() const;
     bool setLastProbed(QDateTime);
+    Q_INVOKABLE bool hasTag(QString) const;
+    QStringList tags() const;
+    void setTags(QStringList);
+    Q_INVOKABLE void setTag(QString);
 
 	static MediaPointer createMedia(MD5, QString path = "");
 
@@ -89,6 +93,7 @@ signals:
 	void lastFinishChanged();
 	void isAvailableChanged();
 	void lastProbedChanged();
+    void tagsChanged();
 
 	void mediaChanged();
 };

@@ -39,4 +39,24 @@ Menu {
             }
         }
     }
+
+    Menu {
+        title: qsTr("Tag")
+
+        MenuItem {
+            text: qsTr("New tag")
+        }
+
+        Repeater {
+            model: _librariesModel.at(_librariesModel.currentIndex).tag
+
+            MenuItem {
+                text: modelData
+                checkable: true
+                checked: media ? media.hasTag(modelData) : false
+
+                onClicked: media.setTag(modelData)
+            }
+        }
+    }
 }
