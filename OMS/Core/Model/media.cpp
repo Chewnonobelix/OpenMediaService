@@ -25,6 +25,13 @@ Media::Media(QJsonObject &obj) : MetaData(obj) {
 
     for (auto it : sources)
         m_path << it.toString();
+
+    auto tag = obj["tags"].toArray();
+
+    for(auto it: tag)
+        if(!it.toString().isEmpty())
+            setTag(it.toString());
+
     set();
 }
 
@@ -37,6 +44,7 @@ Media::operator QJsonObject() const {
         sources << it;
 
     ret["sources"] = sources;
+    ret["tags"] = QJsonArray::fromStringList(tags());
 
     return ret;
 }

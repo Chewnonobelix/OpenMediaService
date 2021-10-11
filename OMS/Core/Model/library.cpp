@@ -35,7 +35,7 @@ Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l)
         m_replacer->start();
 
     m_probe.setLastProbed(
-                QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
+        QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
 
 }
 
@@ -88,6 +88,7 @@ Library::operator QJsonObject() const {
     ret["smartPlaylist"] = smarts;
     ret["playlist"] = plays;
     ret["lastProbe"] = m_probe.lastProbed().toString("dd-MM-yyyy hh:mm:ss");
+    ret["tags"] = QJsonArray::fromStringList(tag());
 
     return ret;
 }
@@ -352,18 +353,18 @@ bool Library::addToPlaylist(QString pl, Media* m)
 
 QStringList Library::tag() const
 {
-    return metaData<QStringList>("tag");
+    return metaData<QStringList>("tags");
 }
 
 void Library::setTag(QStringList tag)
 {
-    setMetadata("tag", tag);
+    setMetadata("tags", tag);
     emit tagChanged();
 }
 
 void Library::setTag(QString tag)
 {
-    auto tags = metaData<QStringList>("tag");
+    auto tags = metaData<QStringList>("tags");
     if(tags.contains(tag))
         tags.removeAll(tag);
     else
