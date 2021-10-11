@@ -326,9 +326,10 @@ void PlaylistListModel::setColumnWidth(int index, int width)
 
 void PlaylistListModel::update()
 {
+    submit();
     auto top = index(0,0);
     auto bottom = index(rowCount(),columnCount());
 
     emit dataChanged(top, bottom, {int(ListRole::DisplayRole)});
-    qDebug()<<"Ta mère";
+    qDebug()<<"Nique ta race";
 }

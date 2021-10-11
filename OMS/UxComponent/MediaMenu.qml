@@ -9,12 +9,16 @@ Menu {
     id: root
 
     signal remove()
-    signal ratingChanged()
+    signal update()
 
     property Media media
 
     onOpened: {
         tagRepeater.model = _librariesModel.at(_librariesModel.currentIndex).tag
+    }
+
+    MenuItem {
+        text: qsTr("Properties")
     }
 
     MenuItem {
@@ -133,7 +137,8 @@ Menu {
             MenuItem {
                 onClicked: {
                     media.rating = rat.rating
-                    ratingChanged()
+                    root.update()
+                    console.log("Ulric")
                 }
 
                 Rating {

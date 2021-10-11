@@ -158,10 +158,10 @@ Item {
 
                         media: pointer
 
-                        onRatingChanged: {
-                            console.log("prout")
-                            _playlistListModel.update()
-                        }
+                       onUpdate: {
+                           console.log("va chier")
+                           table.forceLayout()
+                       }
                     }
 
                     MouseArea {
