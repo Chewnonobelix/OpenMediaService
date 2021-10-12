@@ -2,7 +2,7 @@
 {"name": "count", "type": "Number", "column": 0, "smart": true, "display": "Count"} ,
 {"name": "added", "type": "Date", "column": 1, "smart": true, "display": "Added"} ,
 {"name": "sources", "type": "StringContainer", "column": 2, "smart": true, "display": "Paths"},
-{"name": "tags", "type": "StringContainer", "column": 3, "smart": true, "display": "Tag"},
+{"name": "tags", "type": "StringContainer", "column": 3, "smart": true, "display": "Tags"},
 {"name": "rating", "type": "Number", "display": "Rating"}
 ]
 
