@@ -60,7 +60,11 @@ Menu {
 
             Popup {
                 id: popTag
-                onOpened: addTag.clear()
+
+                onOpened: {
+                    addTag.clear()
+                }
+
                 onClosed: {
                     if(addTag.text !== "") {
                         _librariesModel.at(_librariesModel.currentIndex).setTag(addTag.text)
@@ -118,18 +122,6 @@ Menu {
     }
 
     Menu {
-        title: qsTr("Tag")
-
-        MenuItem {
-            text: qsTr("New tag")
-        }
-
-        Repeater {
-
-        }
-    }
-
-    Menu {
         title: qsTr("Rating")
         Repeater {
             model: 10
@@ -137,8 +129,6 @@ Menu {
             MenuItem {
                 onClicked: {
                     media.rating = rat.rating
-                    root.update()
-                    console.log("Ulric")
                 }
 
                 Rating {

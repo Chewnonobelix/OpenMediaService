@@ -67,7 +67,6 @@ public:
     bool resizeColumn();
     Q_INVOKABLE int columnWidth(int) const;
     Q_INVOKABLE void setColumnWidth(int, int);
-    Q_INVOKABLE void update();
 
 signals:
     void widthChanged();

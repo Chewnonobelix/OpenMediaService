@@ -7,6 +7,7 @@ Item {
 
     property int rating: 0
     property bool editable: true
+    signal activated(rating: int)
 
     MouseArea {
         z:10
@@ -45,6 +46,13 @@ Item {
 
         handle: Rectangle {}
         background: Rectangle {color: "transparent"}
-        onValueChanged: rating = value
+        onPressedChanged: {
+            if(!pressed) {
+                root.activated(value)
+            }
+        }
+
+        onMoved: rating = value
+
     }
 }

@@ -131,10 +131,10 @@ Item {
 
                     Rating {
                         z:1
-                        Component.onCompleted: rating = display
+                        rating: display
                         anchors.fill: parent
 
-                        onRatingChanged: {
+                        onActivated: (rating) => {
                             display = rating
                         }
                     }
@@ -157,11 +157,6 @@ Item {
                         id: mediaMenu
 
                         media: pointer
-
-                       onUpdate: {
-                           console.log("va chier")
-                           table.forceLayout()
-                       }
                     }
 
                     MouseArea {
