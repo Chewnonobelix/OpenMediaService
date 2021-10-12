@@ -35,7 +35,7 @@ Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l)
         m_replacer->start();
 
     m_probe.setLastProbed(
-                QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
+        QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
 
 }
 
@@ -45,6 +45,7 @@ void Library::set() {
     connect(this, &Library::sourceDirChanged, this, &Library::libraryChanged);
     connect(this, &Library::lastUpdateChanged, this, &Library::libraryChanged);
     connect(this, &Library::playlistCountChanged, this, &Library::libraryChanged);
+    connect(this, &Library::tagChanged, this, &Library::libraryChanged);
     connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addNMedia,
             Qt::QueuedConnection);
     connect(&m_probe, &LibraryProbe::currentChanged, this,
@@ -87,6 +88,7 @@ Library::operator QJsonObject() const {
     ret["smartPlaylist"] = smarts;
     ret["playlist"] = plays;
     ret["lastProbe"] = m_probe.lastProbed().toString("dd-MM-yyyy hh:mm:ss");
+    ret["tags"] = QJsonArray::fromStringList(tag());
 
     return ret;
 }
@@ -347,4 +349,26 @@ bool Library::addToPlaylist(QString pl, Media* m)
     auto ppl = m_playlist[QUuid::fromString(pl)];
 
     return ppl->append(m->sharedFromThis()).result();
+}
+
+QStringList Library::tag() const
+{
+    return metaData<QStringList>("tags");
+}
+
+void Library::setTag(QStringList tag)
+{
+    setMetadata("tags", tag);
+    emit tagChanged();
+}
+
+void Library::setTag(QString tag)
+{
+    auto tags = metaData<QStringList>("tags");
+    if(tags.contains(tag))
+        tags.removeAll(tag);
+    else
+        tags<<tag;
+
+    setTag(tags);
 }

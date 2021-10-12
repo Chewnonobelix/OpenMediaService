@@ -141,7 +141,8 @@ Item {
 
             DelegateChoice {
                 MediaLabel {
-                    text:  display
+
+                    text: display
                     clip: true
                     horizontalAlignment: Qt.AlignLeft
 

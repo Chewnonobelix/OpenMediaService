@@ -26,8 +26,14 @@ void PlaylistListModel::setPlaylist(PlaylistPointer p)
 
     m_sortList.clear();
     if(p)
-        for(auto it = 0; it < p->count(); it++)
+        for(auto it = 0; it < p->count(); it++) {
+            connect((*p)[it].data(), &Media::mediaChanged, [this]() {
+                beginResetModel();
+                endResetModel();
+            });
+
             m_sortList<<it;
+        }
 
     sort(0);
 
@@ -70,7 +76,12 @@ QVariant PlaylistListModel::data(const QModelIndex& index, int role) const {
             return current->path().mid(last);
         }
         else if(currentCol.type == MediaPlayerGlobal::Type::StringContainer) {
-            return current->metaData<QStringList>(currentCol.name);
+            QString ret;
+            for(auto it: current->metaData<QStringList>(currentCol.name))
+                ret += it + ", ";
+
+            ret.remove(ret.lastIndexOf(", "), 2);
+            return ret;
         }
         else {
             return current->metaData<QVariant>(currentCol.name);
