@@ -153,10 +153,10 @@ void PlaylistListModel::sort(int col) {
 QHash<int, QByteArray> PlaylistListModel::roleNames() const
 {
     static QHash<int, QByteArray> ret = {{int(ListRole::DisplayRole), "display"},
-                                         {int(ListRole::OrderRole), "order"},
-                                         {int(ListRole::PointerRole), "pointer"},
-                                         {int(ListRole::IndexRole), "index"}
-                                        };
+        {int(ListRole::OrderRole), "order"},
+        {int(ListRole::PointerRole), "pointer"},
+        {int(ListRole::IndexRole), "index"}
+    };
     return ret;
 }
 
@@ -217,7 +217,9 @@ PlaylistListModel::TristateOrder PlaylistListModel::nextOrder(TristateOrder orde
 bool PlaylistListModel::setData(const QModelIndex &index, const QVariant &value, int role) {
     if(m_columns[index.column()].name == "rating")
         (*m_model)[m_sortList[index.row()]]->setRating(value.toInt());
+
     emit dataChanged(index, index, {role});
+
     return true;
 }
 

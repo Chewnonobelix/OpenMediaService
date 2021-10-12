@@ -6,12 +6,14 @@ Item {
     id: root
 
     property int rating: 0
+    property bool editable: true
+    signal activated(rating: int)
 
     MouseArea {
         z:10
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
-        cursorShape: Qt.SizeHorCursor
+        cursorShape: editable ? Qt.SizeHorCursor : Qt.PointingHandCursor
     }
 
     Row {
@@ -37,12 +39,20 @@ Item {
         to: 10
         value: rating
 
+        enabled: editable
         anchors {
             fill:parent
         }
 
         handle: Rectangle {}
         background: Rectangle {color: "transparent"}
-        onValueChanged: rating = value
+        onPressedChanged: {
+            if(!pressed) {
+                root.activated(value)
+            }
+        }
+
+        onMoved: rating = value
+
     }
 }

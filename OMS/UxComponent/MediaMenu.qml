@@ -9,11 +9,16 @@ Menu {
     id: root
 
     signal remove()
+    signal update()
 
     property Media media
 
     onOpened: {
         tagRepeater.model = _librariesModel.at(_librariesModel.currentIndex).tag
+    }
+
+    MenuItem {
+        text: qsTr("Properties")
     }
 
     MenuItem {
@@ -55,7 +60,11 @@ Menu {
 
             Popup {
                 id: popTag
-                onOpened: addTag.clear()
+
+                onOpened: {
+                    addTag.clear()
+                }
+
                 onClosed: {
                     if(addTag.text !== "") {
                         _librariesModel.at(_librariesModel.currentIndex).setTag(addTag.text)
@@ -107,6 +116,26 @@ Menu {
                     MenuItem {
                         text: qsTr("Edit")
                     }
+                }
+            }
+        }
+    }
+
+    Menu {
+        title: qsTr("Rating")
+        Repeater {
+            model: 10
+
+            MenuItem {
+                onClicked: {
+                    media.rating = rat.rating
+                }
+
+                Rating {
+                    id: rat
+                    anchors.fill: parent
+                    editable: false
+                    rating: modelData
                 }
             }
         }
