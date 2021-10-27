@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/comics">
+        <file>ComicsView.qml</file>
+        <file>ComicsPlaylist.qml</file>
+        <file>ComicsSettings.qml</file>
+    </qresource>
+</RCC>

@@ -19,3 +19,6 @@ HEADERS += \
     controllercomics.h
 
 include(../global.pri)
+
+RESOURCES += \
+    comics.qrc
