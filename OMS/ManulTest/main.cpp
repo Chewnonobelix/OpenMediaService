@@ -4,6 +4,7 @@
 #include "testexp.h"
 #include <QVariant>
 #include <QDate>
+#include <QTemporaryDir>
 
 Q_LOGGING_CATEGORY(manualtest, "manualtest.log")
 
@@ -34,5 +35,13 @@ int main(int argc, char *argv[])
     auto var2 = QVariant::fromValue(list);
 
     qDebug()<<var2<<var2.toList()<<var2.value<QList<int>>()<<var2.value<QSet<int>>()<<a1.typeName()<<var.typeName()<<a1.toList();
-    return a.exec();
+
+    QTemporaryDir td, td2("wesh"), td3("youpidou");
+    td.setAutoRemove(false);
+    td2.setAutoRemove(false);
+
+    qDebug()<<td.errorString()<<td.path();
+    qDebug()<<td2.errorString()<<td2.path();
+    qDebug()<<td3.errorString()<<td3.path();
+    return 0;
 }
