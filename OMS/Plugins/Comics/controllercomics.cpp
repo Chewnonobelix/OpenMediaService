@@ -33,7 +33,10 @@ QUrl ControllerComics::settingsView() const
 }
 
 void ControllerComics::setPlaylist(PlaylistPointer) {}
-void ControllerComics::setMedia(MediaPointer) {}
+void ControllerComics::setMedia(MediaPointer m)
+{
+    m_player.play(m);
+}
 
 MediaRole ControllerComics::role() const
 {

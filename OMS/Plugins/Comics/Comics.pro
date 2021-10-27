@@ -11,11 +11,13 @@ NAME = Comics
 
 SOURCES += \
     comics_plugin.cpp \
+    comicsplayer.cpp \
     controllercomics.cpp
 
 HEADERS += \
     Comics_global.h \
     comics_plugin.h \
+    comicsplayer.h \
     controllercomics.h
 
 include(../global.pri)
