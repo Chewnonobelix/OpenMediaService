@@ -1,5 +1,8 @@
 #include "comicsplayer.h"
 
+ComicsPlayer::ComicsPlayer(QObject* parent): QAbstractListModel(parent)
+{}
+
 ComicsPlayer::~ComicsPlayer()
 {
     if(m_dir)
@@ -21,4 +24,27 @@ bool ComicsPlayer::play(MediaPointer m)
     unzipper.waitForFinished();
 
     return m_dir->errorString().isEmpty();
+}
+
+int ComicsPlayer::rowCount(const QModelIndex& ) const
+{
+    return m_pages.count();
+}
+
+QHash<int, QByteArray> ComicsPlayer::roleNames() const
+{
+    static QHash<int, QByteArray> ret = {{int(ComicsPlayerRole::PageRole), "page"}};
+
+    return ret;
+}
+
+QVariant ComicsPlayer::data(const QModelIndex& index, int role) const
+{
+    if(index.row() < 0 || index.row() >= rowCount())
+       return QVariant();
+
+    switch(ComicsPlayerRole(role)) {
+    case ComicsPlayerRole::PageRole:
+        return m_pages[index.row()];
+    }
 }
