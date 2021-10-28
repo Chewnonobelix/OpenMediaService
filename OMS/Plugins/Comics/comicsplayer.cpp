@@ -23,6 +23,15 @@ bool ComicsPlayer::play(MediaPointer m)
     unzipper.start("7z", QStringList()<<"x"<<"-o"+m_dir->path()<<m->path());
     unzipper.waitForFinished();
 
+    dir.cd(m_dir->path());
+    m_pages.clear();
+    auto list = dir.entryInfoList({"*.jpg"});
+    for(auto it: list) {
+        m_pages<<it.absoluteFilePath();
+    }
+
+    beginInsertRows(QModelIndex(), 0, rowCount() - 1);
+    endInsertRows();
     return m_dir->errorString().isEmpty();
 }
 

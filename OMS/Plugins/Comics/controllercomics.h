@@ -3,6 +3,8 @@
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/Plugins/interfaceplugins.h>
 
+#include <Controller/DataModel/playlistlistmodel.h>
+
 #include "comicsplayer.h"
 
 class ControllerComics : public AbstractController, public InterfacePlugins
@@ -19,6 +21,7 @@ private:
     QObject* m_playlist = nullptr;
 
     ComicsPlayer m_player;
+    PlaylistListModel m_listModel;
 
 public:
     ControllerComics() = default;

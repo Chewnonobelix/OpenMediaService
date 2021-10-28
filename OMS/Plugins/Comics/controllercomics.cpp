@@ -5,6 +5,13 @@ QQmlComponent* ControllerComics::s_playlistComp = nullptr;
 
 void ControllerComics::exec()
 {
+    QFile file("./Rules/"+rules());
+    if(file.open(QIODevice::ReadOnly)) {
+        auto json = QJsonDocument::fromJson(file.readAll());
+        m_listModel.initColumn(json);
+        file.close();
+    }
+
     auto comicsContext = new QQmlContext(engine()->qmlEngine().rootContext());
     comicsContext->setContextProperty("_comics", this);
 
@@ -13,8 +20,14 @@ void ControllerComics::exec()
     if(!s_playlistComp)
         s_playlistComp = new QQmlComponent(&engine()->qmlEngine(), QUrl("qrc:/comics/ComicsPlaylist.qml"));
 
-    m_view = s_viewComp->create(comicsContext);
-    m_playlist = s_playlistComp->create(comicsContext);
+    auto playerContext = new QQmlContext(comicsContext);
+    playerContext->setContextProperty("_player", &m_player);
+    m_view = s_viewComp->create(playerContext);
+
+    auto playlistContext = new QQmlContext(comicsContext);
+    playlistContext->setContextProperty("_playlistListModel", &m_listModel);
+
+    m_playlist = s_playlistComp->create(playlistContext);
 }
 
 QObject * ControllerComics::playerView() const
@@ -32,7 +45,13 @@ QUrl ControllerComics::settingsView() const
     return QUrl("qrc:/comics/ComicsSettings.qml");
 }
 
-void ControllerComics::setPlaylist(PlaylistPointer) {}
+void ControllerComics::setPlaylist(PlaylistPointer p)
+{
+    connect(p.data(), &PlayList::play, this, &ControllerComics::setMedia,
+            Qt::UniqueConnection);
+    m_listModel.setPlaylist(p);
+}
+
 void ControllerComics::setMedia(MediaPointer m)
 {
     m_player.play(m);
