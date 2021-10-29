@@ -15,9 +15,10 @@ bool ComicsPlayer::play(MediaPointer m)
     if(m_dir)
         delete m_dir;
 
+    m_media = m;
     auto p = m->path().split("\\").last().split(".").first();
     m_dir = new QTemporaryDir(p);
-
+    m_dir->setAutoRemove(true);
     QProcess unzipper;
 
     unzipper.start("7z", QStringList()<<"x"<<"-o"+m_dir->path()<<m->path());
@@ -55,5 +56,22 @@ QVariant ComicsPlayer::data(const QModelIndex& index, int role) const
     switch(ComicsPlayerRole(role)) {
     case ComicsPlayerRole::PageRole:
         return m_pages[index.row()];
+    }
+}
+bool ComicsPlayer::setData(const QModelIndex &, const QVariant &, int)
+{
+    return false;
+}
+
+int ComicsPlayer::currentPage() const
+{
+    return m_media ? m_media->metaData<int>("currentPage"): 0;
+}
+
+void ComicsPlayer::setCurrentPage(int cp)
+{
+    if(m_media) {
+        m_media->setMetadata("currentPage", cp);
+        m_media->setCurrentRead((cp + 1) / (double)m_pages.count() * 100.0);
     }
 }

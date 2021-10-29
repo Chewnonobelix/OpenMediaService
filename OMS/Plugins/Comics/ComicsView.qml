@@ -21,6 +21,8 @@ Item {
     StackLayout{
         id: layout
         anchors.fill: parent
+        onCountChanged: currentIndex = _player.currentPage
+        onCurrentIndexChanged: _player.currentPage = currentIndex
         Repeater {
             id: rep
             model: _player
