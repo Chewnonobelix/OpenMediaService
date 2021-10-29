@@ -21,7 +21,7 @@ bool ComicsPlayer::play(MediaPointer m)
     m_dir->setAutoRemove(true);
     QProcess unzipper;
 
-    unzipper.start("7z", QStringList()<<"x"<<"-o"+m_dir->path()<<m->path());
+    unzipper.start("3rdParty/7z", QStringList()<<"x"<<"-o"+m_dir->path()<<m->path());
     unzipper.waitForFinished();
 
     dir.cd(m_dir->path());

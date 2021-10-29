@@ -112,6 +112,7 @@ LIBS += -L$$OUT_PWD/../Application/Ux -lUxComponents
 
 smart.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//Rules//*.json) $$shell_path($${OUT_PWD}//..//Application//Rules))
 tr.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//Tr//*.qm) $$shell_path($${OUT_PWD}//..//Application//Tr))
+third.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//3rdParty//*) $$shell_path($${OUT_PWD}//..//Application//3rdParty))
 
-QMAKE_EXTRA_TARGETS += smart tr
-POST_TARGETDEPS += smart tr
+QMAKE_EXTRA_TARGETS += smart tr third
+POST_TARGETDEPS += smart tr third
