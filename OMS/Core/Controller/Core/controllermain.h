@@ -32,7 +32,7 @@ private:
 
 public:
 	ControllerMain();
-	~ControllerMain() = default;
+    ~ControllerMain();
 
 	void exec();
 

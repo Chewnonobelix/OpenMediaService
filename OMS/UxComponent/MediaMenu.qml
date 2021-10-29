@@ -41,7 +41,7 @@ Menu {
         onOpened: rep.model =  _librariesModel.at(_librariesModel.currentIndex).playlistList()
         Repeater {
             id: rep
-            model: _librariesModel.at(_librariesModel.currentIndex) ? _librariesModel.at(_librariesModel.currentIndex).playlistList() : nullptr
+            model: _librariesModel.at(_librariesModel.currentIndex) ? _librariesModel.at(_librariesModel.currentIndex).playlistList() : null
             MenuItem {
                 text: modelData.name !== "" ? modelData.name : modelData.id
 

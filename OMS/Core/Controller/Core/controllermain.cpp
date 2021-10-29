@@ -7,6 +7,15 @@ ControllerMain::ControllerMain() : AbstractController() {
     engine().addImportPath(QStringLiteral(QML_IMPORT_PATH));
     qCDebug(mainlog) << QStringLiteral(QML_IMPORT_PATH)
                      << engine().importPathList();
+    QDir dir;
+    dir.mkdir("temp");
+}
+
+ControllerMain::~ControllerMain()
+{
+    QDir dir;
+    dir.cd("temp");
+    dir.removeRecursively();
 }
 
 void ControllerMain::exec() {

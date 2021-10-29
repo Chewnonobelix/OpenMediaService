@@ -16,8 +16,8 @@ bool ComicsPlayer::play(MediaPointer m)
         delete m_dir;
 
     m_media = m;
-    auto p = m->path().split("\\").last().split(".").first();
-    m_dir = new QTemporaryDir(p);
+    auto p = m->path().split("/").last().split(".").first();
+    m_dir = new QTemporaryDir("temp/"+p);
     m_dir->setAutoRemove(true);
     QProcess unzipper;
 
