@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 import MediaPlayer.Components 1.0
 
 Item {
+    id: root
     property int index: -1
 
     MouseArea {
@@ -33,6 +34,23 @@ Item {
                 id: display
                 source: "file:///"+page
             }
+        }
+    }
+
+    MouseArea {
+        anchors{
+            bottom: root.bottom
+            left: root.left
+        }
+
+        width: root.width
+        height: root.height * .10
+        hoverEnabled: true
+
+        ComicsPreview {
+            id: preview
+            visible: parent.containsMouse
+            anchors.fill: parent
         }
     }
 
