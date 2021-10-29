@@ -12,6 +12,7 @@ class ComicsPlayer: public QAbstractListModel
     Q_DISABLE_COPY(ComicsPlayer)
 
     Q_PROPERTY(int currentPage READ currentPage WRITE setCurrentPage NOTIFY currentPageChanged)
+    Q_PROPERTY(int pageCount READ pageCount NOTIFY pageCountChanged)
 
     enum class ComicsPlayerRole {PageRole = Qt::UserRole + 1};
 private:
@@ -26,6 +27,7 @@ public:
 
     int currentPage() const;
     void setCurrentPage(int);
+    int pageCount() const;
 
 public:
     int rowCount(const QModelIndex& = QModelIndex()) const override;
@@ -35,5 +37,6 @@ public:
 
 signals:
     void currentPageChanged();
+    void pageCountChanged();
 };
 

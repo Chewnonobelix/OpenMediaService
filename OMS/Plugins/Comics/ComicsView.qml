@@ -1,5 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
+
+import MediaPlayer.Components 1.0
 
 Item {
     property int index: -1
@@ -30,6 +33,22 @@ Item {
                 id: display
                 source: "file:///"+page
             }
+        }
+    }
+
+    Rectangle {
+        anchors {
+            top: parent.top
+            right: parent.right
+        }
+
+        width: parent.width * .05
+        height: parent.height * 0.05
+
+        color: "transparent";
+        MediaLabel {
+            anchors.fill: parent
+            text: (layout.currentIndex + 1) + "/" + _player.pageCount
         }
     }
 }
