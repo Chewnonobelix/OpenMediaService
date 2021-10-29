@@ -29,6 +29,8 @@ public:
     void setCurrentPage(int);
     int pageCount() const;
 
+    Q_INVOKABLE void next();
+    Q_INVOKABLE void previous();
 public:
     int rowCount(const QModelIndex& = QModelIndex()) const override;
     QHash<int, QByteArray> roleNames() const override;

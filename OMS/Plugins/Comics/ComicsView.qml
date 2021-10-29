@@ -13,11 +13,11 @@ Item {
         acceptedButtons: Qt.NoButton
 
         onWheel: function(wheel) {
-            if(wheel.angleDelta.y > 0 && layout.currentIndex > 0) {
-                layout.currentIndex --
+            if(wheel.angleDelta.y > 0) {
+                _player.previous()
             }
-            else if(wheel.angleDelta.y < 0 && layout.currentIndex < rep.count - 1) {
-                layout.currentIndex ++
+            else if(wheel.angleDelta.y < 0) {
+                _player.next()
             }
         }
     }
@@ -25,8 +25,8 @@ Item {
     StackLayout{
         id: layout
         anchors.fill: parent
-        onCountChanged: currentIndex = _player.currentPage
-        onCurrentIndexChanged: _player.currentPage = currentIndex
+        currentIndex: _player.currentPage
+
         Repeater {
             id: rep
             model: _player
@@ -66,7 +66,7 @@ Item {
         color: "transparent";
         MediaLabel {
             anchors.fill: parent
-            text: (layout.currentIndex + 1) + "/" + _player.pageCount
+            text: (_player.currentPage + 1) + "/" + _player.pageCount
         }
     }
 }

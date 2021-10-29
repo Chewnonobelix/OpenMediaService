@@ -34,6 +34,7 @@ bool ComicsPlayer::play(MediaPointer m)
     beginInsertRows(QModelIndex(), 0, rowCount() - 1);
     endInsertRows();
     emit pageCount();
+    emit currentPageChanged();
 
     return m_dir->errorString().isEmpty();
 }
@@ -72,7 +73,7 @@ int ComicsPlayer::currentPage() const
 
 void ComicsPlayer::setCurrentPage(int cp)
 {
-    if(m_media) {
+    if(m_media && cp < m_pages.count() && cp >= 0) {
         m_media->setMetadata("currentPage", cp);
         m_media->setCurrentRead((cp + 1) / (double)m_pages.count() * 100.0);
         emit currentPageChanged();
@@ -82,4 +83,14 @@ void ComicsPlayer::setCurrentPage(int cp)
 int ComicsPlayer::pageCount() const
 {
     return m_pages.count();
+}
+
+void ComicsPlayer::next()
+{
+    setCurrentPage(currentPage() + 1);
+}
+
+void ComicsPlayer::previous()
+{
+    setCurrentPage(currentPage() - 1);
 }
