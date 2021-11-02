@@ -49,7 +49,8 @@ void ControllerSettings::setValue(QString key, QVariant value)
 
 QVariant ControllerSettings::value(QString key) const
 {
-    return m_settings->value(key);
+    auto toBool = QStringList{"True", "False", "true", "false"}.contains(m_settings->value(key));
+    return toBool ? m_settings->value(key).toBool() : m_settings->value(key);
 }
 
 void ControllerSettings::setPlaylistColumn(QString plId, QString column, bool enable)
