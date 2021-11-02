@@ -12,8 +12,8 @@ Item {
 
         MediaCheckbox {
             text: qsTr("Left to right")
-            checked: _settings.value("Comics/leftToRight")
-            onClicked: _settings.setValue("Comics/leftToRight", checked)
+            checked: _settings.value("Comics/rightToLeft")
+            onClicked: _settings.setValue("Comics/rightToLeft", checked)
         }
 
         MediaCheckbox {

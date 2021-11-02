@@ -13,10 +13,10 @@ Item {
         acceptedButtons: Qt.NoButton
 
         onWheel: function(wheel) {
-            if(wheel.angleDelta.y > 0) {
+            if(wheel.angleDelta.y > 0 && !_settings.value("Comics/rightToLeft") && !_player.rightToLeft) {
                 _player.previous()
             }
-            else if(wheel.angleDelta.y < 0) {
+            else {
                 _player.next()
             }
         }

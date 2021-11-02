@@ -94,3 +94,8 @@ void ComicsPlayer::previous()
 {
     setCurrentPage(currentPage() - 1);
 }
+
+bool ComicsPlayer::rightToLeft() const
+{
+    return m_media->metaData<bool>("rightToLeft");
+}
