@@ -58,6 +58,7 @@ Item {
                 Image {
                     id: display
                     source: "file:///"+page
+                    fillMode: Image.PreserveAspectFit
                 }
             }
         }

@@ -3,6 +3,7 @@
 #include <QTemporaryDir>
 #include <QProcess>
 #include <QAbstractListModel>
+#include <QImage>
 
 #include <Model/media.h>
 
@@ -20,6 +21,9 @@ private:
     QTemporaryDir* m_dir = nullptr;
     MediaPointer m_media;
     QList<QString> m_pages;
+    bool m_split = false;
+
+    void build();
 public:
     ComicsPlayer(QObject* = nullptr);
     ~ComicsPlayer() override;
@@ -30,6 +34,8 @@ public:
     void setCurrentPage(int);
     int pageCount() const;
     bool rightToLeft() const;
+    bool split() const;
+    void setSplit(bool);
 
     Q_INVOKABLE void next();
     Q_INVOKABLE void previous();
@@ -43,5 +49,6 @@ signals:
     void currentPageChanged();
     void pageCountChanged();
     void rightToLeftChanged();
+    void splitChanged();
 };
 
