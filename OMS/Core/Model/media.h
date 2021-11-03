@@ -28,7 +28,7 @@ typedef QSharedPointer<Media> MediaPointer;
 class MEDIAPLAYERCORE_EXPORT Media : public QObject, public MetaData, public QEnableSharedFromThis<Media> {
 	Q_OBJECT
 
-	Q_PROPERTY(MD5 id READ id CONSTANT)
+    Q_PROPERTY(QUuid id READ id CONSTANT)
 	Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
 	Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role CONSTANT)
 	Q_PROPERTY(bool isAvailable READ isAvailable NOTIFY isAvailableChanged)
@@ -57,8 +57,10 @@ public:
 	operator QJsonObject() const override;
     friend MEDIAPLAYERCORE_EXPORT CompareState compare(MediaPointer, MediaPointer, QString);
 	
-	MD5 id() const;
-    bool setId(MD5 id);
+    QUuid id() const;
+    bool setId(QUuid id);
+    MD5 fingerprint() const;
+    void setFingerprint(MD5);
 	MediaPlayerGlobal::MediaRole role() const;
     bool setRole(MediaPlayerGlobal::MediaRole role);
 	QString path() const;

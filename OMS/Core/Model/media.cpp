@@ -1,7 +1,7 @@
 #include "media.h"
 
-Media::Media(MD5 id, QString path) : QObject(nullptr) {
-    setId(id);
+Media::Media(MD5 content, QString path) : QObject(nullptr) {
+    setFingerprint(content);
     if (!path.isEmpty())
         m_path << path;
 
@@ -11,6 +11,7 @@ Media::Media(MD5 id, QString path) : QObject(nullptr) {
     setMetadata("bookmark", QStringList());
     setRating(0);
 
+    setId(QUuid::createUuid());
     set();
 }
 
@@ -53,9 +54,19 @@ void Media::set() {
     connect(this, &Media::tagsChanged, this, &Media::mediaChanged);
 }
 
-MD5 Media::id() const { return metaData<MD5>("id"); }
+QUuid Media::id() const { return metaData<QUuid>("id"); }
 
-bool Media::setId(MD5 id) { return setMetadata("id", id); }
+bool Media::setId(QUuid id) { return setMetadata("id", id); }
+
+MD5 Media::fingerprint() const
+{
+    return metaData<MD5>("fingerprint");
+}
+
+void Media::setFingerprint(MD5 content)
+{
+    setMetadata("fingerprint", content);
+}
 
 MediaPlayerGlobal::MediaRole Media::role() const {
     return metaData<MediaPlayerGlobal::MediaRole>("role");

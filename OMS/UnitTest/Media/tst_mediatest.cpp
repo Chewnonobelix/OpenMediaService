@@ -8,7 +8,7 @@ class MediaTest : public QObject
     Q_OBJECT
 
     Media model1, model2;
-    const MD5 id = "testid";
+    const QUuid id = QUuid::createUuid();
     const QString path = QStringLiteral(TESTDATA) + "/porte_d_eternite.jpg";
     const int count = 1;
     const MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::MediaRole::Image;

@@ -192,19 +192,21 @@ bool Library::addNMedia(QString path, MD5 md) {
         f.close();
     }
 
-    if (m_medias.contains(md))
-        m_medias[md]->setPath(path);
+    if (m_pool.contains(md))
+        m_medias[m_pool[md]]->setPath(path);
     else {
-        m_medias[md] = Media::createMedia(md, path);
-        m_medias[md]->setRole(role());
+        auto media = Media::createMedia(md, path);
+        m_medias[media->id()] = media;
+        m_medias[media->id()]->setRole(role());
+        m_pool[media->fingerprint()] = media->id();
     }
-
-    connect(m_medias[md].data(), &Media::mediaChanged, this,
+    auto id = m_pool[md];
+    connect(m_medias[id].data(), &Media::mediaChanged, this,
             &Library::libraryChanged);
-    connect(m_medias[md].data(), &Media::mediaChanged, this, &Library::onMediaChanged);
+    connect(m_medias[id].data(), &Media::mediaChanged, this, &Library::onMediaChanged);
 
-    emit mediasChanged(m_medias[md]);
-    return m_medias[md]->paths().contains(path);
+    emit mediasChanged(m_medias[id]);
+    return m_medias[id]->paths().contains(path);
 }
 
 bool Library::removeMedia(QString path) {
@@ -217,12 +219,12 @@ bool Library::removeMedia(QString path) {
         return false;
 
     auto md = ch.result();
-    if (!m_medias.contains(md))
+    if (!m_pool.contains(md))
         return false;
 
-    m_medias[md]->removePath(path);
-    emit mediasChanged(m_medias[md]);
-    return !m_medias[md]->paths().contains(path);
+    m_medias[m_pool[md]]->removePath(path);
+    emit mediasChanged(m_medias[m_pool[md]]);
+    return !m_medias[m_pool[md]]->paths().contains(path);
 }
 
 bool operator<(LibraryPointer l1, LibraryPointer l2) {

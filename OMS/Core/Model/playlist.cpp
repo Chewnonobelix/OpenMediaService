@@ -148,7 +148,7 @@ void PlayList::set()
     connect(this, &PlayList::isShuffleChanged, this, &PlayList::playlistChanged);
 }
 
-bool PlayList::contains(MD5 id) const
+bool PlayList::contains(QUuid id) const
 {
     return std::find_if(begin(), end(), [id](MediaPointer m) {
         return m->id() == id;
@@ -166,7 +166,7 @@ bool PlayList::replace(MediaPointer m)
     return ret;
 }
 
-int PlayList::indexOf(MD5 id) const
+int PlayList::indexOf(QUuid id) const
 {
     auto it = std::find_if(begin(), end(), [id](MediaPointer m) {
             return m->id() == id;
