@@ -7,13 +7,31 @@ import MediaPlayer.Components 1.0
 Item {
     id: root
     property int index: -1
+    property double zoom: 1
+
+    onZoomChanged: {
+        if(zoom < 0.5) {
+            zoom = 0.5
+        }
+        else if(zoom > 3) {
+            zoom = 3
+        }
+    }
 
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
-
+        z: 1
         onWheel: function(wheel) {
-            if(wheel.angleDelta.y > 0 && !_settings.value("Comics/rightToLeft") && !_player.rightToLeft) {
+            if(wheel.modifiers === Qt.ControlModifier) {
+                if(wheel.angleDelta.y > 0) {
+                    zoom += 0.5
+                }
+                else {
+                    zoom -= 0.5
+                }
+            }
+            else if(wheel.angleDelta.y > 0 && !_settings.value("Comics/rightToLeft") && !_player.rightToLeft) {
                 _player.previous()
             }
             else {
@@ -22,24 +40,31 @@ Item {
         }
     }
 
-    StackLayout{
-        id: layout
+    ScrollView {
         anchors.fill: parent
-        currentIndex: _player.currentPage
+        contentHeight: root.height * zoom
+        contentWidth: root.width * zoom
+        ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
 
-        Repeater {
-            id: rep
-            model: _player
-            Image {
-                id: display
-                source: "file:///"+page
+        StackLayout{
+            id: layout
+            anchors.fill: parent
+            currentIndex: _player.currentPage
+
+            Repeater {
+                id: rep
+                model: _player
+                Image {
+                    id: display
+                    source: "file:///"+page
+                }
             }
         }
     }
-
     MouseArea {
         anchors{
-            bottom: root.bottom
+            top: root.top
             left: root.left
         }
 
@@ -66,7 +91,7 @@ Item {
         color: "transparent";
         MediaLabel {
             anchors.fill: parent
-            text: (_player.currentPage + 1) + "/" + _player.pageCount
+            text: (_player.currentPage + 1) + "/" + _player.pageCount + " (x"+zoom+")"
         }
     }
 }
