@@ -12,15 +12,18 @@ NAME = Comics
 SOURCES += \
     comics_plugin.cpp \
     comicsplayer.cpp \
+    comicsrackimporter.cpp \
     controllercomics.cpp
 
 HEADERS += \
     Comics_global.h \
     comics_plugin.h \
     comicsplayer.h \
+    comicsrackimporter.h \
     controllercomics.h
 
 include(../global.pri)
 
+QT += xml
 RESOURCES += \
     comics.qrc
