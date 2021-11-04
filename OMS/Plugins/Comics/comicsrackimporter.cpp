@@ -1,6 +1,6 @@
 #include "comicsrackimporter.h"
 
-ComicsRackImporter::ComicsRackImporter(QObject* parent): QObject(parent)
+ComicsRackImporter::ComicsRackImporter(QObject* parent): InterfaceImporter(parent)
 {
 
 }

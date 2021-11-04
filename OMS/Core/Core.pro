@@ -30,6 +30,7 @@ SOURCES += \
         Controller/DataModel/playlistlistmodel.cpp \
         Controller/DataModel/playlistmodel.cpp \
         Controller/DataModel/smartmodel.cpp \
+        Controller/Plugins/interfaceimporter.cpp \
         Controller/Plugins/interfaceplugins.cpp \
         Controller/Plugins/pluginmanager.cpp \
         Model/Expression/containexpression.cpp \
@@ -80,6 +81,7 @@ HEADERS += \
     Controller/DataModel/playlistlistmodel.h \
     Controller/DataModel/playlistmodel.h \
     Controller/DataModel/smartmodel.h \
+    Controller/Plugins/interfaceimporter.h \
     Controller/Plugins/interfaceplugins.h \
     Controller/Plugins/pluginmanager.h \
     Model/Expression/containexpression.h \

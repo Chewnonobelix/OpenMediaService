@@ -8,10 +8,9 @@
 #include <QDomElement>
 #include <QFile>
 
-#include <Model/media.h>
-#include <Model/smartplaylist.h>
+#include <Controller/Plugins/interfaceimporter.h>
 
-class ComicsRackImporter: public QObject
+class ComicsRackImporter: public InterfaceImporter
 {
     Q_OBJECT
     Q_DISABLE_COPY(ComicsRackImporter)
@@ -19,12 +18,6 @@ class ComicsRackImporter: public QObject
 public:
     ComicsRackImporter(QObject* = nullptr);
     ~ComicsRackImporter() = default;
-    bool import(QString);
-
-signals:
-    void findWatchfolder(QString);
-    void findMedia(MediaPointer);
-    void findPlaylist(PlaylistPointer);
-    void findSmartPlaylist(SmartPlaylistPointer);
+    bool import(QString) override;
 };
 
