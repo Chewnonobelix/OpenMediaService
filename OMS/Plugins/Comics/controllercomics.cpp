@@ -5,6 +5,7 @@ QQmlComponent* ControllerComics::s_playlistComp = nullptr;
 
 void ControllerComics::exec()
 {
+    m_player.setSplit(s_settings->value("Comics/split").toBool());
     QFile file("./Rules/"+rules());
     if(file.open(QIODevice::ReadOnly)) {
         auto json = QJsonDocument::fromJson(file.readAll());
@@ -28,6 +29,10 @@ void ControllerComics::exec()
     playlistContext->setContextProperty("_playlistListModel", &m_listModel);
 
     m_playlist = s_playlistComp->create(playlistContext);
+
+    connect(s_settings, &ControllerSettings::settingsChanged, [this]() {
+        m_player.setSplit(s_settings->value("Comics/split").toBool());
+    });
 }
 
 QObject * ControllerComics::playerView() const

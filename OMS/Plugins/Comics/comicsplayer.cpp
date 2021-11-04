@@ -30,18 +30,30 @@ bool ComicsPlayer::play(MediaPointer m)
 
 void ComicsPlayer::build()
 {
+    if(!m_dir)
+        return;
+
     QDir dir;
     dir.cd(m_dir->path());
+    auto ret = dir.cd("split");
+    if(ret) {
+        dir.removeRecursively();
+        dir.cdUp();
+    }
+
+    dir.mkdir("split");
     m_pages.clear();
+
     auto list = dir.entryInfoList({"*.jpg"});
     for(auto it: list) {
         QImage i(it.absoluteFilePath());
+
         if(split() && i.width() > i.height()) {
             auto t1 = i.copy(0,0, i.width() / 2, i.height());
             auto t2 = i.copy(i.width() / 2,0, i.width() / 2, i.height());
-            t1.save(m_dir->path()+QString("/%1_%2.jpg").arg(list.indexOf(it)).arg(1));
-            t2.save(m_dir->path()+QString("/%1_%2.jpg").arg(list.indexOf(it)).arg(2));
-            m_pages<<m_dir->path()+QString("/%1_%2.jpg").arg(list.indexOf(it)).arg(1)<<m_dir->path()+QString("/%1_%2.jpg").arg(list.indexOf(it)).arg(2);
+            t1.save(m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1));
+            t2.save(m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2));
+            m_pages<<m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1)<<m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2);
         }
         else {
             m_pages<<it.absoluteFilePath();
@@ -84,13 +96,28 @@ bool ComicsPlayer::setData(const QModelIndex &, const QVariant &, int)
 
 int ComicsPlayer::currentPage() const
 {
-    return m_media ? m_media->metaData<int>("currentPage"): 0;
+    auto name = m_media ? m_media->metaData<QString>("currentPage") : "";
+
+    int ret = 0;
+    auto file = name.split("/").last().split(".").first();
+    QRegularExpression reg(".*"+file+".*");
+    if(!name.isEmpty() && !m_pages.contains(reg) && split()) {
+        ret = std::max(m_pages.indexOf(m_dir->path()+"/split/"+file+"__1.jpg"), 0ll);
+    }
+    else if(!name.isEmpty() && !m_pages.contains(reg)) {
+        ret = std::max(m_pages.indexOf(QRegularExpression(".*"+file.split("__").first()+".*")), 0ll);
+    }
+    else if(m_pages.contains(reg)) {
+        ret = m_pages.indexOf(reg);
+    }
+
+    return ret;
 }
 
 void ComicsPlayer::setCurrentPage(int cp)
 {
     if(m_media && cp < m_pages.count() && cp >= 0) {
-        m_media->setMetadata("currentPage", cp);
+        m_media->setMetadata("currentPage", m_pages[cp]);
         m_media->setCurrentRead((cp + 1) / (double)m_pages.count() * 100.0);
         emit currentPageChanged();
     }
