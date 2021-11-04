@@ -35,7 +35,26 @@ bool ComicsRackImporter::import(QString path)
         media->setPath(book.attribute("File"));
         auto added = book.elementsByTagName("Added").at(0).toElement().text();
         media->setAdded(QDate::fromString(added));
-        auto size = book.elementsByTagName("FileSize")
+        auto size = book.elementsByTagName("FileSize").at(0).toElement().text().toInt();
+        media->setMetadata("size", size);
+        if(!book.elementsByTagName("LastPageRead").isEmpty()) {
+            auto lastPageRead = book.elementsByTagName("LastPageRead").at(0).toElement().text().toInt();
+            auto pageCount = book.elementsByTagName("PageCount").at(0).toElement().text().toInt();
+            media->setCurrentRead((lastPageRead * 100.0) / pageCount);
+        }
+
+        if(!book.elementsByTagName("Opened").isEmpty()) {
+            auto opened = book.elementsByTagName("Opened").at(0).toElement().text();
+            media->setLastFinish(QDateTime::fromString(opened));
+        }
+
+        emit findMedia(media);
     }
+
+    auto watchFolder = root.elementsByTagName("WatchFolders").at(0).toElement().elementsByTagName("WatchFolder");
+    for(auto it = 0; it < watchFolder.count(); it++) {
+        emit findWatchfolder(watchFolder.at(it).toElement().attribute("Folder"));
+    }
+
     return true;
 }
