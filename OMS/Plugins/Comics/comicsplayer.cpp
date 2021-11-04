@@ -53,7 +53,8 @@ void ComicsPlayer::build()
             auto t2 = i.copy(i.width() / 2,0, i.width() / 2, i.height());
             t1.save(m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1));
             t2.save(m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2));
-            m_pages<<m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1)<<m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2);
+            m_pages<<(m_media->metaData<bool>("rightToLeft") ? m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2) : m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1));
+            m_pages<<(m_media->metaData<bool>("rightToLeft") ? m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1) : m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2));
         }
         else {
             m_pages<<it.absoluteFilePath();

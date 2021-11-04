@@ -10,11 +10,11 @@ Item {
     ColumnLayout {
         anchors.fill: parent
 
-        MediaCheckbox {
-            text: qsTr("Left to right")
-            checked: _settings.value("Comics/rightToLeft")
-            onClicked: _settings.setValue("Comics/rightToLeft", checked)
-        }
+//        MediaCheckbox {
+//            text: qsTr("Left to right")
+//            checked: _settings.value("Comics/rightToLeft")
+//            onClicked: _settings.setValue("Comics/rightToLeft", checked)
+//        }
 
         MediaCheckbox {
             text: qsTr("Split double page")
