@@ -17,6 +17,8 @@ public:
     ~InterfaceImporter() = default;
 
     virtual bool import(QString) = 0;
+    virtual QString name() const = 0;
+
 signals:
     void findWatchfolder(QString);
     void findMedia(MediaPointer);

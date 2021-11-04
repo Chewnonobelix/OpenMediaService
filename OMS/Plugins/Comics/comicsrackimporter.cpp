@@ -5,6 +5,11 @@ ComicsRackImporter::ComicsRackImporter(QObject* parent): InterfaceImporter(paren
 
 }
 
+QString ComicsRackImporter::name() const
+{
+    return "ComicsRack";
+}
+
 bool ComicsRackImporter::import(QString path)
 {
     if(!path.endsWith(".zip"))

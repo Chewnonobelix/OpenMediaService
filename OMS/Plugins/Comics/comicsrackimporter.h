@@ -19,5 +19,6 @@ public:
     ComicsRackImporter(QObject* = nullptr);
     ~ComicsRackImporter() = default;
     bool import(QString) override;
+    QString name() const override;
 };
 
