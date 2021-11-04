@@ -6,6 +6,7 @@
 #include <Controller/DataModel/playlistlistmodel.h>
 
 #include "comicsplayer.h"
+#include "comicsrackimporter.h"
 
 class ControllerComics : public AbstractController, public InterfacePlugins
 {
@@ -38,6 +39,7 @@ public:
     MediaRole role() const override;
     QStringList filters() const override;
     QString rules() const override;
+    QList<QSharedPointer<InterfaceImporter>> importers() const override;
 
     QSharedPointer<InterfacePlugins> clone() const override;
 };

@@ -16,6 +16,7 @@ class ControllerLibrary : public AbstractController {
 	Q_PROPERTY(PlaylistModel *playlist READ playlist)
     Q_PROPERTY(Library *currentLibrary READ library NOTIFY libraryChanged)
 	Q_PROPERTY(QString id READ id CONSTANT)
+    Q_PROPERTY(QStringList importers READ importers CONSTANT)
 
 private:
 	LibraryPointer m_current = nullptr;
@@ -42,6 +43,7 @@ public:
 	Q_INVOKABLE void removeSourceDir(QString);
     Q_INVOKABLE QUuid addPlaylist(bool = false);
 	Q_INVOKABLE void removePlaylist(QString);
+    QStringList importers() const;
 
     QString id() const;
     bool containView(QUuid) const;

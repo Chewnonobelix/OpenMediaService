@@ -81,3 +81,10 @@ QSharedPointer<InterfacePlugins> ControllerComics::clone() const
 {
     return factory<ControllerComics>();
 }
+
+QList<QSharedPointer<InterfaceImporter>> ControllerComics::importers() const
+{
+    QList<QSharedPointer<InterfaceImporter>> ret;
+    ret<<factory<ComicsRackImporter>();
+    return ret;
+}

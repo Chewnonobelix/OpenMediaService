@@ -117,3 +117,15 @@ void ControllerLibrary::setModelIndex(int index)
 {
     m_playlist.setCurrentIndex(index);
 }
+
+QStringList ControllerLibrary::importers() const
+{
+    QStringList ret;
+    if(!m_plugins.isEmpty()) {
+        for(auto it: m_plugins.first()->importers()) {
+            ret<<it->name();
+        }
+    }
+
+    return ret;
+}
