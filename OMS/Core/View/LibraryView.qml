@@ -90,6 +90,24 @@ MediaWindow {
 			Layout.preferredWidth: root.width * 0.10
 		}
 
+        ListView {
+            header: MediaLabel {
+                text: qsTr("Import from")
+            }
+
+            model: _libraries.importers
+
+            delegate: ItemDelegate {
+                text: modelData
+
+                onClicked: _libraries.importFrom(modelData)
+            }
+
+            Layout.row: 7
+            Layout.column: 1
+            Layout.fillHeight: true
+        }
+
 		MediaList {
 			id: sourceDir
 			Layout.column: 0

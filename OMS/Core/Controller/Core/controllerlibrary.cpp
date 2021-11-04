@@ -129,3 +129,8 @@ QStringList ControllerLibrary::importers() const
 
     return ret;
 }
+
+void ControllerLibrary::importFrom(QString importer)
+{
+    qDebug()<<importer;
+}
