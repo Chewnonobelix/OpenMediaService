@@ -18,6 +18,7 @@ public:
 
     virtual bool import(QString) = 0;
     virtual QString name() const = 0;
+    virtual QStringList filters() const = 0;
 
 signals:
     void findWatchfolder(QString);

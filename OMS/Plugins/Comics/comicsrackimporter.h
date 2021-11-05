@@ -20,5 +20,6 @@ public:
     ~ComicsRackImporter() = default;
     bool import(QString) override;
     QString name() const override;
+    QStringList filters () const override;
 };
 

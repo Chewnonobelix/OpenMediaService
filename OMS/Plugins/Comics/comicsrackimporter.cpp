@@ -63,3 +63,8 @@ bool ComicsRackImporter::import(QString path)
 
     return true;
 }
+
+QStringList ComicsRackImporter::filters() const
+{
+    return {"*.zip"};
+}

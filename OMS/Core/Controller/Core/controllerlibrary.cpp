@@ -118,12 +118,15 @@ void ControllerLibrary::setModelIndex(int index)
     m_playlist.setCurrentIndex(index);
 }
 
-QStringList ControllerLibrary::importers() const
+QList<QVariantMap> ControllerLibrary::importers() const
 {
-    QStringList ret;
+    QList<QVariantMap> ret;
     if(!m_plugins.isEmpty()) {
         for(auto it: m_plugins.first()->importers()) {
-            ret<<it->name();
+            QVariantMap map;
+            map["name"] = it->name();
+            map["filters"] = it->filters();
+            ret<<map;
         }
     }
 
