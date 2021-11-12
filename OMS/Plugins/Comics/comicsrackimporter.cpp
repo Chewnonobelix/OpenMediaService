@@ -39,7 +39,7 @@ bool ComicsRackImporter::import(QString path)
         auto media = factory<Media>();
         media->setPath(book.attribute("File"));
         auto added = book.elementsByTagName("Added").at(0).toElement().text();
-        media->setAdded(QDate::fromString(added));
+        media->setAdded(QDate::fromString(added.sliced(0,10), "yyyy-MM-dd"));
         auto size = book.elementsByTagName("FileSize").at(0).toElement().text().toInt();
         media->setMetadata("size", size);
         if(!book.elementsByTagName("LastPageRead").isEmpty()) {
@@ -50,7 +50,7 @@ bool ComicsRackImporter::import(QString path)
 
         if(!book.elementsByTagName("Opened").isEmpty()) {
             auto opened = book.elementsByTagName("Opened").at(0).toElement().text();
-            media->setLastFinish(QDateTime::fromString(opened));
+            media->setLastFinish(QDateTime::fromString(opened.sliced(0, 19), "yyyy-MM-ddThh:mm:ss"));
         }
 
         emit findMedia(media);
