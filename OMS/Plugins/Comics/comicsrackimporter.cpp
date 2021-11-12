@@ -12,6 +12,7 @@ QString ComicsRackImporter::name() const
 
 bool ComicsRackImporter::import(QString path)
 {
+    qDebug()<<"Imprt"<<path;
     if(!path.endsWith(".zip"))
         return false;
 
@@ -53,6 +54,7 @@ bool ComicsRackImporter::import(QString path)
             media->setLastFinish(QDateTime::fromString(opened.sliced(0, 19), "yyyy-MM-ddThh:mm:ss"));
         }
 
+        qDebug()<<media->path()<<media->lastFinish()<<media->added();
         emit findMedia(media);
     }
 
