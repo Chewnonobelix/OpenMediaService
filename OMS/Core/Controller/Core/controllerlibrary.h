@@ -48,7 +48,7 @@ public:
     QString id() const;
     bool containView(QUuid) const;
     void setModelIndex(int);
-    Q_INVOKABLE void importFrom(QString);
+    Q_INVOKABLE void importFrom(QString, QString);
 
 public:
     Q_INVOKABLE void setPlaylistIndex(QString, int);

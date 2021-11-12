@@ -133,7 +133,13 @@ QList<QVariantMap> ControllerLibrary::importers() const
     return ret;
 }
 
-void ControllerLibrary::importFrom(QString importer)
+void ControllerLibrary::importFrom(QString importer, QString file)
 {
-    qDebug()<<importer;
+    qDebug()<<importer<<file;
+
+    auto imp = *std::find_if(m_plugins.first()->importers().begin(), m_plugins.first()->importers().end(), [importer](auto it) {
+       return it->name() == importer;
+    });
+
+    imp->import(file.remove(0, 8));
 }

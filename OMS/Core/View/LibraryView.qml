@@ -97,12 +97,21 @@ MediaWindow {
 
             model: _libraries.importers
 
+            FileDialog {
+                id: importDialog
+                property string type
+                title: qsTr("Import from") + " " + type
+
+                onAccepted: _libraries.importFrom(type, file)
+            }
+
             delegate: ItemDelegate {
                 text: modelData.name
 
                 onClicked: {
-                    console.log(modelData.name, modelData.filters)
-                    _libraries.importFrom(modelData.name)
+                    importDialog.type = modelData.name
+                    importDialog.nameFilters = modelData.filters
+                    importDialog.open()
                 }
             }
 
