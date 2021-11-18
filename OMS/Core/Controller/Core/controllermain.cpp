@@ -13,6 +13,15 @@ ControllerMain::ControllerMain() : AbstractController() {
 
 ControllerMain::~ControllerMain()
 {
+    try
+    {
+       setDb("");
+    }
+    catch(QString)
+    {
+
+    }
+
     QDir dir;
     dir.cd("temp");
     dir.removeRecursively();

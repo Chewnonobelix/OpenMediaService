@@ -16,6 +16,7 @@ private:
 	void write(LibraryPointer) const;
 
     QQueue<LibraryPointer> m_pool;
+    int m_timerId;
 
 public:
 	DataJson() = default;

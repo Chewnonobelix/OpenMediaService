@@ -21,8 +21,6 @@ InterfaceSaver *AbstractController::db() { return s_db; }
 
 void AbstractController::setDb(QString name) {
 	auto type = QMetaType::fromName(name.toLatin1());
-	if (!type.isValid())
-		throw QString("Unknow DB type");
 
     if (s_db != nullptr) {
         s_db->thread()->terminate();
@@ -30,6 +28,10 @@ void AbstractController::setDb(QString name) {
 
         delete s_db;
 	}
+
+    if (!type.isValid())
+        throw QString("Unknow DB type");
+
     s_dbThread->start();
 
     s_db = (InterfaceSaver *)(type.create());
