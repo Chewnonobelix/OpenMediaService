@@ -121,6 +121,9 @@ void ComicsPlayer::setCurrentPage(int cp)
         m_media->setMetadata("currentPage", m_pages[cp]);
         m_media->setCurrentRead((cp + 1) / (double)m_pages.count() * 100.0);
         emit currentPageChanged();
+
+        if(m_media->currentRead() == 100.0)
+            m_media->setCount(m_media->count() + 1);
     }
 }
 
