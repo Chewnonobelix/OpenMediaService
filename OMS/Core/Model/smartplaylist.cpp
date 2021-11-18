@@ -44,7 +44,10 @@ QFuture<bool> SmartPlaylist::creating()
     return QtConcurrent::run([this]() {
         bool ret = m_queue.isEmpty();
         while(!m_queue.isEmpty()) {
+            auto locker = new QMutexLocker(&m_queueMutex);
             auto m = m_queue.dequeue();
+            delete locker;
+
             if (!isValid(m)) {
                 ret = false;
                 removeIf([m](MediaPointer it) {
@@ -70,6 +73,7 @@ QFuture<bool> SmartPlaylist::creating()
 
 QFuture<bool> SmartPlaylist::append(MediaPointer m, int)
 {
+    QMutexLocker locker(&m_queueMutex);
     m_queue.enqueue(m);
 
     if(!m_results.isRunning())

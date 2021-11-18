@@ -41,6 +41,7 @@ private:
     QPointer<QThread> m_thread = nullptr;
     QQueue<MediaPointer> m_queue;
     QFuture<bool> m_results;
+    QMutex m_queueMutex;
 
 public:
     SmartPlaylist();
