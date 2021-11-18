@@ -172,6 +172,7 @@ bool Library::removeSourceDir(QString source) {
 
 bool Library::addMedia(MediaPointer p) {
     m_medias[p->id()] = p;
+    p->initFingerprint();
     connect(p.data(), &Media::mediaChanged, this, &Library::libraryChanged);
     connect(p.data(), &Media::mediaChanged, this, &Library::onMediaChanged);
     emit mediasChanged(p);
@@ -179,20 +180,7 @@ bool Library::addMedia(MediaPointer p) {
 }
 
 bool Library::addNMedia(QString path, MD5 md) {
-    if (md.isEmpty()) {
-        QFile f(path);
-        if (!f.open(QIODevice::ReadOnly))
-            return false;
-
-        QCryptographicHash ch(QCryptographicHash::Md5);
-        if (!ch.addData(&f))
-            return false;
-
-        md = ch.result();
-        f.close();
-    }
-
-    if (m_pool.contains(md))
+    if (m_pool.contains(md) && !md.isEmpty())
         m_medias[m_pool[md]]->setPath(path);
     else {
         auto media = Media::createMedia(md, path);

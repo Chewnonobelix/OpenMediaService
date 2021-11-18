@@ -1,9 +1,13 @@
 #include "media.h"
 
 Media::Media(MD5 content, QString path) : QObject(nullptr) {
-    setFingerprint(content);
     if (!path.isEmpty())
         m_path << path;
+
+    if(content.isEmpty() && !path.isEmpty())
+        initFingerprint();
+    else
+        setFingerprint(content);
 
     setCount(0);
     setLastFinish(QDateTime());
@@ -221,4 +225,22 @@ void Media::setTag(QString tag)
     setTags(tagss);
 
     emit tagsChanged();
+}
+
+void Media::initFingerprint()
+{
+    m_runner = QtConcurrent::run([this]() {
+        auto p = path();
+        QFile file(p);
+        if(!file.open(QIODevice::ReadOnly))
+            return;
+
+        QCryptographicHash ch(QCryptographicHash::Md5);
+        if (!ch.addData(&file))
+            return;
+
+        auto md = ch.result();
+        setFingerprint(md);
+        file.close();
+    });
 }

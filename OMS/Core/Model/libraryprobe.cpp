@@ -78,14 +78,8 @@ bool LibraryProbe::probe() {
 
                 if (!m_paths.contains(it.absoluteFilePath()) &&
                         isValid(it.absoluteFilePath())) {
-                    QCryptographicHash hasher(QCryptographicHash::Sha256);
-                    QFile file(it.absoluteFilePath());
-                    file.open(QIODevice::ReadOnly);
-                    hasher.addData(&file);
-                    auto h = hasher.result();
-                    file.close();
 
-                    emit mediaFind(it.absoluteFilePath(), h);
+                    emit mediaFind(it.absoluteFilePath(), MD5());
 
                     m_mutex.lock();
                     m_paths << it.absoluteFilePath();

@@ -12,6 +12,8 @@
 #include <QString>
 #include <QVariant>
 #include <QEnableSharedFromThis>
+#include <QThread>
+#include <QtConcurrent/QtConcurrent>
 
 #include <mediaplayercore_global.h>
 
@@ -42,6 +44,7 @@ class MEDIAPLAYERCORE_EXPORT Media : public QObject, public MetaData, public QEn
 
 private:
 	QSet<QString> m_path;
+    QFuture<void> m_runner;
 
 	void set();
 
@@ -54,6 +57,8 @@ public:
 	using MetaData::MetaData;
 	Media(QJsonObject &);
 	~Media() = default;
+
+    void initFingerprint();
 
 	Media &operator=(const Media &other);
 	operator QJsonObject() const override;
