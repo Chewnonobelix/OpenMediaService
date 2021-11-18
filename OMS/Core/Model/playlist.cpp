@@ -18,7 +18,7 @@ PlayList::PlayList(const QJsonObject& json): QObject(nullptr), MetaData(json), Q
     auto array = json["medias"].toArray();
 
     for(auto it: array) {
-        append(factory<Media>(it.toObject()));
+        append(factory<Media>(QUuid::fromString(it.toString())));
     }
 }
 
@@ -30,7 +30,7 @@ PlayList::operator QJsonObject() const
     QJsonArray array;
 
     for(auto it: *this) {
-        array<<QJsonObject(*it);
+        array<<it->id().toString();
     }
 
     ret["medias"] = array;
