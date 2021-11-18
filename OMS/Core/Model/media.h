@@ -39,6 +39,7 @@ class MEDIAPLAYERCORE_EXPORT Media : public QObject, public MetaData, public QEn
     Q_PROPERTY(QStringList paths READ paths CONSTANT)
 	Q_PROPERTY(int rating READ rating WRITE setRating NOTIFY ratingChanged)
     Q_PROPERTY(QStringList tags READ tags NOTIFY tagsChanged)
+
 private:
 	QSet<QString> m_path;
 
@@ -49,6 +50,7 @@ public:
 	
 	Media(MD5 = "", QString = "");
 	Media(const Media &other);
+    Media(QUuid);
 	using MetaData::MetaData;
 	Media(QJsonObject &);
 	~Media() = default;

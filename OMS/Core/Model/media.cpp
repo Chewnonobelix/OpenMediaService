@@ -15,6 +15,12 @@ Media::Media(MD5 content, QString path) : QObject(nullptr) {
     set();
 }
 
+Media::Media(QUuid id)
+{
+    setId(id);
+
+    set();
+}
 Media::Media(const Media &other)
     : QObject(nullptr), MetaData(other), QEnableSharedFromThis<Media>(),
       m_path(other.paths().begin(), other.paths().end()) {
