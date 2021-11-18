@@ -163,7 +163,7 @@ bool Media::setCurrentRead(double currentRead) {
 MediaPointer Media::createMedia(MD5 id, QString path) {
     MediaPointer ret = factory<Media>(id, path);
     ret->setAdded(QDate::currentDate());
-
+    ret->initFingerprint();
     return ret;
 }
 
@@ -227,22 +227,26 @@ void Media::setTag(QString tag)
     emit tagsChanged();
 }
 
-void Media::initFingerprint()
+QFuture<bool> Media::initFingerprint()
 {
-    m_runner = QtConcurrent::run([this]() {
+    m_runner = QtConcurrent::run([this]() -> bool {
         auto p = path();
         QFile file(p);
         if(!file.open(QIODevice::ReadOnly))
-            return;
+            return false;
 
         QCryptographicHash ch(QCryptographicHash::Md5);
         if (!ch.addData(&file))
-            return;
+            return false;
 
         auto md = ch.result();
         setFingerprint(md);
         file.close();
+
+        return true;
     });
+
+    return m_runner;
 }
 
 void Media::merge(MediaPointer m)
