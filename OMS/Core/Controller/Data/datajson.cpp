@@ -2,6 +2,11 @@
 
 DataJson::DataJson(const DataJson &dj) : InterfaceSaver(dj) {}
 
+DataJson::~DataJson()
+{
+    timerEvent(nullptr);
+}
+
 void DataJson::init()
 {
     startTimer(3*60*1000);
@@ -12,6 +17,7 @@ void DataJson::timerEvent(QTimerEvent *)
 {
     while(!m_pool.isEmpty()) {
         auto it = m_pool.dequeue();
+        qDebug()<<"Dequeu"<<m_pool.count()<<m_pool.isEmpty();
         write(it);
     }
 }

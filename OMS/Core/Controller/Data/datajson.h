@@ -19,7 +19,7 @@ private:
 
 public:
 	DataJson() = default;
-	~DataJson() override = default;
+    ~DataJson() override;
 	DataJson(const DataJson &);
 
 	virtual void init() override;
