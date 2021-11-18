@@ -244,3 +244,18 @@ void Media::initFingerprint()
         file.close();
     });
 }
+
+void Media::merge(MediaPointer m)
+{
+    for(auto p: m->paths())
+        m_path<<p;
+
+    for(auto t: m->tags())
+        setTag(t);
+
+    setCount(std::max(count(), m->count()));
+    setRating(std::max(rating(), m->rating()));
+    setCurrentRead(std::max(currentRead(), m->currentRead()));
+    setAdded(std::min(added(), m->added()));
+    setLastFinish(std::max(lastFinish(), m->lastFinish()));
+}

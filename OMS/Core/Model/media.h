@@ -93,6 +93,7 @@ public:
     void setTags(QStringList);
     Q_INVOKABLE void setTag(QString);
 
+    void merge(MediaPointer);
 	static MediaPointer createMedia(MD5, QString path = "");
 
 signals:
