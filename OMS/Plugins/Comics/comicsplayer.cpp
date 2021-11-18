@@ -14,27 +14,45 @@ bool ComicsPlayer::play(MediaPointer m)
     if(m_dir)
         delete m_dir;
 
-    m_media = m;
-    auto p = m->path().split("/").last().split(".").first();
-    m_dir = new QTemporaryDir("temp/"+p);
-    m_dir->setAutoRemove(true);
-    QProcess unzipper;
+    if(!m_dirNext) {
+        m_media = m;
+        auto p = m->path().split("/").last().split(".").first();
+        m_dir = new QTemporaryDir("temp/"+p);
+        m_dir->setAutoRemove(true);
+        QProcess unzipper;
 
-    unzipper.start("3rdParty/7z", QStringList()<<"x"<<"-o"+m_dir->path()<<m->path());
-    unzipper.waitForFinished();
+        unzipper.start("3rdParty/7z", QStringList()<<"x"<<"-o"+m_dir->path()<<m->path());
+        unzipper.waitForFinished();
 
-    build();
+        build();
+    }
+    else {
+        m_dir = m_dirNext;
+        m_dirNext = nullptr;
+        m_pages.swap(m_pagesNext);
+        m_pagesNext.clear();
+        m_media = m_mediaNext;
+        m_mediaNext.clear();
+
+        beginInsertRows(QModelIndex(), 0, rowCount() - 1);
+        endInsertRows();
+        emit pageCount();
+        emit currentPageChanged();
+    }
 
     return m_dir->errorString().isEmpty();
 }
 
-void ComicsPlayer::build()
+void ComicsPlayer::build(bool next)
 {
-    if(!m_dir)
+    if(!m_dir && !next)
+        return;
+
+    if(!m_dirNext && next)
         return;
 
     QDir dir;
-    dir.cd(m_dir->path());
+    dir.cd(next ? m_dirNext->path() : m_dir->path());
     auto ret = dir.cd("split");
     if(ret) {
         dir.removeRecursively();
@@ -45,6 +63,8 @@ void ComicsPlayer::build()
     m_pages.clear();
 
     auto list = dir.entryInfoList({"*.jpg"});
+    QStringList working;
+
     for(auto it: list) {
         QImage i(it.absoluteFilePath());
 
@@ -53,19 +73,24 @@ void ComicsPlayer::build()
             auto t2 = i.copy(i.width() / 2,0, i.width() / 2, i.height());
             t1.save(m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1));
             t2.save(m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2));
-            m_pages<<(m_media->metaData<bool>("rightToLeft") ? m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2) : m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1));
-            m_pages<<(m_media->metaData<bool>("rightToLeft") ? m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1) : m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2));
+            working<<(m_media->metaData<bool>("rightToLeft") ? m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2) : m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1));
+            working<<(m_media->metaData<bool>("rightToLeft") ? m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1) : m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2));
         }
         else {
-            m_pages<<it.absoluteFilePath();
+            working<<it.absoluteFilePath();
         }
     }
 
-    beginInsertRows(QModelIndex(), 0, rowCount() - 1);
-    endInsertRows();
-    emit pageCount();
-    emit currentPageChanged();
+    if(next)
+        m_pagesNext = working;
+    else {
+        m_pages = working;
 
+        beginInsertRows(QModelIndex(), 0, rowCount() - 1);
+        endInsertRows();
+        emit pageCount();
+        emit currentPageChanged();
+    }
 }
 
 int ComicsPlayer::rowCount(const QModelIndex& ) const

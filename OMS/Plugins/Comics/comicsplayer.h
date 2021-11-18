@@ -19,11 +19,14 @@ class ComicsPlayer: public QAbstractListModel
     enum class ComicsPlayerRole {PageRole = Qt::UserRole + 1};
 private:
     QTemporaryDir* m_dir = nullptr;
+    QTemporaryDir* m_dirNext = nullptr;
     MediaPointer m_media;
+    MediaPointer m_mediaNext;
     QList<QString> m_pages;
+    QList<QString> m_pagesNext;
     bool m_split = false;
 
-    void build();
+    void build(bool = false);
 public:
     ComicsPlayer(QObject* = nullptr);
     ~ComicsPlayer() override;
