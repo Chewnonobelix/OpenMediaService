@@ -73,7 +73,6 @@ public:
 public slots:
     Q_INVOKABLE bool scan();
 
-	Q_INVOKABLE bool addNMedia(QString, MD5 = "");
 	Q_INVOKABLE bool addMedia(MediaPointer);
 	Q_INVOKABLE bool removeMedia(QString);
 

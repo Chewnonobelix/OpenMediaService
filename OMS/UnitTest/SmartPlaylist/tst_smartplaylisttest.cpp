@@ -4,7 +4,6 @@
 #include <Model/smartplaylist.h>
 
 // add necessary includes here
-const MD5 id1 = "id1", id2 = "id2";
 const QString path1 = QStringLiteral(TESTDATA) + "/porte_d_eternite.jpg";
 const QString path2 = QStringLiteral(TESTDATA) + "/121813.jpg";
 int count1 = 1, count2 = 2, count3 = 3;
@@ -44,8 +43,8 @@ SmartPlaylistTest::~SmartPlaylistTest()
 
 void SmartPlaylistTest::initTestCase()
 {
-    m1 = MediaPointer::create(id1, path1);
-    m2 = MediaPointer::create(id2, path2);
+    m1 = MediaPointer::create(path1);
+    m2 = MediaPointer::create(path2);
     m1->setCount(count1);
     m2->setCount(count2);
     spl1 = SmartPlaylistPointer::create();

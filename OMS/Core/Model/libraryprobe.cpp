@@ -20,7 +20,7 @@ bool LibraryProbe::setRole(MediaPlayerGlobal::MediaRole role) {
     return ret;
 }
 
-void LibraryProbe::onMediaFind(QString, MD5) {
+void LibraryProbe::onMediaFind(MediaPointer) {
     m_current++;
      qCDebug(libraryprobe) << m_total << m_current << double(m_current) / m_total * 100;
     setLastProbed(QDateTime::currentDateTime());
@@ -76,10 +76,10 @@ bool LibraryProbe::probe() {
                 auto it = m_infos.dequeue();
                 m_mutex.unlock();
 
-                if (!m_paths.contains(it.absoluteFilePath()) &&
-                        isValid(it.absoluteFilePath())) {
+                if (isValid(it.absoluteFilePath())) {
+                    auto media = Media::createMedia(it.absoluteFilePath());
 
-                    emit mediaFind(it.absoluteFilePath(), MD5());
+                    emit mediaFind(media);
 
                     m_mutex.lock();
                     m_paths << it.absoluteFilePath();

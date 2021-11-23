@@ -1,13 +1,8 @@
 #include "media.h"
 
-Media::Media(MD5 content, QString path) : QObject(nullptr) {
+Media::Media(QString path) : QObject(nullptr) {
     if (!path.isEmpty())
         m_path << path;
-
-    if(content.isEmpty() && !path.isEmpty())
-        initFingerprint();
-    else
-        setFingerprint(content);
 
     setCount(0);
     setLastFinish(QDateTime());
@@ -160,8 +155,8 @@ bool Media::setCurrentRead(double currentRead) {
     return ret;
 }
 
-MediaPointer Media::createMedia(MD5 id, QString path) {
-    MediaPointer ret = factory<Media>(id, path);
+MediaPointer Media::createMedia(QString path) {
+    MediaPointer ret = factory<Media>(path);
     ret->setAdded(QDate::currentDate());
     ret->initFingerprint();
     return ret;

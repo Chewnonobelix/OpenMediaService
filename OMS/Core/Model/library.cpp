@@ -35,7 +35,7 @@ Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l)
         m_replacer->start();
 
     m_probe.setLastProbed(
-        QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
+                QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
 
 }
 
@@ -46,7 +46,7 @@ void Library::set() {
     connect(this, &Library::lastUpdateChanged, this, &Library::libraryChanged);
     connect(this, &Library::playlistCountChanged, this, &Library::libraryChanged);
     connect(this, &Library::tagChanged, this, &Library::libraryChanged);
-    connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addNMedia,
+    connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia,
             Qt::QueuedConnection);
     connect(&m_probe, &LibraryProbe::currentChanged, this,
             &Library::onProbedChanged);
@@ -177,24 +177,6 @@ bool Library::addMedia(MediaPointer p) {
     connect(p.data(), &Media::mediaChanged, this, &Library::onMediaChanged);
     emit mediasChanged(p);
     return true;
-}
-
-bool Library::addNMedia(QString path, MD5 md) {
-    if (m_pool.contains(md) && !md.isEmpty())
-        m_medias[m_pool[md]]->setPath(path);
-    else {
-        auto media = Media::createMedia(md, path);
-        m_medias[media->id()] = media;
-        m_medias[media->id()]->setRole(role());
-        m_pool[media->fingerprint()] = media->id();
-    }
-    auto id = m_pool[md];
-    connect(m_medias[id].data(), &Media::mediaChanged, this,
-            &Library::libraryChanged);
-    connect(m_medias[id].data(), &Media::mediaChanged, this, &Library::onMediaChanged);
-
-    emit mediasChanged(m_medias[id]);
-    return m_medias[id]->paths().contains(path);
 }
 
 bool Library::removeMedia(QString path) {

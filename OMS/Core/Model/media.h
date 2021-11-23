@@ -51,7 +51,7 @@ private:
 public:
 	enum class CompareState { EqualState, InferiorState, SuperiorState };
 	
-	Media(MD5 = "", QString = "");
+    Media(QString = "");
 	Media(const Media &other);
     Media(QUuid);
 	using MetaData::MetaData;
@@ -94,7 +94,7 @@ public:
     Q_INVOKABLE void setTag(QString);
 
     void merge(MediaPointer);
-	static MediaPointer createMedia(MD5, QString path = "");
+    static MediaPointer createMedia(QString path = "");
 
 signals:
 	void countChanged();
