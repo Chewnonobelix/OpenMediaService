@@ -12,11 +12,12 @@ class ComicsPlaylist: public QAbstractListModel
 
     struct Stack {
         QString name;
-        QList<MediaPointer> medias;
+        QList<Media*> medias;
         QImage mini;
     };
 
-    enum class PlaylistRole{NameRole = Qt::UserRole + 1};
+    enum class PlaylistRole{NameRole = Qt::UserRole + 1, ListRole};
+    PlaylistPointer m_current;
 
 private:
     QMap<QString, Stack> m_stacks;
@@ -25,6 +26,8 @@ private:
 public:
     ComicsPlaylist(QObject* = nullptr);
     void init(PlaylistPointer);
+
+    Q_INVOKABLE void play(Media*);
 
     int rowCount(const QModelIndex& = QModelIndex()) const override;
     QHash<int, QByteArray> roleNames() const override;

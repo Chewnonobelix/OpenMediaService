@@ -10,21 +10,37 @@ Item {
         MediaCombobox {
             id: typeCombo
             model: ["Column", "Grid"]
+
+            onCurrentIndexChanged: gridStack.currentIndex = currentIndex
         }
 
         StackLayout {
+            id: stack
             currentIndex: typeCombo.currentIndex
             PlaylistList {
                 model: _playlistListModel
             }
             GridView {
-                id: grid
+                id: gridStack
                 model: _comicsPlayList
 
                 delegate: ItemDelegate {
                     text: name
 
-                    onClicked: console.log(grid.count, _comicsPlayList.rowCount())
+                    onClicked: {
+                        unstackGrid.model = list
+                        stack.currentIndex = typeCombo.count
+                    }
+                }
+            }
+
+            GridView {
+                id: unstackGrid
+
+                delegate: ItemDelegate {
+                    text: modelData.paths[0]
+
+                    onDoubleClicked: _comicsPlayList.play(modelData)
                 }
             }
         }

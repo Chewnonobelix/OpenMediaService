@@ -12,7 +12,8 @@ int ComicsPlaylist::rowCount(const QModelIndex &) const
 
 QHash<int, QByteArray> ComicsPlaylist::roleNames() const
 {
-    static QHash<int, QByteArray> ret = {{int(PlaylistRole::NameRole), "name"}};
+    static QHash<int, QByteArray> ret = {{int(PlaylistRole::NameRole), "name"},
+                                         {int(PlaylistRole::ListRole), "list"}};
 
     return ret;
 }
@@ -29,6 +30,9 @@ QVariant ComicsPlaylist::data(const QModelIndex & index, int role) const
     case PlaylistRole::NameRole:
         return m_stacks.keys()[index.row()];
         break;
+    case PlaylistRole::ListRole:
+        return QVariant::fromValue(m_stacks[m_stacks.keys()[index.row()]].medias);
+        break;
     }
 
     return QVariant();
@@ -40,13 +44,19 @@ void ComicsPlaylist::init(PlaylistPointer pl)
     m_stacks.clear();
     endRemoveRows();
 
+    m_current = pl;
+
     for(auto it: *pl) {
-        m_stacks[it->metaData<QString>(m_currentStackIndex, "Unknow")].medias<<it;
+        m_stacks[it->metaData<QString>(m_currentStackIndex, "Unknow")].medias<<it.data();
         m_stacks[it->metaData<QString>(m_currentStackIndex, "Unknow")].name = it->metaData<QString>(m_currentStackIndex);
     }
 
     beginInsertRows(QModelIndex(), 0, rowCount() - 1);
     endInsertRows();
+}
 
-    qDebug()<<m_stacks.keys()<<m_stacks.count();
+void ComicsPlaylist::play(Media * media)
+{
+    auto smart = media->sharedFromThis();
+    m_current->play(smart);
 }
