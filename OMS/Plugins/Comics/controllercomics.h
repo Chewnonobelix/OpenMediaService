@@ -7,6 +7,7 @@
 
 #include "comicsplayer.h"
 #include "comicsrackimporter.h"
+#include "comicsplaylist.h"
 
 class ControllerComics : public AbstractController, public InterfacePlugins
 {
@@ -23,6 +24,7 @@ private:
 
     ComicsPlayer m_player;
     PlaylistListModel m_listModel;
+    ComicsPlaylist m_comicsPlaylist;
 
 public:
     ControllerComics() = default;

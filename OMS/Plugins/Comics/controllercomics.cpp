@@ -27,6 +27,7 @@ void ControllerComics::exec()
 
     auto playlistContext = new QQmlContext(comicsContext);
     playlistContext->setContextProperty("_playlistListModel", &m_listModel);
+    playlistContext->setContextProperty("_comicsPlayList", &m_comicsPlaylist);
 
     m_playlist = s_playlistComp->create(playlistContext);
 
@@ -55,6 +56,7 @@ void ControllerComics::setPlaylist(PlaylistPointer p)
     connect(p.data(), &PlayList::play, this, &ControllerComics::setMedia,
             Qt::UniqueConnection);
     m_listModel.setPlaylist(p);
+    m_comicsPlaylist.init(p);
 }
 
 void ControllerComics::setMedia(MediaPointer m)
