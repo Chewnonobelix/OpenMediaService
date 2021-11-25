@@ -68,6 +68,7 @@ Item {
             currentIndex: displayType.currentIndex
 
             PlaylistList {
+                model: _playlistListModel
             }
 
             ImageLibrairyPlaylist {

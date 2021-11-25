@@ -79,6 +79,8 @@ void ControllerMain::exec() {
 
     qCDebug(mainregister) << "AbstractRule" << qmlRegisterUncreatableType<AbstractRule>("MediaPlayer.Model", 1, 0, "abstractRule", "Cpp owner");
 
+    qCDebug(mainregister) << "PlaylistListModel" << qmlRegisterUncreatableType<PlaylistListModel>("MediaPlayer.Model", 1, 0, "PlaylistListModel", "Cpp owner");
+
     setDb(s_settings->db());
 
     auto root = engine().rootContext();
