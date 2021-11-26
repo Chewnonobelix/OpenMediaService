@@ -11,6 +11,7 @@ NAME = Comics
 
 SOURCES += \
     comics_plugin.cpp \
+    comicsmedia.cpp \
     comicsplayer.cpp \
     comicsplaylist.cpp \
     comicsrackimporter.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
 HEADERS += \
     Comics_global.h \
     comics_plugin.h \
+    comicsmedia.h \
     comicsplayer.h \
     comicsplaylist.h \
     comicsrackimporter.h \
