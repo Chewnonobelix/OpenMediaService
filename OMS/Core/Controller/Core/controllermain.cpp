@@ -9,6 +9,7 @@ ControllerMain::ControllerMain() : AbstractController() {
                      << engine().importPathList();
     QDir dir;
     dir.mkdir("temp");
+    dir.mkdir("cache");
 }
 
 ControllerMain::~ControllerMain()
