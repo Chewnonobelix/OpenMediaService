@@ -60,3 +60,13 @@ void ComicsPlaylist::play(Media * media)
     auto smart = media->sharedFromThis();
     m_current->play(smart);
 }
+
+bool ComicsPlaylist::split() const
+{
+    return m_split;
+}
+
+void ComicsPlaylist::setSplit(bool s)
+{
+    m_split = s;
+}

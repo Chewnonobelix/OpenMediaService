@@ -22,10 +22,13 @@ class ComicsPlaylist: public QAbstractListModel
 private:
     QMap<QString, Stack> m_stacks;
     QString m_currentStackIndex;
+    bool m_split = false;
 
 public:
     ComicsPlaylist(QObject* = nullptr);
     void init(PlaylistPointer);
+    void setSplit(bool);
+    bool split() const;
 
     Q_INVOKABLE void play(Media*);
 
