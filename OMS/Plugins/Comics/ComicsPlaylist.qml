@@ -25,7 +25,7 @@ Item {
                 model: _comicsPlayList
 
                 delegate: ItemDelegate {
-                    text: name
+                    text: name + "(" + list.length + ")"
 
                     onClicked: {
                         unstackGrid.model = list
