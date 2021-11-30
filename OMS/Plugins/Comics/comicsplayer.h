@@ -17,6 +17,7 @@ class ComicsPlayer: public QAbstractListModel
     Q_PROPERTY(bool rightToLeft READ rightToLeft NOTIFY rightToLeftChanged)
 
     enum class ComicsPlayerRole {PageRole = Qt::UserRole + 1};
+
 private:
     QTemporaryDir* m_dir = nullptr;
     QTemporaryDir* m_dirNext = nullptr;

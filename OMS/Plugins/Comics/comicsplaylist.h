@@ -5,6 +5,7 @@
 
 #include <Model/media.h>
 #include <Model/playlist.h>
+#include "comicsmedia.h"
 
 class ComicsPlaylist: public QAbstractListModel
 {
@@ -16,7 +17,7 @@ class ComicsPlaylist: public QAbstractListModel
         QImage mini;
     };
 
-    enum class PlaylistRole{NameRole = Qt::UserRole + 1, ListRole};
+    enum class PlaylistRole{NameRole = Qt::UserRole + 1, ListRole, CoverRole};
     PlaylistPointer m_current;
 
 private:
@@ -26,7 +27,7 @@ private:
 
 public:
     ComicsPlaylist(QObject* = nullptr);
-    void init(PlaylistPointer);
+    void init(PlaylistPointer p, QList<ComicsMedia>);
     void setSplit(bool);
     bool split() const;
 
