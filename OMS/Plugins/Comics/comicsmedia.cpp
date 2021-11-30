@@ -10,7 +10,7 @@ QImage ComicsMedia::cover() const
     QDir dir;
     dir.cd("cache");
 
-    auto list = dir.entryInfoList({QString("cache/%1.*").arg(m_base->id().toString())});
+    auto list = dir.entryInfoList({QString("%1.*").arg(m_base->id().toString())});
     QString ret;
     if(list.isEmpty()) {
         QProcess uz;
