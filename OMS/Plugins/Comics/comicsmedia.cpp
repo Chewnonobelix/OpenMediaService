@@ -1,22 +1,42 @@
 #include "comicsmedia.h"
 
-QProcess ComicsMedia::s_7z = QProcess();
 
 ComicsMedia::ComicsMedia(MediaPointer media): m_base(media)
 {
-    auto p = m_base->path().split("/").last().split(".").first();
-    if(!s_7z.program().contains("7z"))
-        s_7z.setProgram("3rdParty/7z");
 }
 
 QImage ComicsMedia::cover() const
 {
     QDir dir;
-    dir.cd(m_extractDir->path());
+    dir.cd("cache");
 
-    auto list = dir.entryInfoList({"*.jpg"});
+    auto list = dir.entryInfoList({QString("cache/%1.*").arg(m_base->id().toString())});
+    QString ret;
+    if(list.isEmpty()) {
+        QProcess uz;
+        uz.setProgram("3rdParty/7z");
+        uz.setArguments({"l", m_base->path()});
+        uz.start();
+        uz.waitForFinished();
+        auto lines = QString(uz.readAllStandardOutput()).split('\n');
+        auto first = lines[lines.indexOf(QRegularExpression(".*jpg.*"))];
+        auto fileName = first.split(' ').last().remove('\r');
 
-    return !list.isEmpty() ? QImage(list[0].absoluteFilePath()) : QImage();
+        uz.setArguments({"e", QString("-i!%1").arg(fileName), m_base->path(), "-otemp/*"});
+        uz.start();
+        uz.waitForFinished();
+        QFileInfo info(m_base->path());
+        auto base = info.baseName();
+        QFile file(QString("temp/%1/%2").arg(base).arg(fileName));
+        ret = QString("cache/%1.%2").arg(m_base->id().toString()).arg(fileName.split('.').last());
+        file.copy(ret);
+    }
+    else
+    {
+        ret = list[0].absoluteFilePath();
+    }
+
+    return QImage(ret);
 }
 
 QSharedPointer<QTemporaryDir> ComicsMedia::dir() const
@@ -30,10 +50,12 @@ void ComicsMedia::load()
     m_extractDir = factory<QTemporaryDir>("temp/"+p);
 
     m_extractDir->setAutoRemove(false);
+    QProcess uz;
 
-    s_7z.setArguments(QStringList()<<"x"<<"-o"+m_extractDir->path()<<m_base->path());
-    s_7z.start();
-    s_7z.waitForFinished();
+    uz.setProgram("3rdParty/7z");
+    uz.setArguments(QStringList()<<"x"<<"-o"+m_extractDir->path()<<m_base->path());
+    uz.start();
+    uz.waitForFinished();
 
     QDir dir;
     dir.cd(m_extractDir->path());
