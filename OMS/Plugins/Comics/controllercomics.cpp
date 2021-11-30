@@ -53,14 +53,25 @@ QUrl ControllerComics::settingsView() const
 
 void ControllerComics::setPlaylist(PlaylistPointer p)
 {
+    disconnect(m_playlistPointer.data(), &PlayList::play, this, &ControllerComics::setMedia);
     connect(p.data(), &PlayList::play, this, &ControllerComics::setMedia,
             Qt::UniqueConnection);
     m_listModel.setPlaylist(p);
-    m_comicsPlaylist.init(p);
+    m_playlistPointer = p;
+
+    QtConcurrent::run([this]() -> void {
+        for(auto it: *m_playlistPointer) {
+            m_medias[it->id()] = ComicsMedia(it);
+            m_medias[it->id()].load();
+        }
+    }).then([p, this]() {
+        m_comicsPlaylist.init(p, m_medias.values());
+    });
 }
 
 void ControllerComics::setMedia(MediaPointer m)
 {
+    m_medias[m->id()].load();
     m_player.play(m);
 }
 

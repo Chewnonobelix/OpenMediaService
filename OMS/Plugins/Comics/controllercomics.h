@@ -8,6 +8,7 @@
 #include "comicsplayer.h"
 #include "comicsrackimporter.h"
 #include "comicsplaylist.h"
+#include "comicsmedia.h"
 
 class ControllerComics : public AbstractController, public InterfacePlugins
 {
@@ -25,6 +26,9 @@ private:
     ComicsPlayer m_player;
     PlaylistListModel m_listModel;
     ComicsPlaylist m_comicsPlaylist;
+
+    QMap<QUuid, ComicsMedia> m_medias;
+    PlaylistPointer m_playlistPointer;
 
 public:
     ControllerComics() = default;
