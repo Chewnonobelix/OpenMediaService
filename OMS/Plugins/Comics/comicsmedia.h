@@ -10,10 +10,17 @@ class ComicsMedia
 private:
     QSharedPointer<QTemporaryDir> m_extractDir;
     MediaPointer m_base;
+    static QProcess s_7z;
 
 public:
+    ComicsMedia() = default;
     ComicsMedia(MediaPointer);
 
     QImage cover() const;
+    QSharedPointer<QTemporaryDir> dir() const;
+    MediaPointer base() const;
+
+    void load();
+    void unload();
 };
 
