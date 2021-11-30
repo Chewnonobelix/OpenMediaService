@@ -14,7 +14,7 @@ class ComicsPlaylist: public QAbstractListModel
     struct Stack {
         QString name;
         QList<Media*> medias;
-        QImage mini;
+        QString mini;
     };
 
     enum class PlaylistRole{NameRole = Qt::UserRole + 1, ListRole, CoverRole};

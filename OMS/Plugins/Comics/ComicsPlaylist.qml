@@ -26,10 +26,11 @@ Item {
 
                 delegate: ItemDelegate {
                     text: name + "(" + list.length + ")"
-
+                    icon.source: cover
                     onClicked: {
                         unstackGrid.model = list
                         stack.currentIndex = typeCombo.count
+                        console.log(icon.source)
                     }
                 }
             }

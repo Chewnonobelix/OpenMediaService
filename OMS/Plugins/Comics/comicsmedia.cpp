@@ -5,7 +5,7 @@ ComicsMedia::ComicsMedia(MediaPointer media): m_base(media)
 {
 }
 
-QImage ComicsMedia::cover() const
+QString ComicsMedia::cover() const
 {
     QDir dir;
     dir.cd("cache");
@@ -36,7 +36,8 @@ QImage ComicsMedia::cover() const
         ret = list[0].absoluteFilePath();
     }
 
-    return QImage(ret);
+//    return QImage(ret);
+    return ret;
 }
 
 QSharedPointer<QTemporaryDir> ComicsMedia::dir() const

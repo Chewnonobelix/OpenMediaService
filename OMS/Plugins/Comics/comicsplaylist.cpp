@@ -35,6 +35,7 @@ QVariant ComicsPlaylist::data(const QModelIndex & index, int role) const
         return QVariant::fromValue(m_stacks[m_stacks.keys()[index.row()]].medias);
         break;
     case PlaylistRole::CoverRole:
+        return "file:///"+m_stacks[m_stacks.keys()[index.row()]].mini;
         break;
     }
 

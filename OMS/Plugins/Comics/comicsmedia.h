@@ -15,7 +15,7 @@ public:
     ComicsMedia() = default;
     ComicsMedia(MediaPointer);
 
-    QImage cover() const;
+    QString cover() const;
     QSharedPointer<QTemporaryDir> dir() const;
     MediaPointer base() const;
 
