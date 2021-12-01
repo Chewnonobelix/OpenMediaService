@@ -11,7 +11,14 @@ Item {
             id: typeCombo
             model: ["Column", "Grid"]
 
-            onCurrentIndexChanged: gridStack.currentIndex = currentIndex
+            onCurrentIndexChanged: stack.currentIndex = currentIndex
+        }
+
+        MediaButton {
+            text: "<-"
+
+            visible: typeCombo.currentIndex !== 0
+            onClicked: stack.currentIndex = 1
         }
 
         StackLayout {
@@ -24,13 +31,30 @@ Item {
                 id: gridStack
                 model: _comicsPlayList
 
-                delegate: ItemDelegate {
-                    text: name + "(" + list.length + ")"
-                    icon.source: cover
-                    onClicked: {
-                        unstackGrid.model = list
-                        stack.currentIndex = typeCombo.count
-                        console.log(icon.source)
+                clip: true
+                cellWidth: height * 0.3
+                cellHeight: width * 0.4
+
+                delegate: ColumnLayout {
+                    Image {
+                        source: cover
+                        fillMode: Image.Stretch
+                        sourceSize {
+                            width: gridStack.cellWidth
+                            height: gridStack.cellHeight
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                unstackGrid.model = list
+                                stack.currentIndex = typeCombo.count
+                            }
+                        }
+                    }
+
+                    MediaLabel {
+                        text: name + "(" + list.length + ")"
                     }
                 }
             }

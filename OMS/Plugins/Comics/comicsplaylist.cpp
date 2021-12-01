@@ -53,7 +53,7 @@ void ComicsPlaylist::init(PlaylistPointer p, QList<ComicsMedia> pl)
     for(auto it: pl) {
         auto m = it.base();
         m_stacks[m->metaData<QString>(m_currentStackIndex, "Unknow")].medias<<m.data();
-        m_stacks[m->metaData<QString>(m_currentStackIndex, "Unknow")].name = m->metaData<QString>(m_currentStackIndex);
+        m_stacks[m->metaData<QString>(m_currentStackIndex, "Unknow")].name = m->metaData<QString>(m_currentStackIndex, "Unknow");
         it.load();
         if(m_stacks[m->metaData<QString>(m_currentStackIndex, "Unknow")].mini.isNull()) {
             m_stacks[m->metaData<QString>(m_currentStackIndex, "Unknow")].mini = it.cover();
