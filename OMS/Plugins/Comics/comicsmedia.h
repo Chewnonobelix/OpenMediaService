@@ -2,6 +2,8 @@
 
 #include <QImage>
 #include <QTemporaryDir>
+#include <QDomDocument>
+#include <QDomElement>
 
 #include <Model/media.h>
 
@@ -16,6 +18,8 @@ public:
     ComicsMedia(MediaPointer);
 
     QString cover() const;
+    void initComicsInfo();
+
     QSharedPointer<QTemporaryDir> dir() const;
     MediaPointer base() const;
 

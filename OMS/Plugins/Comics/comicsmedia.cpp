@@ -85,3 +85,38 @@ MediaPointer ComicsMedia::base() const
 {
     return m_base;
 }
+
+void ComicsMedia::initComicsInfo()
+{
+    QProcess uz;
+    uz.setProgram("3rdParty/7z");
+    uz.setArguments({"l", m_base->path()});
+    uz.start();
+    uz.waitForFinished();
+    auto lines = QString(uz.readAllStandardOutput()).split('\n');
+    if(lines.indexOf(QRegularExpression(".*xml.*")) == -1)
+        return;
+
+    auto first = lines[lines.indexOf(QRegularExpression(".*xml.*"))];
+    auto fileName = first.split(' ').last().remove('\r');
+
+    uz.setArguments({"e", QString("-i!%1").arg(fileName), m_base->path(), "-otemp/*"});
+    uz.start();
+    uz.waitForFinished();
+    QFileInfo info(m_base->path());
+    auto base = info.baseName();
+
+    QFile file(QString("temp/%1/%2").arg(base).arg(fileName));
+    if(!file.open(QIODevice::ReadOnly))
+        return;
+
+    QDomDocument doc;
+    if(!doc.setContent(&file)) {
+        file.close();
+        return;
+    }
+
+    auto root = doc.documentElement();
+    //TODO
+
+}
