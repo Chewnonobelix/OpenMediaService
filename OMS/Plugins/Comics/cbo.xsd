@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://comicmeta.org/cbo" 
+           xmlns:cbo="http://comicmeta.org/cbo" attributeFormDefault="unqualified" elementFormDefault="qualified" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+  <!-- 
+        Title       :   Comic Book Schema
+        Version     :   0.5.6     
+        Date        :   05/18/14
+        Author      :   Sean Petiya   
+        Description :   An XML schema for implementing the Comic Book Ontology metadata vocabulary.
+  -->
+  
+  <!-- // WRAPPER -->
+  <xs:element name="Comics" type="cbo:Comics"></xs:element>
+  
+  <xs:complexType name="Comics">
+    <xs:sequence>
+      <xs:element ref="cbo:Comic" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      <xs:element ref="cbo:Publisher" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      <xs:element ref="cbo:Imprint" minOccurs="0" maxOccurs="unbounded"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- // ELEMENTS //      -->
+  <xs:element name="Comic" type="cbo:Comic"></xs:element>
+  <xs:element name="Publisher" type="cbo:Publisher"></xs:element>
+  <xs:element name="Imprint" type="cbo:Imprint"></xs:element>
+  <!-- // PROPERTIES //   -->
+  <xs:element name="country" type="xs:string"></xs:element>
+  <xs:element name="coverDate" type="xs:gYearMonth"></xs:element>
+  <xs:element name="coverPrice" type="xs:string"></xs:element>
+  <xs:element name="imprintName" type="xs:string"></xs:element>
+  <xs:element name="indiciaFrequency" type="cbo:Frequency"></xs:element>
+  <xs:element name="issueNumber" type="xs:string"></xs:element>
+  <xs:element name="language" type="xs:string"></xs:element>
+  <xs:element name="number" type="xs:string"></xs:element>
+  <xs:element name="onSaleDate" type="xs:date"></xs:element>
+  <xs:element name="price" type="xs:string"></xs:element>
+  <xs:element name="printing" type="xs:int"></xs:element>
+  <xs:element name="publicationDate" type="xs:gYearMonth"></xs:element>
+  <xs:element name="publicationFrequency" type="cbo:Frequency"></xs:element>
+  <xs:element name="publisherName" type="xs:string"></xs:element>
+  <xs:element name="seriesTitle" type="xs:string"></xs:element>
+  <xs:element name="title" type="xs:string"></xs:element>
+  <xs:element name="variance" type="xs:string"></xs:element>
+  <xs:element name="volumeNumber" type="xs:string"></xs:element>
+  
+  <!-- // CLASSES //   -->
+  <xs:complexType name="Comic">
+    <xs:sequence>
+      <xs:element ref="cbo:title" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      <xs:element name="Series" type="cbo:Series"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Series">
+    <xs:sequence>
+      <xs:element name="Form" type="cbo:Form" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element name="Publisher" type="cbo:Publisher" minOccurs="1" maxOccurs="unbounded"></xs:element>
+      <xs:element name="Imprint" type="cbo:Imprint" minOccurs="0"></xs:element>
+      <xs:element ref="cbo:seriesTitle" minOccurs="1" maxOccurs="unbounded"></xs:element>
+      <xs:element ref="cbo:country" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      <xs:element ref="cbo:language" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      <xs:element name="Volume" type="cbo:Volume" minOccurs="1" maxOccurs="unbounded"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Volume">
+    <xs:sequence>
+      <xs:element ref="cbo:volumeNumber" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element ref="cbo:publicationFrequency" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      <xs:element name="Issue" type="cbo:Issue" minOccurs="1" maxOccurs="unbounded"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Issue">
+    <xs:sequence>
+      <xs:element ref="cbo:issueNumber" minOccurs="1" maxOccurs="1"></xs:element>
+      <xs:element ref="cbo:coverPrice" minOccurs="0" maxOccurs="unbounded"></xs:element>
+      <xs:element ref="cbo:coverDate" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element ref="cbo:publicationDate" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element ref="cbo:onSaleDate" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element ref="cbo:printing" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element ref="cbo:variance" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element ref="cbo:indiciaFrequency" minOccurs="0" maxOccurs="1"></xs:element>
+      <xs:element name="Format" type="cbo:Format" minOccurs="0" maxOccurs="1"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Publisher">
+    <xs:sequence>
+      <xs:element ref="cbo:publisherName" minOccurs="1" maxOccurs="1"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Imprint">
+    <xs:sequence>
+      <xs:element ref="cbo:imprintName" minOccurs="1" maxOccurs="1"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="Format">
+    <xs:restriction base="cbo:Formats"></xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Form">
+    <xs:restriction base="cbo:Forms"></xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Frequency">
+    <xs:restriction base="cbo:Frequencies"></xs:restriction>
+  </xs:simpleType>
+
+  <!-- // INDIVIDUALS //   -->
+  <xs:simpleType name="Formats">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Print"></xs:enumeration>
+      <xs:enumeration value="Digital"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Forms">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ComicBook"></xs:enumeration>
+      <xs:enumeration value="GraphicNovel"></xs:enumeration>
+      <xs:enumeration value="Omnibus"></xs:enumeration>
+      <xs:enumeration value="TradePaperback"></xs:enumeration>
+      <xs:enumeration value="WebComic"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Frequencies">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Annual"></xs:enumeration>
+      <xs:enumeration value="Monthly"></xs:enumeration>
+      <xs:enumeration value="OneShot"></xs:enumeration>
+      <xs:enumeration value="TwiceMonthly"></xs:enumeration>
+      <xs:enumeration value="Weekly"></xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>
