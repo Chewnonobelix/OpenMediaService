@@ -1,8 +1,17 @@
 #include "comicsmedia.h"
 
+ComicsMedia::ComicsMedia(const ComicsMedia& cm): QObject(), m_extractDir(cm.dir()), m_base(cm.base())
+{}
 
 ComicsMedia::ComicsMedia(MediaPointer media): m_base(media)
 {
+}
+
+ComicsMedia& ComicsMedia::operator =(const ComicsMedia& cm)
+{
+    m_base = cm.base();
+    m_extractDir = cm.dir();
+    return *this;
 }
 
 QString ComicsMedia::cover() const

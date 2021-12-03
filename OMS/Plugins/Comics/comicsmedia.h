@@ -25,7 +25,10 @@ public:
     Q_ENUM(Formats)
 
     ComicsMedia() = default;
+    ComicsMedia(const ComicsMedia&);
     ComicsMedia(MediaPointer);
+    ~ComicsMedia() = default;
+    ComicsMedia& operator =(const ComicsMedia&);
 
     QString cover() const;
     void initComicsInfo();
