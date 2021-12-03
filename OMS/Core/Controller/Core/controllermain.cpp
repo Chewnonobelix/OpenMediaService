@@ -7,6 +7,25 @@ ControllerMain::ControllerMain() : AbstractController() {
     engine().addImportPath(QStringLiteral(QML_IMPORT_PATH));
     qCDebug(mainlog) << QStringLiteral(QML_IMPORT_PATH)
                      << engine().importPathList();
+    QDir dir;
+    dir.mkdir("temp");
+    dir.mkdir("cache");
+}
+
+ControllerMain::~ControllerMain()
+{
+    try
+    {
+       setDb("");
+    }
+    catch(QString)
+    {
+
+    }
+
+    QDir dir;
+    dir.cd("temp");
+    dir.removeRecursively();
 }
 
 void ControllerMain::exec() {
@@ -60,6 +79,8 @@ void ControllerMain::exec() {
                                                                                     "TabManager", "Cpp owner");
 
     qCDebug(mainregister) << "AbstractRule" << qmlRegisterUncreatableType<AbstractRule>("MediaPlayer.Model", 1, 0, "abstractRule", "Cpp owner");
+
+    qCDebug(mainregister) << "PlaylistListModel" << qmlRegisterUncreatableType<PlaylistListModel>("MediaPlayer.Model", 1, 0, "PlaylistListModel", "Cpp owner");
 
     setDb(s_settings->db());
 

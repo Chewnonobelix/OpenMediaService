@@ -3,8 +3,12 @@ import QtQuick.Controls 2.15
 import Qt.labs.qmlmodels
 import QtQuick.Layouts 1.15
 
+import MediaPlayer.Model 1.0
+
 Item {
     id: root
+
+    property PlaylistListModel model
 
     Menu {
         height: 175
@@ -12,7 +16,7 @@ Item {
         id: columnMenu
 
         ListView {
-            model: _playlistListModel.columnList()
+            model: root.model.columnList()
             anchors.fill: parent
 
             delegate: Item {
@@ -20,10 +24,10 @@ Item {
                 Row {
                     anchors.fill: parent
                     MediaCheckbox {
-                        checked: _playlistListModel.columnEnable(modelData)
+                        checked: root.model.columnEnable(modelData)
                         height: parent.height
 
-                        onClicked: _playlistListModel.setColumnEnable(modelData, checked)
+                        onClicked: root.model.setColumnEnable(modelData, checked)
                     }
                     MediaLabel {
                         height: parent.height
@@ -61,13 +65,13 @@ Item {
 
                 onMouseXChanged: {
                     if(pressed && cursorShape === Qt.SplitHCursor) {
-                        _playlistListModel.setColumnWidth(column, mouseX)
+                        root.model.setColumnWidth(column, mouseX)
                         table.forceLayout()
                     }
                 }
                 onClicked: function(mouse){
                     if(mouse.button === Qt.LeftButton) {
-                        _playlistListModel.sort(column)
+                        root.model.sort(column)
                     }
                     else {
                         columnMenu.x = mouse.x
@@ -81,7 +85,7 @@ Item {
     TableView {
         id: table
 
-        Component.onCompleted: _playlistListModel.width = width
+        Component.onCompleted: root.model.width = width
 
         interactive: false
         reuseItems: false
@@ -99,20 +103,20 @@ Item {
             bottom: root.bottom
         }
 
-        model: _playlistListModel
+        model: root.model
 
         clip: true
         Connections {
             target: table
 
             function onWidthChanged() {
-                _playlistListModel.width = table.width
+                root.model.width = table.width
             }
         }
 
         columnSpacing: width * 0.001
 
-        columnWidthProvider: function(column) { return _playlistListModel.columnWidth(column) }
+        columnWidthProvider: function(column) { return root.model.columnWidth(column) }
 
         property int currentRow: -1
 
@@ -125,7 +129,7 @@ Item {
             id: chooser
             role: "type"
             DelegateChoice {
-                column: _playlistListModel.columnOf("rating")
+                column: root.model.columnOf("rating")
                 Rectangle {
                     gradient: row === table.currentRow ? StyleSheet.selected : table.unselectedGradient(row)
 
@@ -174,7 +178,7 @@ Item {
                             }
                         }
                         onDoubleClicked: {
-                            _playlistListModel.play(index)
+                            root.model.play(index)
                         }
                     }
 

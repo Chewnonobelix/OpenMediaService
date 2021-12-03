@@ -1,7 +1,6 @@
 #include "media.h"
 
-Media::Media(MD5 id, QString path) : QObject(nullptr) {
-    setId(id);
+Media::Media(QString path) : QObject(nullptr) {
     if (!path.isEmpty())
         m_path << path;
 
@@ -11,9 +10,16 @@ Media::Media(MD5 id, QString path) : QObject(nullptr) {
     setMetadata("bookmark", QStringList());
     setRating(0);
 
+    setId(QUuid::createUuid());
     set();
 }
 
+Media::Media(QUuid id)
+{
+    setId(id);
+
+    set();
+}
 Media::Media(const Media &other)
     : QObject(nullptr), MetaData(other), QEnableSharedFromThis<Media>(),
       m_path(other.paths().begin(), other.paths().end()) {
@@ -53,9 +59,19 @@ void Media::set() {
     connect(this, &Media::tagsChanged, this, &Media::mediaChanged);
 }
 
-MD5 Media::id() const { return metaData<MD5>("id"); }
+QUuid Media::id() const { return metaData<QUuid>("id"); }
 
-bool Media::setId(MD5 id) { return setMetadata("id", id); }
+bool Media::setId(QUuid id) { return setMetadata("id", id); }
+
+MD5 Media::fingerprint() const
+{
+    return metaData<MD5>("fingerprint");
+}
+
+void Media::setFingerprint(MD5 content)
+{
+    setMetadata("fingerprint", content);
+}
 
 MediaPlayerGlobal::MediaRole Media::role() const {
     return metaData<MediaPlayerGlobal::MediaRole>("role");
@@ -139,10 +155,10 @@ bool Media::setCurrentRead(double currentRead) {
     return ret;
 }
 
-MediaPointer Media::createMedia(MD5 id, QString path) {
-    MediaPointer ret = factory<Media>(id, path);
+MediaPointer Media::createMedia(QString path) {
+    MediaPointer ret = factory<Media>(path);
     ret->setAdded(QDate::currentDate());
-
+    ret->initFingerprint();
     return ret;
 }
 
@@ -204,4 +220,41 @@ void Media::setTag(QString tag)
     setTags(tagss);
 
     emit tagsChanged();
+}
+
+QFuture<bool> Media::initFingerprint()
+{
+    m_runner = QtConcurrent::run([this]() -> bool {
+        auto p = path();
+        QFile file(p);
+        if(!file.open(QIODevice::ReadOnly))
+            return false;
+
+        QCryptographicHash ch(QCryptographicHash::Md5);
+        if (!ch.addData(&file))
+            return false;
+
+        auto md = ch.result();
+        setFingerprint(md);
+        file.close();
+
+        return true;
+    });
+
+    return m_runner;
+}
+
+void Media::merge(MediaPointer m)
+{
+    for(auto p: m->paths())
+        m_path<<p;
+
+    for(auto t: m->tags())
+        setTag(t);
+
+    setCount(std::max(count(), m->count()));
+    setRating(std::max(rating(), m->rating()));
+    setCurrentRead(std::max(currentRead(), m->currentRead()));
+    setAdded(std::min(added(), m->added()));
+    setLastFinish(std::max(lastFinish(), m->lastFinish()));
 }

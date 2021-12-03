@@ -12,6 +12,8 @@
 #include <QString>
 #include <QVariant>
 #include <QEnableSharedFromThis>
+#include <QThread>
+#include <QtConcurrent/QtConcurrent>
 
 #include <mediaplayercore_global.h>
 
@@ -28,7 +30,7 @@ typedef QSharedPointer<Media> MediaPointer;
 class MEDIAPLAYERCORE_EXPORT Media : public QObject, public MetaData, public QEnableSharedFromThis<Media> {
 	Q_OBJECT
 
-	Q_PROPERTY(MD5 id READ id CONSTANT)
+    Q_PROPERTY(QUuid id READ id CONSTANT)
 	Q_PROPERTY(int count READ count WRITE setCount NOTIFY countChanged)
 	Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role CONSTANT)
 	Q_PROPERTY(bool isAvailable READ isAvailable NOTIFY isAvailableChanged)
@@ -39,26 +41,33 @@ class MEDIAPLAYERCORE_EXPORT Media : public QObject, public MetaData, public QEn
     Q_PROPERTY(QStringList paths READ paths CONSTANT)
 	Q_PROPERTY(int rating READ rating WRITE setRating NOTIFY ratingChanged)
     Q_PROPERTY(QStringList tags READ tags NOTIFY tagsChanged)
+
 private:
 	QSet<QString> m_path;
+    QFuture<bool> m_runner;
 
 	void set();
 
 public:
 	enum class CompareState { EqualState, InferiorState, SuperiorState };
 	
-	Media(MD5 = "", QString = "");
+    Media(QString = "");
 	Media(const Media &other);
+    Media(QUuid);
 	using MetaData::MetaData;
 	Media(QJsonObject &);
 	~Media() = default;
+
+    QFuture<bool> initFingerprint();
 
 	Media &operator=(const Media &other);
 	operator QJsonObject() const override;
     friend MEDIAPLAYERCORE_EXPORT CompareState compare(MediaPointer, MediaPointer, QString);
 	
-	MD5 id() const;
-    bool setId(MD5 id);
+    QUuid id() const;
+    bool setId(QUuid id);
+    MD5 fingerprint() const;
+    void setFingerprint(MD5);
 	MediaPlayerGlobal::MediaRole role() const;
     bool setRole(MediaPlayerGlobal::MediaRole role);
 	QString path() const;
@@ -84,7 +93,8 @@ public:
     void setTags(QStringList);
     Q_INVOKABLE void setTag(QString);
 
-	static MediaPointer createMedia(MD5, QString path = "");
+    void merge(MediaPointer);
+    static MediaPointer createMedia(QString path = "");
 
 signals:
 	void countChanged();

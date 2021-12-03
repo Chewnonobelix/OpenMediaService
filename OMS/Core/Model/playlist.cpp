@@ -18,7 +18,7 @@ PlayList::PlayList(const QJsonObject& json): QObject(nullptr), MetaData(json), Q
     auto array = json["medias"].toArray();
 
     for(auto it: array) {
-        append(factory<Media>(it.toObject()));
+        append(factory<Media>(QUuid::fromString(it.toString())));
     }
 }
 
@@ -30,7 +30,7 @@ PlayList::operator QJsonObject() const
     QJsonArray array;
 
     for(auto it: *this) {
-        array<<QJsonObject(*it);
+        array<<it->id().toString();
     }
 
     ret["medias"] = array;
@@ -148,7 +148,7 @@ void PlayList::set()
     connect(this, &PlayList::isShuffleChanged, this, &PlayList::playlistChanged);
 }
 
-bool PlayList::contains(MD5 id) const
+bool PlayList::contains(QUuid id) const
 {
     return std::find_if(begin(), end(), [id](MediaPointer m) {
         return m->id() == id;
@@ -166,7 +166,7 @@ bool PlayList::replace(MediaPointer m)
     return ret;
 }
 
-int PlayList::indexOf(MD5 id) const
+int PlayList::indexOf(QUuid id) const
 {
     auto it = std::find_if(begin(), end(), [id](MediaPointer m) {
             return m->id() == id;

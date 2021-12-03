@@ -33,7 +33,8 @@ class MEDIAPLAYERCORE_EXPORT Library : public QObject, public MetaData, public Q
 
 private:
 	LibraryProbe m_probe;
-	QMap<MD5, MediaPointer> m_medias;
+    QMap<MD5, QUuid> m_pool;
+    QMap<QUuid, MediaPointer> m_medias;
 	QMap<QUuid, SmartPlaylistPointer> m_smartPlaylist;
 	QMap<QUuid, PlaylistPointer> m_playlist;
 
@@ -72,7 +73,6 @@ public:
 public slots:
     Q_INVOKABLE bool scan();
 
-	Q_INVOKABLE bool addNMedia(QString, MD5 = "");
 	Q_INVOKABLE bool addMedia(MediaPointer);
 	Q_INVOKABLE bool removeMedia(QString);
 

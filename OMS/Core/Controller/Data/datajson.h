@@ -15,12 +15,16 @@ private:
 	LibraryPointer open(QString) const;
 	void write(LibraryPointer) const;
 
+    QQueue<LibraryPointer> m_pool;
+    int m_timerId;
+
 public:
 	DataJson() = default;
-	~DataJson() override = default;
+    ~DataJson() override;
 	DataJson(const DataJson &);
 
 	virtual void init() override;
+    void timerEvent(QTimerEvent*) override;
 
 public slots:
 	virtual QMap<QUuid, LibraryPointer> selectLibrary() const override;

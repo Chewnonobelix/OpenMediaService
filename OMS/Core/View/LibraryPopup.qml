@@ -61,7 +61,7 @@ Popup {
 		MediaButton {
 			Layout.preferredHeight: addLibraryPop.height * .5
 			Layout.preferredWidth: addLibraryPop.width * .19
-			enabled: libraryName.acceptableInput
+            enabled: libraryName.acceptableInput && libraryType.currentIndex > -1
             text: qsTr("Add")
 			onClicked: {
 				_db.createLibrary(libraryName.text, libraryType.currentValue)

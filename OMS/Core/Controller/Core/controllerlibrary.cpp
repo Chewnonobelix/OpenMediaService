@@ -4,7 +4,7 @@ Q_LOGGING_CATEGORY(librarylog, "library.log")
 
 void ControllerLibrary::exec() {
     connect(&m_playlist, &PlaylistModel::currentIndexChanged, this,
-                    &ControllerLibrary::onCurrentPlaylistChanged);
+            &ControllerLibrary::onCurrentPlaylistChanged);
 }
 
 PlaylistModel *ControllerLibrary::playlist() { return &m_playlist; }
@@ -54,7 +54,7 @@ void ControllerLibrary::setCurrentLibrary(LibraryPointer lib) {
 
     m_current = lib;
     connect(m_current.data(), &Library::libraryChanged, this,
-                    &ControllerLibrary::onUpdateLibrary, Qt::UniqueConnection);
+            &ControllerLibrary::onUpdateLibrary, Qt::UniqueConnection);
 
     emit libraryChanged();
 
@@ -86,7 +86,7 @@ void ControllerLibrary::setPlaylistIndex(QString id, int index)
 
     if(!m_plugins.contains(QUuid::fromString(id)) || !m_plugins[QUuid::fromString(id)]) {
         m_plugins[QUuid::fromString(id)] = s_manager[m_current->role()]->clone();
-         m_plugins[QUuid::fromString(id)]->exec();
+        m_plugins[QUuid::fromString(id)]->exec();
     }
 
     if(index != -1 &&  m_plugins.contains(QUuid::fromString(id))) {
@@ -100,10 +100,10 @@ void ControllerLibrary::setPlaylistIndex(QString id, int index)
 QObject* ControllerLibrary::playerComp(QString id)
 {
     return m_plugins.contains(QUuid::fromString(id)) ? m_plugins[QUuid::fromString(id)]->playerView() : nullptr;
-}
+    }
 
-QObject* ControllerLibrary::playlistComp(QString id)
-{
+    QObject* ControllerLibrary::playlistComp(QString id)
+    {
     auto uid = id.isEmpty() ? s_tabWrapper->currentId() : QUuid::fromString(id);
     return m_plugins.contains(uid) ? m_plugins[uid]->playlistView() : nullptr;
 }
@@ -116,4 +116,51 @@ bool ControllerLibrary::containView(QUuid id) const
 void ControllerLibrary::setModelIndex(int index)
 {
     m_playlist.setCurrentIndex(index);
+}
+
+QList<QVariantMap> ControllerLibrary::importers() const
+{
+    QList<QVariantMap> ret;
+    if(!m_plugins.isEmpty()) {
+        for(auto it: m_plugins.first()->importers()) {
+            QVariantMap map;
+            map["name"] = it->name();
+            map["filters"] = it->filters();
+            ret<<map;
+        }
+    }
+
+    return ret;
+}
+
+void ControllerLibrary::importFrom(QString importer, QString file)
+{
+    if(m_plugins.count() == 0)
+        return;
+
+    auto imps = s_manager[m_current->role()]->importers();
+    auto imp = std::find_if(imps.begin(), imps.end(), [importer](auto it) {
+        return it->name() == importer;
+    });
+
+    if(imp != imps.end()) {
+        connect(imp->data(), &InterfaceImporter::findMedia, [this](auto m) {
+            m_current->addMedia(m);
+        });
+
+        connect(imp->data(), &InterfaceImporter::findWatchfolder, [this](auto w) {
+            m_current->addSourceDir(w);
+        });
+
+        connect(imp->data(), &InterfaceImporter::findPlaylist, [this](PlaylistPointer p) {
+            if(p.dynamicCast<SmartPlaylist>()) {
+                m_current->addSmartPlaylist(p.dynamicCast<SmartPlaylist>());
+            }
+            else{
+                m_current->addPlaylist(p);
+            }
+        });
+
+        (*imp)->import(file.remove(0, 8));
+    }
 }

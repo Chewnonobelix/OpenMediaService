@@ -18,6 +18,7 @@
 #include <mediaplayercore_global.h>
 
 #include <metadata.h>
+#include "media.h"
 
 #include "Model/global.h"
 
@@ -63,11 +64,11 @@ public:
     bool setFilters(QStringList);
 
 signals:
-	void mediaFind(QString, MD5);
+    void mediaFind(MediaPointer);
 	void currentChanged();
 	void isRunningChanged();
 	void lastProbedChanged();
 
 public slots:
-	void onMediaFind(QString, MD5);
+    void onMediaFind(MediaPointer);
 };

@@ -154,6 +154,7 @@ ApplicationWindow {
 				text: name
 
 				onClicked: {
+                    ListView.view.currentIndex = index
                     playlist.model = controller.playlist
 				}
 

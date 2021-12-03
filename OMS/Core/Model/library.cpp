@@ -35,7 +35,7 @@ Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l)
         m_replacer->start();
 
     m_probe.setLastProbed(
-        QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
+                QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
 
 }
 
@@ -46,7 +46,7 @@ void Library::set() {
     connect(this, &Library::lastUpdateChanged, this, &Library::libraryChanged);
     connect(this, &Library::playlistCountChanged, this, &Library::libraryChanged);
     connect(this, &Library::tagChanged, this, &Library::libraryChanged);
-    connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addNMedia,
+    connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia,
             Qt::QueuedConnection);
     connect(&m_probe, &LibraryProbe::currentChanged, this,
             &Library::onProbedChanged);
@@ -172,39 +172,11 @@ bool Library::removeSourceDir(QString source) {
 
 bool Library::addMedia(MediaPointer p) {
     m_medias[p->id()] = p;
+    p->initFingerprint();
     connect(p.data(), &Media::mediaChanged, this, &Library::libraryChanged);
     connect(p.data(), &Media::mediaChanged, this, &Library::onMediaChanged);
     emit mediasChanged(p);
     return true;
-}
-
-bool Library::addNMedia(QString path, MD5 md) {
-    if (md.isEmpty()) {
-        QFile f(path);
-        if (!f.open(QIODevice::ReadOnly))
-            return false;
-
-        QCryptographicHash ch(QCryptographicHash::Md5);
-        if (!ch.addData(&f))
-            return false;
-
-        md = ch.result();
-        f.close();
-    }
-
-    if (m_medias.contains(md))
-        m_medias[md]->setPath(path);
-    else {
-        m_medias[md] = Media::createMedia(md, path);
-        m_medias[md]->setRole(role());
-    }
-
-    connect(m_medias[md].data(), &Media::mediaChanged, this,
-            &Library::libraryChanged);
-    connect(m_medias[md].data(), &Media::mediaChanged, this, &Library::onMediaChanged);
-
-    emit mediasChanged(m_medias[md]);
-    return m_medias[md]->paths().contains(path);
 }
 
 bool Library::removeMedia(QString path) {
@@ -217,12 +189,12 @@ bool Library::removeMedia(QString path) {
         return false;
 
     auto md = ch.result();
-    if (!m_medias.contains(md))
+    if (!m_pool.contains(md))
         return false;
 
-    m_medias[md]->removePath(path);
-    emit mediasChanged(m_medias[md]);
-    return !m_medias[md]->paths().contains(path);
+    m_medias[m_pool[md]]->removePath(path);
+    emit mediasChanged(m_medias[m_pool[md]]);
+    return !m_medias[m_pool[md]]->paths().contains(path);
 }
 
 bool operator<(LibraryPointer l1, LibraryPointer l2) {

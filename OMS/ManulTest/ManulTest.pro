@@ -25,7 +25,7 @@ DEPENDPATH += $$PWD/../ExpressionLibrary/LibExpression
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/release/ -lDesignPattern
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug/ -lDesignPattern
 
-INCLUDEPATH += $$PWD/../DesignLibrary/DesignPattern
+INCLUDEPATH += $$PWD/../DesignLibrary/DesignPattern $$PWD/../3rdParty/xml2json/include
 DEPENDPATH += $$PWD/../DesignLibrary/DesignPattern
 
 HEADERS += \

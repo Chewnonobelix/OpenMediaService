@@ -30,6 +30,7 @@ SOURCES += \
         Controller/DataModel/playlistlistmodel.cpp \
         Controller/DataModel/playlistmodel.cpp \
         Controller/DataModel/smartmodel.cpp \
+        Controller/Plugins/interfaceimporter.cpp \
         Controller/Plugins/interfaceplugins.cpp \
         Controller/Plugins/pluginmanager.cpp \
         Model/Expression/containexpression.cpp \
@@ -80,6 +81,7 @@ HEADERS += \
     Controller/DataModel/playlistlistmodel.h \
     Controller/DataModel/playlistmodel.h \
     Controller/DataModel/smartmodel.h \
+    Controller/Plugins/interfaceimporter.h \
     Controller/Plugins/interfaceplugins.h \
     Controller/Plugins/pluginmanager.h \
     Model/Expression/containexpression.h \
@@ -112,6 +114,8 @@ LIBS += -L$$OUT_PWD/../Application/Ux -lUxComponents
 
 smart.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//Rules//*.json) $$shell_path($${OUT_PWD}//..//Application//Rules))
 tr.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//Tr//*.qm) $$shell_path($${OUT_PWD}//..//Application//Tr))
+thirdExe.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//3rdParty//*.exe) $$shell_path($${OUT_PWD}//..//Application//3rdParty))
+thirdDll.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//3rdParty//*.dll) $$shell_path($${OUT_PWD}//..//Application//3rdParty))
 
-QMAKE_EXTRA_TARGETS += smart tr
-POST_TARGETDEPS += smart tr
+QMAKE_EXTRA_TARGETS += smart tr thirdExe thirdDll
+POST_TARGETDEPS += smart tr thirdExe thirdDll

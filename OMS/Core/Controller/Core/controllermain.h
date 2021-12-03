@@ -16,6 +16,7 @@
 #include "controllersettings.h"
 #include <Controller/DataModel/librarydatamodel.h>
 #include <Controller/DataModel/smartmodel.h>
+#include <Controller/DataModel/playlistlistmodel.h>
 
 Q_DECLARE_LOGGING_CATEGORY(mainregister)
 Q_DECLARE_LOGGING_CATEGORY(mainlog)
@@ -32,7 +33,7 @@ private:
 
 public:
 	ControllerMain();
-	~ControllerMain() = default;
+    ~ControllerMain();
 
 	void exec();
 
