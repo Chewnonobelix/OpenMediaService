@@ -63,6 +63,7 @@ void ControllerComics::setPlaylist(PlaylistPointer p)
         for(auto it: *m_playlistPointer) {
             m_medias[it->id()] = ComicsMedia(it);
             m_medias[it->id()].load();
+            m_medias[it->id()].initComicsInfo();
         }
     }).then([p, this]() {
         m_comicsPlaylist.init(p, m_medias.values());

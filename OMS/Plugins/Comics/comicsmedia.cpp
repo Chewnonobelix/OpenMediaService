@@ -1,5 +1,7 @@
 #include "comicsmedia.h"
 
+#include <xml2json.hpp>
+
 ComicsMedia::ComicsMedia(const ComicsMedia& cm): QObject(), m_extractDir(cm.dir()), m_base(cm.base())
 {}
 
@@ -119,13 +121,6 @@ void ComicsMedia::initComicsInfo()
     if(!file.open(QIODevice::ReadOnly))
         return;
 
-    QDomDocument doc;
-    if(!doc.setContent(&file)) {
-        file.close();
-        return;
-    }
-
-    auto root = doc.documentElement();
-    //TODO
-
+    auto json = xml2json(file.readAll());
+    qDebug()<<json.c_str();
 }
