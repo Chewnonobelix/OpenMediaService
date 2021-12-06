@@ -42,7 +42,7 @@ unix {
 		INSTALLS += target qmldir
 }
 
-INCLUDEPATH = $$PWD/../Core
+INCLUDEPATH = $$PWD/../Core $$PWD/../3rdParty/xml2json/include
 DEPENDPATH = $$OUT_PWD/../../Application
 LIBS = -L$$OUT_PWD/../../Application -lLibMediaPlayerCore
 

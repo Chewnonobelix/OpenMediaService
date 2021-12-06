@@ -7,15 +7,28 @@
 
 #include <Model/media.h>
 
-class ComicsMedia
+class ComicsMedia: public QObject
 {
+    Q_OBJECT
+
 private:
     QSharedPointer<QTemporaryDir> m_extractDir;
     MediaPointer m_base;
 
+
 public:
+    enum class Frequencies {Annual, Monthly, OneShot, TwiceMonthly, Weekly};
+    Q_ENUM(Frequencies)
+    enum class Forms{ComicBook, GraphicNovel, Omnibus, TradePaperback, WebComic};
+    Q_ENUM(Forms)
+    enum class Formats{Print, Digital};
+    Q_ENUM(Formats)
+
     ComicsMedia() = default;
+    ComicsMedia(const ComicsMedia&);
     ComicsMedia(MediaPointer);
+    ~ComicsMedia() = default;
+    ComicsMedia& operator =(const ComicsMedia&);
 
     QString cover() const;
     void initComicsInfo();
@@ -25,5 +38,7 @@ public:
 
     void load();
     void unload();
+
+
 };
 
