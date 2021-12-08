@@ -22,6 +22,7 @@ public:
     virtual QObject *playlistView() = 0;
     virtual QUrl settingsView() const = 0;
 
+    virtual void configureLibrary(LibraryPointer) = 0;
 	virtual void setPlaylist(PlaylistPointer) = 0;
 	virtual void setMedia(MediaPointer) = 0;
 

@@ -71,7 +71,6 @@ void ControllerLibrary::onCurrentPlaylistChanged() {
 
     auto plugin = m_plugins[s_tabWrapper->currentId()];
     if (plugin && p) {
-
         s_tabWrapper->setPlaylist(m_playlist.currentIndex());
         plugin->setPlaylist(p);
     }
@@ -87,6 +86,7 @@ void ControllerLibrary::setPlaylistIndex(QString id, int index)
     if(!m_plugins.contains(QUuid::fromString(id)) || !m_plugins[QUuid::fromString(id)]) {
         m_plugins[QUuid::fromString(id)] = s_manager[m_current->role()]->clone();
         m_plugins[QUuid::fromString(id)]->exec();
+        m_plugins[QUuid::fromString(id)]->configureLibrary(m_current);
     }
 
     if(index != -1 &&  m_plugins.contains(QUuid::fromString(id))) {

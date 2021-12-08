@@ -152,3 +152,11 @@ void ComicsPlayer::setSplit(bool split)
     emit splitChanged();
     build();
 }
+
+QStringList ComicsPlayer::pageTags() const
+{
+    return QStringList();
+}
+
+void ComicsPlayer::setPageTag(QString, QString)
+{}

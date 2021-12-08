@@ -17,6 +17,7 @@ QUrl ControllerAudio::settingsView() const
     return QUrl();
 }
 
+void ControllerAudio::configureLibrary(LibraryPointer) {}
 void ControllerAudio::setPlaylist(PlaylistPointer) {}
 void ControllerAudio::setMedia(MediaPointer) {}
 

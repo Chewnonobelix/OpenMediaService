@@ -9,3 +9,4 @@ void InterfacePlugins::setID(QUuid id)
 {
     m_tabId = id;
 }
+
