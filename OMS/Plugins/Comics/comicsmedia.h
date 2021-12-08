@@ -17,11 +17,11 @@ private:
     bool m_isLoad = false;
 
 public:
-    enum class Frequencies {Annual, Monthly, OneShot, TwiceMonthly, Weekly};
+    enum class Frequencies {Unknow, Annual, Monthly, OneShot, TwiceMonthly, Weekly};
     Q_ENUM(Frequencies)
-    enum class Forms{ComicBook, GraphicNovel, Omnibus, TradePaperback, WebComic};
+    enum class Forms{Unknow, ComicBook, GraphicNovel, Omnibus, TradePaperback, WebComic};
     Q_ENUM(Forms)
-    enum class Formats{Print, Digital};
+    enum class Formats{Unknow, Print, Digital};
     Q_ENUM(Formats)
 
     ComicsMedia() = default;
@@ -40,5 +40,25 @@ public:
     void unload();
 
     bool isLoad() const;
+
+public:
+    QString country() const;
+    QDate coverDate() const;
+    QString coverPrice() const;
+    QString imprintName() const;
+    Frequencies indicialFrequency() const;
+    QString issueNumber() const;
+    QString language() const;
+    QString number() const;
+    QDate onSaleDate() const;
+    QString price() const;
+    int printing() const;
+    QDate publicationDate() const;
+    Frequencies publicationFrequency() const;
+    QString publisherName() const;
+    QString seriesTitle() const;
+    QString title() const;
+    QString variance() const;
+    QString volumeNumber() const;
 };
 
