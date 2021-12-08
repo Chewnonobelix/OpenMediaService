@@ -19,5 +19,6 @@
         <file>StyleSheet.qml</file>
         <file>PlaylistList.qml</file>
         <file>MediaMenu.qml</file>
+        <file>OrderDisplay.qml</file>
     </qresource>
 </RCC>
