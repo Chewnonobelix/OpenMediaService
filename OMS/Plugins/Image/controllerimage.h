@@ -35,7 +35,8 @@ public:
     QObject *playlistView() override;
     QUrl settingsView() const override;
 
-	void setPlaylist(PlaylistPointer) override;
+    void configureLibrary(LibraryPointer) override;
+    void setPlaylist(PlaylistPointer) override;
 	void setMedia(MediaPointer) override;
 
 	MediaRole role() const override;

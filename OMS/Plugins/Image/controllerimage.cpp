@@ -54,6 +54,8 @@ QObject *ControllerImage::playlistView() {
     return m_playlistObj;
 }
 
+void ControllerImage::configureLibrary(LibraryPointer) {}
+
 void ControllerImage::setPlaylist(PlaylistPointer p) {
     m_current->disconnect(SIGNAL(playlistChanged()), this, SLOT(onPlaylistChanged()));
     m_current = p;

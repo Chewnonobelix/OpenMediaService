@@ -12,6 +12,8 @@ QObject *ControllerVideo::playlistView() {
     return ret.create();
 }
 
+void ControllerVideo::configureLibrary(LibraryPointer) {}
+
 void ControllerVideo::setPlaylist(PlaylistPointer) {}
 
 void ControllerVideo::setMedia(MediaPointer) {}

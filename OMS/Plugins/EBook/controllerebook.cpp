@@ -17,6 +17,8 @@ QUrl ControllerEBook::settingsView() const
     return QUrl();
 }
 
+void ControllerEBook::configureLibrary(LibraryPointer) {}
+
 void ControllerEBook::setPlaylist(PlaylistPointer) {}
 void ControllerEBook::setMedia(MediaPointer) {}
 

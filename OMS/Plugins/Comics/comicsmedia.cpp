@@ -85,11 +85,14 @@ void ComicsMedia::load()
             t2.save(m_extractDir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2));
         }
     }
+
+    m_isLoad = m_extractDir && !list.isEmpty();
 }
 
 void ComicsMedia::unload()
 {
     m_extractDir.clear();
+    m_isLoad = false;
 }
 
 MediaPointer ComicsMedia::base() const
@@ -121,6 +124,106 @@ void ComicsMedia::initComicsInfo()
     if(!file.open(QIODevice::ReadOnly))
         return;
 
-    auto json = xml2json(file.readAll());
-    qDebug()<<json.c_str();
+    auto jsonstring = xml2json(file.readAll());
+    qDebug()<<jsonstring.c_str();
+    auto filler = [this](auto json) {
+
+    };
+    auto json = QJsonDocument::fromJson(jsonstring.c_str());
 }
+
+bool ComicsMedia::isLoad() const
+{
+    return m_isLoad;
+}
+
+QString ComicsMedia::country() const
+{
+    return QString();
+}
+
+QDate ComicsMedia::coverDate() const
+{
+    return QDate();
+}
+
+QString ComicsMedia::coverPrice() const
+{
+    return QString();
+}
+
+QString ComicsMedia::imprintName() const
+{
+    return QString();
+}
+
+ComicsMedia::Frequencies ComicsMedia::indicialFrequency() const
+{
+    return Frequencies::Unknow;
+}
+
+QString ComicsMedia::issueNumber() const
+{
+    return QString();
+}
+
+QString ComicsMedia::language() const
+{
+    return QString();
+}
+
+QString ComicsMedia::number() const
+{
+    return QString();
+}
+
+QDate ComicsMedia::onSaleDate() const
+{
+    return QDate();
+}
+
+QString ComicsMedia::price() const
+{
+    return QString();
+}
+
+int ComicsMedia::printing() const
+{
+    return 0;
+}
+
+QDate ComicsMedia::publicationDate() const
+{
+    return QDate();
+}
+
+ComicsMedia::Frequencies ComicsMedia::publicationFrequency() const
+{
+    return Frequencies::Unknow;
+}
+
+QString ComicsMedia::publisherName() const
+{
+    return QString();
+}
+
+QString ComicsMedia::seriesTitle() const
+{
+    return QString();
+}
+
+QString ComicsMedia::title() const
+{
+    return QString();
+}
+
+QString ComicsMedia::variance() const
+{
+    return QString();
+}
+
+QString ComicsMedia::volumeNumber() const
+{
+    return QString();
+}
+

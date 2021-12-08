@@ -51,6 +51,11 @@ QUrl ControllerComics::settingsView() const
     return QUrl("qrc:/comics/ComicsSettings.qml");
 }
 
+void ControllerComics::configureLibrary(LibraryPointer lp)
+{
+    m_library = lp;
+}
+
 void ControllerComics::setPlaylist(PlaylistPointer p)
 {
     disconnect(m_playlistPointer.data(), &PlayList::play, this, &ControllerComics::setMedia);
@@ -101,4 +106,17 @@ QList<QSharedPointer<InterfaceImporter>> ControllerComics::importers() const
     QList<QSharedPointer<InterfaceImporter>> ret;
     ret<<factory<ComicsRackImporter>();
     return ret;
+}
+
+QStringList ControllerComics::pageTags() const
+{
+    return m_library->metaData<QStringList>("pageTags");
+}
+
+void ControllerComics::addPageTag(QString tag)
+{
+    auto tags = pageTags();
+    tags<<tag;
+    tags.removeDuplicates();
+    m_library->setMetadata("pageTags", tags);
 }
