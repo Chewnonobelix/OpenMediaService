@@ -14,7 +14,7 @@ class ComicsMedia: public QObject
 private:
     QSharedPointer<QTemporaryDir> m_extractDir;
     MediaPointer m_base;
-
+    bool m_isLoad = false;
 
 public:
     enum class Frequencies {Annual, Monthly, OneShot, TwiceMonthly, Weekly};
@@ -39,6 +39,6 @@ public:
     void load();
     void unload();
 
-
+    bool isLoad() const;
 };
 

@@ -6,6 +6,7 @@
 #include <QImage>
 
 #include <Model/media.h>
+#include "comicsmedia.h"
 
 class ComicsPlayer: public QAbstractListModel
 {
@@ -19,20 +20,16 @@ class ComicsPlayer: public QAbstractListModel
     enum class ComicsPlayerRole {PageRole = Qt::UserRole + 1};
 
 private:
-    QTemporaryDir* m_dir = nullptr;
-    QTemporaryDir* m_dirNext = nullptr;
-    MediaPointer m_media;
-    MediaPointer m_mediaNext;
+    ComicsMedia m_media;
     QList<QString> m_pages;
-    QList<QString> m_pagesNext;
     bool m_split = false;
 
-    void build(bool = false);
+    void build();
 public:
     ComicsPlayer(QObject* = nullptr);
     ~ComicsPlayer() override;
 
-    bool play(MediaPointer);
+    bool play(ComicsMedia);
 
     int currentPage() const;
     void setCurrentPage(int);

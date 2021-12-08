@@ -5,54 +5,27 @@ ComicsPlayer::ComicsPlayer(QObject* parent): QAbstractListModel(parent)
 
 ComicsPlayer::~ComicsPlayer()
 {
-    if(m_dir)
-        delete m_dir;
 }
 
-bool ComicsPlayer::play(MediaPointer m)
+bool ComicsPlayer::play(ComicsMedia m)
 {
-    if(m_dir)
-        delete m_dir;
-
-    if(!m_dirNext) {
-        m_media = m;
-        auto p = m->path().split("/").last().split(".").first();
-        m_dir = new QTemporaryDir("temp/"+p);
-        m_dir->setAutoRemove(true);
-        QProcess unzipper;
-
-        unzipper.start("3rdParty/7z", QStringList()<<"x"<<"-o"+m_dir->path()<<m->path());
-        unzipper.waitForFinished();
-
-        build();
-    }
-    else {
-        m_dir = m_dirNext;
-        m_dirNext = nullptr;
-        m_pages.swap(m_pagesNext);
-        m_pagesNext.clear();
-        m_media = m_mediaNext;
-        m_mediaNext.clear();
-
-        beginInsertRows(QModelIndex(), 0, rowCount() - 1);
-        endInsertRows();
-        emit pageCount();
-        emit currentPageChanged();
+    m_media = m;
+    if(!m_media.isLoad()) {
+        m_media.load();
     }
 
-    return m_dir->errorString().isEmpty();
+    build();
+
+    return m_media.isLoad();
 }
 
-void ComicsPlayer::build(bool next)
+void ComicsPlayer::build()
 {
-    if(!m_dir && !next)
-        return;
-
-    if(!m_dirNext && next)
+    if(!m_media.isLoad())
         return;
 
     QDir dir;
-    dir.cd(next ? m_dirNext->path() : m_dir->path());
+    dir.cd(m_media.dir()->path());
     auto ret = dir.cd("split");
     if(ret) {
         dir.removeRecursively();
@@ -71,26 +44,22 @@ void ComicsPlayer::build(bool next)
         if(split() && i.width() > i.height()) {
             auto t1 = i.copy(0,0, i.width() / 2, i.height());
             auto t2 = i.copy(i.width() / 2,0, i.width() / 2, i.height());
-            t1.save(m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1));
-            t2.save(m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2));
-            working<<(m_media->metaData<bool>("rightToLeft") ? m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2) : m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1));
-            working<<(m_media->metaData<bool>("rightToLeft") ? m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1) : m_dir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2));
+            t1.save(dir.absolutePath()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1));
+            t2.save(dir.absolutePath()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2));
+            working<<(m_media.base()->metaData<bool>("rightToLeft") ? dir.absolutePath()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2) : (dir.absolutePath()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1)));
+            working<<(m_media.base()->metaData<bool>("rightToLeft") ? dir.absolutePath()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(1) : (dir.absolutePath()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2)));
         }
         else {
             working<<it.absoluteFilePath();
         }
     }
 
-    if(next)
-        m_pagesNext = working;
-    else {
-        m_pages = working;
+    m_pages = working;
 
-        beginInsertRows(QModelIndex(), 0, rowCount() - 1);
-        endInsertRows();
-        emit pageCount();
-        emit currentPageChanged();
-    }
+    beginInsertRows(QModelIndex(), 0, rowCount() - 1);
+    endInsertRows();
+    emit pageCount();
+    emit currentPageChanged();
 }
 
 int ComicsPlayer::rowCount(const QModelIndex& ) const
@@ -122,13 +91,13 @@ bool ComicsPlayer::setData(const QModelIndex &, const QVariant &, int)
 
 int ComicsPlayer::currentPage() const
 {
-    auto name = m_media ? m_media->metaData<QString>("currentPage") : "";
+    auto name = m_media.base() ? m_media.base()->metaData<QString>("currentPage") : "";
 
     int ret = 0;
     auto file = name.split("/").last().split(".").first();
     QRegularExpression reg(".*"+file+".*");
     if(!name.isEmpty() && !m_pages.contains(reg) && split()) {
-        ret = std::max(m_pages.indexOf(m_dir->path()+"/split/"+file+"__1.jpg"), 0ll);
+        ret = std::max(m_pages.indexOf(m_media.dir()->path()+"/split/"+file+"__1.jpg"), 0ll);
     }
     else if(!name.isEmpty() && !m_pages.contains(reg)) {
         ret = std::max(m_pages.indexOf(QRegularExpression(".*"+file.split("__").first()+".*")), 0ll);
@@ -142,13 +111,13 @@ int ComicsPlayer::currentPage() const
 
 void ComicsPlayer::setCurrentPage(int cp)
 {
-    if(m_media && cp < m_pages.count() && cp >= 0) {
-        m_media->setMetadata("currentPage", m_pages[cp]);
-        m_media->setCurrentRead((cp + 1) / (double)m_pages.count() * 100.0);
+    if(m_media.base() && cp < m_pages.count() && cp >= 0) {
+        m_media.base()->setMetadata("currentPage", m_pages[cp]);
+        m_media.base()->setCurrentRead((cp + 1) / (double)m_pages.count() * 100.0);
         emit currentPageChanged();
 
-        if(m_media->currentRead() == 100.0)
-            m_media->setCount(m_media->count() + 1);
+        if(m_media.base()->currentRead() == 100.0)
+            m_media.base()->setCount(m_media.base()->count() + 1);
     }
 }
 
@@ -169,7 +138,7 @@ void ComicsPlayer::previous()
 
 bool ComicsPlayer::rightToLeft() const
 {
-    return m_media->metaData<bool>("rightToLeft");
+    return m_media.base()->metaData<bool>("rightToLeft");
 }
 
 bool ComicsPlayer::split() const

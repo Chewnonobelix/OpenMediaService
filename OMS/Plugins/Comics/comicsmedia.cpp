@@ -85,11 +85,14 @@ void ComicsMedia::load()
             t2.save(m_extractDir->path()+QString("/split/%1__%2.jpg").arg(it.baseName()).arg(2));
         }
     }
+
+    m_isLoad = m_extractDir && !list.isEmpty();
 }
 
 void ComicsMedia::unload()
 {
     m_extractDir.clear();
+    m_isLoad = false;
 }
 
 MediaPointer ComicsMedia::base() const
@@ -123,4 +126,9 @@ void ComicsMedia::initComicsInfo()
 
     auto json = xml2json(file.readAll());
     qDebug()<<json.c_str();
+}
+
+bool ComicsMedia::isLoad() const
+{
+    return m_isLoad;
 }
