@@ -71,6 +71,7 @@ public:
     Q_INVOKABLE MediaPointer next();
     Q_INVOKABLE MediaPointer prev();
     bool setReadOrder(QList<int>);
+    QList<int> readOrder() const;
 
     virtual void set();
 signals:

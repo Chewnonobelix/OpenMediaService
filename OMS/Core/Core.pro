@@ -27,6 +27,7 @@ SOURCES += \
         Controller/Data/dataxml.cpp \
         Controller/Data/interfacesaver.cpp \
         Controller/DataModel/librarydatamodel.cpp \
+        Controller/DataModel/orderdisplaymodel.cpp \
         Controller/DataModel/playlistlistmodel.cpp \
         Controller/DataModel/playlistmodel.cpp \
         Controller/DataModel/smartmodel.cpp \
@@ -78,6 +79,7 @@ HEADERS += \
     Controller/Data/dataxml.h \
     Controller/Data/interfacesaver.h \
     Controller/DataModel/librarydatamodel.h \
+    Controller/DataModel/orderdisplaymodel.h \
     Controller/DataModel/playlistlistmodel.h \
     Controller/DataModel/playlistmodel.h \
     Controller/DataModel/smartmodel.h \

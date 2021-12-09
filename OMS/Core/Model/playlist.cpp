@@ -173,3 +173,8 @@ int PlayList::indexOf(QUuid id) const
     });
     return std::distance(begin(), it);
 }
+
+QList<int> PlayList::readOrder() const
+{
+    return m_readOrder;
+}
