@@ -25,5 +25,8 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     void setPlaylist(PlaylistPointer);
+
+public slots:
+    void onReadOrderChanged();
 };
 

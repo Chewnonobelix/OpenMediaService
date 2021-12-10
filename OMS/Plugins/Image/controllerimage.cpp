@@ -7,6 +7,7 @@ Q_LOGGING_CATEGORY(imageerror, "image.error")
 Q_LOGGING_CATEGORY(imagelog, "image.log")
 
 void ControllerImage::exec() {
+    m_orderModel = new OrderDisplayModel;
     auto* root = engine()->qmlEngine().rootContext();
     context = new QQmlContext(root);
     context->setContextProperty("_imageLibrairyModel", &m_model);
@@ -61,6 +62,7 @@ void ControllerImage::setPlaylist(PlaylistPointer p) {
     m_current = p;
     m_model.setPlaylist(p);
     m_listModel.setPlaylist(p);
+    m_orderModel->setPlaylist(p);
 
     if(p) {
         connect(m_current.data(), &PlayList::play, this, &ControllerImage::setMedia,
@@ -123,4 +125,9 @@ void ControllerImage::onPlaylistChanged()
 {
     auto pl = ((PlayList*)sender())->sharedFromThis();
     setPlaylist(pl);
+}
+
+OrderDisplayModel* ControllerImage::orderModel()
+{
+    return m_orderModel;
 }

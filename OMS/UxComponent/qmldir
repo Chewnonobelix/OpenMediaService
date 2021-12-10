@@ -15,5 +15,6 @@ MediaWindow 1.0 qrc:/MediaWindow.qml
 MediaTabButton 1.0 qrc:/MediaTabButton.qml
 Rating 1.0 qrc:/Rating.qml
 PlaylistList 1.0 qrc:/PlaylistList.qml
+OrderDisplay 1.0 qrc:/OrderDisplay.qml
 plugin UxComponents
 typeinfo plugin.qmltypes

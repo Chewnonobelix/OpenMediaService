@@ -103,7 +103,8 @@ MediaPointer PlayList::next() {
 
     if (!m_readOrder.isEmpty()) {
         auto index = m_readOrder.takeFirst();
-		ret = at(index);
+        setCurrentIndex(currentIndex() + 1);
+        ret = at(index);
         emit play(ret);
     }
 	return ret;

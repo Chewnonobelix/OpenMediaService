@@ -3,7 +3,7 @@
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/Plugins/interfaceplugins.h>
 #include <Controller/DataModel/playlistlistmodel.h>
-
+#include <Controller/DataModel/orderdisplaymodel.h>
 #include "librairyimagemodel.h"
 
 class ControllerImage : public AbstractController, public InterfacePlugins {
@@ -12,11 +12,14 @@ class ControllerImage : public AbstractController, public InterfacePlugins {
     Q_PLUGIN_METADATA(IID "com.chewnonobelix.MediaPlayer.Image")
     Q_DISABLE_COPY(ControllerImage)
 
+    Q_PROPERTY(OrderDisplayModel* orderModel READ orderModel CONSTANT)
+
 private:
 	PlaylistPointer m_current;
 
     LibrairyImageModel m_model;
     PlaylistListModel m_listModel;
+    QPointer<OrderDisplayModel> m_orderModel;
 
 	QTimer m_timer;
     static QPointer<QQmlComponent> s_playlist;
@@ -47,6 +50,7 @@ public:
     }
 
     QSharedPointer<InterfacePlugins> clone() const override;
+    OrderDisplayModel* orderModel();
 
 public slots:
 	void onCurrentIndexChanged(int);

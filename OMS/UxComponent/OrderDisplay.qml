@@ -13,15 +13,24 @@ Item {
         anchors.fill: parent
 
         ListView {
+            id: list
             model: root.model
+            Layout.fillHeight: true
             delegate: ItemDelegate {
                 visible:  isExpand || index < 5
-                text: display
+                text: path
             }
         }
 
         Label {
             text:  isExpand ? "^ reduce ^" : "v expand v"
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    isExpand = !isExpand
+                }
+            }
         }
     }
 }
