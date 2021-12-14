@@ -52,7 +52,6 @@ Item {
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
 
-
         onWheel: function(wheel){
             if(wheel.angleDelta.y > 0) {
                 _image.onCurrentIndexChanged(-1)
@@ -74,7 +73,7 @@ Item {
             id: od
 
             model: _image.orderModel
-
+            popAnchorsLeft: false
             anchors {
                 left: display.left
                 top: display.top

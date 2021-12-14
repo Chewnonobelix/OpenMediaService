@@ -8,6 +8,7 @@ Button {
     property OrderDisplayModel model
     property int popupWidth: 0
     property int popupHeight: 0
+    property bool popAnchorsLeft: false
 
     icon {
         height: root.height
@@ -20,6 +21,8 @@ Button {
 
         width: root.popupWidth
         height: (display.isExpand ? 2 : 1) * root.popupHeight
+
+        x: popAnchorsLeft ? -width : root.width
 
         OrderDisplay {
             id: display
