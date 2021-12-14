@@ -16,14 +16,19 @@ Item {
             id: list
             model: root.model
             Layout.fillHeight: true
+            Layout.fillWidth: true
             delegate: ItemDelegate {
                 visible:  isExpand || index < 5
                 text: path
+                width: list.width
+                height: isExpand ? list.height * 0.1 : list.height * 0.2
             }
         }
 
         Label {
             text:  isExpand ? "^ reduce ^" : "v expand v"
+            Layout.preferredHeight: root.height * 0.05
+            Layout.fillWidth: true
 
             MouseArea {
                 anchors.fill: parent

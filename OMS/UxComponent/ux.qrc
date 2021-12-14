@@ -20,5 +20,6 @@
         <file>PlaylistList.qml</file>
         <file>MediaMenu.qml</file>
         <file>OrderDisplay.qml</file>
+        <file>ButtonOrder.qml</file>
     </qresource>
 </RCC>

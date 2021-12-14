@@ -70,18 +70,21 @@ Item {
         fillMode: Image.PreserveAspectFit
         source: root.parent && root.parent.media ? "file:///" + root.parent.media.paths[0] : ""
 
-        OrderDisplay {
+        ButtonOrder {
             id: od
 
             model: _image.orderModel
 
             anchors {
-                right: display.right
+                left: display.left
                 top: display.top
             }
 
-            width: display.width * .3
-            height: display.height * .8
+            width: display.width * .1
+            height: display.height * .1
+
+            popupWidth: display.width * 0.3
+            popupHeight:  display.height * 0.4
         }
     }
 }
