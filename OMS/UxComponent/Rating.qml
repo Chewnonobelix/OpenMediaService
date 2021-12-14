@@ -27,7 +27,7 @@ Item {
             model: rating
             Image {
                 id: name
-                source: "qrc:/icon/rating_star.png"
+                source: "qrc:/icons/rating_star.png"
                 width: row.width*0.1
                 height: row.height
             }

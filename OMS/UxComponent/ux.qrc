@@ -15,11 +15,34 @@
         <file>MediaTabButton.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>Rating.qml</file>
-        <file>icon/rating_star.png</file>
         <file>StyleSheet.qml</file>
         <file>PlaylistList.qml</file>
         <file>MediaMenu.qml</file>
         <file>OrderDisplay.qml</file>
         <file>ButtonOrder.qml</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file>rating_star.png</file>
+        <file>settings.png</file>
+        <file>image.png</file>
+        <file>movie.png</file>
+        <file>broadcast.png</file>
+        <file>stop.png</file>
+        <file>play.png</file>
+        <file>music.png</file>
+        <file>repeat_one.png</file>
+        <file>repeat.png</file>
+        <file>pause.png</file>
+        <file>backward.png</file>
+        <file>notification_inactive.png</file>
+        <file>notification_active.png</file>
+        <file>previous.png</file>
+        <file>next.png</file>
+        <file>fullscreen.png</file>
+        <file>shuffle.png</file>
+        <file>forward.png</file>
+        <file>volume_up.png</file>
+        <file>volume_mute.png</file>
+        <file>playlist.png</file>
     </qresource>
 </RCC>
