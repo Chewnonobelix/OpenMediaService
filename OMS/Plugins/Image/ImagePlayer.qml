@@ -80,7 +80,7 @@ Item {
                 top: display.top
             }
 
-            width: display.width * .1
+            width: display.width * .075
             height: display.height * .1
 
             popupWidth: display.width * 0.3

@@ -9,6 +9,12 @@ Button {
     property int popupWidth: 0
     property int popupHeight: 0
 
+    icon {
+        height: root.height
+        width: root.width
+        source: "qrc:/icons/playlist.png"
+    }
+
     Popup {
         id: pop
 
