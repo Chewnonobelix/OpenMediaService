@@ -10,6 +10,14 @@ Button {
     property int popupHeight: 0
     property bool popAnchorsLeft: false
 
+    enum AnchorType {
+        Left,
+        Right,
+        Top,
+        Bottom
+    }
+
+    property int positionning: ButtonOrder.AnchorType.Right
     icon {
         height: root.height
         width: root.width
@@ -22,7 +30,8 @@ Button {
         width: root.popupWidth
         height: (display.isExpand ? 2 : 1) * root.popupHeight
 
-        x: popAnchorsLeft ? -width : root.width
+        x: positionning === ButtonOrder.AnchorType.Right ? root.width : positionning === ButtonOrder.AnchorType.Left ? -width : -width/2 + root.width / 2
+        y: positionning === ButtonOrder.AnchorType.Top ? -height : positionning === ButtonOrder.AnchorType.Bottom ? root.height : 0
 
         OrderDisplay {
             id: display

@@ -48,7 +48,7 @@ void OrderDisplayModel::setPlaylist(PlaylistPointer pl)
 
     if(m_playlist) {
         connect(m_playlist.data(), &PlayList::currentIndexChanged, this, &OrderDisplayModel::onReadOrderChanged);
-        beginInsertRows(QModelIndex(), 0, m_playlist->readOrder().count());
+        beginInsertRows(QModelIndex(), 0, m_playlist->readOrder().count() - 1);
         endInsertRows();
     }
 

@@ -73,9 +73,9 @@ Item {
             id: od
 
             model: _image.orderModel
-            popAnchorsLeft: false
+            positionning: ButtonOrder.AnchorType.Left
             anchors {
-                left: display.left
+                right: display.right
                 top: display.top
             }
 
