@@ -14,6 +14,7 @@ class MEDIAPLAYERCORE_EXPORT OrderDisplayModel: public QAbstractListModel
 private:
     enum class OrderRole{DisplayRole = Qt::UserRole + 1, IndexRole, CurrentIndexRole};
     PlaylistPointer m_playlist;
+    QString m_toDisplay;
 
 public:
     OrderDisplayModel(QObject* = nullptr);
@@ -25,6 +26,8 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     void setPlaylist(PlaylistPointer);
+    void setToDisplay(QString);
+    QString toDisplay() const;
 
 public slots:
     void onReadOrderChanged();

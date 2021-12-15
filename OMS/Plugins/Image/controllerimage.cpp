@@ -8,6 +8,7 @@ Q_LOGGING_CATEGORY(imagelog, "image.log")
 
 void ControllerImage::exec() {
     m_orderModel = new OrderDisplayModel;
+    m_orderModel->setToDisplay("fileName");
     auto* root = engine()->qmlEngine().rootContext();
     context = new QQmlContext(root);
     context->setContextProperty("_imageLibrairyModel", &m_model);
@@ -42,7 +43,6 @@ void ControllerImage::exec() {
          s_player = new QQmlComponent(&(engine()->qmlEngine()),
                                  QUrl("qrc:/image/ImagePlayer.qml"));
     m_playerObj = s_player->create(contextPlayer);
-
     qCDebug(imageerror)<<"Image plugins playlist component"<<s_playlist->errorString();
     qCDebug(imageerror)<<"Image plugins player component"<<s_player->errorString();
 }
@@ -69,6 +69,10 @@ void ControllerImage::setPlaylist(PlaylistPointer p) {
                 Qt::UniqueConnection);
         connect(m_current.data(), SIGNAL(playlistChanged()), this, SLOT(onPlaylistChanged()));
 
+        for(auto it: *p) {
+            auto split = it->path().split("/");
+            it->setMetadata("fileName", split.last());
+        }
     }
 }
 

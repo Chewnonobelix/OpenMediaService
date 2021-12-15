@@ -10,9 +10,11 @@ QVariant OrderDisplayModel::data(const QModelIndex & index, int role) const
     if(index.row() < 0 || index.row() >= rowCount())
         return QVariant();
 
+    auto m = (*m_playlist)[m_playlist->readOrder()[index.row()]];
+
     switch(OrderRole(role)) {
     case OrderRole::DisplayRole:
-        return (*m_playlist)[m_playlist->readOrder()[index.row()]]->path();
+        return !m->metaData<QString>(toDisplay(), "").isEmpty() ? m->metaData<QString>(toDisplay(), "") : m->path();
     case OrderRole::IndexRole:
         return m_playlist->readOrder()[index.row()];
     case OrderRole::CurrentIndexRole:
@@ -58,4 +60,13 @@ void OrderDisplayModel::onReadOrderChanged()
 {
     beginResetModel();
     endResetModel();
+}
+
+void OrderDisplayModel::setToDisplay(QString v)
+{
+    m_toDisplay = v;
+}
+QString OrderDisplayModel::toDisplay() const
+{
+    return m_toDisplay;
 }
