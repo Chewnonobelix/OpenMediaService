@@ -103,7 +103,8 @@ MediaPointer PlayList::next() {
 
     if (!m_readOrder.isEmpty()) {
         auto index = m_readOrder.takeFirst();
-		ret = at(index);
+        setCurrentIndex(currentIndex() + 1);
+        ret = at(index);
         emit play(ret);
     }
 	return ret;
@@ -172,4 +173,9 @@ int PlayList::indexOf(QUuid id) const
             return m->id() == id;
     });
     return std::distance(begin(), it);
+}
+
+QList<int> PlayList::readOrder() const
+{
+    return m_readOrder;
 }

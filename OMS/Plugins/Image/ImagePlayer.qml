@@ -1,6 +1,10 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+import MediaPlayer 1.0
+import MediaPlayer.Model 1.0
+import MediaPlayer.Components 1.0
+
 Item {
     id: root
 
@@ -48,7 +52,6 @@ Item {
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
 
-
         onWheel: function(wheel){
             if(wheel.angleDelta.y > 0) {
                 _image.onCurrentIndexChanged(-1)
@@ -60,12 +63,27 @@ Item {
         }
     }
 
-
-
     Image {
         id: display
         anchors.fill: parent
         fillMode: Image.PreserveAspectFit
         source: root.parent && root.parent.media ? "file:///" + root.parent.media.paths[0] : ""
+
+        ButtonOrder {
+            id: od
+
+            model: _image.orderModel
+            positionning: ButtonOrder.AnchorType.Left
+            anchors {
+                right: display.right
+                top: display.top
+            }
+
+            width: display.width * .075
+            height: display.height * .1
+
+            popupWidth: display.width * 0.3
+            popupHeight:  display.height * 0.4
+        }
     }
 }
