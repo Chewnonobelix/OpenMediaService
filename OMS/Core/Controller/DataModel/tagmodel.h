@@ -1,21 +1,25 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QUuid>
+
+#include <Model/global.h>
 
 class TagModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_DISABLE_COPY(TagModel)
 
-    enum class TagRole {};
+    enum class TagRole {TagRole = Qt::UserRole + 1, UidRole};
 
 public:
     explicit TagModel(QObject *parent = nullptr);
     ~TagModel() override = default;
 
-    bool addTag(Qstring);
+    bool addTag(QString);
     bool editTag(QUuid, QString);
     bool removeTag(QUuid);
+    void setModel(QList<MediaPlayerGlobal::Tag>);
 
 public:
     // Basic functionality:
@@ -24,10 +28,11 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 private:
+    QList<MediaPlayerGlobal::Tag> m_model;
 
 signals:
-    void s_addTag(QString);
-    void s_editTag(QUuid, QString);
-    void s_removeTag(QUuid);
+    void s_addTag(MediaPlayerGlobal::Tag);
+    void s_editTag(MediaPlayerGlobal::Tag);
+    void s_removeTag(MediaPlayerGlobal::Tag);
 };
 

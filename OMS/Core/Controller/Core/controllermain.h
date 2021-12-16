@@ -18,6 +18,7 @@
 #include <Controller/DataModel/smartmodel.h>
 #include <Controller/DataModel/playlistlistmodel.h>
 #include <Controller/DataModel/orderdisplaymodel.h>
+#include <Controller/DataModel/tagmodel.h>
 
 Q_DECLARE_LOGGING_CATEGORY(mainregister)
 Q_DECLARE_LOGGING_CATEGORY(mainlog)

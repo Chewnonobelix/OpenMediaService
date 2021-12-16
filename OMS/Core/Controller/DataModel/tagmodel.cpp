@@ -5,17 +5,12 @@ TagModel::TagModel(QObject *parent)
 {
 }
 
-int TagModel::rowCount(const QModelIndex &parent) const
+int TagModel::rowCount(const QModelIndex &) const
 {
-    // For list models only the root node (an invalid parent) should return the list's size. For all
-    // other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
-    if (parent.isValid())
-        return 0;
-
-    // FIXME: Implement me!
+    return m_model.count();
 }
 
-QVariant TagModel::data(const QModelIndex &index, int role) const
+QVariant TagModel::data(const QModelIndex &index, int) const
 {
     if (!index.isValid())
         return QVariant();
@@ -26,22 +21,66 @@ QVariant TagModel::data(const QModelIndex &index, int role) const
 
 QHash<int, QByteArray> TagModel::roleNames() const
 {
-    static QHash<int, QByteArray> ret = {};
+    static QHash<int, QByteArray> ret = {{int(TagRole::TagRole), "tag"},
+                                         {int(TagRole::UidRole), "uid"}};
 
     return ret;
 }
 
-bool TagModel::addTag(Qstring)
+bool TagModel::addTag(QString tag)
 {
+    auto find = std::find_if(m_model.begin(), m_model.end(), [tag](auto it) {
+                    return tag == it.second;
+                }) != m_model.end();
+
+    if(!find) {
+        auto newTag = QPair<QUuid, QString>{QUuid::createUuid(), tag};
+        emit s_addTag(newTag);
+        return true;
+    }
+
     return false;
 }
 
-bool TagModel::editTag(QUuid, QString)
+bool TagModel::editTag(QUuid id, QString tag)
 {
+    auto ret = std::find_if(m_model.begin(), m_model.end(), [id](auto it) {
+        return id == it.first;
+    });
+
+    if(ret != m_model.end()) {
+        (*ret).second = tag;
+        emit s_editTag(*ret);
+
+        beginResetModel();
+        endResetModel();
+        return true;
+    }
+
     return false;
 }
 
-bool TagModel::removeTag(QUuid)
+bool TagModel::removeTag(QUuid id)
 {
+    auto ret = std::find_if(m_model.begin(), m_model.end(), [id](auto it) {
+        return id == it.first;
+    });
+
+    if(ret != m_model.end()) {
+        emit s_removeTag(*ret);
+        return true;
+    }
+
     return false;
+}
+
+void TagModel::setModel(QList<MediaPlayerGlobal::Tag> model)
+{
+    beginRemoveRows(QModelIndex(), 0, rowCount());
+    endRemoveRows();
+
+    m_model = model;
+
+    beginInsertRows(QModelIndex(), 0, rowCount() - 1);
+    endInsertRows();
 }

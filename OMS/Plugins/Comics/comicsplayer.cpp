@@ -83,7 +83,10 @@ QVariant ComicsPlayer::data(const QModelIndex& index, int role) const
     case ComicsPlayerRole::PageRole:
         return m_pages[index.row()];
     }
+
+    return QVariant();
 }
+
 bool ComicsPlayer::setData(const QModelIndex &, const QVariant &, int)
 {
     return false;

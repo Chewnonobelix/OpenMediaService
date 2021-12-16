@@ -20,6 +20,7 @@ enum class Type {Number = 2, String = 4, Date = 6, Container = 1,
                 NumberContainer = Number | Container, StringContainer = String | Container};
 Q_FLAG_NS(Type)
 
+using Tag = QPair<QUuid, QString>;
 
 template <class T> QSet<T> toSet(QList<T> l) {
 	return QSet<T>(l.begin(), l.end());
