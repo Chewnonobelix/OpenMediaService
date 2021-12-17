@@ -41,6 +41,10 @@ private:
 
     QPointer<QThread> m_replacer = nullptr;
 
+
+    QJsonArray jsonTagList(QList<MediaPlayerGlobal::Tag>) const;
+    QList<MediaPlayerGlobal::Tag> fromjsonTagList(QJsonArray) const;
+
 public:
 	Library();
 	using MetaData::MetaData;
@@ -69,6 +73,9 @@ public:
     void addTag(MediaPlayerGlobal::Tag);
     void editTag(MediaPlayerGlobal::Tag);
     void removeTag(MediaPlayerGlobal::Tag);
+
+    void setTagList(QStringList);
+    QStringList tagList() const;
 
 public slots:
     Q_INVOKABLE bool scan();

@@ -3,6 +3,9 @@
 QQmlComponent* ControllerComics::s_viewComp = nullptr;
 QQmlComponent* ControllerComics::s_playlistComp = nullptr;
 
+ControllerComics::ControllerComics(): AbstractController(), m_pageTagModel(this)
+{}
+
 void ControllerComics::exec()
 {
     m_player.setSplit(s_settings->value("Comics/split").toBool());

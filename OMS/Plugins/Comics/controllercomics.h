@@ -36,7 +36,7 @@ private:
     TagModel m_pageTagModel;
 
 public:
-    ControllerComics() = default;
+    ControllerComics();
     ~ControllerComics() override = default;
 
     void exec() override;
