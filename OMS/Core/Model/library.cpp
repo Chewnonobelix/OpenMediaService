@@ -106,7 +106,7 @@ Library::operator QJsonObject() const {
         obj["tag"] = it.second;
         vl<<obj;
     }
-    qDebug()<<vl;
+
     ret["tags"] = vl;
 
     return ret;

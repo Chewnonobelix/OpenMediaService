@@ -36,7 +36,7 @@ QHash<int, QByteArray> TagModel::roleNames() const
     return ret;
 }
 
-bool TagModel::addTag(QString tag)
+QString TagModel::addTag(QString tag)
 {
     auto find = std::find_if(m_model.begin(), m_model.end(), [tag](auto it) {
                     return tag == it.second;
@@ -45,10 +45,10 @@ bool TagModel::addTag(QString tag)
     if(!find) {
         auto newTag = QPair<QUuid, QString>{QUuid::createUuid(), tag};
         emit s_addTag(newTag);
-        return true;
+        return newTag.first.toString();
     }
 
-    return false;
+    return "";
 }
 
 bool TagModel::editTag(QUuid id, QString tag)

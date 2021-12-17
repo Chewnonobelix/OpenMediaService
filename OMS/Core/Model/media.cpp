@@ -212,7 +212,7 @@ void Media::setTags(QStringList tags)
 void Media::setTag(QString tag)
 {
     auto tagss = tags();
-    if(hasMetadata(tag))
+    if(tagss.contains(tag))
         tagss.removeAll(tag);
     else
         tagss<<tag;

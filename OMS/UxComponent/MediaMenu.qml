@@ -67,9 +67,9 @@ Menu {
 
                 onClosed: {
                     if(addTag.text !== "") {
-                        tagRepeater.model.addTag(addTag.text)
-//                        _librariesModel.at(_librariesModel.currentIndex).setTag(addTag.text)
-//                        media.setTag(addTag.text)
+                        var uid = tagRepeater.model.addTag(addTag.text)
+                        if(uid !== "")
+                            media.setTag(uid)
                     }
                 }
 
@@ -105,9 +105,9 @@ Menu {
             MenuItem {
                 text: tag
                 checkable: true
-//                checked: media ? media.hasTag(modelData) : false
+                checked: media ? media.hasTag(uid) : false
 
-                onClicked: console.log(tag, uid)
+                onClicked: media.setTag(uid)
 
                 Menu {
                     MenuItem {

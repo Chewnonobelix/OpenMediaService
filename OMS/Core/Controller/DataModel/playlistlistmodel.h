@@ -31,6 +31,7 @@ private:
         int width = -1;
     };
 
+    QList<MediaPlayerGlobal::Tag> m_tags;
     PlaylistPointer m_model;
     QList<int> m_sortList;
     QList<Column> m_columns;
@@ -67,7 +68,7 @@ public:
     bool resizeColumn();
     Q_INVOKABLE int columnWidth(int) const;
     Q_INVOKABLE void setColumnWidth(int, int);
-
+    void setTags(QList<MediaPlayerGlobal::Tag>);
 signals:
     void widthChanged();
 };

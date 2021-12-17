@@ -16,7 +16,7 @@ public:
     explicit TagModel(QObject *parent = nullptr);
     ~TagModel() override = default;
 
-    Q_INVOKABLE bool addTag(QString);
+    Q_INVOKABLE QString addTag(QString);
     Q_INVOKABLE bool editTag(QUuid, QString);
     Q_INVOKABLE bool removeTag(QUuid);
     void setModel(QList<MediaPlayerGlobal::Tag>);
