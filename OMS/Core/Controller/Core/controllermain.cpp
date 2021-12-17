@@ -82,7 +82,7 @@ void ControllerMain::exec() {
 
     qCDebug(mainregister) << "PlaylistListModel" << qmlRegisterUncreatableType<PlaylistListModel>("MediaPlayer.Model", 1, 0, "PlaylistListModel", "Cpp owner");
     qCDebug(mainregister) << "OrderDisplayModel" << qmlRegisterUncreatableType<OrderDisplayModel>("MediaPlayer.Model", 1, 0, "OrderDisplayModel", "Cpp owner");
-    qCDebug(mainregister) << "TagModel" << qmlRegisterUncreatableType<TagModel>("MediaPlayer.MOdel", 1, 0, "TagModel", "Cpp owner");
+    qCDebug(mainregister) << "TagModel" << qmlRegisterUncreatableType<TagModel>("MediaPlayer.Model", 1, 0, "TagModel", "Cpp owner");
     setDb(s_settings->db());
 
     auto root = engine().rootContext();
