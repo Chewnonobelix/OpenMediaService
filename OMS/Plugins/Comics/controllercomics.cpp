@@ -15,6 +15,7 @@ void ControllerComics::exec()
 
     auto comicsContext = new QQmlContext(engine()->qmlEngine().rootContext());
     comicsContext->setContextProperty("_comics", this);
+    comicsContext->setContextProperty("_pageTagModel", &m_pageTagModel);
 
     if(!s_viewComp)
         s_viewComp = new QQmlComponent(&engine()->qmlEngine(), QUrl("qrc:/comics/ComicsView.qml"));

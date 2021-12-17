@@ -4,6 +4,7 @@
 #include <Controller/Plugins/interfaceplugins.h>
 
 #include <Controller/DataModel/playlistlistmodel.h>
+#include <Controller/DataModel/tagmodel.h>
 
 #include "comicsplayer.h"
 #include "comicsrackimporter.h"
@@ -32,6 +33,7 @@ private:
     QMap<QUuid, ComicsMedia> m_medias;
     PlaylistPointer m_playlistPointer;
     LibraryPointer m_library;
+    TagModel m_pageTagModel;
 
 public:
     ControllerComics() = default;
