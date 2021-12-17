@@ -10,10 +10,19 @@ int TagModel::rowCount(const QModelIndex &) const
     return m_model.count();
 }
 
-QVariant TagModel::data(const QModelIndex &index, int) const
+QVariant TagModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
         return QVariant();
+
+    switch(TagRole(role)) {
+    case TagRole::TagRole:
+        return m_model[index.row()].second;
+        break;
+    case TagRole::UidRole:
+        return m_model[index.row()].first;
+        break;
+    }
 
     // FIXME: Implement me!
     return QVariant();
