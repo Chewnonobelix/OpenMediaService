@@ -14,7 +14,7 @@ Menu {
     property Media media
 
     onOpened: {
-        tagRepeater.model = _librariesModel.at(_librariesModel.currentIndex).tag
+        tagRepeater.model = _librariesModel.controller(_librariesModel.currentIndex).tags
     }
 
     MenuItem {
@@ -67,8 +67,9 @@ Menu {
 
                 onClosed: {
                     if(addTag.text !== "") {
-                        _librariesModel.at(_librariesModel.currentIndex).setTag(addTag.text)
-                        media.setTag(addTag.text)
+                        tagRepeater.model.addTag(addTag.text)
+//                        _librariesModel.at(_librariesModel.currentIndex).setTag(addTag.text)
+//                        media.setTag(addTag.text)
                     }
                 }
 
@@ -102,11 +103,11 @@ Menu {
             id: tagRepeater
 
             MenuItem {
-                text: modelData
+                text: tag
                 checkable: true
-                checked: media ? media.hasTag(modelData) : false
+//                checked: media ? media.hasTag(modelData) : false
 
-                onClicked: media.setTag(modelData)
+                onClicked: console.log(tag, uid)
 
                 Menu {
                     MenuItem {

@@ -4,6 +4,7 @@
 
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/DataModel/playlistmodel.h>
+#include <Controller/DataModel/tagmodel.h>
 
 #include <Model/library.h>
 
@@ -17,10 +18,12 @@ class ControllerLibrary : public AbstractController {
     Q_PROPERTY(Library *currentLibrary READ library NOTIFY libraryChanged)
 	Q_PROPERTY(QString id READ id CONSTANT)
     Q_PROPERTY(QList<QVariantMap> importers READ importers CONSTANT)
+    Q_PROPERTY(TagModel* tags READ tags CONSTANT)
 
 private:
 	LibraryPointer m_current = nullptr;
     PlaylistModel m_playlist;
+    TagModel m_tags;
 
 	QUuid m_id = QUuid::createUuid();
 
@@ -44,6 +47,7 @@ public:
     Q_INVOKABLE QUuid addPlaylist(bool = false);
 	Q_INVOKABLE void removePlaylist(QString);
     QList<QVariantMap> importers() const;
+    TagModel* tags();
 
     QString id() const;
     bool containView(QUuid) const;

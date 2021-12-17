@@ -16,7 +16,7 @@ class MEDIAPLAYERCORE_EXPORT PlaylistListModel: public QAbstractTableModel
     Q_OBJECT
     Q_DISABLE_COPY(PlaylistListModel)
 
-    Q_PROPERTY(int width READ width WRITE setWidth NOTIFY widthChanged);
+    Q_PROPERTY(int width READ width WRITE setWidth NOTIFY widthChanged)
 
 private:
     enum class ListRole{DisplayRole = Qt::UserRole +1, IndexRole, OrderRole, PointerRole};

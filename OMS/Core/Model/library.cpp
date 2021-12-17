@@ -12,6 +12,7 @@ Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l)
     auto ms = l["medias"].toArray();
     auto smarts = l["smartPlaylist"].toArray();
     auto plays = l["playlist"].toArray();
+    auto tag = l["tags"].toArray();
 
     for (auto it : dirs)
         addSourceDir(it.toString());
@@ -31,6 +32,14 @@ Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l)
         addMedia(m);
     }
 
+    for (auto it: tag) {
+        auto obj = it.toObject();
+        MediaPlayerGlobal::Tag t;
+        t.first = QUuid::fromString(obj["id"].toString());
+        t.second = obj["tag"].toString();
+        addTag(t);
+    }
+
     if(m_replacer)
         m_replacer->start();
 
@@ -45,7 +54,7 @@ void Library::set() {
     connect(this, &Library::sourceDirChanged, this, &Library::libraryChanged);
     connect(this, &Library::lastUpdateChanged, this, &Library::libraryChanged);
     connect(this, &Library::playlistCountChanged, this, &Library::libraryChanged);
-    connect(this, &Library::tagChanged, this, &Library::libraryChanged);
+
     connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia,
             Qt::QueuedConnection);
     connect(&m_probe, &LibraryProbe::currentChanged, this,
@@ -88,7 +97,17 @@ Library::operator QJsonObject() const {
     ret["smartPlaylist"] = smarts;
     ret["playlist"] = plays;
     ret["lastProbe"] = m_probe.lastProbed().toString("dd-MM-yyyy hh:mm:ss");
-    ret["tags"] = QJsonArray::fromStringList(tag());
+
+    auto tl = tags();
+    QJsonArray vl;
+    for(auto it: tl) {
+        QJsonObject obj;
+        obj["id"] = it.first.toString();
+        obj["tag"] = it.second;
+        vl<<obj;
+    }
+    qDebug()<<vl;
+    ret["tags"] = vl;
 
     return ret;
 }
@@ -323,24 +342,41 @@ bool Library::addToPlaylist(QString pl, Media* m)
     return ppl->append(m->sharedFromThis()).result();
 }
 
-QStringList Library::tag() const
+QList<MediaPlayerGlobal::Tag> Library::tags() const
 {
-    return metaData<QStringList>("tags");
+    return metaData<QList<MediaPlayerGlobal::Tag>>("tags");
 }
 
-void Library::setTag(QStringList tag)
+void Library::addTag(MediaPlayerGlobal::Tag t)
 {
-    setMetadata("tags", tag);
-    emit tagChanged();
+    QList<MediaPlayerGlobal::Tag> tagsList = tags();
+    tagsList.append(t);
+    setMetadata("tags", tagsList);
+    emit libraryChanged();
 }
 
-void Library::setTag(QString tag)
+void Library::editTag(MediaPlayerGlobal::Tag t)
 {
-    auto tags = metaData<QStringList>("tags");
-    if(tags.contains(tag))
-        tags.removeAll(tag);
-    else
-        tags<<tag;
+    QList<MediaPlayerGlobal::Tag> tagsList = tags();
+    auto f = std::find_if(tagsList.begin(), tagsList.end(), [t](auto it) {
+        return it.first == t.first;
+    });
 
-    setTag(tags);
+    if(f != tagsList.end()) {
+        f->second = t.second;
+    }
+
+    setMetadata("tags", tagsList);
+    emit libraryChanged();
+}
+
+void Library::removeTag(MediaPlayerGlobal::Tag t)
+{
+    QList<MediaPlayerGlobal::Tag> tagsList = tags();
+    std::remove_if(tagsList.begin(), tagsList.end(), [t](auto it) {
+        return it.first == t.first;
+    });
+
+    setMetadata("tags", tagsList);
+    emit libraryChanged();
 }
