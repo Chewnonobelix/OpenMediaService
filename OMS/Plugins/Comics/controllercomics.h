@@ -18,8 +18,6 @@ class ControllerComics : public AbstractController, public InterfacePlugins
     Q_PLUGIN_METADATA(IID "com.chewnonobelix.MediaPlayer.Comics")
     Q_DISABLE_COPY(ControllerComics)
 
-    Q_PROPERTY(QStringList pageTags READ pageTags CONSTANT)
-
 private:
     static QQmlComponent* s_viewComp;
     static QQmlComponent* s_playlistComp;
@@ -55,7 +53,4 @@ public:
     QList<QSharedPointer<InterfaceImporter>> importers() const override;
 
     QSharedPointer<InterfacePlugins> clone() const override;
-
-    QStringList pageTags() const;
-    Q_INVOKABLE void addPageTag(QString);
 };

@@ -15,6 +15,7 @@ Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l)
     auto ms = l["medias"].toArray();
     auto smarts = l["smartPlaylist"].toArray();
     auto plays = l["playlist"].toArray();
+    auto tagsList = l["tagsList"].toArray();
 
     for (auto it : dirs)
         addSourceDir(it.toString());
@@ -33,6 +34,14 @@ Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l)
         auto m = factory<Media>(it.toObject());
         addMedia(m);
     }
+
+    QStringList tl;
+
+    for(auto it: tagsList) {
+        tl<<it.toString();
+    }
+
+    setTagList(tl);
 
     for(auto it: tagList()) {
         auto tl = l[it].toArray();
@@ -97,6 +106,7 @@ Library::operator QJsonObject() const {
     ret["smartPlaylist"] = smarts;
     ret["playlist"] = plays;
     ret["lastProbe"] = m_probe.lastProbed().toString("dd-MM-yyyy hh:mm:ss");
+    ret["tagsList"] = QJsonArray::fromStringList(tagList());
 
     for(auto it: tagList()) {
         auto tl = jsonTagList(metaData<QList<MediaPlayerGlobal::Tag>>(it));
