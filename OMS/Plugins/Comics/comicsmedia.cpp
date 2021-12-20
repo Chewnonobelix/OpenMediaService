@@ -227,3 +227,13 @@ QString ComicsMedia::volumeNumber() const
     return QString();
 }
 
+bool ComicsMedia::addPageTag(int page, QUuid tag)
+{
+
+    return false;
+}
+
+bool ComicsMedia::removePageTag(int page, QUuid tag)
+{
+    return false;
+}

@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
+import MediaPlayer 1.0
+import MediaPlayer.Model 1.0
 import MediaPlayer.Components 1.0
 
 Item {
@@ -59,6 +61,25 @@ Item {
                     id: display
                     source: "file:///"+page
                     fillMode: Image.PreserveAspectFit
+
+                    MouseArea {
+                        anchors.fill: parent
+                        acceptedButtons: Qt.RightButton
+
+                        onClicked: function(mouse) {
+                            comicsMenu.x = mouse.x
+                            comicsMenu.y = mouse.y
+                            comicsMenu.open()
+                        }
+                    }
+                    Menu {
+                        id: comicsMenu
+
+                        TagMenu {
+                            id: tagMenu
+                            model: _pageTagModel
+                        }
+                    }
                 }
             }
         }

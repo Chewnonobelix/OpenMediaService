@@ -38,6 +38,47 @@ void ControllerComics::exec()
     connect(s_settings, &ControllerSettings::settingsChanged, [this]() {
         m_player.setSplit(s_settings->value("Comics/split").toBool());
     });
+
+    connect(&m_pageTagModel, &TagModel::s_addTag, [this](auto tag) {
+        auto tags = m_library->metaData<QList<MediaPlayerGlobal::Tag>>("pageTags");
+
+        auto ta = std::find_if(tags.begin(), tags.end(), [tag](auto it) {
+            return tag.second == it.second;
+        });
+
+        if(ta != tags.end()) {
+            tags<<tag;
+            m_library->setMetadata("pageTags", tags);
+            emit m_library->libraryChanged();
+        }
+    });
+
+    connect(&m_pageTagModel, &TagModel::s_editTag, [this](auto tag) {
+        auto tags = m_library->metaData<QList<MediaPlayerGlobal::Tag>>("pageTags");
+
+        auto te = std::find_if(tags.begin(), tags.end(), [tag](auto it) {
+            return it.first == tag.first;
+        });
+
+        if(te != tags.end()) {
+            te->second = tag.second;
+            m_library->setMetadata("pageTags", tags);
+            emit m_library->libraryChanged();
+        }
+    });
+
+    connect(&m_pageTagModel, &TagModel::s_removeTag, [this](auto tag) {
+        auto tags = m_library->metaData<QList<MediaPlayerGlobal::Tag>>("pageTags");
+
+        auto tr = std::remove_if(tags.begin(), tags.end(), [tag](auto it) {
+            return it.first == tag.first;
+        });
+
+        if(tr != tags.end()) {
+            m_library->setMetadata("pageTags", tags);
+            emit m_library->libraryChanged();
+        }
+    });
 }
 
 QObject * ControllerComics::playerView() const
@@ -69,7 +110,7 @@ void ControllerComics::configureLibrary(LibraryPointer lp)
     connect(&m_pageTagModel, &TagModel::s_removeTag, [this](auto tag) {
         auto tags = m_library->metaData<QList<MediaPlayerGlobal::Tag>>("pageTags");
 
-       std::remove_if(tags.begin(), tags.end(), [tag](auto it) {
+        std::remove_if(tags.begin(), tags.end(), [tag](auto it) {
             return it.first == tag.first;
         });
 
@@ -105,8 +146,8 @@ void ControllerComics::setPlaylist(PlaylistPointer p)
             m_medias[it->id()].initComicsInfo();
         }
     }).then([p, this]() {
-        m_comicsPlaylist.init(p, m_medias.values());
-    });
+            m_comicsPlaylist.init(p, m_medias.values());
+        });
 }
 
 void ControllerComics::setMedia(MediaPointer m)

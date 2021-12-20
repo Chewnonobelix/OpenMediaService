@@ -41,6 +41,9 @@ public:
 
     bool isLoad() const;
 
+    bool addPageTag(int, QUuid);
+    bool removePageTag(int, QUuid);
+
 public:
     QString country() const;
     QDate coverDate() const;
