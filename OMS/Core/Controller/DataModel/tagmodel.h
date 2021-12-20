@@ -3,9 +3,11 @@
 #include <QAbstractListModel>
 #include <QUuid>
 
+#include <mediaplayercore_global.h>
+
 #include <Model/global.h>
 
-class TagModel : public QAbstractListModel
+class MEDIAPLAYERCORE_EXPORT TagModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_DISABLE_COPY(TagModel)

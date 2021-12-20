@@ -58,6 +58,36 @@ QUrl ControllerComics::settingsView() const
 void ControllerComics::configureLibrary(LibraryPointer lp)
 {
     m_library = lp;
+    m_library->setMetadata("tagsList", QStringList{"tags", "pageTags"});
+
+    connect(&m_pageTagModel, &TagModel::s_addTag, [this](auto tag) {
+        auto tags = m_library->metaData<QList<MediaPlayerGlobal::Tag>>("pageTags");
+        tags<<tag;
+        m_library->setMetadata("pageTags", tags);
+    });
+
+    connect(&m_pageTagModel, &TagModel::s_removeTag, [this](auto tag) {
+        auto tags = m_library->metaData<QList<MediaPlayerGlobal::Tag>>("pageTags");
+
+       std::remove_if(tags.begin(), tags.end(), [tag](auto it) {
+            return it.first == tag.first;
+        });
+
+        m_library->setMetadata("pageTags", tags);
+    });
+
+    connect(&m_pageTagModel, &TagModel::s_editTag, [this](auto tag) {
+        auto tags = m_library->metaData<QList<MediaPlayerGlobal::Tag>>("pageTags");
+
+        auto te = std::find_if(tags.begin(), tags.end(), [tag](auto it) {
+            return it.first == tag.first;
+        });
+
+        if(te != tags.end())
+            te->second = tag.second;
+
+        m_library->setMetadata("pageTags", tags);
+    });
 }
 
 void ControllerComics::setPlaylist(PlaylistPointer p)
