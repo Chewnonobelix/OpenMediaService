@@ -29,7 +29,6 @@ class MEDIAPLAYERCORE_EXPORT Library : public QObject, public MetaData, public Q
 	Q_PROPERTY(int mediaCount READ mediaCount NOTIFY mediasChanged)
 	Q_PROPERTY(LibraryProbe *probe READ probe CONSTANT)
 	Q_PROPERTY(int playlistCount READ playlistCount NOTIFY playlistCountChanged)
-    Q_PROPERTY(QStringList tag READ tag NOTIFY tagChanged)
 
 private:
 	LibraryProbe m_probe;
@@ -41,6 +40,10 @@ private:
 	void set();
 
     QPointer<QThread> m_replacer = nullptr;
+
+
+    QJsonArray jsonTagList(QList<MediaPlayerGlobal::Tag>) const;
+    QList<MediaPlayerGlobal::Tag> fromjsonTagList(QJsonArray) const;
 
 public:
 	Library();
@@ -66,9 +69,13 @@ public:
 	int mediaCount() const;
 	LibraryProbe *probe();
 	int playlistCount() const;
-    QStringList tag() const;
-    void setTag(QStringList);
-    Q_INVOKABLE void setTag(QString);
+    QList<MediaPlayerGlobal::Tag> tags() const;
+    void addTag(MediaPlayerGlobal::Tag);
+    void editTag(MediaPlayerGlobal::Tag);
+    void removeTag(MediaPlayerGlobal::Tag);
+
+    void setTagList(QStringList);
+    QStringList tagList() const;
 
 public slots:
     Q_INVOKABLE bool scan();
@@ -99,7 +106,6 @@ signals:
 	void mediasChanged(MediaPointer = MediaPointer());
 	void lastUpdateChanged();
 	void playlistCountChanged();
-    void tagChanged();
 
 	void libraryChanged();
 };

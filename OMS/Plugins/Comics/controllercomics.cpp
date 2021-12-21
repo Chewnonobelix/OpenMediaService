@@ -3,6 +3,9 @@
 QQmlComponent* ControllerComics::s_viewComp = nullptr;
 QQmlComponent* ControllerComics::s_playlistComp = nullptr;
 
+ControllerComics::ControllerComics(): AbstractController(), m_pageTagModel(this)
+{}
+
 void ControllerComics::exec()
 {
     m_player.setSplit(s_settings->value("Comics/split").toBool());
@@ -15,6 +18,7 @@ void ControllerComics::exec()
 
     auto comicsContext = new QQmlContext(engine()->qmlEngine().rootContext());
     comicsContext->setContextProperty("_comics", this);
+    comicsContext->setContextProperty("_pageTagModel", &m_pageTagModel);
 
     if(!s_viewComp)
         s_viewComp = new QQmlComponent(&engine()->qmlEngine(), QUrl("qrc:/comics/ComicsView.qml"));
@@ -34,6 +38,7 @@ void ControllerComics::exec()
     connect(s_settings, &ControllerSettings::settingsChanged, [this]() {
         m_player.setSplit(s_settings->value("Comics/split").toBool());
     });
+
 }
 
 QObject * ControllerComics::playerView() const
@@ -54,6 +59,44 @@ QUrl ControllerComics::settingsView() const
 void ControllerComics::configureLibrary(LibraryPointer lp)
 {
     m_library = lp;
+    m_library->setMetadata("tagsList", QStringList{"tags", "pageTags"});
+
+    emit lp->libraryChanged();
+
+    connect(&m_pageTagModel, &TagModel::s_addTag, [this](auto tag) {
+        auto tags = m_library->metaData<QList<MediaPlayerGlobal::Tag>>("pageTags");
+        tags<<tag;
+        m_library->setMetadata("pageTags", tags);
+        m_pageTagModel.setModel(tags);
+    });
+
+    connect(&m_pageTagModel, &TagModel::s_removeTag, [this](auto tag) {
+        auto tags = m_library->metaData<QList<MediaPlayerGlobal::Tag>>("pageTags");
+
+        std::remove_if(tags.begin(), tags.end(), [tag](auto it) {
+            return it.first == tag.first;
+        });
+
+        m_library->setMetadata("pageTags", tags);
+        m_pageTagModel.setModel(tags);
+    });
+
+    connect(&m_pageTagModel, &TagModel::s_editTag, [this](auto tag) {
+        auto tags = m_library->metaData<QList<MediaPlayerGlobal::Tag>>("pageTags");
+
+        auto te = std::find_if(tags.begin(), tags.end(), [tag](auto it) {
+            return it.first == tag.first;
+        });
+
+        if(te != tags.end())
+            te->second = tag.second;
+
+        m_library->setMetadata("pageTags", tags);
+        m_pageTagModel.setModel(tags);
+    });
+
+    qDebug()<<m_library->metaData<QList<MediaPlayerGlobal::Tag>>("pageTags");
+    m_pageTagModel.setModel(m_library->metaData<QList<MediaPlayerGlobal::Tag>>("pageTags"));
 }
 
 void ControllerComics::setPlaylist(PlaylistPointer p)
@@ -71,8 +114,8 @@ void ControllerComics::setPlaylist(PlaylistPointer p)
             m_medias[it->id()].initComicsInfo();
         }
     }).then([p, this]() {
-        m_comicsPlaylist.init(p, m_medias.values());
-    });
+            m_comicsPlaylist.init(p, m_medias.values());
+        });
 }
 
 void ControllerComics::setMedia(MediaPointer m)
@@ -106,17 +149,4 @@ QList<QSharedPointer<InterfaceImporter>> ControllerComics::importers() const
     QList<QSharedPointer<InterfaceImporter>> ret;
     ret<<factory<ComicsRackImporter>();
     return ret;
-}
-
-QStringList ControllerComics::pageTags() const
-{
-    return m_library->metaData<QStringList>("pageTags");
-}
-
-void ControllerComics::addPageTag(QString tag)
-{
-    auto tags = pageTags();
-    tags<<tag;
-    tags.removeDuplicates();
-    m_library->setMetadata("pageTags", tags);
 }

@@ -47,7 +47,7 @@ QString ComicsMedia::cover() const
         ret = list[0].absoluteFilePath();
     }
 
-//    return QImage(ret);
+    //    return QImage(ret);
     return ret;
 }
 
@@ -227,3 +227,29 @@ QString ComicsMedia::volumeNumber() const
     return QString();
 }
 
+bool ComicsMedia::addPageTag(QString page, QString tag)
+{
+    auto pageTag = m_base->metaData<QStringList>(page);
+    auto ret = pageTag.contains(tag);
+    if(!ret) {
+        pageTag<<tag;
+        m_base->setMetadata(page, pageTag);
+    }
+    return !ret;
+}
+
+bool ComicsMedia::removePageTag(QString page, QString tag)
+{
+    auto pageTag = m_base->metaData<QStringList>(page);
+    auto ret = pageTag.contains(tag);
+    if(ret) {
+        pageTag.removeAll(tag);
+        m_base->setMetadata(page, pageTag);
+    }
+    return ret;
+}
+
+QStringList ComicsMedia::pageTag(QString page) const
+{
+    return m_base->metaData<QStringList>(page);
+}

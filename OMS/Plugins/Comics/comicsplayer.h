@@ -16,7 +16,6 @@ class ComicsPlayer: public QAbstractListModel
     Q_PROPERTY(int currentPage READ currentPage WRITE setCurrentPage NOTIFY currentPageChanged)
     Q_PROPERTY(int pageCount READ pageCount NOTIFY pageCountChanged)
     Q_PROPERTY(bool rightToLeft READ rightToLeft NOTIFY rightToLeftChanged)
-    Q_PROPERTY(QStringList pageTags READ pageTags CONSTANT)
 
     enum class ComicsPlayerRole {PageRole = Qt::UserRole + 1};
 
@@ -41,8 +40,9 @@ public:
 
     Q_INVOKABLE void next();
     Q_INVOKABLE void previous();
-    Q_INVOKABLE void setPageTag(QString, QString);
-    QStringList pageTags() const;
+    Q_INVOKABLE void addPageTag(QString, QString);
+    Q_INVOKABLE void removePageTag(QString, QString);
+    Q_INVOKABLE QStringList pageTags(QString) const;
 
 public:
     int rowCount(const QModelIndex& = QModelIndex()) const override;

@@ -20,6 +20,7 @@
         <file>MediaMenu.qml</file>
         <file>OrderDisplay.qml</file>
         <file>ButtonOrder.qml</file>
+        <file>TagMenu.qml</file>
     </qresource>
     <qresource prefix="/icons">
         <file>rating_star.png</file>

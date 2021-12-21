@@ -17,5 +17,6 @@ Rating 1.0 qrc:/Rating.qml
 PlaylistList 1.0 qrc:/PlaylistList.qml
 OrderDisplay 1.0 qrc:/OrderDisplay.qml
 ButtonOrder 1.0 qrc:/ButtonOrder.qml
+TagMenu 1.0 qrc:/TagMenu.qml
 plugin UxComponents
 typeinfo plugin.qmltypes

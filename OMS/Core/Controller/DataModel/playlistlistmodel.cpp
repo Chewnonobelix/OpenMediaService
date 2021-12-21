@@ -75,6 +75,20 @@ QVariant PlaylistListModel::data(const QModelIndex& index, int role) const {
             auto last = current->path().lastIndexOf(".");
             return current->path().mid(last);
         }
+        else if(currentCol.name == "tags") {
+            QString ret;
+            auto ts = current->tags();
+
+            std::for_each(m_tags.begin(), m_tags.end(), [ts, &ret](auto it2) {
+                if(ts.contains(it2.first.toString())) {
+                    ret += it2.second + ", ";
+                }
+            });
+
+            ret.remove(ret.lastIndexOf(", "), 2);
+
+            return ret;
+        }
         else if(currentCol.type == MediaPlayerGlobal::Type::StringContainer) {
             QString ret;
             for(auto it: current->metaData<QStringList>(currentCol.name))
@@ -324,4 +338,9 @@ void PlaylistListModel::setColumnWidth(int index, int width)
 
     it->width = width;
     AbstractController::s_settings->setPlaylistColumnWidth(m_model->id().toString(), it->name, width);
+}
+
+void PlaylistListModel::setTags(QList<Tag> tags)
+{
+    m_tags = tags;
 }

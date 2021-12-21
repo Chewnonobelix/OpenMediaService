@@ -5,6 +5,21 @@ Q_LOGGING_CATEGORY(librarylog, "library.log")
 void ControllerLibrary::exec() {
     connect(&m_playlist, &PlaylistModel::currentIndexChanged, this,
             &ControllerLibrary::onCurrentPlaylistChanged);
+
+    connect(&m_tags, &TagModel::s_addTag, [this](auto tag) {
+        if(m_current)
+            m_current->addTag(tag);
+    });
+
+    connect(&m_tags, &TagModel::s_editTag, [this](auto tag) {
+        if(m_current)
+            m_current->editTag(tag);
+    });
+
+    connect(&m_tags, &TagModel::s_removeTag, [this](auto tag) {
+        if(m_current)
+            m_current->removeTag(tag);
+    });
 }
 
 PlaylistModel *ControllerLibrary::playlist() { return &m_playlist; }
@@ -60,6 +75,8 @@ void ControllerLibrary::setCurrentLibrary(LibraryPointer lib) {
 
     m_current->probe()->setFilters(s_manager[m_current->role()]->filters());
     m_playlist.onLibraryChanged(m_current);
+
+    m_tags.setModel(lib->tags());
 }
 
 void ControllerLibrary::onUpdateLibrary() {
@@ -163,4 +180,9 @@ void ControllerLibrary::importFrom(QString importer, QString file)
 
         (*imp)->import(file.remove(0, 8));
     }
+}
+
+TagModel* ControllerLibrary::tags()
+{
+    return &m_tags;
 }

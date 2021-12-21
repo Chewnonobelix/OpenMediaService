@@ -14,7 +14,8 @@ Menu {
     property Media media
 
     onOpened: {
-        tagRepeater.model = _librariesModel.at(_librariesModel.currentIndex).tag
+        tags.model = _librariesModel.controller(_librariesModel.currentIndex).tags
+        tags.tagList = media.tags
     }
 
     MenuItem {
@@ -50,74 +51,16 @@ Menu {
         }
     }
 
-    Menu {
-        title: qsTr("Tag")
+    //TagMenu
+    TagMenu {
+        id: tags
 
-        MenuItem {
-            text: qsTr("New tag")
-
-            onClicked: popTag.open()
-
-            Popup {
-                id: popTag
-
-                onOpened: {
-                    addTag.clear()
-                }
-
-                onClosed: {
-                    if(addTag.text !== "") {
-                        _librariesModel.at(_librariesModel.currentIndex).setTag(addTag.text)
-                        media.setTag(addTag.text)
-                    }
-                }
-
-                GridLayout {
-                    anchors.fill: parent
-                    columns: 2
-                    rows: 2
-                    MediaTextEdit {
-                        id: addTag
-                        Layout.columnSpan: 2
-                    }
-
-                    MediaButton {
-                        text: qsTr("Add")
-                        onClicked: popTag.close()
-                    }
-
-                    MediaButton {
-                        text: qsTr("Cancel")
-
-                        onClicked: {
-                            addTag.clear()
-                            popTag.close()
-                        }
-                    }
-                }
-            }
+        onAddTag: function(tag) {
+            media.setTag(tag)
         }
 
-        Repeater {
-            id: tagRepeater
-
-            MenuItem {
-                text: modelData
-                checkable: true
-                checked: media ? media.hasTag(modelData) : false
-
-                onClicked: media.setTag(modelData)
-
-                Menu {
-                    MenuItem {
-                        text: qsTr("Remove")
-                    }
-
-                    MenuItem {
-                        text: qsTr("Edit")
-                    }
-                }
-            }
+        onRemoveTag: function(tag) {
+            media.setTag(tag)
         }
     }
 
