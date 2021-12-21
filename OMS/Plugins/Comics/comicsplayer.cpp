@@ -156,10 +156,41 @@ void ComicsPlayer::setSplit(bool split)
     build();
 }
 
-QStringList ComicsPlayer::pageTags() const
+QStringList ComicsPlayer::pageTags(QString page) const
 {
-    return QStringList();
+    QString p;
+    if(split() && page.contains("split")) {
+        p = page.split("/").last().split("__").first();
+    }
+    else {
+        p = page.split("/").last().split(".").first();
+    }
+
+    return m_media.pageTag(p);
 }
 
-void ComicsPlayer::setPageTag(QString, QString)
-{}
+void ComicsPlayer::addPageTag(QString page, QString id)
+{
+    QString p;
+    if(split() && page.contains("split")) {
+        p = page.split("/").last().split("__").first();
+    }
+    else {
+        p = page.split("/").last().split(".").first();
+    }
+
+    m_media.addPageTag(p, id);
+}
+
+void ComicsPlayer::removePageTag(QString page, QString id)
+{
+    QString p;
+    if(split() && page.contains("split")) {
+        p = page.split("/").last().split("__").first();
+    }
+    else {
+        p = page.split("/").last().split(".").first();
+    }
+
+    m_media.removePageTag(p, id);
+}

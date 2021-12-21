@@ -41,8 +41,9 @@ public:
 
     bool isLoad() const;
 
-    bool addPageTag(int, QUuid);
-    bool removePageTag(int, QUuid);
+    bool addPageTag(QString, QString);
+    bool removePageTag(QString, QString);
+    QStringList pageTag(QString) const;
 
 public:
     QString country() const;

@@ -75,9 +75,19 @@ Item {
                     Menu {
                         id: comicsMenu
 
+                        onOpened: tagMenu.tagList = _player.pageTags(page)
+
                         TagMenu {
                             id: tagMenu
                             model: _pageTagModel
+
+                            onAddTag: function(uid) {
+                                _player.addPageTag(page, uid)
+                            }
+
+                            onRemoveTag: function(uid) {
+                                _player.removePageTag(page, uid)
+                            }
                         }
                     }
                 }
