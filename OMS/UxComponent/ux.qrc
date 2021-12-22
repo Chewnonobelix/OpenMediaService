@@ -21,6 +21,7 @@
         <file>OrderDisplay.qml</file>
         <file>ButtonOrder.qml</file>
         <file>TagMenu.qml</file>
+        <file>Bookmark.qml</file>
     </qresource>
     <qresource prefix="/icons">
         <file>rating_star.png</file>
