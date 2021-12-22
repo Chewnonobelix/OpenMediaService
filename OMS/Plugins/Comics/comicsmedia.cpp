@@ -253,3 +253,40 @@ QStringList ComicsMedia::pageTag(QString page) const
 {
     return m_base->metaData<QStringList>(page);
 }
+
+bool ComicsMedia::addBookmark(QString b)
+{
+    auto bs = bookmarks();
+
+    auto find = std::find_if(bs.begin(), bs.end(), [b](auto it) {
+        return b == it;
+    });
+
+    if(find != bs.end()) {
+        bs << b;
+        m_base->setMetadata("bookmarks", bs);
+    }
+
+    return find != bs.end();
+}
+
+bool ComicsMedia::removeBookmark(QString b)
+{
+    auto bs = bookmarks();
+
+    auto find = std::remove_if(bs.begin(), bs.end(), [b](auto it) {
+        return b == it;
+    });
+
+    if(find != bs.end()) {
+        m_base->setMetadata("bookmarks", bs);
+    }
+
+    return find != bs.end();
+}
+
+QStringList ComicsMedia::bookmarks() const
+{
+    return m_base->metaData<QStringList>("bookmarks");
+}
+

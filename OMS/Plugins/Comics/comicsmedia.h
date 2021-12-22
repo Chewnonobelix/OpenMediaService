@@ -45,6 +45,10 @@ public:
     bool removePageTag(QString, QString);
     QStringList pageTag(QString) const;
 
+    bool addBookmark(QString);
+    bool removeBookmark(QString);
+    QStringList bookmarks() const;
+
 public:
     QString country() const;
     QDate coverDate() const;
