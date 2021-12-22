@@ -24,21 +24,34 @@ Button {
         source: "qrc:/icons/playlist.png"
     }
 
-    Popup {
+
+    Menu {
         id: pop
 
-        width: root.popupWidth
-        height: (display.isExpand ? 2 : 1) * root.popupHeight
-
-        x: positionning === ButtonOrder.AnchorType.Right ? root.width : positionning === ButtonOrder.AnchorType.Left ? -width : -width/2 + root.width / 2
-        y: positionning === ButtonOrder.AnchorType.Top ? -height : positionning === ButtonOrder.AnchorType.Bottom ? root.height : 0
-
-        OrderDisplay {
-            id: display
-            anchors.fill: parent
-            model: root.model
+        Bookmark {
+            model: ["B1", "B2", "B3"]
         }
     }
+
+//    Popup {
+//        id: pop
+
+//        width: root.popupWidth
+//        height: (display.isExpand ? 2 : 1) * root.popupHeight
+
+//        x: positionning === ButtonOrder.AnchorType.Right ? root.width : positionning === ButtonOrder.AnchorType.Left ? -width : -width/2 + root.width / 2
+//        y: positionning === ButtonOrder.AnchorType.Top ? -height : positionning === ButtonOrder.AnchorType.Bottom ? root.height : 0
+
+//        Bookmark {
+//            model: ["B1", "B2", "B3"]
+//        }
+
+////        OrderDisplay {
+////            id: display
+////            anchors.fill: parent
+////            model: root.model
+////        }
+//    }
 
     onClicked: pop.open()
 }

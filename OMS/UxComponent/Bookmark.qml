@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 
 Menu {
     id: root
@@ -16,18 +17,20 @@ Menu {
         onClicked: root.addBookmark()
     }
 
-    Repeater {
+    Instantiator {
         model:  root.model
-
-        MenuItem {
-            text: "modelData"
-
+        id: instant
+        delegate: Menu {
+            Component.onCompleted: console.log("prout", modelData, instant.count, root.count)
+            title: modelData
             MenuItem {
                 text: qsTr("Remove")
                 onClicked: console.log("remove", modelData)
             }
+        }
 
-            onClicked: console.log("load", modelData)
+        onObjectAdded: function(index, obj) {
+            root.addMenu(obj)
         }
     }
 }

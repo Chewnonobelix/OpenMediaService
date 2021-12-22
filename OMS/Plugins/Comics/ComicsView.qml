@@ -72,6 +72,17 @@ Item {
                             comicsMenu.open()
                         }
                     }
+
+                    ButtonOrder {
+                        id: order
+                        anchors {
+                            centerIn: parent
+                        }
+
+                        width: display.width * .075
+                        height: display.height * .1
+                    }
+
                     Menu {
                         id: comicsMenu
 
