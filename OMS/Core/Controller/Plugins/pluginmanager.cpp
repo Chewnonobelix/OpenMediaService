@@ -121,3 +121,8 @@ bool PluginManager::pluginEnable(QString name) const
 
     return ret;
 }
+
+bool PluginManager::contain(MediaRole role) const
+{
+    return m_plugins.contains(role);
+}

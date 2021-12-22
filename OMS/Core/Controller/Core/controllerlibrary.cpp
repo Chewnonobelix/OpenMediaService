@@ -73,7 +73,10 @@ void ControllerLibrary::setCurrentLibrary(LibraryPointer lib) {
 
     emit libraryChanged();
 
-    m_current->probe()->setFilters(s_manager[m_current->role()]->filters());
+    if(s_manager.contain(m_current->role())) {
+        m_current->probe()->setFilters(s_manager[m_current->role()]->filters());
+    }
+
     m_playlist.onLibraryChanged(m_current);
 
     m_tags.setModel(lib->tags());

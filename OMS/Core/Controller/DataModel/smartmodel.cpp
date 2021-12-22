@@ -185,6 +185,9 @@ void SmartModel::setRole(MediaPlayerGlobal::MediaRole r)
 {
     m_role = r;
 
+    if(!m_manager.contain(r))
+        return;
+
     QFile f("./Rules/"+m_manager[r]->rules());
     f.open(QIODevice::ReadOnly);
     auto json = QJsonDocument::fromJson(f.readAll());

@@ -42,4 +42,5 @@ public:
     Q_INVOKABLE QStringList pluginsName() const;
     Q_INVOKABLE MediaRole pluginRole(QString) const;
     Q_INVOKABLE bool pluginEnable(QString) const;
+    bool contain(MediaRole) const;
 };
