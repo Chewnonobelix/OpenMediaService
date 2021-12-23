@@ -73,16 +73,6 @@ Item {
                         }
                     }
 
-                    ButtonOrder {
-                        id: order
-                        anchors {
-                            centerIn: parent
-                        }
-
-                        width: display.width * .075
-                        height: display.height * .1
-                    }
-
                     Menu {
                         id: comicsMenu
 
@@ -99,6 +89,18 @@ Item {
                             onRemoveTag: function(uid) {
                                 _player.removePageTag(page, uid)
                             }
+                        }
+
+                        Bookmark {
+                            id: bookmark
+                            model: ["B1", "B2"]
+                            onLoadBookmark: function(mark) {
+                                 console.log("load", mark)
+                            }
+                            onRemoveBookmark: function(mark) {
+                                console.log("remove", mark)
+                            }
+                            onAddBookmark: console.log("add", page)
                         }
                     }
                 }

@@ -7,25 +7,30 @@ Menu {
     property var model
     signal loadBookmark(string mark)
     signal addBookmark()
+    signal removeBookmark(string bookmark)
 
     title: qsTr("Bookmark")
 
-    MenuItem {
+    Action {
         id: add
         text: qsTr("Add bookmark")
 
-        onClicked: root.addBookmark()
+        onTriggered: root.addBookmark()
     }
 
     Instantiator {
         model:  root.model
         id: instant
         delegate: Menu {
-            Component.onCompleted: console.log("prout", modelData, instant.count, root.count)
             title: modelData
-            MenuItem {
+            Action {
+                text: qsTr("Load")
+                onTriggered: root.loadBookmark(modelData)
+            }
+
+            Action {
                 text: qsTr("Remove")
-                onClicked: console.log("remove", modelData)
+                onTriggered: root.removeBookmark(modelData)
             }
         }
 
