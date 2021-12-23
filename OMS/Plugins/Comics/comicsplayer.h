@@ -25,6 +25,8 @@ private:
     bool m_split = false;
 
     void build();
+    QString baseName(QString) const;
+
 public:
     ComicsPlayer(QObject* = nullptr);
     ~ComicsPlayer() override;
@@ -44,6 +46,10 @@ public:
     Q_INVOKABLE void removePageTag(QString, QString);
     Q_INVOKABLE QStringList pageTags(QString) const;
 
+    Q_INVOKABLE QStringList bookmarks() const;
+    Q_INVOKABLE bool addBookmark(QString);
+    Q_INVOKABLE bool removeBookmark(QString);
+    Q_INVOKABLE bool loadBookmark(QString);
 public:
     int rowCount(const QModelIndex& = QModelIndex()) const override;
     QHash<int, QByteArray> roleNames() const override;

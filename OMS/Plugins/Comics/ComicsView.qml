@@ -76,7 +76,10 @@ Item {
                     Menu {
                         id: comicsMenu
 
-                        onOpened: tagMenu.tagList = _player.pageTags(page)
+                        onOpened: {
+                            bookmark.model = _player.bookmarks()
+                            tagMenu.tagList = _player.pageTags(page)
+                        }
 
                         TagMenu {
                             id: tagMenu
@@ -93,14 +96,16 @@ Item {
 
                         Bookmark {
                             id: bookmark
-                            model: ["B1", "B2"]
+                            model: _player.bookmarks()
                             onLoadBookmark: function(mark) {
-                                 console.log("load", mark)
+                                console.log("load", mark)
                             }
                             onRemoveBookmark: function(mark) {
                                 console.log("remove", mark)
+                                _player.removeBookmark(mark)
                             }
-                            onAddBookmark: console.log("add", page)
+                            onAddBookmark: _player.addBookmark(page)
+
                         }
                     }
                 }

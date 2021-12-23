@@ -158,31 +158,46 @@ void ComicsPlayer::setSplit(bool split)
 
 QStringList ComicsPlayer::pageTags(QString page) const
 {
-    QString p;
-    if(split() && page.contains("split")) {
-        p = page.split("/").last().split("__").first();
-    }
-    else {
-        p = page.split("/").last().split(".").first();
-    }
-
+    auto p = baseName(page);
     return m_media.pageTag(p);
 }
 
 void ComicsPlayer::addPageTag(QString page, QString id)
 {
-    QString p;
-    if(split() && page.contains("split")) {
-        p = page.split("/").last().split("__").first();
-    }
-    else {
-        p = page.split("/").last().split(".").first();
-    }
-
+    auto p = baseName(page);
     m_media.addPageTag(p, id);
 }
 
 void ComicsPlayer::removePageTag(QString page, QString id)
+{
+    auto p = baseName(page);
+    m_media.removePageTag(p, id);
+}
+
+
+QStringList ComicsPlayer::bookmarks() const
+{
+    return m_media.bookmarks();
+}
+
+bool ComicsPlayer::addBookmark(QString b)
+{
+    auto base = baseName(b);
+    return m_media.addBookmark(base);
+}
+
+bool ComicsPlayer::removeBookmark(QString b)
+{
+    return m_media.removeBookmark(b);
+}
+
+bool ComicsPlayer::loadBookmark(QString b)
+{
+
+    return false;
+}
+
+QString ComicsPlayer::baseName(QString page) const
 {
     QString p;
     if(split() && page.contains("split")) {
@@ -192,5 +207,5 @@ void ComicsPlayer::removePageTag(QString page, QString id)
         p = page.split("/").last().split(".").first();
     }
 
-    m_media.removePageTag(p, id);
+    return p;
 }
