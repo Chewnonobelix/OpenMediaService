@@ -98,7 +98,7 @@ Item {
                             id: bookmark
                             model: _player.bookmarks()
                             onLoadBookmark: function(mark) {
-                                console.log("load", mark)
+                                _player.loadBookmark(mark)
                             }
                             onRemoveBookmark: function(mark) {
                                 if(_player.removeBookmark(mark)) {

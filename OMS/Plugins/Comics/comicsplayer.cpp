@@ -193,7 +193,14 @@ bool ComicsPlayer::removeBookmark(QString b)
 
 bool ComicsPlayer::loadBookmark(QString b)
 {
+    auto page = std::find_if(m_pages.begin(), m_pages.end(), [b](auto it) {
+        return it.contains(b);
+    });
 
+    if(page != m_pages.end()) {
+        auto index = std::distance(m_pages.begin(), page);
+        setCurrentPage(index);
+    }
     return false;
 }
 
