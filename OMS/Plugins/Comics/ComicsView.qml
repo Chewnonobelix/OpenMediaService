@@ -101,10 +101,15 @@ Item {
                                 console.log("load", mark)
                             }
                             onRemoveBookmark: function(mark) {
-                                console.log("remove", mark)
-                                _player.removeBookmark(mark)
+                                if(_player.removeBookmark(mark)) {
+                                    model = _player.bookmarks()
+                                }
                             }
-                            onAddBookmark: _player.addBookmark(page)
+                            onAddBookmark: {
+                                if(_player.addBookmark(page)) {
+                                    model = _player.bookmarks()
+                                }
+                            }
 
                         }
                     }

@@ -37,5 +37,9 @@ Menu {
         onObjectAdded: function(index, obj) {
             root.addMenu(obj)
         }
+
+        onObjectRemoved: function(index, obj) {
+            root.removeMenu(obj)
+        }
     }
 }
