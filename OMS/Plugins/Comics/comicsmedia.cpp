@@ -256,13 +256,14 @@ QStringList ComicsMedia::pageTag(QString page) const
 
 bool ComicsMedia::addBookmark(QString b)
 {
+
     auto bs = bookmarks();
 
     auto find = std::find_if(bs.begin(), bs.end(), [b](auto it) {
         return b == it;
     });
 
-    if(find != bs.end()) {
+    if(find == bs.end()) {
         bs << b;
         m_base->setMetadata("bookmarks", bs);
     }
@@ -274,15 +275,13 @@ bool ComicsMedia::removeBookmark(QString b)
 {
     auto bs = bookmarks();
 
-    auto find = std::remove_if(bs.begin(), bs.end(), [b](auto it) {
-        return b == it;
-    });
+    auto find = bs.removeAll(b);
 
-    if(find != bs.end()) {
+    if(find) {
         m_base->setMetadata("bookmarks", bs);
     }
 
-    return find != bs.end();
+    return find > 0;
 }
 
 QStringList ComicsMedia::bookmarks() const

@@ -73,20 +73,13 @@ Item {
                         }
                     }
 
-                    ButtonOrder {
-                        id: order
-                        anchors {
-                            centerIn: parent
-                        }
-
-                        width: display.width * .075
-                        height: display.height * .1
-                    }
-
                     Menu {
                         id: comicsMenu
 
-                        onOpened: tagMenu.tagList = _player.pageTags(page)
+                        onOpened: {
+                            bookmark.model = _player.bookmarks()
+                            tagMenu.tagList = _player.pageTags(page)
+                        }
 
                         TagMenu {
                             id: tagMenu
@@ -99,6 +92,25 @@ Item {
                             onRemoveTag: function(uid) {
                                 _player.removePageTag(page, uid)
                             }
+                        }
+
+                        Bookmark {
+                            id: bookmark
+                            model: _player.bookmarks()
+                            onLoadBookmark: function(mark) {
+                                _player.loadBookmark(mark)
+                            }
+                            onRemoveBookmark: function(mark) {
+                                if(_player.removeBookmark(mark)) {
+                                    model = _player.bookmarks()
+                                }
+                            }
+                            onAddBookmark: {
+                                if(_player.addBookmark(page)) {
+                                    model = _player.bookmarks()
+                                }
+                            }
+
                         }
                     }
                 }

@@ -30,28 +30,36 @@ Button {
 
         Bookmark {
             model: ["B1", "B2", "B3"]
+
+            onAddBookmark: console.log("Add bookmark")
+            onLoadBookmark: function(bookmark) {
+                console.log("Load", bookmark)
+            }
+            onRemoveBookmark: function(bookmark) {
+                console.log("Remove", bookmark)
+            }
         }
     }
 
-//    Popup {
-//        id: pop
+    //    Popup {
+    //        id: pop
 
-//        width: root.popupWidth
-//        height: (display.isExpand ? 2 : 1) * root.popupHeight
+    //        width: root.popupWidth
+    //        height: (display.isExpand ? 2 : 1) * root.popupHeight
 
-//        x: positionning === ButtonOrder.AnchorType.Right ? root.width : positionning === ButtonOrder.AnchorType.Left ? -width : -width/2 + root.width / 2
-//        y: positionning === ButtonOrder.AnchorType.Top ? -height : positionning === ButtonOrder.AnchorType.Bottom ? root.height : 0
+    //        x: positionning === ButtonOrder.AnchorType.Right ? root.width : positionning === ButtonOrder.AnchorType.Left ? -width : -width/2 + root.width / 2
+    //        y: positionning === ButtonOrder.AnchorType.Top ? -height : positionning === ButtonOrder.AnchorType.Bottom ? root.height : 0
 
-//        Bookmark {
-//            model: ["B1", "B2", "B3"]
-//        }
+    //        Bookmark {
+    //            model: ["B1", "B2", "B3"]
+    //        }
 
-////        OrderDisplay {
-////            id: display
-////            anchors.fill: parent
-////            model: root.model
-////        }
-//    }
+    ////        OrderDisplay {
+    ////            id: display
+    ////            anchors.fill: parent
+    ////            model: root.model
+    ////        }
+    //    }
 
     onClicked: pop.open()
 }
