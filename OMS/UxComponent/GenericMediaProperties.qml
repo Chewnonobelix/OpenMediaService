@@ -118,6 +118,20 @@ Item {
                     }
                 }
             }
+
+            Row {
+                width: parent.width
+                layoutDirection: Qt.RightToLeft
+                MediaButton {
+                    text: qsTr("Close")
+                }
+                MediaButton {
+                    text: ">"
+                }
+                MediaButton {
+                    text: "<"
+                }
+            }
         }
     }
 }
