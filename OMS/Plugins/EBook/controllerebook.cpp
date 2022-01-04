@@ -41,3 +41,8 @@ QSharedPointer<InterfacePlugins> ControllerEBook::clone() const
 {
     return QSharedPointer<InterfacePlugins>();
 }
+
+void ControllerEBook::displayProperty(MediaPointer)
+{
+
+}

@@ -22,6 +22,7 @@ public:
     void configureLibrary(LibraryPointer) override;
     void setPlaylist(PlaylistPointer) override;
 	void setMedia(MediaPointer) override;
+    void displayProperty(MediaPointer) override;
 
 	MediaRole role() const override;
 	QStringList filters() const override;

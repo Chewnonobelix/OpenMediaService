@@ -36,3 +36,8 @@ QString ControllerVideo::rules() const
 {
     return "";
 }
+
+void ControllerVideo::displayProperty(MediaPointer)
+{
+
+}

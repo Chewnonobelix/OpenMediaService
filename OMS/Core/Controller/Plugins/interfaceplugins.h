@@ -25,6 +25,7 @@ public:
     virtual void configureLibrary(LibraryPointer) = 0;
 	virtual void setPlaylist(PlaylistPointer) = 0;
 	virtual void setMedia(MediaPointer) = 0;
+    virtual void displayProperty(MediaPointer) = 0;
 
 	virtual MediaRole role() const = 0;
 	virtual QStringList filters() const = 0;

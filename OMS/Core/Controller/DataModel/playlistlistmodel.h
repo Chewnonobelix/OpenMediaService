@@ -69,6 +69,9 @@ public:
     Q_INVOKABLE int columnWidth(int) const;
     Q_INVOKABLE void setColumnWidth(int, int);
     void setTags(QList<MediaPlayerGlobal::Tag>);
+
+    Q_INVOKABLE void displayProperties(Media*);
+
 signals:
     void widthChanged();
 };

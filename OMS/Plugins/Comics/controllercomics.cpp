@@ -150,3 +150,7 @@ QList<QSharedPointer<InterfaceImporter>> ControllerComics::importers() const
     ret<<factory<ComicsRackImporter>();
     return ret;
 }
+
+void ControllerComics::displayProperty(MediaPointer m)
+{
+}

@@ -138,3 +138,8 @@ OrderDisplayModel* ControllerImage::orderModel()
 {
     return m_orderModel;
 }
+
+void ControllerImage::displayProperty(MediaPointer)
+{
+
+}

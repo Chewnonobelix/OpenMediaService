@@ -344,3 +344,21 @@ void PlaylistListModel::setTags(QList<Tag> tags)
 {
     m_tags = tags;
 }
+
+void PlaylistListModel::displayProperties(Media * m )
+{
+    auto smart = m->sharedFromThis();
+    auto plugin = AbstractController::s_manager[smart->role()];
+
+    qDebug()<<m<<smart<<plugin<<smart->role()<<m->role();
+    if(!plugin)
+        return;
+
+    auto context = new QQmlContext(AbstractController::engine()->qmlEngine().rootContext());
+    context->setContextProperty("_media", m);
+    context->setContextProperty("_pages", QStringList());
+
+    AbstractController::engine()->createWindow(QUrl("qrc:/MediaProperties.qml"), context);
+
+
+}

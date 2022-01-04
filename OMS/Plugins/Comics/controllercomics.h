@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QQuickWindow>
+
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/Plugins/interfaceplugins.h>
 
@@ -46,6 +48,7 @@ public:
     void configureLibrary(LibraryPointer) override;
     void setPlaylist(PlaylistPointer) override;
     void setMedia(MediaPointer) override;
+    void displayProperty(MediaPointer) override;
 
     MediaRole role() const override;
     QStringList filters() const override;
