@@ -11,6 +11,10 @@ MediaWindow {
     id: root
     flags: Qt.Dialog
 
+    Component.onCompleted: show()
+    height: 400
+    width: 300
+
     TabBar {
         id: bar
         anchors {
@@ -19,10 +23,11 @@ MediaWindow {
             right: parent.right
         }
 
-        height: parent.height * 0.05
+        height: parent.height * 0.10
 
         TabButton {
             text: qsTr("General")
+            height: bar.height
         }
 
         Repeater {
@@ -41,6 +46,8 @@ MediaWindow {
             left: parent.left
             right: parent.right
             bottom: parent.bottom
+
+            topMargin: root.height * 0.03
         }
 
         GenericMediaProperties {

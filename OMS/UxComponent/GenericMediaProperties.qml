@@ -12,101 +12,110 @@ Item {
 
     ScrollView {
         anchors.fill: parent
-        GridLayout {
-            column: 2
+        Column {
+            Row  {
+                MediaLabel {
+                    text: qsTr("Reading count")
+                    height: root.height * 0.05
+                    width: root.width * 0.5
+                }
 
-            MediaLabel {
-                text: qsTr("Reading count")
-                height: root.height * 0.05
-                width: root.width * 0.5
-            }
-
-            MediaLabel {
-                text: model.count
-                height: root.height * 0.05
-                width: root.width * 0.5
-            }
-
-            MediaLabel {
-                text: qsTr("Current reading")
-                height: root.height * 0.05
-                width: root.width * 0.5
-            }
-
-            MediaLabel {
-                text: model.currentRead
-                height: root.height * 0.05
-                width: root.width * 0.5
-            }
-
-            MediaLabel {
-                text: qsTr("Last readed")
-                height: root.height * 0.05
-                width: root.width * 0.5
-            }
-
-            MediaLabel {
-                text: model.lastFinish
-                height: root.height * 0.05
-                width: root.width * 0.5
-            }
-
-            MediaLabel {
-                text: qsTr("Added")
-                width: root.width * 0.5
-                height: root.height * 0.05
-            }
-
-            MediaLabel {
-                text: model.added
-                height: root.height * 0.05
-                width: root.width * 0.5
-            }
-
-            MediaLabel {
-                text: qsTr("Rate")
-                height: root.height * 0.05
-                width: root.width * 0.5
-            }
-
-            MediaLabel {
-                text: model.rating
-                height: root.height * 0.05
-                width: root.width * 0.5
-            }
-
-            MediaLabel {
-                text: qsTr("Paths")
-                height: root.height * 0.05
-                width: root.width * 0.5
-            }
-
-            ListView {
-                model: model.paths
-                height: root.height * 0.20
-                width: root.width * 0.5
-
-                delegate: MediaLabel {
-                    text: modelData
+                MediaLabel {
+                    text: model.count
                     height: root.height * 0.05
                     width: root.width * 0.5
                 }
             }
-
-            MediaLabel {
-                text: qsTr("Tags")
-                height: root.height * 0.05
-                width: root.width * 0.5
-            }
-
-            ListView {
-                model: model.tags
-                height: root.height * 0.20
-
-                delegate: MediaLabel {
-                    text: modelData
+            Row  {
+                MediaLabel {
+                    text: qsTr("Current reading")
                     height: root.height * 0.05
                     width: root.width * 0.5
+                }
+
+                MediaLabel {
+                    text: model.currentRead
+                    height: root.height * 0.05
+                    width: root.width * 0.5
+                }
+            }
+            Row  {
+                MediaLabel {
+                    text: qsTr("Last readed")
+                    height: root.height * 0.05
+                    width: root.width * 0.5
+                }
+
+                MediaLabel {
+                    text: Qt.formatDateTime(model.lastFinish, "dd-MM-yyyy hh:mm:ss")
+                    height: root.height * 0.05
+                    width: root.width * 0.5
+                }
+            }
+            Row  {
+                MediaLabel {
+                    text: qsTr("Added")
+                    width: root.width * 0.5
+                    height: root.height * 0.05
+                }
+
+                MediaLabel {
+                    text: Qt.formatDate(model.added, "dd-MM-yyyy")
+                    height: root.height * 0.05
+                    width: root.width * 0.5
+                }
+            }
+            Row  {
+                MediaLabel {
+                    text: qsTr("Rate")
+                    height: root.height * 0.05
+                    width: root.width * 0.5
+                }
+
+                MediaLabel {
+                    text: model.rating
+                    height: root.height * 0.05
+                    width: root.width * 0.5
+                }
+            }
+            Row  {
+                MediaLabel {
+                    text: qsTr("Paths")
+                    height: root.height * 0.05
+                    width: root.width * 0.5
+                }
+
+                ListView {
+                    model: root.model.paths
+                    height: root.height * 0.20
+                    width: root.width * 0.5
+                    clip: true
+
+                    delegate: MediaLabel {
+                        text: modelData
+                        height: root.height * 0.05
+                        width: root.width * 0.5
+                    }
+                }
+            }
+            Row  {
+                MediaLabel {
+                    text: qsTr("Tags")
+                    height: root.height * 0.05
+                    width: root.width * 0.5
+                }
+
+                ListView {
+                    model: root.model.tags
+                    height: root.height * 0.20
+                    width: root.width * 0.5
+                    clip: true
+
+                    delegate: MediaLabel {
+                        text: modelData
+                        height: root.height * 0.05
+                        width: root.width * 0.5
+                    }
                 }
             }
         }
