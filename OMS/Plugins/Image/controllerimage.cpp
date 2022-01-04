@@ -139,7 +139,7 @@ OrderDisplayModel* ControllerImage::orderModel()
     return m_orderModel;
 }
 
-void ControllerImage::displayProperty(MediaPointer)
+QMap<QString, QObject*> ControllerImage::displayProperty()
 {
-
+    return {};
 }

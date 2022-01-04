@@ -347,8 +347,7 @@ void PlaylistListModel::setTags(QList<Tag> tags)
 
 void PlaylistListModel::displayProperties(Media * m )
 {
-    auto smart = m->sharedFromThis();
-    auto plugin = AbstractController::s_manager[smart->role()];
+    auto plugin = AbstractController::s_manager[m->role()];
 
     if(!plugin)
         return;

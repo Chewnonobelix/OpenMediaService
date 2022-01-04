@@ -151,6 +151,7 @@ QList<QSharedPointer<InterfaceImporter>> ControllerComics::importers() const
     return ret;
 }
 
-void ControllerComics::displayProperty(MediaPointer m)
+QMap<QString, QObject*> ControllerComics::displayProperty()
 {
+    return {};
 }
