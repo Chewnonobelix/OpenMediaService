@@ -352,9 +352,12 @@ void PlaylistListModel::displayProperties(Media * m )
     if(!plugin)
         return;
 
+    auto map = plugin->displayProperty();
+
     auto context = new QQmlContext(AbstractController::engine()->qmlEngine().rootContext());
     context->setContextProperty("_media", m);
-    context->setContextProperty("_pages", QStringList());
+    context->setContextProperty("_pagesList", map.keys());
+    context->setContextProperty("_pages", QVariant::fromValue(map.values()));
 
     AbstractController::engine()->createWindow(QUrl("/MediaProperties.qml"), context);
 }

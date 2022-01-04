@@ -153,5 +153,10 @@ QList<QSharedPointer<InterfaceImporter>> ControllerComics::importers() const
 
 QMap<QString, QObject*> ControllerComics::displayProperty()
 {
-    return {};
+    auto context = new QQmlContext(engine()->qmlEngine().rootContext());
+    auto component = new QQmlComponent(&engine()->qmlEngine(), QUrl("qrc:/comics/ComicsProperties.qml"));
+    auto obj = component->create(context);
+    QMap<QString, QObject*> ret;
+
+    return ret;
 }

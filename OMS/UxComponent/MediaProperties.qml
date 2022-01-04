@@ -25,16 +25,19 @@ MediaWindow {
 
         height: parent.height * 0.10
 
+        onCurrentIndexChanged: layout.currentIndex = currentIndex
+
         TabButton {
             text: qsTr("General")
             height: bar.height
         }
 
         Repeater {
-            model: _pages
+            model: _pagesList
 
             TabButton {
                 text: modelData
+                height: bar.height
             }
         }
     }
@@ -52,6 +55,22 @@ MediaWindow {
 
         GenericMediaProperties {
             model: _media
+        }
+
+        Repeater {
+            model: _pages
+
+            Item {
+                ColumnLayout {
+                    anchors.fill: parent
+                    Item{
+                    }
+
+                    Component.onCompleted:  {
+                        children[0] = modelData
+                    }
+                }
+            }
         }
     }
 

@@ -4,6 +4,7 @@
         <file>ComicsPlaylist.qml</file>
         <file>ComicsSettings.qml</file>
         <file>ComicsPreview.qml</file>
+        <file>ComicsProperties.qml</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
