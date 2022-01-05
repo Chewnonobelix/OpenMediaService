@@ -11,7 +11,11 @@ MediaWindow {
     id: root
     flags: Qt.Dialog | Qt.BypassWindowManagerHint | Qt.WindowTitleHint
 
-    title: _media.basePath()
+    property int currentIndex: _currentIndex
+    property Media model: _model.mediaAt(currentIndex)
+
+    onCurrentIndexChanged:  model = _model.mediaAt(currentIndex)
+    title: model.basePath()
     Component.onCompleted: show()
     height: 400
     width: 300
@@ -55,7 +59,7 @@ MediaWindow {
         }
 
         GenericMediaProperties {
-            model: _media
+            model: root.model
         }
 
         Repeater {
@@ -93,9 +97,15 @@ MediaWindow {
         }
         MediaButton {
             text: ">"
+            enabled: currentIndex < (_model.rowCount() - 1)
+
+            onClicked: currentIndex = currentIndex + 1
         }
         MediaButton {
             text: "<"
+            enabled: currentIndex > 0
+
+            onClicked: currentIndex = currentIndex - 1
         }
 
         Rectangle {

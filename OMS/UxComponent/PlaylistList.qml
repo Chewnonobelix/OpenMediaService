@@ -162,7 +162,7 @@ Item {
 
                         media: pointer
 
-                        onProperties: root.model.displayProperties(media)
+                        onProperties: root.model.displayProperties(row)
                     }
 
                     MouseArea {

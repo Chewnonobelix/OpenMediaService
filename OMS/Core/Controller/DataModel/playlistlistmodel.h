@@ -51,7 +51,7 @@ public:
     Q_INVOKABLE void play(int);
 
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-    int rowCount(const QModelIndex& = QModelIndex()) const override;
+    Q_INVOKABLE int rowCount(const QModelIndex& = QModelIndex()) const override;
     int columnCount(const QModelIndex& = QModelIndex()) const override;
 
     QVariant data(const QModelIndex&, int) const override;
@@ -70,7 +70,8 @@ public:
     Q_INVOKABLE void setColumnWidth(int, int);
     void setTags(QList<MediaPlayerGlobal::Tag>);
 
-    Q_INVOKABLE void displayProperties(Media*);
+    Q_INVOKABLE void displayProperties(int);
+    Q_INVOKABLE Media* mediaAt(int);
 
 signals:
     void widthChanged();
