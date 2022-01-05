@@ -24,6 +24,8 @@ Item {
                     text: model.count
                     height: root.height * 0.05
                     width: root.width * 0.40
+
+                    horizontalAlignment: Qt.AlignLeft
                 }
                 MediaButton {
                     text: qsTr("Reset")
@@ -46,6 +48,7 @@ Item {
                     text: model.currentRead
                     height: root.height * 0.05
                     width: root.width * 0.5
+                    horizontalAlignment: Qt.AlignLeft
                 }
             }
             Row  {
@@ -59,6 +62,7 @@ Item {
                     text: Qt.formatDateTime(model.lastFinish, "dd-MM-yyyy hh:mm:ss")
                     height: root.height * 0.05
                     width: root.width * 0.5
+                    horizontalAlignment: Qt.AlignLeft
                 }
             }
             Row  {
@@ -72,6 +76,7 @@ Item {
                     text: Qt.formatDate(model.added, "dd-MM-yyyy")
                     height: root.height * 0.05
                     width: root.width * 0.5
+                    horizontalAlignment: Qt.AlignLeft
                 }
             }
             Row  {
@@ -85,6 +90,7 @@ Item {
                     text: model.rating
                     height: root.height * 0.05
                     width: root.width * 0.5
+                    horizontalAlignment: Qt.AlignLeft
                 }
             }
             Row  {
