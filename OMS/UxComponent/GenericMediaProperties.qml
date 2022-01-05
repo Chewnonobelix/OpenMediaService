@@ -23,7 +23,16 @@ Item {
                 MediaLabel {
                     text: model.count
                     height: root.height * 0.05
-                    width: root.width * 0.5
+                    width: root.width * 0.40
+                }
+                MediaButton {
+                    text: qsTr("Reset")
+                    height: root.height * 0.05
+                    width: root.width * 0.10
+
+                    onClicked: {
+                        model.reset()
+                    }
                 }
             }
             Row  {
