@@ -258,3 +258,8 @@ void Media::merge(MediaPointer m)
     setAdded(std::min(added(), m->added()));
     setLastFinish(std::max(lastFinish(), m->lastFinish()));
 }
+
+QString Media::basePath() const
+{
+    return path().split("/").last();
+}

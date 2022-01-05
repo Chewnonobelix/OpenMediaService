@@ -11,7 +11,7 @@ MediaWindow {
     id: root
     flags: Qt.Dialog | Qt.BypassWindowManagerHint | Qt.WindowTitleHint
 
-    title: "OMS media properties"
+    title: _media.basePath()
     Component.onCompleted: show()
     height: 400
     width: 300

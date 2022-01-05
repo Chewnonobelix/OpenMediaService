@@ -70,7 +70,8 @@ public:
     void setFingerprint(MD5);
 	MediaPlayerGlobal::MediaRole role() const;
     bool setRole(MediaPlayerGlobal::MediaRole role);
-	QString path() const;
+    Q_INVOKABLE QString path() const;
+    Q_INVOKABLE QString basePath() const;
 	QList<QString> paths() const;
     bool setPath(QString path);
     bool removePath(QString path);
