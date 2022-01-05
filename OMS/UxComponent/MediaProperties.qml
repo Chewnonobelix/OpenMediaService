@@ -9,8 +9,9 @@ import MediaPlayer.Components 1.0
 
 MediaWindow {
     id: root
-    flags: Qt.Dialog
+    flags: Qt.Dialog | Qt.BypassWindowManagerHint | Qt.WindowTitleHint
 
+    title: "OMS media properties"
     Component.onCompleted: show()
     height: 400
     width: 300
@@ -48,7 +49,7 @@ MediaWindow {
             top: bar.bottom
             left: parent.left
             right: parent.right
-            bottom: parent.bottom
+            bottom: toolBar.top
 
             topMargin: root.height * 0.03
         }
@@ -74,4 +75,32 @@ MediaWindow {
         }
     }
 
+    RowLayout {
+        id: toolBar
+        layoutDirection: Qt.RightToLeft
+        spacing: 0
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+
+        height: root.height * 0.10
+
+        MediaButton {
+            text: qsTr("Close")
+            onClicked: root.close()
+        }
+        MediaButton {
+            text: ">"
+        }
+        MediaButton {
+            text: "<"
+        }
+
+        Rectangle {
+            color: "transparent"
+            Layout.fillWidth: true
+        }
+    }
 }
