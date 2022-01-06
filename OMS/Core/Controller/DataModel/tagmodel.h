@@ -22,6 +22,7 @@ public:
     Q_INVOKABLE bool editTag(QUuid, QString);
     Q_INVOKABLE bool removeTag(QUuid);
     void setModel(QList<MediaPlayerGlobal::Tag>);
+    Q_INVOKABLE QString toTagString(QString) const;
 
 public:
     // Basic functionality:

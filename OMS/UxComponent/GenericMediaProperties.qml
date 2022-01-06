@@ -9,6 +9,7 @@ Item {
     id: root
 
     property Media model
+    property TagModel tagsModel: _librariesModel.controller(_librariesModel.currentIndex).tags
 
     ScrollView {
         anchors.fill: parent
@@ -127,13 +128,12 @@ Item {
                     clip: true
 
                     delegate: MediaLabel {
-                        text: modelData
+                        text: tagsModel.toTagString(modelData)
                         height: root.height * 0.05
                         width: root.width * 0.5
                     }
                 }
             }
-
         }
     }
 }

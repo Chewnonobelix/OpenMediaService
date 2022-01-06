@@ -60,6 +60,7 @@ void ControllerComics::configureLibrary(LibraryPointer lp)
 {
     m_library = lp;
     m_library->setMetadata("tagsList", QStringList{"tags", "pageTags"});
+    m_listModel.setTags(lp->tags());
 
     emit lp->libraryChanged();
 
