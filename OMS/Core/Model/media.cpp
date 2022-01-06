@@ -22,7 +22,7 @@ Media::Media(QUuid id)
 }
 Media::Media(const Media &other)
     : QObject(nullptr), MetaData(other), QEnableSharedFromThis<Media>(),
-      m_path(other.paths().begin(), other.paths().end()) {
+    m_path(other.paths().begin(), other.paths().end()) {
     set();
 }
 
@@ -257,4 +257,16 @@ void Media::merge(MediaPointer m)
     setCurrentRead(std::max(currentRead(), m->currentRead()));
     setAdded(std::min(added(), m->added()));
     setLastFinish(std::max(lastFinish(), m->lastFinish()));
+}
+
+QString Media::basePath() const
+{
+    return path().split("/").last();
+}
+
+void Media::reset()
+{
+    setCount(0);
+    setCurrentRead(0);
+    setLastFinish(QDateTime());
 }

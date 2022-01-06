@@ -10,6 +10,7 @@ Menu {
 
     signal remove()
     signal update()
+    signal properties()
 
     property Media media
 
@@ -20,6 +21,8 @@ Menu {
 
     MenuItem {
         text: qsTr("Properties")
+
+        onClicked: root.properties()
     }
 
     MenuItem {

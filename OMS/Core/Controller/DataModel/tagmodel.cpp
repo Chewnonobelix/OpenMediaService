@@ -93,3 +93,13 @@ void TagModel::setModel(QList<MediaPlayerGlobal::Tag> model)
     beginInsertRows(QModelIndex(), 0, rowCount() - 1);
     endInsertRows();
 }
+
+QString TagModel::toTagString(QString id) const
+{
+    auto find = std::find_if(m_model.begin(), m_model.end(), [id](auto it) {
+        return it.first.toString() == id;
+    });
+
+    qDebug()<<id<<find;
+    return find != m_model.end() ? find->second : "";
+}

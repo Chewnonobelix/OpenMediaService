@@ -138,3 +138,8 @@ OrderDisplayModel* ControllerImage::orderModel()
 {
     return m_orderModel;
 }
+
+QMap<QString, QObject*> ControllerImage::displayProperty()
+{
+    return {};
+}

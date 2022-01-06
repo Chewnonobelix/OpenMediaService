@@ -344,3 +344,28 @@ void PlaylistListModel::setTags(QList<Tag> tags)
 {
     m_tags = tags;
 }
+
+void PlaylistListModel::displayProperties(int index)
+{
+    auto m = (*m_model)[m_sortList[index]].data();
+    auto plugin = AbstractController::s_manager[m->role()];
+
+    if(!plugin)
+        return;
+
+    auto map = plugin->displayProperty();
+
+    auto context = new QQmlContext(AbstractController::engine()->qmlEngine().rootContext());
+    context->setContextProperty("_currentIndex", index);
+    context->setContextProperty("_pagesList", map.keys());
+    context->setContextProperty("_pages", QVariant::fromValue(map.values()));
+    context->setContextProperty("_model", this);
+    AbstractController::engine()->createWindow(QUrl("/MediaProperties.qml"), context);
+}
+
+Media* PlaylistListModel::mediaAt(int index)
+{
+    auto media = (*m_model)[m_sortList[index]];
+
+    return media.data();
+}

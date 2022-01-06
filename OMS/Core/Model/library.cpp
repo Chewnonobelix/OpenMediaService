@@ -186,6 +186,7 @@ bool Library::removeSourceDir(QString source) {
 bool Library::addMedia(MediaPointer p) {
     m_medias[p->id()] = p;
     p->initFingerprint();
+    p->setRole(role());
     connect(p.data(), &Media::mediaChanged, this, &Library::libraryChanged);
     connect(p.data(), &Media::mediaChanged, this, &Library::onMediaChanged);
     emit mediasChanged(p);

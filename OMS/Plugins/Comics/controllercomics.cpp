@@ -60,6 +60,7 @@ void ControllerComics::configureLibrary(LibraryPointer lp)
 {
     m_library = lp;
     m_library->setMetadata("tagsList", QStringList{"tags", "pageTags"});
+    m_listModel.setTags(lp->tags());
 
     emit lp->libraryChanged();
 
@@ -148,5 +149,18 @@ QList<QSharedPointer<InterfaceImporter>> ControllerComics::importers() const
 {
     QList<QSharedPointer<InterfaceImporter>> ret;
     ret<<factory<ComicsRackImporter>();
+    return ret;
+}
+
+QMap<QString, QObject*> ControllerComics::displayProperty()
+{
+    auto context = new QQmlContext(engine()->qmlEngine().rootContext());
+    auto artists = new QQmlComponent(&engine()->qmlEngine(), QUrl("qrc:/comics/ArtistsProperties.qml"));
+    auto info = new QQmlComponent(&engine()->qmlEngine(), QUrl("qrc:/comics/ComicsInfoProperties.qml"));
+    auto objA = artists->create(context);
+    auto objI = info->create(context);
+    QMap<QString, QObject*> ret;
+    ret[tr("Artists")] = objA;
+    ret[tr("Info")] = objI;
     return ret;
 }

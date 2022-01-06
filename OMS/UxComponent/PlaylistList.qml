@@ -161,6 +161,8 @@ Item {
                         id: mediaMenu
 
                         media: pointer
+
+                        onProperties: root.model.displayProperties(row)
                     }
 
                     MouseArea {

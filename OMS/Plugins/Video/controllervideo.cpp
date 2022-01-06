@@ -36,3 +36,8 @@ QString ControllerVideo::rules() const
 {
     return "";
 }
+
+QMap<QString, QObject*> ControllerVideo::displayProperty()
+{
+    return {};
+}

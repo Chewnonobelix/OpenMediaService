@@ -41,3 +41,8 @@ QSharedPointer<InterfacePlugins> ControllerEBook::clone() const
 {
     return QSharedPointer<InterfacePlugins>();
 }
+
+QMap<QString, QObject*> ControllerEBook::displayProperty()
+{
+    return {};
+}

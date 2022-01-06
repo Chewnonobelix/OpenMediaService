@@ -35,7 +35,7 @@ class MEDIAPLAYERCORE_EXPORT Media : public QObject, public MetaData, public QEn
 	Q_PROPERTY(MediaPlayerGlobal::MediaRole role READ role CONSTANT)
 	Q_PROPERTY(bool isAvailable READ isAvailable NOTIFY isAvailableChanged)
 	Q_PROPERTY(QDate added READ added CONSTANT)
-	Q_PROPERTY(QDateTime lastFinish READ lastFinish NOTIFY lastFinishChanged)
+    Q_PROPERTY(QDateTime lastFinish READ lastFinish WRITE setLastFinish NOTIFY lastFinishChanged)
 	Q_PROPERTY(double currentRead READ currentRead WRITE setCurrentRead NOTIFY
 								 currentReadChanged)
     Q_PROPERTY(QStringList paths READ paths CONSTANT)
@@ -70,7 +70,8 @@ public:
     void setFingerprint(MD5);
 	MediaPlayerGlobal::MediaRole role() const;
     bool setRole(MediaPlayerGlobal::MediaRole role);
-	QString path() const;
+    Q_INVOKABLE QString path() const;
+    Q_INVOKABLE QString basePath() const;
 	QList<QString> paths() const;
     bool setPath(QString path);
     bool removePath(QString path);
@@ -95,6 +96,7 @@ public:
 
     void merge(MediaPointer);
     static MediaPointer createMedia(QString path = "");
+    Q_INVOKABLE void reset();
 
 signals:
 	void countChanged();

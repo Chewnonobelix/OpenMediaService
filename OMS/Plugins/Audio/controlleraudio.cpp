@@ -40,3 +40,8 @@ QSharedPointer<InterfacePlugins> ControllerAudio::clone() const
 {
     return QSharedPointer<InterfacePlugins>();
 }
+
+QMap<QString, QObject*> ControllerAudio::displayProperty()
+{
+    return {};
+}
