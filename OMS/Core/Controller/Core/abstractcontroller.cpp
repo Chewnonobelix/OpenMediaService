@@ -9,7 +9,7 @@ QPointer<TabWrapper> AbstractController::s_tabWrapper = new TabWrapper;
 
 AbstractController::AbstractController() : QObject() {
     if(s_engine.isNull()) {
-        s_engine = new LiveQmlEngine(nullptr, QStringLiteral(QML_SOURCE) + "/View");
+        s_engine = new LiveQmlEngine(nullptr, QStringList{QStringLiteral(QML_SOURCE) + "/View"});
     }
 
     if (s_settings.isNull()) {
