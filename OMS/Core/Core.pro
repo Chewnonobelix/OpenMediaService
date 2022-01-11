@@ -62,7 +62,7 @@ QML_IMPORT_PATH = "$${OUT_PWD}/../Application/Ux"
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH = $$QML_IMPORT_PATH
 
-DEFINES += QT_DEPRECATED_WARNINGS QML_SOURCE=\\\"$$PWD\\\" QML_IMPORT_PATH=\\\"$$QML_IMPORT_PATH\\\"
+DEFINES += QT_DEPRECATED_WARNINGS QML_SOURCE=\\\"$$PWD/View/|$$PWD/../Plugins/Image/|$$PWD/../Plugins/Comics/\\\" QML_IMPORT_PATH=\\\"$$QML_IMPORT_PATH\\\"
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
