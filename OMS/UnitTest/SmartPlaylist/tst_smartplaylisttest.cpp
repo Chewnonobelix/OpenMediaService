@@ -65,7 +65,7 @@ void SmartPlaylistTest::test_addRule()
 
     rule = (*group)[0].dynamicCast<SmartRule>();
     QVERIFY(rule->setField("count"));
-    QVERIFY(rule->setValue(count2));
+    QVERIFY(rule->setValue(QVariantList{count2}));
     QVERIFY(rule->setOp(AbstractRule::Op::Inferior));
 }
 
@@ -88,10 +88,13 @@ void SmartPlaylistTest::test_setRule()
 void SmartPlaylistTest::test_addValid()
 {
     QVERIFY((*spl1->rules())[0].dynamicCast<SmartRule>()->field() == "count");
+    QVERIFY((*spl1->rules())[0].dynamicCast<SmartRule>()->value() == QVariantList{count2});
+    QVERIFY((*spl1->rules())[0].dynamicCast<SmartRule>()->op() == AbstractRule::Op::Inferior);
+
     QVERIFY(spl1->count() == 0);
     auto fut = spl1->append(m1);
+    fut.waitForFinished();
     QVERIFY(fut.result());
-    qDebug()<<fut.resultCount();
     QCOMPARE(spl1->count(), 1);
 }
 
@@ -107,6 +110,8 @@ void SmartPlaylistTest::test_modify()
     QVERIFY(spl1->count() == 1);
     m1->setCount(count3);
     spl1->onMediaChanged(m1);
+
+    QTest::qWait(2000);
     QCOMPARE(spl1->count(), 0);
 }
 
