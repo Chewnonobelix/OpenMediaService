@@ -8,8 +8,9 @@ QPointer<ControllerSettings> AbstractController::s_settings = nullptr;
 QPointer<TabWrapper> AbstractController::s_tabWrapper = new TabWrapper;
 
 AbstractController::AbstractController() : QObject() {
+    qDebug()<<QString(QML_SOURCE).split("|");
     if(s_engine.isNull()) {
-        s_engine = new LiveQmlEngine(nullptr, QStringList{QStringLiteral(QML_SOURCE) + "/View"});
+        s_engine = new LiveQmlEngine(nullptr, QString(QML_SOURCE).split("|"));
     }
 
     if (s_settings.isNull()) {
