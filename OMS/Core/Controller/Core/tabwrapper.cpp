@@ -64,6 +64,10 @@ QUuid TabWrapper::currentId() const
 
 bool TabWrapper::removeManager(QString id)
 {
+    if(m_model.count() == 1) {
+        return false;
+    }
+
     auto count = m_model.remove(QUuid::fromString(id)) > 0;
     return count > 0;
 }

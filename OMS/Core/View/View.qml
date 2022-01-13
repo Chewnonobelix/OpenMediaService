@@ -14,6 +14,9 @@ Item {
     property string idTab: viewRep.model.id() ? viewRep.model.id(): ""
 
     signal clicked(int index)
+    signal newWindow()
+    signal newView()
+    signal remove(string tab)
 
     MouseArea {
         anchors.fill: parent
@@ -86,11 +89,34 @@ Item {
             MediaTabButton {
                 text: "+"
 
-                Component.onCompleted: onClicked()
-                onClicked:  {
-                    tabRepeater.model = viewBar.currentIndex + 1
-                    viewBar.currentIndex = viewBar.currentIndex - 1
-                    viewRep.model.addTab()
+                onClicked: {
+                    menuWindow.x = mapToGlobal(0,0).x
+                    menuWindow.open()
+                }
+            }
+
+            Menu {
+                id: menuWindow
+                Action {
+                    Component.onCompleted: triggered()
+                    text: qsTr("Open in new tab")
+                    onTriggered:  {
+                        tabRepeater.model = viewBar.currentIndex + 1
+                        viewBar.currentIndex = viewBar.currentIndex - 1
+                        viewRep.model.addTab()
+                    }
+                }
+                Action {
+                    text: qsTr("Open in new view")
+                    onTriggered: root.newView()
+                }
+                Action {
+                    text: qsTr("Open in new window")
+                    onTriggered: root.newWindow()
+                }
+                Action {
+                    text: qsTr("Remove current view")
+                    onTriggered: root.remove(idTab)
                 }
             }
         }
