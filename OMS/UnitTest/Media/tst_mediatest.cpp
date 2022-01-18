@@ -153,21 +153,117 @@ void MediaTest::testPath()
     QCOMPARE(m.path(), temp);
 }
 
-void MediaTest::testBasePath(){}
-void MediaTest::testRemovePath(){}
-void MediaTest::testNbPath(){}
-void MediaTest::testIsAvailable(){}
-void MediaTest::testCount(){}
-void MediaTest::testRating(){}
-void MediaTest::testAdded(){}
-void MediaTest::testLastFinish(){}
-void MediaTest::testCurrentRead(){}
-void MediaTest::testLastProbed(){}
-void MediaTest::testTags(){}
-void MediaTest::testHasTag(){}
-void MediaTest::testReset(){}
-void MediaTest::testMerge(){}
-void MediaTest::testCreateMedia(){}
+void MediaTest::testBasePath()
+{
+    QFETCH(QString, path);
+    QFETCH(QString, result);
+    Media m;
+    m.setPath(path);
+
+    QCOMPARE(m.basePath(), result);
+}
+
+void MediaTest::testRemovePath()
+{
+    QFETCH(QStringList, paths);
+    QFETCH(int, count);
+    QFETCH(QString, toRemove);
+    QFETCH(bool, expected);
+
+    Media m;
+
+    for(auto it: paths) {
+        m.setPath(it);
+    }
+
+    QCOMPARE(m.paths().count(), paths.count());
+    QCOMPARE(m.removePath(toRemove), expected);
+    QCOMPARE(m.paths().count(), count);
+
+}
+
+void MediaTest::testNbPath()
+{
+    QFETCH(QStringList, paths);
+    QFETCH(int, count);
+
+    Media m;
+
+    for(auto it: paths) {
+        m.setPath(it);
+    }
+
+    QCOMPARE(m.nbPath(), count);
+}
+void MediaTest::testIsAvailable()
+{
+    QFETCH(QStringList, paths);
+    QFETCH(bool, expected);
+
+    Media m;
+
+    for(auto it: paths) {
+        m.setPath(it);
+    }
+
+    QCOMPARE(m.isAvailable(), expected);
+}
+
+void MediaTest::testCount()
+{
+    QFAIL("Not implemented");
+}
+
+void MediaTest::testRating()
+{
+    QFAIL("Not implemented");
+}
+
+void MediaTest::testAdded()
+{
+    QFAIL("Not implemented");
+}
+
+void MediaTest::testLastFinish()
+{
+    QFAIL("Not implemented");
+}
+
+void MediaTest::testCurrentRead()
+{
+    QFAIL("Not implemented");
+}
+
+void MediaTest::testLastProbed()
+{
+    QFAIL("Not implemented");
+}
+
+void MediaTest::testTags()
+{
+    QFAIL("Not implemented");
+}
+
+void MediaTest::testHasTag()
+{
+    QFAIL("Not implemented");
+}
+
+void MediaTest::testReset()
+{
+    QFAIL("Not implemented");
+}
+
+void MediaTest::testMerge()
+{
+    QFAIL("Not implemented");
+}
+
+void MediaTest::testCreateMedia()
+{
+    QFAIL("Not implemented");
+}
+
 void MediaTest::testId_data()
 {
     QTest::addColumn<QUuid>("id");
@@ -233,10 +329,49 @@ void MediaTest::testPath_data()
     QTest::addRow("Paths 5 bis")<<QStringList{"c:/a/path.jpg", "c:/a/path2.jpg", "c:/a/path3.jpg", "c:/a/path4.jpg", "c:/a/path5.jpg", "c:/a/path.jpg"}<<false<<5;
 }
 
-void MediaTest::testBasePath_data(){}
-void MediaTest::testRemovePath_data(){}
-void MediaTest::testNbPath_data(){}
-void MediaTest::testIsAvailable_data(){}
+void MediaTest::testBasePath_data()
+{
+    QTest::addColumn<QString>("path");
+    QTest::addColumn<QString>("result");
+
+    QTest::addRow("porte.jpg")<<QString("c:/a/path/porte.jpg")<<QString("porte.jpg");
+}
+
+void MediaTest::testRemovePath_data()
+{
+    QTest::addColumn<QStringList>("paths");
+    QTest::addColumn<int>("count");
+    QTest::addColumn<QString>("toRemove");
+    QTest::addColumn<bool>("expected");
+
+    QTest::addRow("OK")<<QStringList{"c:/a/path/f1.jpg"}<<0<<QString("c:/a/path/f1.jpg")<<true;
+    QTest::addRow("OK-2")<<QStringList{"c:/a/path/f1.jpg", "c:/a/path/f2.jpg"}<<1<<QString("c:/a/path/f1.jpg")<<true;
+    QTest::addRow("NOK")<<QStringList{"c:/a/path/f1.jpg", "c:/a/path/f2.jpg"}<<2<<QString("c:/a/path/f3.jpg")<<false;
+
+}
+
+void MediaTest::testNbPath_data()
+{
+    QTest::addColumn<QStringList>("paths");
+    QTest::addColumn<int>("count");
+
+    QTest::addRow("1")<<QStringList{"c:/a/path/f1.jpg"}<<1;
+    QTest::addRow("2")<<QStringList{"c:/a/path/f1.jpg", "c:/a/path/f2.jpg"}<<2;
+    QTest::addRow("3")<<QStringList{"c:/a/path/f1.jpg", "c:/a/path/f2.jpg", "c:/a/path/f3.jpg"}<<3;
+    QTest::addRow("4")<<QStringList{"c:/a/path/f1.jpg", "c:/a/path/f2.jpg", "c:/a/path/f3.jpg", "c:/a/path/f4.jpg"}<<4;
+    QTest::addRow("4")<<QStringList{"c:/a/path/f1.jpg", "c:/a/path/f2.jpg", "c:/a/path/f3.jpg", "c:/a/path/f4.jpg", "c:/a/path/f1.jpg"}<<4;
+}
+
+void MediaTest::testIsAvailable_data()
+{
+    QTest::addColumn<QStringList>("paths");
+    QTest::addColumn<bool>("expected");
+
+    QTest::addRow("isAvailable")<<QStringList{QString(TESTDATA) + "porte_d_eternite.jpg"}<<true;
+    QTest::addRow("isAvailable - 2")<<QStringList{"c:/a/path/f1.jpg", QString(TESTDATA) + "porte_d_eternite.jpg"}<<true;
+    QTest::addRow("!isAvailable")<<QStringList{"c:/a/path/f1.jpg"}<<false;
+}
+
 void MediaTest::testCount_data(){}
 void MediaTest::testRating_data(){}
 void MediaTest::testAdded_data(){}
