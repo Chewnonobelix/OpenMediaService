@@ -1,22 +1,14 @@
 #include "Model/media.h"
 #include <QSignalSpy>
 #include <QtTest>
+#include <QStringList>
+
 // add necessary includes here
 
 class MediaTest : public QObject
 {
     Q_OBJECT
 
-    Media model1, model2;
-    const QUuid id = QUuid::createUuid();
-    const QString path = QStringLiteral(TESTDATA) + "/porte_d_eternite.jpg";
-    const int count = 1;
-    const MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::MediaRole::Image;
-    const QDate added = QDate::currentDate();
-    const QDateTime lastFinish = QDateTime::currentDateTime();
-    const QDateTime lastProbed = QDateTime::currentDateTime().addDays(5);
-    const double currentRead = 99.0;
-    const int rate = 2;
 
 public:
     MediaTest();
@@ -25,18 +17,47 @@ public:
 private slots:
     void initTestCase();
     void cleanupTestCase();
-    void test_id();
-    void test_count();
-    void test_role();
-    void test_paths();
-    void test_isAvailable();
-    void test_removePath();
-    void test_added();
-    void test_lastFinish();
-    void test_currentRead();
-    void test_rating();
-    void test_lastProbed();
-    void test_copy();
+
+    void testId();
+    void testFingerprint();
+    void testRole();
+    void testPaths();
+    void testPath();
+    void testBasePath();
+    void testRemovePath();
+    void testNbPath();
+    void testIsAvailable();
+    void testCount();
+    void testRating();
+    void testAdded();
+    void testLastFinish();
+    void testCurrentRead();
+    void testLastProbed();
+    void testTags();
+    void testHasTag();
+    void testReset();
+    void testMerge();
+    void testCreateMedia();
+    void testId_data();
+    void testFingerprint_data();
+    void testRole_data();
+    void testPaths_data();
+    void testPath_data();
+    void testBasePath_data();
+    void testRemovePath_data();
+    void testNbPath_data();
+    void testIsAvailable_data();
+    void testCount_data();
+    void testRating_data();
+    void testAdded_data();
+    void testLastFinish_data();
+    void testCurrentRead_data();
+    void testLastProbed_data();
+    void testTags_data();
+    void testHasTag_data();
+    void testReset_data();
+    void testMerge_data();
+    void testCreateMedia_data();
 };
 
 MediaTest::MediaTest()
@@ -59,97 +80,174 @@ void MediaTest::cleanupTestCase()
 
 }
 
-void MediaTest::test_id()
+void MediaTest::testId()
 {
-    QVERIFY(model1.id() != id);
-    QVERIFY(model1.setId(id));
-    QCOMPARE(model1.id(), id);
+    QFETCH(QUuid, id);
+    Media m;
+
+    m.setId(id);
+    QCOMPARE(m.id(), id);
 }
 
-void MediaTest::test_count()
+void MediaTest::testFingerprint()
 {
-    QVERIFY(model1.count() != count);
-    QSignalSpy spy(&model1, SIGNAL(countChanged()));
-    QVERIFY(model1.setCount(count));
-    QCOMPARE(spy.count(), 1);
-    QCOMPARE(model1.count(), count);
+    QFETCH(MD5, content);
+    Media m;
+
+    m.setFingerprint(content);
+    QCOMPARE(m.fingerprint(), content);
 }
 
-void MediaTest::test_role()
+void MediaTest::testRole()
 {
-    QVERIFY(model1.role() != role);
-    QVERIFY(model1.setRole(role));
-    QCOMPARE(model1.role(), role);
+    QFETCH(MediaPlayerGlobal::MediaRole, role);
+    Media m;
+
+    m.setRole(role);
+    QCOMPARE(m.role(), role);
 }
 
-void MediaTest::test_paths()
+void MediaTest::testPaths()
 {
-    QVERIFY(model1.paths().isEmpty());
-    QVERIFY(model1.setPath(path));
-    QCOMPARE(model1.paths().first(), path);
+    QFETCH(QStringList, paths);
+    QFETCH(bool, ret);
+    QFETCH(int, count);
+    Media m;
+
+    QSignalSpy spy(&m, &Media::isAvailableChanged);
+
+    auto test = true;
+    for(auto it: paths) {
+        test &= m.setPath(it);
+    }
+
+    QSet<QString> expected(paths.begin(), paths.end());
+    auto temp = m.paths();
+    QSet<QString> result(temp.begin(), temp.end());
+
+    QCOMPARE(test, ret);
+    QCOMPARE(spy.count(), count);
+    QCOMPARE(result, expected);
 }
 
-void MediaTest::test_isAvailable()
+void MediaTest::testPath()
 {
-    QCOMPARE(model1.isAvailable(), true);
+    QFETCH(QStringList, paths);
+    QFETCH(bool, ret);
+    QFETCH(int, count);
+
+    Media m;
+
+    QSignalSpy spy(&m, &Media::isAvailableChanged);
+
+    auto test = true;
+    for(auto it: paths) {
+        test &= m.setPath(it);
+    }
+
+    QCOMPARE(test, ret);
+    QCOMPARE(spy.count(), count);
+    QSet<QString> expected(paths.begin(), paths.end());
+    auto temp = *expected.begin();
+
+    QCOMPARE(m.path(), temp);
 }
 
-void MediaTest::test_removePath()
+void MediaTest::testBasePath(){}
+void MediaTest::testRemovePath(){}
+void MediaTest::testNbPath(){}
+void MediaTest::testIsAvailable(){}
+void MediaTest::testCount(){}
+void MediaTest::testRating(){}
+void MediaTest::testAdded(){}
+void MediaTest::testLastFinish(){}
+void MediaTest::testCurrentRead(){}
+void MediaTest::testLastProbed(){}
+void MediaTest::testTags(){}
+void MediaTest::testHasTag(){}
+void MediaTest::testReset(){}
+void MediaTest::testMerge(){}
+void MediaTest::testCreateMedia(){}
+void MediaTest::testId_data()
 {
-    QVERIFY(model1.removePath(path));
-    QCOMPARE(model1.isAvailable(), false);
+    QTest::addColumn<QUuid>("id");
+
+    QTest::addRow("1")<<QUuid::createUuid();
+    QTest::addRow("2")<<QUuid::createUuid();
+    QTest::addRow("3")<<QUuid::createUuid();
+    QTest::addRow("4")<<QUuid::createUuid();
+    QTest::addRow("5")<<QUuid::createUuid();
 }
 
-void MediaTest::test_added()
+void MediaTest::testFingerprint_data()
 {
-    QVERIFY(model1.added() != added);
-    QVERIFY(model1.setAdded(added));
-    QCOMPARE(model1.added(), added);
+    QTest::addColumn<MD5>("content");
+
+    QFile file(QStringLiteral(TESTDATA) + "porte_d_eternite.jpg");
+    file.open(QIODevice::ReadOnly);
+    QCryptographicHash hash(QCryptographicHash::Md5);
+    hash.addData(&file);
+    auto md = hash.result();
+    file.close();
+    QTest::addRow("porte d eternite")<<md;
 }
 
-void MediaTest::test_lastFinish()
+void MediaTest::testRole_data()
 {
-    QVERIFY(model1.lastFinish() != lastFinish);
-    QSignalSpy spy(&model1, SIGNAL(lastFinishChanged()));
-    QVERIFY(model1.setLastFinish(lastFinish));
-    QCOMPARE(spy.count(), 1);
-    QCOMPARE(model1.lastFinish(), lastFinish);
+    QTest::addColumn<MediaPlayerGlobal::MediaRole>("role");
+
+    QTest::addRow("Undefined")<<MediaPlayerGlobal::MediaRole::Undefined;
+    QTest::addRow("Comics")<<MediaPlayerGlobal::MediaRole::Comics;
+    QTest::addRow("Image")<<MediaPlayerGlobal::MediaRole::Image;
+    QTest::addRow("Video")<<MediaPlayerGlobal::MediaRole::Video;
+    QTest::addRow("Audio")<<MediaPlayerGlobal::MediaRole::Audio;
+    QTest::addRow("Books")<<MediaPlayerGlobal::MediaRole::Books;
+    QTest::addRow("Game")<<MediaPlayerGlobal::MediaRole::Game;
 }
 
-void MediaTest::test_currentRead()
+void MediaTest::testPaths_data()
 {
-    QVERIFY(model1.currentRead() != currentRead);
-    QSignalSpy spy(&model1, SIGNAL(currentReadChanged()));
-    QVERIFY(model1.setCurrentRead(currentRead));
-    QCOMPARE(spy.count(), 1);
-    QCOMPARE(model1.currentRead(), currentRead);
+    QTest::addColumn<QStringList>("paths");
+    QTest::addColumn<bool>("ret");
+    QTest::addColumn<int>("count");
+
+    QTest::addRow("Paths 1")<<QStringList{"c:/a/path.jpg"}<<true<<1;
+    QTest::addRow("Paths 2")<<QStringList{"c:/a/path.jpg", "c:/a/path2.jpg"}<<true<<2;
+    QTest::addRow("Paths 3")<<QStringList{"c:/a/path.jpg", "c:/a/path2.jpg", "c:/a/path3.jpg"}<<true<<3;
+    QTest::addRow("Paths 4")<<QStringList{"c:/a/path.jpg", "c:/a/path2.jpg", "c:/a/path3.jpg", "c:/a/path4.jpg"}<<true<<4;
+    QTest::addRow("Paths 5")<<QStringList{"c:/a/path.jpg", "c:/a/path2.jpg", "c:/a/path3.jpg", "c:/a/path4.jpg", "c:/a/path5.jpg"}<<true<<5;
+    QTest::addRow("Paths 5 bis")<<QStringList{"c:/a/path.jpg", "c:/a/path2.jpg", "c:/a/path3.jpg", "c:/a/path4.jpg", "c:/a/path5.jpg", "c:/a/path.jpg"}<<false<<5;
 }
 
-void MediaTest::test_rating()
+void MediaTest::testPath_data()
 {
-    QVERIFY(model1.rating() != rate);
-    QSignalSpy spy(&model1, SIGNAL(ratingChanged()));
-    QVERIFY(model1.setRating(rate));
-    QCOMPARE(spy.count(), 1);
-    QCOMPARE(model1.rating(), rate);
+    QTest::addColumn<QStringList>("paths");
+    QTest::addColumn<bool>("ret");
+    QTest::addColumn<int>("count");
+
+    QTest::addRow("Paths 1")<<QStringList{"c:/a/path.jpg"}<<true<<1;
+    QTest::addRow("Paths 2")<<QStringList{"c:/a/path.jpg", "c:/a/path2.jpg"}<<true<<2;
+    QTest::addRow("Paths 3")<<QStringList{"c:/a/path.jpg", "c:/a/path2.jpg", "c:/a/path3.jpg"}<<true<<3;
+    QTest::addRow("Paths 4")<<QStringList{"c:/a/path.jpg", "c:/a/path2.jpg", "c:/a/path3.jpg", "c:/a/path4.jpg"}<<true<<4;
+    QTest::addRow("Paths 5")<<QStringList{"c:/a/path.jpg", "c:/a/path2.jpg", "c:/a/path3.jpg", "c:/a/path4.jpg", "c:/a/path5.jpg"}<<true<<5;
+    QTest::addRow("Paths 5 bis")<<QStringList{"c:/a/path.jpg", "c:/a/path2.jpg", "c:/a/path3.jpg", "c:/a/path4.jpg", "c:/a/path5.jpg", "c:/a/path.jpg"}<<false<<5;
 }
 
-void MediaTest::test_lastProbed()
-{
-    QVERIFY(model1.lastProbed() != lastProbed);
-    QSignalSpy spy(&model1, SIGNAL(lastProbedChanged()));
-    QVERIFY(model1.setLastProbed(lastProbed));
-    QCOMPARE(spy.count(), 1);
-    QCOMPARE(model1.lastProbed(), lastProbed);
-}
-
-void MediaTest::test_copy()
-{
-    QVERIFY(model2.id() != id);
-    model2 = model1;
-    QCOMPARE(model2.id(), model1.id());
-}
-
+void MediaTest::testBasePath_data(){}
+void MediaTest::testRemovePath_data(){}
+void MediaTest::testNbPath_data(){}
+void MediaTest::testIsAvailable_data(){}
+void MediaTest::testCount_data(){}
+void MediaTest::testRating_data(){}
+void MediaTest::testAdded_data(){}
+void MediaTest::testLastFinish_data(){}
+void MediaTest::testCurrentRead_data(){}
+void MediaTest::testLastProbed_data(){}
+void MediaTest::testTags_data(){}
+void MediaTest::testHasTag_data(){}
+void MediaTest::testReset_data(){}
+void MediaTest::testMerge_data(){}
+void MediaTest::testCreateMedia_data(){}
 
 
 QTEST_APPLESS_MAIN(MediaTest)
