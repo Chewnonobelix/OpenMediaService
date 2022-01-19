@@ -165,9 +165,9 @@ MediaPointer Media::createMedia(QString path) {
 int Media::nbPath() const { return m_path.size(); }
 
 bool Media::isAvailable() const {
-    bool ret = !m_path.isEmpty();
-    for (auto it = m_path.begin(); ret && it != m_path.end(); it++)
-        ret &= QFile::exists(*it);
+    bool ret = false;
+    for (auto it = m_path.begin(); !ret && it != m_path.end(); it++)
+        ret |= QFile::exists(*it);
 
     return ret;
 }
@@ -200,12 +200,12 @@ bool Media::hasTag(QString tag) const
 
 QStringList Media::tags() const
 {
-    return metaData<QStringList>("tags");
+    return metaData<QSet<QString>>("tags").values();
 }
 
 void Media::setTags(QStringList tags)
 {
-    setMetadata("tags", tags);
+    setMetadata("tags", QSet<QString>(tags.begin(), tags.end()));
     emit tagsChanged();
 }
 
@@ -247,16 +247,18 @@ QFuture<bool> Media::initFingerprint()
 void Media::merge(MediaPointer m)
 {
     for(auto p: m->paths())
-        m_path<<p;
+        setPath(p);
 
-    for(auto t: m->tags())
-        setTag(t);
+    auto ts = tags();
+    ts += m->tags();
+    setTags(ts);
 
     setCount(std::max(count(), m->count()));
     setRating(std::max(rating(), m->rating()));
     setCurrentRead(std::max(currentRead(), m->currentRead()));
     setAdded(std::min(added(), m->added()));
     setLastFinish(std::max(lastFinish(), m->lastFinish()));
+    setLastProbed(std::max(lastProbed(), m->lastProbed()));
 }
 
 QString Media::basePath() const
