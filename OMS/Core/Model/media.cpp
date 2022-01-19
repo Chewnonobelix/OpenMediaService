@@ -165,9 +165,9 @@ MediaPointer Media::createMedia(QString path) {
 int Media::nbPath() const { return m_path.size(); }
 
 bool Media::isAvailable() const {
-    bool ret = !m_path.isEmpty();
-    for (auto it = m_path.begin(); ret && it != m_path.end(); it++)
-        ret &= QFile::exists(*it);
+    bool ret = false;
+    for (auto it = m_path.begin(); !ret && it != m_path.end(); it++)
+        ret |= QFile::exists(*it);
 
     return ret;
 }
