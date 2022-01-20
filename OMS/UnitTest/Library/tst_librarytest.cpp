@@ -6,15 +6,6 @@
 
 class LibraryTest : public QObject {
 	Q_OBJECT
-	Library model1, model2;
-	QUuid id = QUuid::createUuid();
-	QString name = "Name1";
-	MediaPlayerGlobal::MediaRole role = MediaPlayerGlobal::MediaRole::Image;
-	bool shared = true;
-	QDateTime lastprobed = QDateTime::currentDateTime().addDays(-6);
-	QString source = "Source1";
-	QStringList sourceDir = QList<QString>({source});
-	QString media = QStringLiteral(TESTDATA) + "/porte_d_eternite.jpg";
 
 public:
 	LibraryTest();
@@ -23,15 +14,39 @@ public:
 private slots:
 	void initTestCase();
 	void cleanupTestCase();
-	void test_id();
-	void test_name();
-	void test_role();
-	void test_isShared();
-	void test_lastProbed();
-	void test_addSourceDir();
-	void test_sourceDir();
-	void test_removeSourceDir();
-	void test_copy();
+
+    void idTest();
+    void idTest_data();
+    void nameTest();
+    void nameTest_data();
+    void roleTest();
+    void roleTest_data();
+    void isSharedTest();
+    void isSharedTest_data();
+    void addSourceDirTest();
+    void addSourceDirTest_data();
+    void addMediaTest();
+    void addMediaTest_data();
+    void removeMediaTest();
+    void removeMediaTest_data();
+    void addPlaylistTest();
+    void addPlaylistTest_data();
+    void addSmartPlaylistTest();
+    void addSmartPlaylistTest_data();
+    void addTagTest();
+    void addTagTest_data();
+    void removeTagTest();
+    void removeTagTest_data();
+    void editTagTest();
+    void editTagTest_data();
+    void tagListTest();
+    void tagListTest_data();
+    void onProbedChangedTest();
+    void onProbedChangedTest_data();
+    void onMediasChangedTest();
+    void onMediasChangedTest_data();
+    void onSmartPlaylistChangedTest();
+    void onSmartPlaylistChangedTest_data();
 };
 
 LibraryTest::LibraryTest() {}
@@ -42,63 +57,117 @@ void LibraryTest::initTestCase() {}
 
 void LibraryTest::cleanupTestCase() {}
 
-void LibraryTest::test_id() {
-	QVERIFY(model1.id() != id);
-    QVERIFY(model1.setId(id));
-	QCOMPARE(model1.id(), id);
+void LibraryTest::idTest()
+{
+    QFAIL("Not implemented");
 }
 
-void LibraryTest::test_name() {
-	QVERIFY(model1.name() != name);
-	QSignalSpy spy(&model1, SIGNAL(nameChanged()));
-    QVERIFY(model1.setName(name));
-	QCOMPARE(spy.count(), 1);
-	QCOMPARE(model1.name(), name);
+void LibraryTest::idTest_data() {}
+
+void LibraryTest::nameTest()
+{
+    QFAIL("Not implemented");
 }
 
-void LibraryTest::test_role() {
-	QVERIFY(model1.role() != role);
-    QVERIFY(model1.setRole(role));
-	QCOMPARE(model1.role(), role);
+void LibraryTest::nameTest_data() {}
+
+void LibraryTest::roleTest()
+{
+    QFAIL("Not implemented");
 }
 
-void LibraryTest::test_isShared() {
-	QVERIFY(model1.isShared() != shared);
-	QSignalSpy spy(&model1, SIGNAL(isSharedChanged()));
-    QVERIFY(model1.setShared(shared));
-	QCOMPARE(spy.count(), 1);
-	QCOMPARE(model1.isShared(), shared);
+void LibraryTest::roleTest_data() {}
+
+void LibraryTest::isSharedTest()
+{
+    QFAIL("Not implemented");
 }
 
-void LibraryTest::test_lastProbed() {
-	QVERIFY(model1.probe()->lastProbed() != lastprobed);
-	QSignalSpy spy(model1.probe(), SIGNAL(lastProbedChanged()));
-    QVERIFY(model1.probe()->setLastProbed(lastprobed));
-	QCOMPARE(spy.count(), 1);
-	QCOMPARE(model1.probe()->lastProbed(), lastprobed);
+void LibraryTest::isSharedTest_data() {}
+
+void LibraryTest::addSourceDirTest()
+{
+    QFAIL("Not implemented");
 }
 
-void LibraryTest::test_addSourceDir() {
-	QVERIFY(model1.sourceDir().isEmpty());
-	QSignalSpy spy(&model1, SIGNAL(sourceDirChanged()));
-	QCOMPARE(model1.addSourceDir(source), true);
-	QCOMPARE(spy.count(), 1);
+void LibraryTest::addSourceDirTest_data() {}
+
+void LibraryTest::addMediaTest()
+{
+    QFAIL("Not implemented");
 }
 
-void LibraryTest::test_sourceDir() { QCOMPARE(model1.sourceDir(), sourceDir); }
+void LibraryTest::addMediaTest_data() {}
 
-void LibraryTest::test_removeSourceDir() {
-	QVERIFY(!model1.sourceDir().isEmpty());
-	QSignalSpy spy(&model1, SIGNAL(sourceDirChanged()));
-	QCOMPARE(model1.removeSourceDir(source), true);
-	QCOMPARE(spy.count(), 1);
+void LibraryTest::removeMediaTest()
+{
+    QFAIL("Not implemented");
 }
 
-void LibraryTest::test_copy() {
-	QVERIFY(model2.id() != id);
-	model2 = model1;
-	QCOMPARE(model2.id(), model1.id());
+void LibraryTest::removeMediaTest_data() {}
+
+void LibraryTest::addPlaylistTest()
+{
+    QFAIL("Not implemented");
 }
+
+void LibraryTest::addPlaylistTest_data() {}
+
+void LibraryTest::addSmartPlaylistTest()
+{
+    QFAIL("Not implemented");
+}
+
+void LibraryTest::addSmartPlaylistTest_data() {}
+
+void LibraryTest::addTagTest()
+{
+    QFAIL("Not implemented");
+}
+
+void LibraryTest::addTagTest_data() {}
+
+void LibraryTest::removeTagTest()
+{
+    QFAIL("Not implemented");
+}
+
+void LibraryTest::removeTagTest_data() {}
+
+void LibraryTest::editTagTest()
+{
+    QFAIL("Not implemented");
+}
+
+void LibraryTest::editTagTest_data() {}
+
+void LibraryTest::tagListTest()
+{
+    QFAIL("Not implemented");
+}
+
+void LibraryTest::tagListTest_data() {}
+
+void LibraryTest::onProbedChangedTest()
+{
+    QFAIL("Not implemented");
+}
+
+void LibraryTest::onProbedChangedTest_data() {}
+
+void LibraryTest::onMediasChangedTest()
+{
+    QFAIL("Not implemented");
+}
+
+void LibraryTest::onMediasChangedTest_data() {}
+
+void LibraryTest::onSmartPlaylistChangedTest()
+{
+    QFAIL("Not implemented");
+}
+
+void LibraryTest::onSmartPlaylistChangedTest_data() {}
 
 QTEST_APPLESS_MAIN(LibraryTest)
 

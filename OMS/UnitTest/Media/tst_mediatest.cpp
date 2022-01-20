@@ -402,7 +402,6 @@ void MediaTest::testMerge_tags()
 
     m1->merge(m2);
 
-    qDebug()<<m1->tags();
     QCOMPARE(m1->tags(), QSet<QString>(tags.begin(), tags.end()).values());
 }
 
