@@ -59,24 +59,68 @@ void LibraryTest::cleanupTestCase() {}
 
 void LibraryTest::idTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(QUuid, id);
+    Library l;
+
+    l.setId(id);
+    QCOMPARE(l.id(), id);
 }
 
-void LibraryTest::idTest_data() {}
+void LibraryTest::idTest_data()
+{
+    QTest::addColumn<QUuid>("id");
+
+    QTest::addRow("1")<<QUuid::createUuid();
+    QTest::addRow("2")<<QUuid::createUuid();
+    QTest::addRow("3")<<QUuid::createUuid();
+    QTest::addRow("4")<<QUuid::createUuid();
+    QTest::addRow("5")<<QUuid::createUuid();
+}
 
 void LibraryTest::nameTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(QString, name);
+    Library l;
+
+    QSignalSpy spy(&l, &Library::nameChanged);
+
+    l.setName(name);
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(l.name(), name);
 }
 
-void LibraryTest::nameTest_data() {}
+void LibraryTest::nameTest_data()
+{
+    QTest::addColumn<QString>("name");
+
+    QTest::addRow("Name 1")<<QString("Library unit test 1");
+    QTest::addRow("Name 2")<<QString("Library unit test 2");
+    QTest::addRow("Name 3")<<QString("Library unit test 3");
+    QTest::addRow("Name 4")<<QString("Library unit test 4");
+    QTest::addRow("Name 5")<<QString("Library unit test 5");
+}
 
 void LibraryTest::roleTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(MediaPlayerGlobal::MediaRole, role);
+    Library l;
+
+    l.setRole(role);
+    QCOMPARE(l.role(), role);
 }
 
-void LibraryTest::roleTest_data() {}
+void LibraryTest::roleTest_data()
+{
+    QTest::addColumn<MediaPlayerGlobal::MediaRole>("role");
+
+    QTest::addRow("Undefined")<<MediaPlayerGlobal::MediaRole::Undefined;
+    QTest::addRow("Comics")<<MediaPlayerGlobal::MediaRole::Comics;
+    QTest::addRow("Video")<<MediaPlayerGlobal::MediaRole::Video;
+    QTest::addRow("Audio")<<MediaPlayerGlobal::MediaRole::Audio;
+    QTest::addRow("Book")<<MediaPlayerGlobal::MediaRole::Books;
+    QTest::addRow("Game")<<MediaPlayerGlobal::MediaRole::Game;
+    QTest::addRow("Image")<<MediaPlayerGlobal::MediaRole::Image;
+}
 
 void LibraryTest::isSharedTest()
 {
