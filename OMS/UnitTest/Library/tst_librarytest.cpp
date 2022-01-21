@@ -124,10 +124,23 @@ void LibraryTest::roleTest_data()
 
 void LibraryTest::isSharedTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(bool, isShared);
+    Library l;
+
+    QSignalSpy spy(&l, &Library::isSharedChanged);
+
+    l.setShared(isShared);
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(l.isShared(), isShared);
 }
 
-void LibraryTest::isSharedTest_data() {}
+void LibraryTest::isSharedTest_data()
+{
+    QTest::addColumn<bool>("isShared");
+
+    QTest::addRow("True")<<true;
+    QTest::addRow("False")<<false;
+}
 
 void LibraryTest::addSourceDirTest()
 {
