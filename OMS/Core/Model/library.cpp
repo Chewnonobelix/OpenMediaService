@@ -168,19 +168,23 @@ bool Library::addSourceDir(QString source) {
     t << source;
     t.removeDuplicates();
     setMetadata("sourceDir", t);
-    emit sourceDirChanged();
+
+    if(!ret)
+        emit sourceDirChanged();
+
     return !ret;
-    ;
 }
 
 bool Library::removeSourceDir(QString source) {
     auto t = sourceDir();
-    bool ret = t.indexOf(source) > -1;
-    t.removeAt(t.indexOf(source));
+
+    bool ret = t.removeAll(source) > 0;
+
     setMetadata("sourceDir", t);
-    emit sourceDirChanged();
+
+    if(ret)
+        emit sourceDirChanged();
     return ret;
-    ;
 }
 
 bool Library::addMedia(MediaPointer p) {

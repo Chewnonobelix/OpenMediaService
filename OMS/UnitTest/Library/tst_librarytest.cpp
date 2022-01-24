@@ -25,6 +25,8 @@ private slots:
     void isSharedTest_data();
     void addSourceDirTest();
     void addSourceDirTest_data();
+    void removeSourceDirTest();
+    void removeSourceDirTest_data();
     void addMediaTest();
     void addMediaTest_data();
     void removeMediaTest();
@@ -144,10 +146,62 @@ void LibraryTest::isSharedTest_data()
 
 void LibraryTest::addSourceDirTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(QStringList, paths);
+    QFETCH(int, count);
+
+    Library l;
+    QSignalSpy spy(&l, &Library::sourceDirChanged);
+
+    for(auto path: paths)
+       l.addSourceDir(path);
+
+    QCOMPARE(spy.count(), count);
+    QCOMPARE(l.sourceDir().count(), count);
+    paths.removeDuplicates();
+    QCOMPARE(l.sourceDir(), paths);
 }
 
-void LibraryTest::addSourceDirTest_data() {}
+void LibraryTest::addSourceDirTest_data()
+{
+    QTest::addColumn<QStringList>("paths");
+    QTest::addColumn<int>("count");
+
+    QTest::addRow("Source dir 1")<<QStringList{"Path 1"}<<1;
+    QTest::addRow("Source dir 2")<<QStringList{"Path 1", "Path 2"}<<2;
+    QTest::addRow("Source dir 2.1")<<QStringList{"Path 1", "Path 2", "Path 1"}<<2;
+}
+
+void LibraryTest::removeSourceDirTest()
+{
+    QFETCH(QStringList, paths);
+    QFETCH(QString, toRemove);
+    QFETCH(int, count);
+    QFETCH(bool, expected);
+
+    Library l;
+    for(auto it: paths)
+        l.addSourceDir(it);
+
+    QSignalSpy spy(&l, &Library::sourceDirChanged);
+    QCOMPARE(l.removeSourceDir(toRemove), expected);
+    QCOMPARE(spy.count(), expected ? 1 : 0);
+    QCOMPARE(l.sourceDir().count(), count);
+    paths.removeAll(toRemove);
+    paths.removeDuplicates();
+    QCOMPARE(l.sourceDir(), paths);
+}
+
+void LibraryTest::removeSourceDirTest_data()
+{
+    QTest::addColumn<QStringList>("paths");
+    QTest::addColumn<QString>("toRemove");
+    QTest::addColumn<int>("count");
+    QTest::addColumn<bool>("expected");
+
+    QTest::addRow("Source dir 1")<<QStringList{"Path 1"}<<QString("Path 1")<<0<<true;
+    QTest::addRow("Source dir 2")<<QStringList{"Path 1", "Path 2"}<<QString("Path 2")<<1<<true;
+    QTest::addRow("Source dir 3")<<QStringList{"Path 1", "Path 2", "Path 1"}<<QString("Path 3")<<2<<false;
+}
 
 void LibraryTest::addMediaTest()
 {
