@@ -205,22 +205,16 @@ bool Library::addMedia(MediaPointer p) {
     return true;
 }
 
-bool Library::removeMedia(QString path) {
-    QFile f(path);
-    if (!f.open(QIODevice::ReadOnly))
-        return false;
+bool Library::removeMedia(QString id) {
+    auto ret = false;
 
-    QCryptographicHash ch(QCryptographicHash::Md5);
-    if (!ch.addData(&f))
-        return false;
+    if(m_medias.contains(QUuid::fromString(id))) {
+        m_medias.take(QUuid::fromString(id));
+        ret = true;
+        emit mediasChanged();
+    }
 
-    auto md = ch.result();
-    if (!m_pool.contains(md))
-        return false;
-
-    m_medias[m_pool[md]]->removePath(path);
-    emit mediasChanged(m_medias[m_pool[md]]);
-    return !m_medias[m_pool[md]]->paths().contains(path);
+    return ret;
 }
 
 bool operator<(LibraryPointer l1, LibraryPointer l2) {

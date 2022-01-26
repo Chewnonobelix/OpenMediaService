@@ -235,10 +235,38 @@ void LibraryTest::addMediaTest_data()
 
 void LibraryTest::removeMediaTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(QList<QUuid>, medias);
+    QFETCH(QUuid, remove);
+    QFETCH(int, count);
+    QFETCH(bool, expected);
+
+    Library l;
+    for(auto it: medias) {
+        auto m = factory<Media>(it);
+        l.addMedia(m);
+    }
+
+    QSignalSpy spy(&l, &Library::mediasChanged);
+    QCOMPARE(l.removeMedia(remove.toString()), expected);
+    QCOMPARE(spy.count(), expected ? 1 : 0);
+    QCOMPARE(l.mediaCount(), count);
 }
 
-void LibraryTest::removeMediaTest_data() {}
+void LibraryTest::removeMediaTest_data()
+{
+    QTest::addColumn<QList<QUuid>>("medias");
+    QTest::addColumn<QUuid>("remove");
+    QTest::addColumn<int>("count");
+    QTest::addColumn<bool>("expected");
+
+    auto m1 = QUuid::createUuid();
+    auto m2 = QUuid::createUuid();
+    auto m3 = QUuid::createUuid();
+
+    QTest::addRow("Remove media 1")<<QList<QUuid>{m1}<<m1<<0<<true;
+    QTest::addRow("Remove media 2")<<QList<QUuid>{m1, m2}<<m1<<1<<true;
+    QTest::addRow("Remove media 3")<<QList<QUuid>{m1, m2}<<m3<<2<<false;
+}
 
 void LibraryTest::addPlaylistTest()
 {
