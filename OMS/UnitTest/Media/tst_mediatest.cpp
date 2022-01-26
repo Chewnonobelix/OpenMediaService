@@ -300,8 +300,9 @@ void MediaTest::testTags()
     m.setTags(tags);
     QCOMPARE(spy.count(), 1);
     QCOMPARE(m.tags().count(), count);
-
-    QCOMPARE(m.tags(), QSet<QString>(tags.begin(), tags.end()).values());
+    tags.sort();
+    tags.removeDuplicates();
+    QCOMPARE(m.tags(), tags);
 }
 
 void MediaTest::testHasTag()
@@ -402,7 +403,8 @@ void MediaTest::testMerge_tags()
 
     m1->merge(m2);
 
-    QCOMPARE(m1->tags(), QSet<QString>(tags.begin(), tags.end()).values());
+    tags.sort();
+    QCOMPARE(m1->tags(), tags);
 }
 
 void MediaTest::testMerge_currentRead()

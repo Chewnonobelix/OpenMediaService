@@ -200,23 +200,23 @@ bool Media::hasTag(QString tag) const
 
 QStringList Media::tags() const
 {
-    return metaData<QSet<QString>>("tags").values();
+    return metaData<QStringList>("tags");
 }
 
 void Media::setTags(QStringList tags)
 {
-    setMetadata("tags", QSet<QString>(tags.begin(), tags.end()));
+    tags.removeDuplicates();
+    tags.sort();
+    setMetadata("tags", tags);
     emit tagsChanged();
 }
 
 void Media::setTag(QString tag)
 {
     auto tagss = tags();
-    if(tagss.contains(tag))
-        tagss.removeAll(tag);
-    else
-        tagss<<tag;
-
+    tagss<<tag;
+    tagss.removeDuplicates();
+    tagss.sort();
     setTags(tagss);
 
     emit tagsChanged();
@@ -224,7 +224,7 @@ void Media::setTag(QString tag)
 
 QFuture<bool> Media::initFingerprint()
 {
-    m_runner = QtConcurrent::run([this]() -> bool {
+        m_runner = QtConcurrent::run([this]() -> bool {
         auto p = path();
         QFile file(p);
         if(!file.open(QIODevice::ReadOnly))
