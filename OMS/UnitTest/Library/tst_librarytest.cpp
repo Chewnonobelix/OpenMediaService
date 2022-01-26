@@ -205,10 +205,33 @@ void LibraryTest::removeSourceDirTest_data()
 
 void LibraryTest::addMediaTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(QList<QUuid>, medias);
+    QFETCH(int, count);
+
+    Library l;
+    QSignalSpy spy(&l, &Library::mediasChanged);
+
+    for(auto it: medias) {
+        auto m = factory<Media>(it);
+        l.addMedia(m);
+    }
+
+    QCOMPARE(spy.count(), medias.count());
+    QCOMPARE(l.mediaCount(), count);
 }
 
-void LibraryTest::addMediaTest_data() {}
+void LibraryTest::addMediaTest_data()
+{
+    QTest::addColumn<QList<QUuid>>("medias");
+    QTest::addColumn<int>("count");
+
+    auto m1 = QUuid::createUuid();
+    auto m2 = QUuid::createUuid();
+
+    QTest::addRow("Add media 1")<<QList<QUuid>{m1}<<1;
+    QTest::addRow("Add media 2")<<QList<QUuid>{m1, m2}<<2;
+    QTest::addRow("Add media 3")<<QList<QUuid>{m1, m2, m1}<<2;
+}
 
 void LibraryTest::removeMediaTest()
 {

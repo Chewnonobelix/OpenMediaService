@@ -44,7 +44,7 @@ Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l)
         m_replacer->start();
 
     m_probe.setLastProbed(
-                QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
+        QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
 
 }
 
@@ -188,12 +188,20 @@ bool Library::removeSourceDir(QString source) {
 }
 
 bool Library::addMedia(MediaPointer p) {
-    m_medias[p->id()] = p;
-    p->initFingerprint();
-    p->setRole(role());
-    connect(p.data(), &Media::mediaChanged, this, &Library::libraryChanged);
-    connect(p.data(), &Media::mediaChanged, this, &Library::onMediaChanged);
-    emit mediasChanged(p);
+    if(!m_medias.contains(p->id())) {
+        m_medias[p->id()] = p;
+        if(p->isAvailable())
+           p->initFingerprint();
+        p->setRole(role());
+        connect(p.data(), &Media::mediaChanged, this, &Library::libraryChanged);
+        connect(p.data(), &Media::mediaChanged, this, &Library::onMediaChanged);
+    }
+    else {
+        m_medias[p->id()]->blockSignals(true);
+        m_medias[p->id()]->merge(p);
+        m_medias[p->id()]->blockSignals(false);
+    }
+    emit mediasChanged(m_medias[p->id()]);
     return true;
 }
 
