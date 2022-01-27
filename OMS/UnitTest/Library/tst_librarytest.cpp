@@ -35,6 +35,10 @@ private slots:
     void addPlaylistTest_data();
     void addSmartPlaylistTest();
     void addSmartPlaylistTest_data();
+    void removePlaylistTest();
+    void removePlaylistTest_data();
+    void removeSmartPlaylistTest();
+    void removeSmartPlaylistTest_data();
     void addTagTest();
     void addTagTest_data();
     void removeTagTest();
@@ -328,6 +332,78 @@ void LibraryTest::addSmartPlaylistTest_data()
     QTest::addRow("Add Smart playlist 1")<<QList<QUuid>{m1}<<1;
     QTest::addRow("Add Smart playlist 2")<<QList<QUuid>{m1, m2}<<2;
     QTest::addRow("Add Smart playlist 3")<<QList<QUuid>{m1, m2, m1}<<2;
+}
+
+void LibraryTest::removePlaylistTest()
+{
+    QFETCH(QList<QUuid>, playlist);
+    QFETCH(QUuid, remove);
+    QFETCH(int, count);
+    QFETCH(bool, expected);
+
+    Library l;
+    for(auto it: playlist) {
+        auto m = factory<PlayList>();
+        m->setId(it);
+        l.addPlaylist(m);
+    }
+
+    QSignalSpy spy(&l, &Library::playlistCountChanged);
+    QCOMPARE(l.removePlaylist(remove.toString()), expected);
+    QCOMPARE(spy.count(), expected ? 1 : 0);
+    QCOMPARE(l.playlistCount(), count);
+}
+
+void LibraryTest::removePlaylistTest_data()
+{
+    QTest::addColumn<QList<QUuid>>("playlist");
+    QTest::addColumn<QUuid>("remove");
+    QTest::addColumn<int>("count");
+    QTest::addColumn<bool>("expected");
+
+    auto m1 = QUuid::createUuid();
+    auto m2 = QUuid::createUuid();
+    auto m3 = QUuid::createUuid();
+
+    QTest::addRow("Remove playlist 1")<<QList<QUuid>{m1}<<m1<<0<<true;
+    QTest::addRow("Remove playlist 2")<<QList<QUuid>{m1, m2}<<m1<<1<<true;
+    QTest::addRow("Remove playlist 3")<<QList<QUuid>{m1, m2}<<m3<<2<<false;
+}
+
+void LibraryTest::removeSmartPlaylistTest()
+{
+        QFETCH(QList<QUuid>, playlist);
+        QFETCH(QUuid, remove);
+        QFETCH(int, count);
+        QFETCH(bool, expected);
+
+        Library l;
+        for(auto it: playlist) {
+            auto m = factory<SmartPlaylist>();
+            m->setId(it);
+            l.addSmartPlaylist(m);
+        }
+
+        QSignalSpy spy(&l, &Library::playlistCountChanged);
+        QCOMPARE(l.removeSmartPlaylist(remove.toString()), expected);
+        QCOMPARE(spy.count(), expected ? 1 : 0);
+        QCOMPARE(l.playlistCount(), count);
+}
+
+void LibraryTest::removeSmartPlaylistTest_data()
+{
+    QTest::addColumn<QList<QUuid>>("playlist");
+    QTest::addColumn<QUuid>("remove");
+    QTest::addColumn<int>("count");
+    QTest::addColumn<bool>("expected");
+
+    auto m1 = QUuid::createUuid();
+    auto m2 = QUuid::createUuid();
+    auto m3 = QUuid::createUuid();
+
+    QTest::addRow("Remove playlist 1")<<QList<QUuid>{m1}<<m1<<0<<true;
+    QTest::addRow("Remove playlist 2")<<QList<QUuid>{m1, m2}<<m1<<1<<true;
+    QTest::addRow("Remove playlist 3")<<QList<QUuid>{m1, m2}<<m3<<2<<false;
 }
 
 void LibraryTest::addTagTest()

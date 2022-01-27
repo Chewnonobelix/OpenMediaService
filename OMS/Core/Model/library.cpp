@@ -258,7 +258,8 @@ bool Library::addSmartPlaylist(SmartPlaylistPointer smart) {
 
 bool Library::removeSmartPlaylist(QString id) {
     auto ret = m_smartPlaylist.remove(QUuid::fromString(id)) > 0;
-    emit playlistCountChanged();
+    if(ret)
+        emit playlistCountChanged();
     return ret;
 }
 
@@ -295,7 +296,8 @@ bool Library::addPlaylist(PlaylistPointer play) {
 
 bool Library::removePlaylist(QString id) {
     auto ret = m_playlist.remove(QUuid::fromString(id)) > 0;
-    emit playlistCountChanged();
+    if(ret)
+        emit playlistCountChanged();
     return ret;
 }
 
