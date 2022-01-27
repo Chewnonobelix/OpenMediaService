@@ -191,7 +191,7 @@ bool Library::addMedia(MediaPointer p) {
     if(!m_medias.contains(p->id())) {
         m_medias[p->id()] = p;
         if(p->isAvailable())
-           p->initFingerprint();
+            p->initFingerprint();
         p->setRole(role());
         connect(p.data(), &Media::mediaChanged, this, &Library::libraryChanged);
         connect(p.data(), &Media::mediaChanged, this, &Library::onMediaChanged);
@@ -248,7 +248,11 @@ bool Library::addSmartPlaylist(SmartPlaylistPointer smart) {
     connect(smart.data(), &PlayList::playlistChanged, this, &Library::libraryChanged);
     connect(smart.data(), &SmartPlaylist::rulesChanged, this, &Library::onSmartPlaylistChanged);
 
-    emit playlistCountChanged();
+    if(!
+
+        ret)
+        emit playlistCountChanged();
+
     return !ret;
 }
 
@@ -283,7 +287,9 @@ bool Library::addPlaylist(PlaylistPointer play) {
     play->set();
     connect(play.data(), &PlayList::playlistChanged, this, &Library::libraryChanged);
 
-    emit playlistCountChanged();
+    if(!ret)
+        emit playlistCountChanged();
+
     return !ret;
 }
 

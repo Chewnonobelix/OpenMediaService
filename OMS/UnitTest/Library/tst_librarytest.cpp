@@ -270,17 +270,65 @@ void LibraryTest::removeMediaTest_data()
 
 void LibraryTest::addPlaylistTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(QList<QUuid>, playlist);
+    QFETCH(int, count);
+
+    Library l;
+    QSignalSpy spy(&l, &Library::playlistCountChanged);
+
+    for(auto it: playlist) {
+        auto m = factory<PlayList>();
+        m->setId(it);
+        l.addPlaylist(m);
+    }
+
+    QCOMPARE(spy.count(), count);
+    QCOMPARE(l.playlistCount(), count);
 }
 
-void LibraryTest::addPlaylistTest_data() {}
+void LibraryTest::addPlaylistTest_data()
+{
+    QTest::addColumn<QList<QUuid>>("playlist");
+    QTest::addColumn<int>("count");
+
+    auto m1 = QUuid::createUuid();
+    auto m2 = QUuid::createUuid();
+
+    QTest::addRow("Add playlist 1")<<QList<QUuid>{m1}<<1;
+    QTest::addRow("Add playlist 2")<<QList<QUuid>{m1, m2}<<2;
+    QTest::addRow("Add playlist 3")<<QList<QUuid>{m1, m2, m1}<<2;
+}
 
 void LibraryTest::addSmartPlaylistTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(QList<QUuid>, playlist);
+    QFETCH(int, count);
+
+    Library l;
+    QSignalSpy spy(&l, &Library::playlistCountChanged);
+
+    for(auto it: playlist) {
+        auto m = factory<SmartPlaylist>();
+        m->setId(it);
+        l.addSmartPlaylist(m);
+    }
+
+    QCOMPARE(spy.count(), count);
+    QCOMPARE(l.playlistCount(), count);
 }
 
-void LibraryTest::addSmartPlaylistTest_data() {}
+void LibraryTest::addSmartPlaylistTest_data()
+{
+    QTest::addColumn<QList<QUuid>>("playlist");
+    QTest::addColumn<int>("count");
+
+    auto m1 = QUuid::createUuid();
+    auto m2 = QUuid::createUuid();
+
+    QTest::addRow("Add Smart playlist 1")<<QList<QUuid>{m1}<<1;
+    QTest::addRow("Add Smart playlist 2")<<QList<QUuid>{m1, m2}<<2;
+    QTest::addRow("Add Smart playlist 3")<<QList<QUuid>{m1, m2, m1}<<2;
+}
 
 void LibraryTest::addTagTest()
 {
