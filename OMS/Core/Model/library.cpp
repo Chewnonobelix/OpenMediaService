@@ -359,9 +359,18 @@ QList<MediaPlayerGlobal::Tag> Library::tags() const
 void Library::addTag(MediaPlayerGlobal::Tag t)
 {
     QList<MediaPlayerGlobal::Tag> tagsList = tags();
-    tagsList.append(t);
-    setMetadata("tags", tagsList);
-    emit libraryChanged();
+
+    auto count = std::count_if(tagsList.begin(), tagsList.end(), [t](auto it) {
+        return t.second == it.second;
+    });
+
+    if(count == 0) {
+        tagsList.append(t);
+
+
+        setMetadata("tags", tagsList);
+        emit libraryChanged();
+    }
 }
 
 void Library::editTag(MediaPlayerGlobal::Tag t)

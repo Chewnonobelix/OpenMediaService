@@ -408,10 +408,54 @@ void LibraryTest::removeSmartPlaylistTest_data()
 
 void LibraryTest::addTagTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(QList<MediaPlayerGlobal::Tag>, tags);
+    QFETCH(QList<MediaPlayerGlobal::Tag>, expected);
+    QFETCH(int, count);
+
+    Library l;
+
+    for(auto it: tags) {
+        l.addTag(it);
+    }
+
+    std::sort(expected.begin(), expected.end(), [](auto it1, auto it2) {
+        return it1.first < it2.first;
+    });
+
+
+    auto ltags = l.tags();
+    std::sort(ltags.begin(), ltags.end(), [](auto it1, auto it2) {
+        return it1.first < it2.first;
+    });
+
+    QCOMPARE(ltags.count(), count);
+    QCOMPARE(ltags, expected);
 }
 
-void LibraryTest::addTagTest_data() {}
+void LibraryTest::addTagTest_data()
+{
+    QTest::addColumn<QList<MediaPlayerGlobal::Tag>>("tags");
+    QTest::addColumn<QList<MediaPlayerGlobal::Tag>>("expected");
+    QTest::addColumn<int>("count");
+
+    MediaPlayerGlobal::Tag t1, t2, t3, t4;
+    t1.first = QUuid::createUuid();
+    t2.first = QUuid::createUuid();
+    t3.first = QUuid::createUuid();
+    t4.first = QUuid::createUuid();
+    t1.second = "tag 1";
+    t2.second = "tag 2";
+    t3.second = "tag 3";
+    t4.second = "tag 1";
+
+    QTest::addRow("Add tag 1")<<QList<MediaPlayerGlobal::Tag>{t1}<<QList<MediaPlayerGlobal::Tag>{t1}<<1;
+    QTest::addRow("Add tag 2")<<QList<MediaPlayerGlobal::Tag>{t1, t2}<<QList<MediaPlayerGlobal::Tag>{t1,t2}<<2;
+    QTest::addRow("Add tag 3")<<QList<MediaPlayerGlobal::Tag>{t3, t2}<<QList<MediaPlayerGlobal::Tag>{t2,t3}<<2;
+    QTest::addRow("Add tag 4")<<QList<MediaPlayerGlobal::Tag>{t1, t1}<<QList<MediaPlayerGlobal::Tag>{t1}<<1;
+    QTest::addRow("Add tag 5")<<QList<MediaPlayerGlobal::Tag>{t1, t1, t2}<<QList<MediaPlayerGlobal::Tag>{t1, t2}<<2;
+    QTest::addRow("Add tag 6")<<QList<MediaPlayerGlobal::Tag>{t1, t1, t2, t3}<<QList<MediaPlayerGlobal::Tag>{t1, t2, t3}<<3;
+    QTest::addRow("Add tag 7")<<QList<MediaPlayerGlobal::Tag>{t1, t1, t4}<<QList<MediaPlayerGlobal::Tag>{t1}<<1;
+}
 
 void LibraryTest::removeTagTest()
 {
