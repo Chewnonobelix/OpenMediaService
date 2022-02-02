@@ -5,15 +5,15 @@
 // add necessary includes here
 
 class LibraryTest : public QObject {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	LibraryTest();
-	~LibraryTest();
+    LibraryTest();
+    ~LibraryTest();
 
 private slots:
-	void initTestCase();
-	void cleanupTestCase();
+    void initTestCase();
+    void cleanupTestCase();
 
     void idTest();
     void idTest_data();
@@ -459,17 +459,102 @@ void LibraryTest::addTagTest_data()
 
 void LibraryTest::removeTagTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(QList<MediaPlayerGlobal::Tag>, tags);
+    QFETCH(MediaPlayerGlobal::Tag, remove);
+    QFETCH(int, count);
+    QFETCH(bool, expected);
+    QFETCH(QList<MediaPlayerGlobal::Tag>, final);
+
+    Library l;
+
+    for(auto it: tags)
+       l.addTag(it);
+
+    QCOMPARE(l.removeTag(remove), expected);
+    QCOMPARE(l.tags().count(), count);
+
+    auto func = [](QList<MediaPlayerGlobal::Tag> list) {
+        std::sort(list.begin(), list.end(), [](auto it1, auto it2) {
+            return it1.first < it2.first;
+        });
+
+        return list;
+    };
+
+    final = func(final);
+    auto ltags = func(l.tags());
+
+    QCOMPARE(ltags, final);
 }
 
-void LibraryTest::removeTagTest_data() {}
+void LibraryTest::removeTagTest_data()
+{
+    QTest::addColumn<QList<MediaPlayerGlobal::Tag>>("tags");
+    QTest::addColumn<MediaPlayerGlobal::Tag>("remove");
+    QTest::addColumn<int>("count");
+    QTest::addColumn<bool>("expected");
+    QTest::addColumn<QList<MediaPlayerGlobal::Tag>>("final");
+
+    MediaPlayerGlobal::Tag t1, t2, t3;
+    t1.first = QUuid::createUuid();
+    t2.first = QUuid::createUuid();
+    t3.first = QUuid::createUuid();
+    t1.second = "tag 1";
+    t2.second = "tag 2";
+    t3.second = "tag 3";
+
+    QTest::addRow("Remove tag 1")<<QList<MediaPlayerGlobal::Tag>{t1}<<t1<<0<<true<<QList<MediaPlayerGlobal::Tag>{};
+    QTest::addRow("Remove tag 2")<<QList<MediaPlayerGlobal::Tag>{t1}<<t2<<1<<false<<QList<MediaPlayerGlobal::Tag>{t1};
+    QTest::addRow("Remove tag 3")<<QList<MediaPlayerGlobal::Tag>{t1, t2}<<t2<<1<<true<<QList<MediaPlayerGlobal::Tag>{t1};
+    QTest::addRow("Remove tag 4")<<QList<MediaPlayerGlobal::Tag>{t1, t2}<<t3<<2<<false<<QList<MediaPlayerGlobal::Tag>{t1, t2};
+}
 
 void LibraryTest::editTagTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(QList<MediaPlayerGlobal::Tag>, tags);
+    QFETCH(QUuid, id);
+    QFETCH(QString, text);
+    QFETCH(bool, expected);
+
+    Library l;
+    for(auto it: tags) {
+        l.addTag(it);
+    }
+
+    MediaPlayerGlobal::Tag edit;
+    edit.first = id;
+    edit.second = text;
+
+    QCOMPARE(l.editTag(edit), expected);
+    auto ltags = l.tags();
+    auto it = std::find_if(ltags.begin(), ltags.end(), [id](auto it2) {
+        return it2.first == id;
+    });
+
+    if(it != ltags.end()) {
+        QCOMPARE(it->second, text);
+    }
 }
 
-void LibraryTest::editTagTest_data() {}
+void LibraryTest::editTagTest_data()
+{
+    QTest::addColumn<QList<MediaPlayerGlobal::Tag>>("tags");
+    QTest::addColumn<QUuid>("id");
+    QTest::addColumn<QString>("text");
+    QTest::addColumn<bool>("expected");
+
+    MediaPlayerGlobal::Tag t1, t2, t3;
+    t1.first = QUuid::createUuid();
+    t2.first = QUuid::createUuid();
+    t3.first = QUuid::createUuid();
+    t1.second = "tag 1";
+    t2.second = "tag 2";
+    t3.second = "tag 3";
+
+    QTest::addRow("Edit tag 1")<<QList<MediaPlayerGlobal::Tag>{t1}<<t1.first<<"tag edit"<<true;
+    QTest::addRow("Edit tag 2")<<QList<MediaPlayerGlobal::Tag>{t1}<<t2.first<<"tag edit"<<false;
+    QTest::addRow("Edit tag 3")<<QList<MediaPlayerGlobal::Tag>{t1, t2}<<t2.first<<"tag edit"<<true;
+}
 
 void LibraryTest::tagListTest()
 {

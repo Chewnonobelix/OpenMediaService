@@ -373,7 +373,7 @@ void Library::addTag(MediaPlayerGlobal::Tag t)
     }
 }
 
-void Library::editTag(MediaPlayerGlobal::Tag t)
+bool Library::editTag(MediaPlayerGlobal::Tag t)
 {
     QList<MediaPlayerGlobal::Tag> tagsList = tags();
     auto f = std::find_if(tagsList.begin(), tagsList.end(), [t](auto it) {
@@ -386,17 +386,21 @@ void Library::editTag(MediaPlayerGlobal::Tag t)
 
     setMetadata("tags", tagsList);
     emit libraryChanged();
+
+    return f != tagsList.end();
 }
 
-void Library::removeTag(MediaPlayerGlobal::Tag t)
+bool Library::removeTag(MediaPlayerGlobal::Tag t)
 {
     QList<MediaPlayerGlobal::Tag> tagsList = tags();
-    std::remove_if(tagsList.begin(), tagsList.end(), [t](auto it) {
+    auto ret = tagsList.removeIf([t](auto it) {
         return it.first == t.first;
     });
 
     setMetadata("tags", tagsList);
     emit libraryChanged();
+
+    return ret > 0;
 }
 
 void Library::setTagList(QStringList tl)

@@ -71,8 +71,8 @@ public:
 	int playlistCount() const;
     QList<MediaPlayerGlobal::Tag> tags() const;
     void addTag(MediaPlayerGlobal::Tag);
-    void editTag(MediaPlayerGlobal::Tag);
-    void removeTag(MediaPlayerGlobal::Tag);
+    bool editTag(MediaPlayerGlobal::Tag);
+    bool removeTag(MediaPlayerGlobal::Tag);
 
     void setTagList(QStringList);
     QStringList tagList() const;
