@@ -406,6 +406,12 @@ bool Library::removeTag(MediaPlayerGlobal::Tag t)
 void Library::setTagList(QStringList tl)
 {
     setMetadata("tagsList", tl);
+
+    for(auto it: tl) {
+        if(!hasMetadata(it)) {
+            setMetadata(it, QList<MediaPlayerGlobal::Tag>());
+        }
+    }
 }
 
 QStringList Library::tagList() const

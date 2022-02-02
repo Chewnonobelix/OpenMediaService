@@ -157,7 +157,7 @@ void LibraryTest::addSourceDirTest()
     QSignalSpy spy(&l, &Library::sourceDirChanged);
 
     for(auto path: paths)
-       l.addSourceDir(path);
+        l.addSourceDir(path);
 
     QCOMPARE(spy.count(), count);
     QCOMPARE(l.sourceDir().count(), count);
@@ -372,22 +372,22 @@ void LibraryTest::removePlaylistTest_data()
 
 void LibraryTest::removeSmartPlaylistTest()
 {
-        QFETCH(QList<QUuid>, playlist);
-        QFETCH(QUuid, remove);
-        QFETCH(int, count);
-        QFETCH(bool, expected);
+    QFETCH(QList<QUuid>, playlist);
+    QFETCH(QUuid, remove);
+    QFETCH(int, count);
+    QFETCH(bool, expected);
 
-        Library l;
-        for(auto it: playlist) {
-            auto m = factory<SmartPlaylist>();
-            m->setId(it);
-            l.addSmartPlaylist(m);
-        }
+    Library l;
+    for(auto it: playlist) {
+        auto m = factory<SmartPlaylist>();
+        m->setId(it);
+        l.addSmartPlaylist(m);
+    }
 
-        QSignalSpy spy(&l, &Library::playlistCountChanged);
-        QCOMPARE(l.removeSmartPlaylist(remove.toString()), expected);
-        QCOMPARE(spy.count(), expected ? 1 : 0);
-        QCOMPARE(l.playlistCount(), count);
+    QSignalSpy spy(&l, &Library::playlistCountChanged);
+    QCOMPARE(l.removeSmartPlaylist(remove.toString()), expected);
+    QCOMPARE(spy.count(), expected ? 1 : 0);
+    QCOMPARE(l.playlistCount(), count);
 }
 
 void LibraryTest::removeSmartPlaylistTest_data()
@@ -468,7 +468,7 @@ void LibraryTest::removeTagTest()
     Library l;
 
     for(auto it: tags)
-       l.addTag(it);
+        l.addTag(it);
 
     QCOMPARE(l.removeTag(remove), expected);
     QCOMPARE(l.tags().count(), count);
@@ -558,10 +558,25 @@ void LibraryTest::editTagTest_data()
 
 void LibraryTest::tagListTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(QStringList, list);
+
+    Library l;
+    l.setTagList(list);
+
+    for(auto it: list) {
+        QCOMPARE(l.hasMetadata(it), true);
+    }
 }
 
-void LibraryTest::tagListTest_data() {}
+void LibraryTest::tagListTest_data()
+{
+    QTest::addColumn<QStringList>("list");
+
+    QTest::addRow("Tags list 1")<<QStringList{"type 1"};
+    QTest::addRow("Tags list 2")<<QStringList{"type 2", "type 1"};
+    QTest::addRow("Tags list 3")<<QStringList{"type 1", "type 2", "type 3"};
+    QTest::addRow("Tags list 4")<<QStringList{"t1", "t2", "t3", "t4"};
+}
 
 void LibraryTest::onProbedChangedTest()
 {
