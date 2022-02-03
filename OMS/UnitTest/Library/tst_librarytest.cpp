@@ -53,6 +53,8 @@ private slots:
     void onMediasChangedTest_data();
     void onSmartPlaylistChangedTest();
     void onSmartPlaylistChangedTest_data();
+    void addToPlaylistTest();
+    void addToPlaylistTest_data();
 };
 
 LibraryTest::LibraryTest() {}
@@ -598,6 +600,16 @@ void LibraryTest::onSmartPlaylistChangedTest()
 }
 
 void LibraryTest::onSmartPlaylistChangedTest_data() {}
+
+void LibraryTest::addToPlaylistTest()
+{
+    QFAIL("Not implemented");
+}
+
+void LibraryTest::addToPlaylistTest_data()
+{
+
+}
 
 QTEST_APPLESS_MAIN(LibraryTest)
 
