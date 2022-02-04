@@ -40,9 +40,12 @@ private:
 	QQueue<QFileInfo> m_infos;
 	QQueue<QString> m_queue;
 	QList<QPointer<QThread>> m_threads;
+    QList<QPointer<QThread>> list;
+
 	QDateTime m_lastProbed = QDateTime::currentDateTime();
 
 	QMutex m_mutex;
+
 
 protected:
 public:
@@ -55,13 +58,16 @@ public:
 	QDateTime lastProbed() const;
     bool setLastProbed(QDateTime);
 
-    bool probe();
+    QFuture<bool> probe();
 
 	double current() const;
 	bool isRunning() const;
 
 	bool isValid(QString path) const;
     bool setFilters(QStringList);
+
+    void search();
+    void creating();
 
 signals:
     void mediaFind(MediaPointer);

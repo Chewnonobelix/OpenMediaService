@@ -22,7 +22,7 @@ bool LibraryProbe::setRole(MediaPlayerGlobal::MediaRole role) {
 
 void LibraryProbe::onMediaFind(MediaPointer) {
     m_current++;
-     qCDebug(libraryprobe) << m_total << m_current << double(m_current) / m_total * 100;
+    qCDebug(libraryprobe) << m_total << m_current << double(m_current) / m_total * 100;
     setLastProbed(QDateTime::currentDateTime());
 
     emit currentChanged();
@@ -48,7 +48,73 @@ bool LibraryProbe::setPaths(QSet<QString> paths) {
 
 bool LibraryProbe::isRunning() const { return current() < 100.0; }
 
-bool LibraryProbe::probe() {
+void LibraryProbe::creating()
+{
+    sleep(1);
+    while (!m_infos.isEmpty()) {
+        m_mutex.lock();
+        if(m_infos.isEmpty()) {
+            m_mutex.unlock();
+            continue;
+        }
+        auto it = m_infos.dequeue();
+        m_mutex.unlock();
+
+        if (isValid(it.absoluteFilePath()) && !m_paths.contains(it.absolutePath())) {
+            auto media = Media::createMedia(it.absoluteFilePath());
+
+            onMediaFind(media);
+
+            m_mutex.lock();
+            m_paths << it.absoluteFilePath();
+            m_mutex.unlock();
+        }
+
+    }
+}
+
+void LibraryProbe::search()
+{
+    QStringList filters;
+
+    for (auto it : m_filters)
+        filters << "*." + it;
+
+
+    QDir dir;
+
+    for (auto i = 0; i < 10; i++) {
+        while (!m_queue.isEmpty()) {
+            m_mutex.lock();
+            if (m_queue.isEmpty()) {
+                m_mutex.unlock();
+                continue;
+            }
+            auto it = m_queue.dequeue();
+            m_mutex.unlock();
+            dir.cd(it);
+
+            auto files = dir.entryInfoList(filters, QDir::AllEntries |
+                                                        QDir::NoDotAndDotDot);
+            files.append(dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot));
+
+            for (auto it2 : files) {
+                if (it2.isDir()) {
+                    m_mutex.lock();
+                    m_queue.enqueue(it2.absoluteFilePath());
+                    m_mutex.unlock();
+                } else {
+                    m_mutex.lock();
+                    m_total++;
+                    m_infos.enqueue(it2);
+                    m_mutex.unlock();
+                }
+            }
+        }
+    }
+}
+
+QFuture<bool> LibraryProbe::probe() {
     //TODO
     connect(this, &LibraryProbe::mediaFind, this, &LibraryProbe::onMediaFind,
             Qt::UniqueConnection);
@@ -62,88 +128,40 @@ bool LibraryProbe::probe() {
 
     m_current = 0;
     m_queue.append(m_sourceDir);
-    QList<QPointer<QThread>> list;
+
 
     for (auto i = 0; i < 16; i++) {
-        m_threads << (QThread::create([this]() {
-            sleep(10);
-            while (current() < 100.0 && !m_infos.isEmpty()) {
-                m_mutex.lock();
-                if(m_infos.isEmpty()) {
-                    m_mutex.unlock();
-                    continue;
-                }
-                auto it = m_infos.dequeue();
-                m_mutex.unlock();
-
-                if (isValid(it.absoluteFilePath())) {
-                    auto media = Media::createMedia(it.absoluteFilePath());
-
-                    emit mediaFind(media);
-
-                    m_mutex.lock();
-                    m_paths << it.absoluteFilePath();
-                    m_mutex.unlock();
-                }
-
-            }
-        }));
+        m_threads << QThread::create(&LibraryProbe::creating, this);
 
         auto &last = m_threads.last();
         connect(last, &QThread::finished, [last, this]() {
             m_mutex.lock();
-            m_threads.remove(m_threads.lastIndexOf(last));
+            m_threads.removeAll(last);
             m_mutex.unlock();
             last->deleteLater();
+             qCDebug(libraryprobe)<<"Create finish";
 
             if (m_threads.count() == 0) {
                  qCDebug(libraryprobe) << "End probe";
-                m_current = m_total - 1;
+                m_current = m_total;
             }
         });
         last->start();
     }
 
     for (auto i = 0; i < 8; i++) {
-        list << QThread::create([this, filters]() {
-            QDir dir;
-
-            for (auto i = 0; i < 10; i++) {
-                while (!m_queue.isEmpty()) {
-                    m_mutex.lock();
-                    if (m_queue.isEmpty()) {
-                        m_mutex.unlock();
-                        continue;
-                    }
-                    auto it = m_queue.dequeue();
-                    m_mutex.unlock();
-                    dir.cd(it);
-
-                    auto files = dir.entryInfoList(filters, QDir::AllEntries |
-                                                   QDir::NoDotAndDotDot);
-                    files.append(dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot));
-
-                    for (auto it2 : files) {
-                        if (it2.isDir()) {
-                            m_mutex.lock();
-                            m_queue.enqueue(it2.absoluteFilePath());
-                            m_mutex.unlock();
-                        } else {
-                            m_mutex.lock();
-                            m_total++;
-                            m_infos.enqueue(it2);
-                            m_mutex.unlock();
-                        }
-                    }
-                }
-            }
-        });
+        list << QThread::create(&LibraryProbe::search, this);
 
         auto &last = list.last();
-        connect(last, &QThread::finished, [last]() { last->deleteLater(); });
+        connect(last, &QThread::finished, [last, this]() {
+            list.removeAll(last);
+            last->deleteLater();
+            qCDebug(libraryprobe)<<"Search finish";
+        });
 
         last->start();
     }
+
 
     return true;
 }
