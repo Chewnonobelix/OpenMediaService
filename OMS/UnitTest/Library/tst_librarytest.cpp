@@ -582,10 +582,25 @@ void LibraryTest::tagListTest_data()
 
 void LibraryTest::onProbedChangedTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(double, expected);
+    Library l;
+    auto probe = l.probe();
+    l.addSourceDir(QStringLiteral(TESTDATA));
+    probe->setFilters({"jpg"});
+    QSignalSpy spy(&l, &Library::libraryChanged);
+    l.scan();
+
+    QTest::qWait(10000);
+
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(probe->current(), expected);
 }
 
-void LibraryTest::onProbedChangedTest_data() {}
+void LibraryTest::onProbedChangedTest_data()
+{
+    QTest::addColumn<double>("expected");
+    QTest::addRow("On probed changed")<<100.0;
+}
 
 void LibraryTest::onMediasChangedTest()
 {
