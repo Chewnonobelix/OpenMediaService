@@ -50,26 +50,23 @@ bool LibraryProbe::isRunning() const { return current() < 100.0; }
 
 void LibraryProbe::creating()
 {
-    sleep(1);
-    while (!m_infos.isEmpty()) {
-        m_mutex.lock();
+    while (!m_infos.isEmpty() || !m_queue.isEmpty()) {
+        QMutexLocker createLock(&m_mutexCreate);
         if(m_infos.isEmpty()) {
-            m_mutex.unlock();
             continue;
         }
         auto it = m_infos.dequeue();
-        m_mutex.unlock();
 
-        if (isValid(it.absoluteFilePath()) && !m_paths.contains(it.absolutePath())) {
+        if(m_paths.contains(it.absolutePath()))
+            m_total --;
+        else if (isValid(it.absoluteFilePath())) {
             auto media = Media::createMedia(it.absoluteFilePath());
 
+            emit mediaFind(media);
             onMediaFind(media);
 
-            m_mutex.lock();
             m_paths << it.absoluteFilePath();
-            m_mutex.unlock();
         }
-
     }
 }
 
@@ -80,18 +77,15 @@ void LibraryProbe::search()
     for (auto it : m_filters)
         filters << "*." + it;
 
-
     QDir dir;
 
     for (auto i = 0; i < 10; i++) {
         while (!m_queue.isEmpty()) {
-            m_mutex.lock();
+            QMutexLocker locker(&m_mutexSearch);
             if (m_queue.isEmpty()) {
-                m_mutex.unlock();
                 continue;
             }
             auto it = m_queue.dequeue();
-            m_mutex.unlock();
             dir.cd(it);
 
             auto files = dir.entryInfoList(filters, QDir::AllEntries |
@@ -100,26 +94,21 @@ void LibraryProbe::search()
 
             for (auto it2 : files) {
                 if (it2.isDir()) {
-                    m_mutex.lock();
                     m_queue.enqueue(it2.absoluteFilePath());
-                    m_mutex.unlock();
-                } else {
-                    m_mutex.lock();
+                } else if(!m_infos.contains(it2)){
+                    QMutexLocker createLock(&m_mutexCreate);
                     m_total++;
                     m_infos.enqueue(it2);
-                    m_mutex.unlock();
                 }
             }
         }
     }
 }
 
-QFuture<bool> LibraryProbe::probe() {
-    //TODO
-    connect(this, &LibraryProbe::mediaFind, this, &LibraryProbe::onMediaFind,
-            Qt::UniqueConnection);
-
+bool LibraryProbe::probe() {
     QStringList filters;
+    m_threads.clear();
+    list.clear();
 
     for (auto it : m_filters)
         filters << "*." + it;
@@ -130,24 +119,6 @@ QFuture<bool> LibraryProbe::probe() {
     m_queue.append(m_sourceDir);
 
 
-    for (auto i = 0; i < 16; i++) {
-        m_threads << QThread::create(&LibraryProbe::creating, this);
-
-        auto &last = m_threads.last();
-        connect(last, &QThread::finished, [last, this]() {
-            m_mutex.lock();
-            m_threads.removeAll(last);
-            m_mutex.unlock();
-            last->deleteLater();
-             qCDebug(libraryprobe)<<"Create finish";
-
-            if (m_threads.count() == 0) {
-                 qCDebug(libraryprobe) << "End probe";
-                m_current = m_total;
-            }
-        });
-        last->start();
-    }
 
     for (auto i = 0; i < 8; i++) {
         list << QThread::create(&LibraryProbe::search, this);
@@ -162,6 +133,18 @@ QFuture<bool> LibraryProbe::probe() {
         last->start();
     }
 
+    for (auto i = 0; i < 16; i++) {
+        m_threads <<  QThread::create(&LibraryProbe::creating, this);
+
+        auto &last = m_threads.last();
+        connect(last, &QThread::finished, [last, this]() {
+            if (m_threads.count() == 0) {
+                qCDebug(libraryprobe) << "End probe";
+                m_current = m_total;
+            }
+        });
+        last->start();
+    }
 
     return true;
 }

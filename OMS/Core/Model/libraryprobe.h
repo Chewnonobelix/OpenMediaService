@@ -44,7 +44,7 @@ private:
 
 	QDateTime m_lastProbed = QDateTime::currentDateTime();
 
-	QMutex m_mutex;
+    QMutex m_mutexSearch, m_mutexCreate;
 
 
 protected:
@@ -58,7 +58,7 @@ public:
 	QDateTime lastProbed() const;
     bool setLastProbed(QDateTime);
 
-    QFuture<bool> probe();
+    bool probe();
 
 	double current() const;
 	bool isRunning() const;

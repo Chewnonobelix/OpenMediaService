@@ -56,7 +56,7 @@ public:
     Media(QUuid);
 	using MetaData::MetaData;
 	Media(QJsonObject &);
-	~Media() = default;
+    ~Media();
 
     QFuture<bool> initFingerprint();
 

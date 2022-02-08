@@ -49,6 +49,14 @@ Media::operator QJsonObject() const {
     return ret;
 }
 
+Media::~Media()
+{
+    if(m_runner.isRunning()) {
+        m_runner.cancel();
+        m_runner.waitForFinished();
+    }
+}
+
 void Media::set() {
     connect(this, &Media::countChanged, this, &Media::mediaChanged);
     connect(this, &Media::ratingChanged, this, &Media::mediaChanged);
@@ -225,6 +233,9 @@ void Media::setTag(QString tag)
 QFuture<bool> Media::initFingerprint()
 {
         m_runner = QtConcurrent::run([this]() -> bool {
+        if(paths().isEmpty())
+            return false;
+
         auto p = path();
         QFile file(p);
         if(!file.open(QIODevice::ReadOnly))

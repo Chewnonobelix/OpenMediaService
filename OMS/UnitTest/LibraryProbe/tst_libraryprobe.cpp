@@ -87,7 +87,8 @@ void LibraryProbeTest::scanTest()
 
     auto result = probe.probe();
 
-    result.waitForFinished();
+    QTest::qWait(10000);
+//    result.waitForFinished();
 
     QCOMPARE(mediaFind.count(), expectedCount);
     QCOMPARE(currentChanged.count(), expectedCount);
