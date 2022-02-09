@@ -81,8 +81,8 @@ bool LibraryProbe::probe() {
 
         auto last = dynamic_cast<CreateThread*>(m_threads.last().data());
 
-        connect(last, &CreateThread::sCreateMedia, this, &LibraryProbe::onMediaFind, Qt::DirectConnection);
-        connect(last, &CreateThread::sCreateMedia, this, &LibraryProbe::mediaFind, Qt::DirectConnection);
+        connect(last, &CreateThread::sCreateMedia, this, &LibraryProbe::onMediaFind, Qt::QueuedConnection);
+        connect(last, &CreateThread::sCreateMedia, this, &LibraryProbe::mediaFind, Qt::QueuedConnection);
 
         connect(last, &QThread::finished, [last, this]() {
             QMutexLocker lock(&m_mutexDelete);

@@ -87,7 +87,7 @@ void LibraryProbeTest::scanTest()
 
     auto result = probe.probe();
 
-    QTest::qWait(10000);
+    mediaFind.wait();
 //    result.waitForFinished();
 
     QCOMPARE(mediaFind.count(), expectedCount);
@@ -104,6 +104,6 @@ void LibraryProbeTest::scanTest_data()
     QTest::addRow("Probe 2")<<QStringList{TESTDATA, TESTDATA}<<13;
 }
 
-QTEST_APPLESS_MAIN(LibraryProbeTest)
+QTEST_MAIN(LibraryProbeTest)
 
 #include "tst_libraryprobe.moc"

@@ -583,23 +583,28 @@ void LibraryTest::tagListTest_data()
 void LibraryTest::onProbedChangedTest()
 {
     QFETCH(double, expected);
+    QFETCH(int, mediaCount);
+
     Library l;
     auto probe = l.probe();
     l.addSourceDir(QStringLiteral(TESTDATA));
     probe->setFilters({"jpg"});
-    QSignalSpy spy(&l, &Library::libraryChanged);
+    QSignalSpy spy(&l, &Library::mediasChanged);
     l.scan();
 
-    QTest::qWait(10000);
+    spy.wait();
 
-    QCOMPARE(spy.count(), 1);
+    QCOMPARE(spy.count(), 26);
     QCOMPARE(probe->current(), expected);
+    QCOMPARE(l.mediaCount(), mediaCount);
 }
 
 void LibraryTest::onProbedChangedTest_data()
 {
     QTest::addColumn<double>("expected");
-    QTest::addRow("On probed changed")<<100.0;
+    QTest::addColumn<int>("mediaCount");
+
+    QTest::addRow("On probed changed")<<100.0<<13;
 }
 
 void LibraryTest::onMediasChangedTest()
@@ -626,6 +631,6 @@ void LibraryTest::addToPlaylistTest_data()
 
 }
 
-QTEST_APPLESS_MAIN(LibraryTest)
+QTEST_MAIN(LibraryTest)
 
 #include "tst_librarytest.moc"

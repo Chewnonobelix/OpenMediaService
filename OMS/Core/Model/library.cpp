@@ -58,7 +58,7 @@ void Library::set() {
     connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia,
             Qt::QueuedConnection);
     connect(&m_probe, &LibraryProbe::currentChanged, this,
-            &Library::onProbedChanged);
+            &Library::onProbedChanged, Qt::QueuedConnection);
 
     m_replacer = QThread::create([this]() {
         auto list = m_playlist.values();
@@ -227,7 +227,7 @@ LibraryProbe *Library::probe() { return &m_probe; }
 
 void Library::onProbedChanged() {
     if (m_probe.current() == 100.0)
-        emit libraryChanged();
+        emit mediasChanged();
 }
 
 bool Library::addSmartPlaylist(SmartPlaylistPointer smart) {
