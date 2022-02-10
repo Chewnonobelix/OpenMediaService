@@ -623,12 +623,31 @@ void LibraryTest::onSmartPlaylistChangedTest_data() {}
 
 void LibraryTest::addToPlaylistTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(QUuid, playlist);
+    QFETCH(QUuid, media);
+    QFETCH(bool, expected);
+
+    Library l;
+    auto m = MediaPointer::create(expected ? media : QUuid::createUuid());
+    l.addMedia(m);
+
+    auto pl = PlaylistPointer::create();
+     pl->setId(playlist);
+
+    l.addPlaylist(pl);
+
+    QCOMPARE(l.addToPlaylist(playlist.toString(), media.toString()), expected);
+    QCOMPARE(pl->count(), expected ? 1 : 0);
 }
 
 void LibraryTest::addToPlaylistTest_data()
 {
+    QTest::addColumn<QUuid>("playlist");
+    QTest::addColumn<QUuid>("media");
+    QTest::addColumn<bool>("expected");
 
+    QTest::addRow("Add to playlist 1")<<QUuid::createUuid()<<QUuid::createUuid()<<true;
+    QTest::addRow("Add to playlist 2")<<QUuid::createUuid()<<QUuid::createUuid()<<false;
 }
 
 QTEST_MAIN(LibraryTest)

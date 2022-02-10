@@ -344,11 +344,12 @@ QList<PlayList*> Library::playlistList() const
     return ret;
 }
 
-bool Library::addToPlaylist(QString pl, Media* m)
+bool Library::addToPlaylist(QString pl, QString m)
 {
     auto ppl = m_playlist[QUuid::fromString(pl)];
+    auto media = m_medias[QUuid::fromString(m)];
 
-    return ppl->append(m->sharedFromThis()).result();
+    return media ? ppl->append(media).result() : false;
 }
 
 QList<MediaPlayerGlobal::Tag> Library::tags() const
