@@ -44,7 +44,7 @@ Library::Library(QJsonObject &l) : QObject(nullptr), MetaData(l)
         m_replacer->start();
 
     m_probe.setLastProbed(
-                QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
+        QDateTime::fromString(l["lastProbe"].toString(), "dd-MM-yyyy hh:mm:ss"));
 
 }
 
@@ -58,7 +58,7 @@ void Library::set() {
     connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia,
             Qt::QueuedConnection);
     connect(&m_probe, &LibraryProbe::currentChanged, this,
-            &Library::onProbedChanged);
+            &Library::onProbedChanged, Qt::QueuedConnection);
 
     m_replacer = QThread::create([this]() {
         auto list = m_playlist.values();
@@ -168,47 +168,53 @@ bool Library::addSourceDir(QString source) {
     t << source;
     t.removeDuplicates();
     setMetadata("sourceDir", t);
-    emit sourceDirChanged();
+
+    if(!ret)
+        emit sourceDirChanged();
+
     return !ret;
-    ;
 }
 
 bool Library::removeSourceDir(QString source) {
     auto t = sourceDir();
-    bool ret = t.indexOf(source) > -1;
-    t.removeAt(t.indexOf(source));
+
+    bool ret = t.removeAll(source) > 0;
+
     setMetadata("sourceDir", t);
-    emit sourceDirChanged();
+
+    if(ret)
+        emit sourceDirChanged();
     return ret;
-    ;
 }
 
 bool Library::addMedia(MediaPointer p) {
-    m_medias[p->id()] = p;
-    p->initFingerprint();
-    p->setRole(role());
-    connect(p.data(), &Media::mediaChanged, this, &Library::libraryChanged);
-    connect(p.data(), &Media::mediaChanged, this, &Library::onMediaChanged);
-    emit mediasChanged(p);
+    if(!m_medias.contains(p->id())) {
+        m_medias[p->id()] = p;
+        if(p->isAvailable())
+            p->initFingerprint();
+        p->setRole(role());
+        connect(p.data(), &Media::mediaChanged, this, &Library::libraryChanged);
+        connect(p.data(), &Media::mediaChanged, this, &Library::onMediaChanged);
+    }
+    else {
+        m_medias[p->id()]->blockSignals(true);
+        m_medias[p->id()]->merge(p);
+        m_medias[p->id()]->blockSignals(false);
+    }
+    emit mediasChanged(m_medias[p->id()]);
     return true;
 }
 
-bool Library::removeMedia(QString path) {
-    QFile f(path);
-    if (!f.open(QIODevice::ReadOnly))
-        return false;
+bool Library::removeMedia(QString id) {
+    auto ret = false;
 
-    QCryptographicHash ch(QCryptographicHash::Md5);
-    if (!ch.addData(&f))
-        return false;
+    if(m_medias.contains(QUuid::fromString(id))) {
+        m_medias.take(QUuid::fromString(id));
+        ret = true;
+        emit mediasChanged();
+    }
 
-    auto md = ch.result();
-    if (!m_pool.contains(md))
-        return false;
-
-    m_medias[m_pool[md]]->removePath(path);
-    emit mediasChanged(m_medias[m_pool[md]]);
-    return !m_medias[m_pool[md]]->paths().contains(path);
+    return ret;
 }
 
 bool operator<(LibraryPointer l1, LibraryPointer l2) {
@@ -221,7 +227,7 @@ LibraryProbe *Library::probe() { return &m_probe; }
 
 void Library::onProbedChanged() {
     if (m_probe.current() == 100.0)
-        emit libraryChanged();
+        emit mediasChanged();
 }
 
 bool Library::addSmartPlaylist(SmartPlaylistPointer smart) {
@@ -242,13 +248,18 @@ bool Library::addSmartPlaylist(SmartPlaylistPointer smart) {
     connect(smart.data(), &PlayList::playlistChanged, this, &Library::libraryChanged);
     connect(smart.data(), &SmartPlaylist::rulesChanged, this, &Library::onSmartPlaylistChanged);
 
-    emit playlistCountChanged();
+    if(!
+
+        ret)
+        emit playlistCountChanged();
+
     return !ret;
 }
 
 bool Library::removeSmartPlaylist(QString id) {
     auto ret = m_smartPlaylist.remove(QUuid::fromString(id)) > 0;
-    emit playlistCountChanged();
+    if(ret)
+        emit playlistCountChanged();
     return ret;
 }
 
@@ -277,13 +288,16 @@ bool Library::addPlaylist(PlaylistPointer play) {
     play->set();
     connect(play.data(), &PlayList::playlistChanged, this, &Library::libraryChanged);
 
-    emit playlistCountChanged();
+    if(!ret)
+        emit playlistCountChanged();
+
     return !ret;
 }
 
 bool Library::removePlaylist(QString id) {
     auto ret = m_playlist.remove(QUuid::fromString(id)) > 0;
-    emit playlistCountChanged();
+    if(ret)
+        emit playlistCountChanged();
     return ret;
 }
 
@@ -330,11 +344,12 @@ QList<PlayList*> Library::playlistList() const
     return ret;
 }
 
-bool Library::addToPlaylist(QString pl, Media* m)
+bool Library::addToPlaylist(QString pl, QString m)
 {
     auto ppl = m_playlist[QUuid::fromString(pl)];
+    auto media = m_medias[QUuid::fromString(m)];
 
-    return ppl->append(m->sharedFromThis()).result();
+    return media ? ppl->append(media).result() : false;
 }
 
 QList<MediaPlayerGlobal::Tag> Library::tags() const
@@ -345,12 +360,21 @@ QList<MediaPlayerGlobal::Tag> Library::tags() const
 void Library::addTag(MediaPlayerGlobal::Tag t)
 {
     QList<MediaPlayerGlobal::Tag> tagsList = tags();
-    tagsList.append(t);
-    setMetadata("tags", tagsList);
-    emit libraryChanged();
+
+    auto count = std::count_if(tagsList.begin(), tagsList.end(), [t](auto it) {
+        return t.second == it.second;
+    });
+
+    if(count == 0) {
+        tagsList.append(t);
+
+
+        setMetadata("tags", tagsList);
+        emit libraryChanged();
+    }
 }
 
-void Library::editTag(MediaPlayerGlobal::Tag t)
+bool Library::editTag(MediaPlayerGlobal::Tag t)
 {
     QList<MediaPlayerGlobal::Tag> tagsList = tags();
     auto f = std::find_if(tagsList.begin(), tagsList.end(), [t](auto it) {
@@ -363,22 +387,32 @@ void Library::editTag(MediaPlayerGlobal::Tag t)
 
     setMetadata("tags", tagsList);
     emit libraryChanged();
+
+    return f != tagsList.end();
 }
 
-void Library::removeTag(MediaPlayerGlobal::Tag t)
+bool Library::removeTag(MediaPlayerGlobal::Tag t)
 {
     QList<MediaPlayerGlobal::Tag> tagsList = tags();
-    std::remove_if(tagsList.begin(), tagsList.end(), [t](auto it) {
+    auto ret = tagsList.removeIf([t](auto it) {
         return it.first == t.first;
     });
 
     setMetadata("tags", tagsList);
     emit libraryChanged();
+
+    return ret > 0;
 }
 
 void Library::setTagList(QStringList tl)
 {
     setMetadata("tagsList", tl);
+
+    for(auto it: tl) {
+        if(!hasMetadata(it)) {
+            setMetadata(it, QList<MediaPlayerGlobal::Tag>());
+        }
+    }
 }
 
 QStringList Library::tagList() const

@@ -22,7 +22,7 @@ bool LibraryProbe::setRole(MediaPlayerGlobal::MediaRole role) {
 
 void LibraryProbe::onMediaFind(MediaPointer) {
     m_current++;
-     qCDebug(libraryprobe) << m_total << m_current << double(m_current) / m_total * 100;
+    qCDebug(libraryprobe) << m_total << m_current << double(m_current) / m_total * 100;
     setLastProbed(QDateTime::currentDateTime());
 
     emit currentChanged();
@@ -49,11 +49,9 @@ bool LibraryProbe::setPaths(QSet<QString> paths) {
 bool LibraryProbe::isRunning() const { return current() < 100.0; }
 
 bool LibraryProbe::probe() {
-    //TODO
-    connect(this, &LibraryProbe::mediaFind, this, &LibraryProbe::onMediaFind,
-            Qt::UniqueConnection);
-
     QStringList filters;
+    m_threads.clear();
+    list.clear();
 
     for (auto it : m_filters)
         filters << "*." + it;
@@ -62,86 +60,39 @@ bool LibraryProbe::probe() {
 
     m_current = 0;
     m_queue.append(m_sourceDir);
-    QList<QPointer<QThread>> list;
 
-    for (auto i = 0; i < 16; i++) {
-        m_threads << (QThread::create([this]() {
-            sleep(10);
-            while (current() < 100.0 && !m_infos.isEmpty()) {
-                m_mutex.lock();
-                if(m_infos.isEmpty()) {
-                    m_mutex.unlock();
-                    continue;
-                }
-                auto it = m_infos.dequeue();
-                m_mutex.unlock();
 
-                if (isValid(it.absoluteFilePath())) {
-                    auto media = Media::createMedia(it.absoluteFilePath());
 
-                    emit mediaFind(media);
+    for (auto i = 0; i < 8; i++) {
+        list << new ProbeThread(*this);
 
-                    m_mutex.lock();
-                    m_paths << it.absoluteFilePath();
-                    m_mutex.unlock();
-                }
-
-            }
-        }));
-
-        auto &last = m_threads.last();
+        auto &last = list.last();
         connect(last, &QThread::finished, [last, this]() {
-            m_mutex.lock();
-            m_threads.remove(m_threads.lastIndexOf(last));
-            m_mutex.unlock();
-            last->deleteLater();
-
-            if (m_threads.count() == 0) {
-                 qCDebug(libraryprobe) << "End probe";
-                m_current = m_total - 1;
-            }
+            QMutexLocker lock(&m_mutexDelete);
+            list.removeAll(last);
+            qCDebug(libraryprobe)<<"Search finish";
         });
+
         last->start();
     }
 
-    for (auto i = 0; i < 8; i++) {
-        list << QThread::create([this, filters]() {
-            QDir dir;
+    for (auto i = 0; i < 16; i++) {
+        m_threads <<  new CreateThread(*this);
 
-            for (auto i = 0; i < 10; i++) {
-                while (!m_queue.isEmpty()) {
-                    m_mutex.lock();
-                    if (m_queue.isEmpty()) {
-                        m_mutex.unlock();
-                        continue;
-                    }
-                    auto it = m_queue.dequeue();
-                    m_mutex.unlock();
-                    dir.cd(it);
+        auto last = dynamic_cast<CreateThread*>(m_threads.last().data());
 
-                    auto files = dir.entryInfoList(filters, QDir::AllEntries |
-                                                   QDir::NoDotAndDotDot);
-                    files.append(dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot));
+        connect(last, &CreateThread::sCreateMedia, this, &LibraryProbe::onMediaFind, Qt::QueuedConnection);
+        connect(last, &CreateThread::sCreateMedia, this, &LibraryProbe::mediaFind, Qt::QueuedConnection);
 
-                    for (auto it2 : files) {
-                        if (it2.isDir()) {
-                            m_mutex.lock();
-                            m_queue.enqueue(it2.absoluteFilePath());
-                            m_mutex.unlock();
-                        } else {
-                            m_mutex.lock();
-                            m_total++;
-                            m_infos.enqueue(it2);
-                            m_mutex.unlock();
-                        }
-                    }
-                }
+        connect(last, &QThread::finished, [last, this]() {
+            QMutexLocker lock(&m_mutexDelete);
+            m_threads.removeAll(last);
+
+            if (m_threads.count() == 0) {
+                qCDebug(libraryprobe) << "End probe";
+                m_current = m_total;
             }
         });
-
-        auto &last = list.last();
-        connect(last, &QThread::finished, [last]() { last->deleteLater(); });
-
         last->start();
     }
 
@@ -171,4 +122,73 @@ bool LibraryProbe::setFilters(QStringList filters) {
     if(m_filters != filters)
         m_filters = filters;
     return ret;
+}
+
+ProbeThread::ProbeThread(LibraryProbe& probe, QObject * parent): QThread(parent), m_parent(probe) {}
+
+void ProbeThread::run()
+{
+    auto& queue = m_parent.m_queue;
+    auto& searchMutex = m_parent.m_mutexSearch;
+    auto& createMutex = m_parent.m_mutexCreate;
+    auto& infos = m_parent.m_infos;
+    auto& total = m_parent.m_total;
+
+    QStringList filters;
+    for (auto it : m_parent.m_filters)
+        filters << "*." + it;
+
+
+    while (!queue.isEmpty()) {
+        QDir dir;
+        QMutexLocker locker(&searchMutex);
+        if (queue.isEmpty()) {
+            continue;
+        }
+        auto it = queue.dequeue();
+        dir.cd(it);
+
+        auto files = dir.entryInfoList(filters, QDir::AllEntries |
+                                                    QDir::NoDotAndDotDot);
+        files.append(dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot));
+
+        for (auto it2 : files) {
+            if (it2.isDir()) {
+                queue.enqueue(it2.absoluteFilePath());
+            } else if(!infos.contains(it2)){
+                QMutexLocker createLock(&createMutex);
+                total++;
+                infos.enqueue(it2);
+            }
+        }
+    }
+}
+
+CreateThread::CreateThread(LibraryProbe& probe, QObject * parent): QThread(parent), m_parent(probe) {}
+
+void CreateThread::run()
+{
+    auto& infos = m_parent.m_infos;
+    auto& paths = m_parent.m_paths;
+    auto& queue = m_parent.m_queue;
+    auto& total = m_parent.m_total;
+    auto& createMutex = m_parent.m_mutexCreate;
+
+    while (!infos.isEmpty() || !queue.isEmpty()) {
+        QMutexLocker createLock(&createMutex);
+        if(infos.isEmpty()) {
+            continue;
+        }
+        auto it = infos.dequeue();
+
+        if(paths.contains(it.absolutePath()))
+            total --;
+        else if (m_parent.isValid(it.absoluteFilePath())) {
+            auto media = Media::createMedia(it.absoluteFilePath());
+
+            emit sCreateMedia(media);
+
+            paths << it.absoluteFilePath();
+        }
+    }
 }

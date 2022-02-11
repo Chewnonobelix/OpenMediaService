@@ -38,7 +38,7 @@ Menu {
 
             onClicked:  {
                 var ret = _librariesModel.controller(_librariesModel.currentIndex).addPlaylist(false)
-                _librariesModel.at(_librariesModel.currentIndex).addToPlaylist(ret, media)
+                _librariesModel.at(_librariesModel.currentIndex).addToPlaylist(ret, media.id)
             }
         }
 

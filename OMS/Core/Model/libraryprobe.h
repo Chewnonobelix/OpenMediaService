@@ -30,6 +30,9 @@ class MEDIAPLAYERCORE_EXPORT LibraryProbe : public QThread {
 	Q_PROPERTY(QDateTime lastProbed READ lastProbed WRITE setLastProbed NOTIFY
 								 lastProbedChanged)
 
+    friend class ProbeThread;
+    friend class CreateThread;
+
 private:
 	QSet<QString> m_paths;
 	QStringList m_filters;
@@ -40,9 +43,12 @@ private:
 	QQueue<QFileInfo> m_infos;
 	QQueue<QString> m_queue;
 	QList<QPointer<QThread>> m_threads;
+    QList<QPointer<QThread>> list;
+
 	QDateTime m_lastProbed = QDateTime::currentDateTime();
 
-	QMutex m_mutex;
+    QMutex m_mutexSearch, m_mutexCreate, m_mutexDelete;
+
 
 protected:
 public:
@@ -71,4 +77,35 @@ signals:
 
 public slots:
     void onMediaFind(MediaPointer);
+};
+
+class ProbeThread: public QThread
+{
+    Q_OBJECT
+private:
+    LibraryProbe& m_parent;
+
+protected:
+    void run() override;
+
+public:
+    ProbeThread(LibraryProbe&, QObject* = nullptr);
+    ~ProbeThread() = default;
+};
+
+class CreateThread: public QThread
+{
+    Q_OBJECT
+private:
+    LibraryProbe& m_parent;
+
+protected:
+    void run() override;
+
+public:
+    CreateThread(LibraryProbe&, QObject* = nullptr);
+    ~CreateThread() = default;
+
+signals:
+    void sCreateMedia(MediaPointer);
 };

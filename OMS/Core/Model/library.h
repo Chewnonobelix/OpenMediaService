@@ -71,8 +71,8 @@ public:
 	int playlistCount() const;
     QList<MediaPlayerGlobal::Tag> tags() const;
     void addTag(MediaPlayerGlobal::Tag);
-    void editTag(MediaPlayerGlobal::Tag);
-    void removeTag(MediaPlayerGlobal::Tag);
+    bool editTag(MediaPlayerGlobal::Tag);
+    bool removeTag(MediaPlayerGlobal::Tag);
 
     void setTagList(QStringList);
     QStringList tagList() const;
@@ -94,7 +94,7 @@ public slots:
 	Q_INVOKABLE bool removePlaylist(QString);
 	Q_INVOKABLE QMap<QUuid, PlaylistPointer> playlist(QString = "");
     Q_INVOKABLE QList<PlayList*> playlistList() const;
-    Q_INVOKABLE bool addToPlaylist(QString, Media*);
+    Q_INVOKABLE bool addToPlaylist(QString, QString);
 	void onProbedChanged();
 	void onMediaChanged();
     void onSmartPlaylistChanged();
