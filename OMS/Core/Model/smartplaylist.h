@@ -32,7 +32,6 @@ class MEDIAPLAYERCORE_EXPORT SmartPlaylist : public PlayList {
     Q_OBJECT
 
 private:
-
     bool isValid(MediaPointer);
     QFuture<bool> creating();
 

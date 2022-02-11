@@ -616,10 +616,38 @@ void LibraryTest::onMediasChangedTest_data() {}
 
 void LibraryTest::onSmartPlaylistChangedTest()
 {
-    QFAIL("Not implemented");
+    QFETCH(int, count);
+    QFETCH(int, expected);
+
+    Library l;
+    auto spl = SmartPlaylistPointer::create();
+    spl->setId(QUuid::createUuid());
+    auto m = MediaPointer::create(QUuid::createUuid());
+    l.addMedia(m);
+    m->setCount(count);
+    l.addSmartPlaylist(spl);
+    QSignalSpy spy(&l, &Library::libraryChanged);
+    QVERIFY(spl->count() == 0);
+    auto group = SmartGroupPointer::create();
+    auto rule = group->add(false).dynamicCast<SmartRule>();
+    rule->setField("count");
+    rule->setValue(QVariant::fromValue(3));
+    rule->setOp(AbstractRule::Op::Inferior);
+    spl->setRules(group);
+
+    spy.wait();
+
+    QCOMPARE(spl->count(), expected);
 }
 
-void LibraryTest::onSmartPlaylistChangedTest_data() {}
+void LibraryTest::onSmartPlaylistChangedTest_data()
+{
+    QTest::addColumn<int>("count");
+    QTest::addColumn<int>("expected");
+
+    QTest::addRow("On smart playlist 1")<<1<<1;
+    QTest::addRow("On smart playlist 2")<<4<<0;
+}
 
 void LibraryTest::addToPlaylistTest()
 {
