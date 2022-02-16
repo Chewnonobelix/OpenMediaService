@@ -300,83 +300,13 @@ ApplicationWindow {
             }
         }
 
-        MouseArea {
-            z: 5
+        SplittingView {
             Layout.row: 0
             Layout.column: 2
             Layout.rowSpan: 3
             Layout.columnSpan: 1
             Layout.fillHeight: true
             Layout.fillWidth: true
-            acceptedButtons: Qt.RightButton
-            propagateComposedEvents: true
-
-            onClicked: function(mouse) {
-//                splitMenu.popup(mouse.x, mouse.y)
-            }
-
-
-            SplitView {
-                id: splitView
-                anchors.fill: parent
-                orientation: Qt.Horizontal
-
-                property var component;
-                property var sprite;
-
-                function onClicked(index) {
-                    setCurrentIndex(index)
-                }
-
-                function addNew() {
-                    component = Qt.createComponent("View.qml");
-                    if (component.status === Component.Ready)
-                        finishCreation();
-                    else
-                        component.statusChanged.connect(finishCreation);
-
-                }
-
-                function removeView(idTab) {
-                    var ret = _tabWrapper.removeManager(idTab)
-                    console.log("Remove view", ret)
-
-                    if(ret) {
-                    takeItem(currentIndex)
-
-                    for(var i = 0; i < count; i++) {
-                        itemAt(i).index = i
-                    }
-
-                    setCurrentIndex(0)
-                    }
-                }
-
-                function finishCreation() {
-                    if (component.status === Component.Ready) {
-                        sprite = component.createObject(this, {});
-                        if (sprite === null) {
-                            // Error Handling
-                            console.log("Error creating object");
-                        }
-                        else {
-                            addItem(sprite)
-                            sprite.index = count - 1
-                            sprite.clicked.connect(onClicked)
-                            sprite.newView.connect(addNew)
-                            sprite.remove.connect(removeView)
-                        }
-                    } else if (component.status === Component.Error) {
-                        // Error Handling
-                        console.log("Error loading component:", component.errorString());
-                    }
-                }
-
-
-                Component.onCompleted:  {
-                    addNew()
-                }
-            }
         }
     }
 }

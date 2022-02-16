@@ -24,6 +24,7 @@ public:
     ~TabWrapper() = default;
 
     Q_INVOKABLE QUuid create();
+    Q_INVOKABLE void createWindow();
     QPointer<TabManager> get(QUuid);
     Q_INVOKABLE QPointer<TabManager> get(QString);
     Q_INVOKABLE bool removeManager(QString);
@@ -38,5 +39,6 @@ public slots:
 
 signals:
     void currentTabChanged();
+    void sCreateWindow();
 };
 

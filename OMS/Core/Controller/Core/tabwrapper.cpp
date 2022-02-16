@@ -71,3 +71,8 @@ bool TabWrapper::removeManager(QString id)
     auto count = m_model.remove(QUuid::fromString(id)) > 0;
     return count > 0;
 }
+
+void TabWrapper::createWindow()
+{
+    emit sCreateWindow();
+}
