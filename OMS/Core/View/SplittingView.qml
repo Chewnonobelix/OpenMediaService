@@ -10,6 +10,16 @@ SplitView {
     id: splitView
     orientation: Qt.Horizontal
 
+    function idList () {
+        var ret = [];
+
+        for(var i = 0; i < count; i++) {
+            ret[i] = itemAt(i).idTab
+        }
+
+        return ret
+    }
+
     property var component;
     property var sprite;
 

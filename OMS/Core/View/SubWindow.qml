@@ -10,6 +10,7 @@ import MediaPlayer.Components 1.0
 MediaWindow {
     Component.onCompleted: show()
     SplittingView {
+        id: split
         anchors.fill: parent
     }
 }
