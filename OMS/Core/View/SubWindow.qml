@@ -9,6 +9,13 @@ import MediaPlayer.Components 1.0
 
 MediaWindow {
     Component.onCompleted: show()
+    Component.onDestruction: {
+        for(var i = 0; i < split.idList().length; i++) {
+            _tabWrapper.removeManager(split.idList()[i])
+        }
+    }
+
+    onClosing: _liveQmlEngine.removeWindow(this)
     SplittingView {
         id: split
         anchors.fill: parent
