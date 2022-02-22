@@ -141,7 +141,7 @@ void ControllerLibrary::setModelIndex(int index)
 QList<QVariantMap> ControllerLibrary::importers() const
 {
     QList<QVariantMap> ret;
-    if(!m_plugins.isEmpty()) {
+    if(!m_plugins.isEmpty() && m_plugins.first()) {
         for(auto it: m_plugins.first()->importers()) {
             QVariantMap map;
             map["name"] = it->name();

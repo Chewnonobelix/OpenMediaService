@@ -97,9 +97,8 @@ void ControllerMain::exec() {
 
 
     auto *context = new QQmlContext(root, this);
-
-    context->setContextProperty("_main", this);
     context->setContextProperty("_db", db());
+    context->setContextProperty("_main", this);
     connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
             &LibraryDataModel::onUpdateLibraries);
 

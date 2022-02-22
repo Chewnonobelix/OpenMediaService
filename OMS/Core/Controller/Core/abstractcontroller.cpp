@@ -23,6 +23,7 @@ AbstractController::AbstractController() : QObject() {
         connect(s_tabWrapper, &TabWrapper::sCreateWindow, []() {
             auto root = engine()->qmlEngine().rootContext();
             auto *context = new QQmlContext(root);
+            context->setContextProperty("_db", db());
             engine()->createWindow(QUrl("SubWindow.qml"), context);
         });
     }
