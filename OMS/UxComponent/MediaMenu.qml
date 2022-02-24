@@ -15,7 +15,7 @@ Menu {
     property Media media
 
     onOpened: {
-        tags.model = _librariesModel.controller(_librariesModel.currentIndex).tags
+        tags.model = _librariesModelGlobal.controller(_librariesModelGlobal.currentIndex).tags
         tags.tagList = media.tags
     }
 
@@ -37,15 +37,15 @@ Menu {
             text: qsTr("Add to new playlist")
 
             onClicked:  {
-                var ret = _librariesModel.controller(_librariesModel.currentIndex).addPlaylist(false)
-                _librariesModel.at(_librariesModel.currentIndex).addToPlaylist(ret, media.id)
+                var ret = _librariesModelGlobal.controller(_librariesModelGlobal.currentIndex).addPlaylist(false)
+                _librariesModelGlobal.at(_librariesModelGlobal.currentIndex).addToPlaylist(ret, media.id)
             }
         }
 
-        onOpened: rep.model =  _librariesModel.at(_librariesModel.currentIndex).playlistList()
+        onOpened: rep.model =  _librariesModelGlobal.at(_librariesModelGlobal.currentIndex).playlistList()
         Repeater {
             id: rep
-            model: _librariesModel.at(_librariesModel.currentIndex) ? _librariesModel.at(_librariesModel.currentIndex).playlistList() : null
+            model: _librariesModelGlobal.at(_librariesModelGlobal.currentIndex) ? _librariesModelGlobal.at(_librariesModelGlobal.currentIndex).playlistList() : null
             MenuItem {
                 text: modelData.name !== "" ? modelData.name : modelData.id
 

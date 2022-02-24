@@ -92,12 +92,13 @@ void ControllerMain::exec() {
 
     m_librariesModel = new LibraryDataModel;
 
-    root->setContextProperty("_librariesModel", m_librariesModel);
     root->setContextProperty("_tabWrapper", s_tabWrapper);
     root->setContextProperty("_db", db());
+    root->setContextProperty("_librariesModelGlobal", m_librariesModel);
 
 
     auto *context = new QQmlContext(root, this);
+    context->setContextProperty("_librariesModel", m_librariesModel);
     context->setContextProperty("_main", this);
     connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
             &LibraryDataModel::onUpdateLibraries);

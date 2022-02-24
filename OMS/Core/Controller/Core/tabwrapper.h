@@ -11,6 +11,8 @@
 
 #include "tabmanager.h"
 
+class LibraryDataModel;
+
 class MEDIAPLAYERCORE_EXPORT TabWrapper: public QObject
 {
     Q_OBJECT
@@ -20,6 +22,7 @@ private:
     QMap<QUuid, QPointer<TabManager>> m_model;
     QUuid m_current;
     LiveQmlEngine& m_engine;
+    QMap<QUuid, QPointer<LibraryDataModel>> m_libraries;
 
 public:
     TabWrapper(LiveQmlEngine&);
