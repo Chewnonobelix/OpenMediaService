@@ -94,10 +94,10 @@ void ControllerMain::exec() {
 
     root->setContextProperty("_librariesModel", m_librariesModel);
     root->setContextProperty("_tabWrapper", s_tabWrapper);
+    root->setContextProperty("_db", db());
 
 
     auto *context = new QQmlContext(root, this);
-    context->setContextProperty("_db", db());
     context->setContextProperty("_main", this);
     connect(db(), &InterfaceSaver::librariesChanged, m_librariesModel,
             &LibraryDataModel::onUpdateLibraries);

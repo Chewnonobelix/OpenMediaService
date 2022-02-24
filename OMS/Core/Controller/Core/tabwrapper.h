@@ -5,6 +5,8 @@
 #include <QPointer>
 #include <QLoggingCategory>
 
+#include <liveqmlengine.h>
+
 #include "mediaplayercore_global.h"
 
 #include "tabmanager.h"
@@ -17,10 +19,10 @@ class MEDIAPLAYERCORE_EXPORT TabWrapper: public QObject
 private:
     QMap<QUuid, QPointer<TabManager>> m_model;
     QUuid m_current;
-
+    LiveQmlEngine& m_engine;
 
 public:
-    TabWrapper() = default;
+    TabWrapper(LiveQmlEngine&);
     ~TabWrapper() = default;
 
     Q_INVOKABLE QUuid create();

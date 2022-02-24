@@ -14,7 +14,6 @@ GridLayout {
 
     function idList () {
         var ret = [];
-
         for(var i = 0; i < splitView.count; i++) {
             ret[i] = splitView.itemAt(i).idTab
         }

@@ -5,7 +5,7 @@ QThread *AbstractController::s_dbThread = new QThread();
 QPointer<LiveQmlEngine> AbstractController::s_engine = nullptr;
 PluginManager AbstractController::s_manager = PluginManager();
 QPointer<ControllerSettings> AbstractController::s_settings = nullptr;
-QPointer<TabWrapper> AbstractController::s_tabWrapper = new TabWrapper;
+QPointer<TabWrapper> AbstractController::s_tabWrapper = nullptr;
 
 AbstractController::AbstractController() : QObject() {
     qDebug()<<QString(QML_SOURCE).split("|");
@@ -13,23 +13,13 @@ AbstractController::AbstractController() : QObject() {
         s_engine = new LiveQmlEngine(nullptr, QString(QML_SOURCE).split("|"));
     }
 
+    if(s_tabWrapper.isNull()) {
+        s_tabWrapper = new TabWrapper(*s_engine);
+    }
+
     if (s_settings.isNull()) {
         s_settings = new ControllerSettings(*s_engine);
     }
-
-    static bool init = false;
-
-    if(!init) {
-        connect(s_tabWrapper, &TabWrapper::sCreateWindow, []() {
-            auto root = engine()->qmlEngine().rootContext();
-            auto *context = new QQmlContext(root);
-            context->setContextProperty("_db", db());
-            engine()->createWindow(QUrl("SubWindow.qml"), context);
-        });
-    }
-
-    init = true;
-
 }
 
 InterfaceSaver *AbstractController::db() { return s_db; }

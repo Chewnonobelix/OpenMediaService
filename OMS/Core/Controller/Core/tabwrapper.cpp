@@ -2,6 +2,8 @@
 
 Q_LOGGING_CATEGORY(tabwrapperlog, "tabwrapper.log")
 
+TabWrapper::TabWrapper(LiveQmlEngine& engine): m_engine(engine) {}
+
 QUuid TabWrapper::create()
 {
     auto manager = new TabManager;
@@ -74,5 +76,7 @@ bool TabWrapper::removeManager(QString id)
 
 void TabWrapper::createWindow()
 {
-    emit sCreateWindow();
+    auto root = m_engine.qmlEngine().rootContext();
+    auto *context = new QQmlContext(root);
+    m_engine.createWindow(QUrl("SubWindow.qml"), context);
 }
