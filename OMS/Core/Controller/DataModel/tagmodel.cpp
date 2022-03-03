@@ -100,6 +100,5 @@ QString TagModel::toTagString(QString id) const
         return it.first.toString() == id;
     });
 
-    qDebug()<<id<<find;
     return find != m_model.end() ? find->second : "";
 }

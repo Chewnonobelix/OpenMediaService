@@ -88,4 +88,15 @@ void TabWrapper::createWindow()
     auto *context = new QQmlContext(root);
     context->setContextProperty("_librariesModel", m_libraries[id].data());
     m_engine.createWindow(QUrl("SubWindow.qml"), context);
+
+    connect(m_libraries[id], &LibraryDataModel::currentIndexChanged, [id, this]() {
+        auto index = m_libraries[id]->currentIndex();
+        auto cl = m_libraries[id]->controller(index);
+        if(cl) {
+            auto current = currentId();
+            cl->setPlaylistIndex(current.toString(), 0);
+            setPlayer(index, cl->playerComp(current.toString()));
+        }
+    });
+
 }

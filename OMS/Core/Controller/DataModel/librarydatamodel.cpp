@@ -1,9 +1,11 @@
 #include "librarydatamodel.h"
 
+QList<Data> LibraryDataModel::m_libraries = QList<Data>();
+
 LibraryDataModel::LibraryDataModel() : QAbstractListModel() {}
 
 LibraryDataModel::LibraryDataModel(const LibraryDataModel &l)
-    : QAbstractListModel(), m_libraries(l.m_libraries) {
+    : QAbstractListModel() {
     sort(0, Qt::AscendingOrder);
 }
 

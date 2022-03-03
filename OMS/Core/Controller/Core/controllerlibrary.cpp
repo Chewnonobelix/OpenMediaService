@@ -125,7 +125,7 @@ QObject* ControllerLibrary::playerComp(QString id)
     QObject* ControllerLibrary::playlistComp(QString id)
     {
     auto uid = id.isEmpty() ? s_tabWrapper->currentId() : QUuid::fromString(id);
-    return m_plugins.contains(uid) ? m_plugins[uid]->playlistView() : nullptr;
+    return m_plugins.contains(uid) && m_plugins[uid]? m_plugins[uid]->playlistView() : nullptr;
 }
 
 bool ControllerLibrary::containView(QUuid id) const
