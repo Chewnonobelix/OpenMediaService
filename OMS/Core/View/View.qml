@@ -53,6 +53,7 @@ Item {
             Component.onCompleted: {
                 currentIndex = 0
             }
+            property int oldIndex: 0
 
             Repeater {
                 id: tabRepeater
@@ -63,6 +64,7 @@ Item {
 
                     onClicked: {
                         _tabWrapper.setCurrentTab(view.itemAt(modelData).id)
+                        viewBar.oldIndex = modelData
                     }
 
                     ToolButton {
@@ -108,11 +110,17 @@ Item {
                 }
                 Action {
                     text: qsTr("Open in new view")
-                    onTriggered: root.newView()
+                    onTriggered: {
+                        root.newView()
+                        viewBar.currentIndex = viewBar.oldIndex
+                    }
                 }
                 Action {
                     text: qsTr("Open in new window")
-                    onTriggered: root.newWindow()
+                    onTriggered: {
+                        root.newWindow()
+                        viewBar.currentIndex = viewBar.oldIndex
+                    }
                 }
                 Action {
                     text: qsTr("Remove current view")
