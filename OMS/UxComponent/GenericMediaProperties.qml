@@ -9,7 +9,7 @@ Item {
     id: root
 
     property Media model
-    property TagModel tagsModel: _librariesModel.controller(_librariesModel.currentIndex).tags
+    property TagModel tagsModel: _librariesModelGlobal.controller(_librariesModelGlobal.currentIndex).tags
 
     ScrollView {
         anchors.fill: parent

@@ -125,7 +125,7 @@ QObject* ControllerLibrary::playerComp(QString id)
     QObject* ControllerLibrary::playlistComp(QString id)
     {
     auto uid = id.isEmpty() ? s_tabWrapper->currentId() : QUuid::fromString(id);
-    return m_plugins.contains(uid) ? m_plugins[uid]->playlistView() : nullptr;
+    return m_plugins.contains(uid) && m_plugins[uid]? m_plugins[uid]->playlistView() : nullptr;
 }
 
 bool ControllerLibrary::containView(QUuid id) const
@@ -141,7 +141,7 @@ void ControllerLibrary::setModelIndex(int index)
 QList<QVariantMap> ControllerLibrary::importers() const
 {
     QList<QVariantMap> ret;
-    if(!m_plugins.isEmpty()) {
+    if(!m_plugins.isEmpty() && m_plugins.first()) {
         for(auto it: m_plugins.first()->importers()) {
             QVariantMap map;
             map["name"] = it->name();

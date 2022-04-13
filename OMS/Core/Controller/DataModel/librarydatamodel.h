@@ -11,6 +11,11 @@
 #include "Model/global.h"
 #include "Model/library.h"
 
+struct Data {
+    LibraryPointer library;
+    QPointer<ControllerLibrary> controller;
+};
+
 class MEDIAPLAYERCORE_EXPORT LibraryDataModel : public QAbstractListModel {
 	Q_OBJECT
 
@@ -18,11 +23,6 @@ class MEDIAPLAYERCORE_EXPORT LibraryDataModel : public QAbstractListModel {
 								 currentIndexChanged)
 
 private:
-    struct Data {
-        LibraryPointer library;
-        QPointer<ControllerLibrary> controller;
-    };
-
 	enum LibraryRoles {
 		MediaRole = Qt::UserRole + 1,
 		NameRole,
@@ -30,7 +30,7 @@ private:
         IdRole,
         ControllerRole
 	};
-    QList<Data> m_libraries;
+    static QList<Data> m_libraries;
 	int m_currentIndex = -1;
 
 protected:

@@ -40,7 +40,7 @@ private:
 	QStringList m_sourceDir;
 	MediaPlayerGlobal::MediaRole m_role;
 	int m_total = 0, m_current = 0;
-	QQueue<QFileInfo> m_infos;
+    QQueue<QString> m_infos;
 	QQueue<QString> m_queue;
 	QList<QPointer<QThread>> m_threads;
     QList<QPointer<QThread>> list;

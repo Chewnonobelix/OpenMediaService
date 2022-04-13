@@ -1,6 +1,10 @@
 #include "tabwrapper.h"
 
+#include <Controller/DataModel/librarydatamodel.h>
+
 Q_LOGGING_CATEGORY(tabwrapperlog, "tabwrapper.log")
+
+TabWrapper::TabWrapper(LiveQmlEngine& engine): m_engine(engine) {}
 
 QUuid TabWrapper::create()
 {
@@ -70,4 +74,29 @@ bool TabWrapper::removeManager(QString id)
 
     auto count = m_model.remove(QUuid::fromString(id)) > 0;
     return count > 0;
+}
+
+void TabWrapper::createWindow()
+{
+    auto id = QUuid::createUuid();
+    m_libraries[id] = new LibraryDataModel;
+    QJSEngine::setObjectOwnership(m_libraries[id].data(), QJSEngine::CppOwnership);
+    auto root = m_engine.qmlEngine().rootContext();
+    auto db = root->contextProperty("_db").value<InterfaceSaver*>();
+    connect(db, &InterfaceSaver::librariesChanged, m_libraries[id], &LibraryDataModel::onUpdateLibraries);
+    emit db->librariesChanged();
+    auto *context = new QQmlContext(root);
+    context->setContextProperty("_librariesModel", m_libraries[id].data());
+    m_engine.createWindow(QUrl("SubWindow.qml"), context);
+
+    connect(m_libraries[id], &LibraryDataModel::currentIndexChanged, [id, this]() {
+        auto index = m_libraries[id]->currentIndex();
+        auto cl = m_libraries[id]->controller(index);
+        if(cl) {
+            auto current = currentId();
+            cl->setPlaylistIndex(current.toString(), 0);
+            setPlayer(index, cl->playerComp(current.toString()));
+        }
+    });
+
 }

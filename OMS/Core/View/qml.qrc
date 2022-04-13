@@ -12,5 +12,7 @@
         <file>SmartRule.qml</file>
         <file>GroupRule.qml</file>
         <file>Node.qml</file>
+        <file>SubWindow.qml</file>
+        <file>SplittingView.qml</file>
     </qresource>
 </RCC>
