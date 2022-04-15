@@ -9,7 +9,6 @@ Item {
     id: root
 
     PlayBar {
-        Component.onCompleted: console.log("Bite")
         anchors.fill: parent
     }
 }
