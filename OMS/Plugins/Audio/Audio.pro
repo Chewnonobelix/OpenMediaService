@@ -21,3 +21,6 @@ HEADERS += \
 include(../global.pri)
 
 # Default rules for deployment.
+
+RESOURCES += \
+    audio.qrc

@@ -10,6 +10,12 @@ class ControllerAudio : public AbstractController, public InterfacePlugins
     Q_PLUGIN_METADATA(IID "com.chewnonobelix.MediaPlayer.Audio")
     Q_DISABLE_COPY(ControllerAudio)
 
+private:
+    static QQmlComponent* s_viewComp;
+    static QQmlComponent* s_playlistComp;
+    QObject* m_view = nullptr;
+    QObject* m_playlist = nullptr;
+
 public:
     ControllerAudio() = default;
     ~ControllerAudio() override = default;
