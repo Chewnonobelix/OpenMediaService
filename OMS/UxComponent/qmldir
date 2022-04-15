@@ -19,5 +19,8 @@ OrderDisplay 1.0 qrc:/OrderDisplay.qml
 ButtonOrder 1.0 qrc:/ButtonOrder.qml
 TagMenu 1.0 qrc:/TagMenu.qml
 Bookmark 1.0 qrc:/Bookmark.qml
+singleton RepeatState 1.0 qrc:/RepeatState.qml
+singleton ShuffleState 1.0 qrc:/ShuffleState.qml
+singleton PlayingState 1.0 qrc:/PlayingState.qml
 plugin UxComponents
 typeinfo plugin.qmltypes
