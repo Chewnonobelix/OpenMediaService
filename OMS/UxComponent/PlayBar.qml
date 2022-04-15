@@ -10,6 +10,17 @@ Item {
     property int playState: PlayingState.stop
     property int shuffleState: ShuffleState.real
 
+    signal playChanged(int state)
+    signal shuffleChanged(int state)
+    signal repeatChanged(int state)
+
+    signal nextChanged()
+    signal previousChanged()
+
+    signal backwardChanged()
+    signal forwardChanged()
+
+
     GridLayout {
         anchors.fill: parent
         rows: 2
