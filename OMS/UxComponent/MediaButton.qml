@@ -8,12 +8,13 @@ Button {
         checked: root.checked
     }
 
-	contentItem: Label {
+    contentItem: IconLabel {
         id: cont
 		text: root.text
         color: root.down || root.hovered ? "black" : "white"
-		horizontalAlignment: Text.AlignHCenter
-		verticalAlignment: Text.AlignVCenter
+//		horizontalAlignment: Text.AlignHCenter
+//		verticalAlignment: Text.AlignVCenter
 		opacity: enabled ? 1.0 : 0.3
-	}
+        icon: root.icon
+    }
 }
