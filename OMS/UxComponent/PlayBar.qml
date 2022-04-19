@@ -20,7 +20,13 @@ Item {
     signal backwardChanged()
     signal forwardChanged()
 
+    signal volumeChanged(int volume)
+    signal positionChanged(int position)
 
+    property int duration
+    property int current
+
+    onCurrentChanged: progress.value = current
     GridLayout {
         anchors.fill: parent
         rows: 2
@@ -30,6 +36,11 @@ Item {
             Layout.row: 0
             Layout.column: 0
             Layout.columnSpan: 9
+            value: 0
+            from: 0
+            to: duration
+
+            onMoved: root.positionChanged(value)
         }
 
         MediaButton {
@@ -37,6 +48,8 @@ Item {
             Layout.row: 1
             Layout.column: 0
             icon.source: "qrc:/icons/previous.png"
+
+            onClicked: root.previousChanged()
         }
 
         MediaButton {
@@ -44,6 +57,8 @@ Item {
             Layout.column: 1
             Layout.row: 1
             icon.source: "qrc:/icons/backward.png"
+
+            onClicked: root.backwardChanged()
         }
 
         MediaButton {
@@ -56,6 +71,7 @@ Item {
 
             onClicked: {
                 playState = PlayingState.next(playState)
+                root.playChanged(playState)
             }
         }
 
@@ -64,6 +80,8 @@ Item {
             Layout.column: 3
             Layout.row: 1
             icon.source: "qrc:/icons/forward.png"
+
+            onClicked: root.forwardChanged()
         }
 
         MediaButton {
@@ -71,6 +89,8 @@ Item {
             Layout.row: 1
             Layout.column: 4
             icon.source: "qrc:/icons/next.png"
+
+            onClicked: root.nextChanged()
         }
 
         MediaButton {
@@ -84,6 +104,7 @@ Item {
 
             onClicked: {
                 repeatState = RepeatState.next(repeatState)
+                root.repeatChanged(repeatState)
             }
         }
 
@@ -96,6 +117,7 @@ Item {
 
             onClicked: {
                 shuffleState = ShuffleState.next(shuffleState)
+                root.suffleChanged(shuffleState)
             }
         }
 
