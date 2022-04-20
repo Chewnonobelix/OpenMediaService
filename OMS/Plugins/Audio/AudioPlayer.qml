@@ -46,9 +46,7 @@ Item {
         }
 
         onVolumeChanged: function(volume) {
-            console.log("new voluyme", volume)
             output.volume = volume
-            console.log(output.volume)
         }
 
         width: root.width

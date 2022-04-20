@@ -7,7 +7,7 @@ Item {
 
 
     property int repeatState: RepeatState.no
-    property int playState: PlayingState.stop
+    property int playState: PlayingState.pause
     property int shuffleState: ShuffleState.real
 
     signal playChanged(int state)
@@ -26,22 +26,75 @@ Item {
     property int duration
     property int current
 
-    onCurrentChanged: progress.value = current
+    onCurrentChanged: {
+        progress.value = current
+        displayTime.text = progress.formatJ(current) + " / " +progress.formatJ(duration)
+    }
+
     GridLayout {
         anchors.fill: parent
         rows: 2
+
+        Label {
+            id: displayTime
+            Layout.row: 0
+            Layout.column: 8
+            Layout.columnSpan: 1
+            fontSizeMode: Text.Fit
+        }
 
         Slider {
             id: progress
             Layout.row: 0
             Layout.column: 0
-            Layout.columnSpan: 9
+            Layout.columnSpan: 7
             Layout.fillWidth: true
             value: 0
             from: 0
             to: duration
             stepSize: 1
+            snapMode: Slider.SnapAlways
             onMoved: root.positionChanged(value)
+
+            function formatMs(value) {
+                var ms = value % 1000
+
+                return [ms+"" ,(value - ms) / 1000, ms]
+            }
+
+            function formatS(value) {
+                var ms = formatMs(value)
+                var s = ms[1] % 60
+
+                return [s+"s "+ms[0] ,(ms[1]-s)/60, ms]
+            }
+
+            function formatM(value) {
+                var s = formatS(value)
+                var m = s[1] % 60
+
+                return [m+"m "+s[0] ,(s[1]-m)/60 ,s]
+            }
+
+            function formatH(value) {
+                var m = formatM(value)
+                var h = m[1] % 24
+
+                return [h+"h "+m[0] ,(m[1]-h)/24 ,m]
+            }
+
+            function formatJ(value) {
+                var h = formatH(value)
+                var j = h[1]
+
+                return j+"h "+h[0]
+            }
+
+            ToolTip {
+                visible: progress.pressed
+
+                text: progress.formatJ(progress.value)
+            }
         }
 
         MediaButton {
@@ -155,6 +208,7 @@ Item {
             to: 1
             stepSize: 0.1
 
+            snapMode: Slider.SnapAlways
             onMoved: {
                 root.volumeChanged(value)
             }
