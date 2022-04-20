@@ -20,7 +20,7 @@ Item {
     signal backwardChanged()
     signal forwardChanged()
 
-    signal volumeChanged(int volume)
+    signal volumeChanged(real volume)
     signal positionChanged(int position)
 
     property int duration
@@ -36,10 +36,11 @@ Item {
             Layout.row: 0
             Layout.column: 0
             Layout.columnSpan: 9
+            Layout.fillWidth: true
             value: 0
             from: 0
             to: duration
-
+            stepSize: 1
             onMoved: root.positionChanged(value)
         }
 
@@ -50,6 +51,8 @@ Item {
             icon.source: "qrc:/icons/previous.png"
 
             onClicked: root.previousChanged()
+
+            Layout.preferredWidth: root.width * 0.05
         }
 
         MediaButton {
@@ -59,44 +62,63 @@ Item {
             icon.source: "qrc:/icons/backward.png"
 
             onClicked: root.backwardChanged()
+            Layout.preferredWidth: root.width * 0.05
+        }
+
+        MediaButton {
+            id: stop
+            Layout.row: 1
+            Layout.column: 2
+
+            display: AbstractButton.IconOnly
+            icon.source: "qrc:/icons/stop.png"
+
+            onClicked: {
+                playState = PlayingState.stop
+                root.playChanged(playState)
+            }
+            Layout.preferredWidth: root.width * 0.05
         }
 
         MediaButton {
             id: play
             Layout.row: 1
-            Layout.column: 2
+            Layout.column: 3
 
             display: AbstractButton.IconOnly
-            icon.source: playState === PlayingState.play ? "qrc:/icons/stop.png" : "qrc:/icons/play.png"
+            icon.source: playState === PlayingState.play ? "qrc:/icons/pause.png" : "qrc:/icons/play.png"
 
             onClicked: {
                 playState = PlayingState.next(playState)
                 root.playChanged(playState)
             }
+            Layout.preferredWidth: root.width * 0.05
         }
 
         MediaButton {
             id: forward
-            Layout.column: 3
+            Layout.column: 4
             Layout.row: 1
             icon.source: "qrc:/icons/forward.png"
 
             onClicked: root.forwardChanged()
+            Layout.preferredWidth: root.width * 0.05
         }
 
         MediaButton {
             id: next
             Layout.row: 1
-            Layout.column: 4
+            Layout.column: 5
             icon.source: "qrc:/icons/next.png"
 
             onClicked: root.nextChanged()
+            Layout.preferredWidth: root.width * 0.05
         }
 
         MediaButton {
             id: repeat
             Layout.row: 1
-            Layout.column: 5
+            Layout.column: 6
 
             display: AbstractButton.IconOnly
 
@@ -106,12 +128,13 @@ Item {
                 repeatState = RepeatState.next(repeatState)
                 root.repeatChanged(repeatState)
             }
+            Layout.preferredWidth: root.width * 0.05
         }
 
         MediaButton {
             id: suffle
             Layout.row: 1
-            Layout.column: 6
+            Layout.column: 7
             display: AbstractButton.IconOnly
             icon.source: shuffleState === ShuffleState.random ? "qrc:/icons/shuffle.png" : "qrc:/icons/play.png"
 
@@ -119,13 +142,22 @@ Item {
                 shuffleState = ShuffleState.next(shuffleState)
                 root.suffleChanged(shuffleState)
             }
+            Layout.preferredWidth: root.width * 0.05
         }
 
         Slider {
             id: volume
             Layout.fillWidth: true
             Layout.row: 1
-            Layout.column: 7
+            Layout.column: 8
+            value: 100
+            from: 0
+            to: 1
+            stepSize: 0.1
+
+            onMoved: {
+                root.volumeChanged(value)
+            }
         }
     }
 }

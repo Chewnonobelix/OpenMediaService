@@ -17,8 +17,9 @@ Item {
         id: player
 
         audioOutput: AudioOutput {
+            id: output
             device: devices.defaultAudioOutput
-            volume: 100
+            volume: 1
         }
         source: "file:///C:\\Qt\\Perso\\OpenMediaService\\OMS\\UnitTest\\Data\\28 La bataille de Zoug Amag Zlong.mp3"
     }
@@ -36,9 +37,18 @@ Item {
             if(state === PlayingState.play) {
                 player.play()
             }
-            else {
+            else if (state === PlayingState.pause) {
                 player.pause()
             }
+            else {
+                player.stop()
+            }
+        }
+
+        onVolumeChanged: function(volume) {
+            console.log("new voluyme", volume)
+            output.volume = volume
+            console.log(output.volume)
         }
 
         width: root.width
