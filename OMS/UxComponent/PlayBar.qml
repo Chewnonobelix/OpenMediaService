@@ -40,7 +40,7 @@ Item {
         Label {
             id: displayTime
             Layout.row: 0
-            Layout.column: 8
+            Layout.column: 10
             Layout.columnSpan: 1
             fontSizeMode: Text.Fit
         }
@@ -49,7 +49,7 @@ Item {
             id: progress
             Layout.row: 0
             Layout.column: 0
-            Layout.columnSpan: 8
+            Layout.columnSpan: 10
             Layout.fillWidth: true
             value: 0
             from: 0
@@ -203,11 +203,23 @@ Item {
             Layout.preferredWidth: root.width * 0.05
         }
 
+        MediaButton {
+            id: mute
+            Layout.row: 1
+            Layout.column: 8
+            Layout.preferredWidth: root.width * 0.05
+            checkable: true
+            icon.source: checked ? "qrc:/icons/volume_mute.png" : "qrc:/icons/volume_up.png"
+
+            onCheckedChanged: root.volumeChanged(checked ? 0 : volume.value)
+        }
+
         Slider {
             id: volume
             Layout.fillWidth: true
             Layout.row: 1
-            Layout.column: 8
+            Layout.column: 9
+            Layout.columnSpan: 2
             value: 100
             from: 0
             to: 1
