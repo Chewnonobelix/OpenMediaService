@@ -43,6 +43,7 @@ Item {
             Layout.column: 10
             Layout.columnSpan: 1
             fontSizeMode: Text.Fit
+            Layout.preferredWidth: root.width * 0.15
         }
 
         Slider {
