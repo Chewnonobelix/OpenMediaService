@@ -7,6 +7,6 @@ QtObject {
     property int pause: 2
 
     function next(value) {
-        return value === 2 ? 0 : 2
+        return value === pause ? play : pause
     }
 }

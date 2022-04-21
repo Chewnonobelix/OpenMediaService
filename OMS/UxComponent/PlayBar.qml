@@ -8,7 +8,7 @@ Item {
 
     property int repeatState: RepeatState.no
     property int playState: PlayingState.pause
-    property int shuffleState: ShuffleState.real
+    property int shuffleState: ShuffleState.realOrder
 
     signal playChanged(int state)
     signal shuffleChanged(int state)
@@ -23,13 +23,15 @@ Item {
     signal volumeChanged(real volume)
     signal positionChanged(int position)
 
-    property int duration
-    property int current
+    property int duration: 0
+    property int current: 0
 
     onCurrentChanged: {
         progress.value = current
         displayTime.text = progress.formatJ(current) + " / " +progress.formatJ(duration)
     }
+
+    onDurationChanged: displayTime.text = progress.formatJ(current) + " / " +progress.formatJ(duration)
 
     GridLayout {
         anchors.fill: parent
@@ -47,7 +49,7 @@ Item {
             id: progress
             Layout.row: 0
             Layout.column: 0
-            Layout.columnSpan: 7
+            Layout.columnSpan: 8
             Layout.fillWidth: true
             value: 0
             from: 0
@@ -59,35 +61,35 @@ Item {
             function formatMs(value) {
                 var ms = value % 1000
 
-                return [ms+"" ,(value - ms) / 1000, ms]
+                return [ms === 0 ? "" : ms+"" ,(value - ms) / 1000, ms]
             }
 
             function formatS(value) {
                 var ms = formatMs(value)
                 var s = ms[1] % 60
 
-                return [s+"s "+ms[0] ,(ms[1]-s)/60, ms]
+                return [(s+"s ")+ms[0] ,(ms[1]-s)/60, ms]
             }
 
             function formatM(value) {
                 var s = formatS(value)
                 var m = s[1] % 60
 
-                return [m+"m "+s[0] ,(s[1]-m)/60 ,s]
+                return [(m+"m ")+s[0] ,(s[1]-m)/60 ,s]
             }
 
             function formatH(value) {
                 var m = formatM(value)
                 var h = m[1] % 24
 
-                return [h+"h "+m[0] ,(m[1]-h)/24 ,m]
+                return [(h === 0 ? "" : h+"h ")+m[0] ,(m[1]-h)/24 ,m]
             }
 
             function formatJ(value) {
                 var h = formatH(value)
                 var j = h[1]
 
-                return j+"h "+h[0]
+                return (j === 0 ? "" : j+"j ")+h[0]
             }
 
             ToolTip {
@@ -175,7 +177,8 @@ Item {
 
             display: AbstractButton.IconOnly
 
-            icon.source: repeatState === RepeatState.all ? "qrc:/icons/repeat.png" : repeatState === RepeatState.one ? "qrc:/icons/repeat_one.png" : "qrc:/icons/play.png"
+            icon.source: repeatState === RepeatState.one ? "qrc:/icons/repeat_one.png" : "qrc:/icons/repeat.png"
+            checked: repeatState != RepeatState.no
 
             onClicked: {
                 repeatState = RepeatState.next(repeatState)
@@ -189,11 +192,13 @@ Item {
             Layout.row: 1
             Layout.column: 7
             display: AbstractButton.IconOnly
-            icon.source: shuffleState === ShuffleState.random ? "qrc:/icons/shuffle.png" : "qrc:/icons/play.png"
+            icon.source: "qrc:/icons/shuffle.png"
+
+            checked: shuffleState != ShuffleState.realOrder
 
             onClicked: {
                 shuffleState = ShuffleState.next(shuffleState)
-                root.suffleChanged(shuffleState)
+                root.shuffleChanged(shuffleState)
             }
             Layout.preferredWidth: root.width * 0.05
         }
