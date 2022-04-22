@@ -11,13 +11,18 @@ NAME = Audio
 
 SOURCES += \
     audio_plugin.cpp \
+    audioplayer.cpp \
     controlleraudio.cpp
 
 HEADERS += \
     Audio_global.h \
     audio_plugin.h \
+    audioplayer.h \
     controlleraudio.h
 
 include(../global.pri)
 
 # Default rules for deployment.
+
+RESOURCES += \
+    audio.qrc

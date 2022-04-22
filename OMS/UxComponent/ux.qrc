@@ -24,6 +24,10 @@
         <file>Bookmark.qml</file>
         <file>GenericMediaProperties.qml</file>
         <file>MediaProperties.qml</file>
+        <file>PlayBar.qml</file>
+        <file>RepeatState.qml</file>
+        <file>ShuffleState.qml</file>
+        <file>PlayingState.qml</file>
     </qresource>
     <qresource prefix="/icons">
         <file>rating_star.png</file>
