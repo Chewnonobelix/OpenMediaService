@@ -26,12 +26,23 @@ Item {
     property int duration: 0
     property int current: 0
 
+    Component.onCompleted: display()
+
     onCurrentChanged: {
         progress.value = current
+        display()
+    }
+
+    onDurationChanged:  display()
+
+    function display () {
         displayTime.text = progress.formatJ(current) + " / " +progress.formatJ(duration)
     }
 
-    onDurationChanged: displayTime.text = progress.formatJ(current) + " / " +progress.formatJ(duration)
+    function play() {
+        playState = PlayingState.play
+        playChanged(playState)
+    }
 
     GridLayout {
         anchors.fill: parent

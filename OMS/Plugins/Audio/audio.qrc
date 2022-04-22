@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/audio">
         <file>AudioPlayer.qml</file>
+        <file>AudioPlaylist.qml</file>
     </qresource>
 </RCC>

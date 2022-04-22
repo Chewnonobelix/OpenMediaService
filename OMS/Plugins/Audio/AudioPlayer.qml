@@ -21,7 +21,17 @@ Item {
             device: devices.defaultAudioOutput
             volume: 1
         }
-        source: "file:///C:\\Qt\\Perso\\OpenMediaService\\OMS\\UnitTest\\Data\\28 La bataille de Zoug Amag Zlong.mp3"
+    }
+
+    Connections {
+        target: _player
+
+        function onMediaChanged() {
+            if(_player.media) {
+                player.source = _player.media.path()
+                playbar.play()
+            }
+        }
     }
 
     PlayBar {

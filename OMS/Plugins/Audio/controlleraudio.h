@@ -3,6 +3,11 @@
 #include <Controller/Core/abstractcontroller.h>
 #include <Controller/Plugins/interfaceplugins.h>
 
+#include <Controller/DataModel/playlistlistmodel.h>
+#include <Controller/DataModel/tagmodel.h>
+
+#include "audioplayer.h"
+
 class ControllerAudio : public AbstractController, public InterfacePlugins
 {
     Q_OBJECT
@@ -15,6 +20,10 @@ private:
     static QQmlComponent* s_playlistComp;
     QObject* m_view = nullptr;
     QObject* m_playlist = nullptr;
+
+    AudioPlayer m_player;
+    PlaylistListModel m_listModel;
+    PlaylistPointer m_playlistPointer;
 
 public:
     ControllerAudio() = default;
