@@ -2,38 +2,15 @@
 <project name="OMS" id="Project_1b86" database="Sqlite" >
 	<schema name="Default" >
 		<table name="library" prior="Tbl" generator_rows="100" >
-			<column name="id" type="text" jt="-1" mandatory="y" />
-			<column name="name" type="text" length="100" jt="-1" mandatory="y" />
-			<column name="role" type="integer" jt="4" mandatory="y" >
-				<defo><![CDATA[0]]></defo>
-			</column>
-			<column name="isShared" type="boolean" jt="-7" mandatory="y" >
-				<defo><![CDATA[0]]></defo>
-			</column>
-			<index name="Pk_library_id" unique="PRIMARY_KEY" >
+			<column name="id" type="TEXT" jt="-1" mandatory="y" />
+			<index name="pk_library" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
 		</table>
 		<table name="media" prior="Tbl" >
-			<column name="id" type="text" jt="-1" mandatory="y" />
-			<column name="lib" type="text" jt="-1" />
-			<column name="role" type="integer" jt="4" mandatory="y" >
-				<defo><![CDATA[0]]></defo>
-			</column>
-			<column name="count" type="integer" jt="4" mandatory="y" >
-				<defo><![CDATA[0]]></defo>
-			</column>
-			<column name="rating" type="integer" jt="4" mandatory="y" >
-				<defo><![CDATA[0]]></defo>
-			</column>
-			<column name="added" type="date" jt="91" mandatory="y" >
-				<defo><![CDATA[CURRENT_DATE]]></defo>
-			</column>
-			<column name="lastFinished" type="date" length="100" jt="91" />
-			<column name="currentRead" type="numeric" jt="2" mandatory="y" >
-				<defo><![CDATA[0]]></defo>
-			</column>
-			<index name="Pk_media_id" unique="PRIMARY_KEY" >
+			<column name="id" type="TEXT" jt="-1" mandatory="y" />
+			<column name="lib" type="TEXT" jt="-1" />
+			<index name="pk_media" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
 			<fk name="fk_media_library" to_schema="Default" to_table="library" >
@@ -41,88 +18,68 @@
 			</fk>
 		</table>
 		<table name="mediaPlaylist" prior="mediaPLaylist" >
-			<column name="pl" type="text" jt="-1" mandatory="y" />
-			<column name="media" type="text" jt="-1" mandatory="y" />
-			<column name="plindex" prior="index" type="integer" jt="4" />
-			<fk name="fk_mediaplaylist_media" to_schema="Default" to_table="media" >
-				<fk_column name="media" pk="id" />
-			</fk>
+			<column name="pl" type="TEXT" jt="-1" mandatory="y" />
+			<column name="media" type="TEXT" jt="-1" mandatory="y" />
+			<column name="plindex" prior="index" type="INTEGER" jt="4" />
 			<fk name="fk_mediaplaylist_playlist" to_schema="Default" to_table="playlist" >
 				<fk_column name="pl" pk="id" />
 			</fk>
+			<fk name="fk_mediaplaylist_media" to_schema="Default" to_table="media" >
+				<fk_column name="media" pk="id" />
+			</fk>
+		</table>
+		<table name="metadata" >
+			<column name="id" type="TEXT" jt="-1" mandatory="y" />
+			<column name="name" type="TEXT" length="100" jt="-1" mandatory="y" />
+			<column name="value" type="TEXT" jt="-1" mandatory="y" />
+			<column name="pid" type="TEXT" jt="-1" mandatory="y" />
+			<index name="idx_metadata" unique="UNIQUE_KEY" >
+				<column name="id" />
+				<column name="name" />
+			</index>
+			<index name="pk_metadata" unique="PRIMARY_KEY" >
+				<column name="pid" />
+			</index>
+			<fk name="fk_metadata_media" to_schema="Default" to_table="media" >
+				<fk_column name="id" pk="id" />
+			</fk>
+			<fk name="fk_metadata_library" to_schema="Default" to_table="library" >
+				<fk_column name="id" pk="id" />
+			</fk>
+			<fk name="fk_metadata_playlist" to_schema="Default" to_table="playlist" >
+				<fk_column name="id" pk="id" />
+			</fk>
+			<fk name="fk_metadata_metadata" to_schema="Default" to_table="metadata" >
+				<fk_column name="id" pk="pid" />
+			</fk>
 		</table>
 		<table name="playlist" prior="Tbl" >
-			<column name="id" type="text" jt="-1" mandatory="y" />
-			<column name="name" type="text" length="100" jt="-1" />
-			<column name="isShuffle" type="boolean" jt="-7" mandatory="y" >
-				<defo><![CDATA[0]]></defo>
-			</column>
-			<column name="lib" type="text" jt="-1" mandatory="y" />
-			<column name="smart" type="text" jt="-1" />
-			<index name="Pk_playlist_id" unique="PRIMARY_KEY" >
+			<column name="id" type="TEXT" jt="-1" mandatory="y" />
+			<column name="lib" type="TEXT" jt="-1" mandatory="y" />
+			<column name="smart" type="TEXT" jt="-1" />
+			<index name="pk_playlist" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
 			<fk name="fk_playlist_library" to_schema="Default" to_table="library" >
 				<fk_column name="lib" pk="id" />
 			</fk>
-			<fk name="fk_playlist_smart" to_schema="Default" to_table="smartgroup" delete_action="cascade" update_action="cascade" >
-				<fk_column name="smart" pk="id" />
-			</fk>
 		</table>
 		<table name="probe" prior="Tbl" >
-			<column name="lib" type="text" jt="-1" mandatory="y" />
-			<column name="lastProbed" type="datetime" jt="93" mandatory="y" >
+			<column name="lib" type="TEXT" jt="-1" mandatory="y" />
+			<column name="lastProbed" type="DATETIME" jt="93" mandatory="y" >
 				<defo><![CDATA[CURRENT_TIMESTAMP]]></defo>
 			</column>
-			<index name="Pk_probe_lib" unique="PRIMARY_KEY" >
+			<index name="pk_probe" unique="PRIMARY_KEY" >
 				<column name="lib" />
 			</index>
 			<fk name="fk_probe_library" to_schema="Default" to_table="library" delete_action="cascade" update_action="cascade" >
 				<fk_column name="lib" pk="id" />
 			</fk>
 		</table>
-		<table name="smart" prior="Tbl" >
-			<column name="parent" type="text" jt="-1" mandatory="y" />
-			<column name="value" type="text" jt="-1" mandatory="y" />
-			<fk name="fk_smart_smartgroup" to_schema="Default" to_table="smartgroup" delete_action="cascade" update_action="cascade" >
-				<fk_column name="parent" pk="id" />
-			</fk>
-			<fk name="fk_smart_smartgroup2" to_schema="Default" to_table="smartgroup" delete_action="cascade" update_action="cascade" >
-				<fk_column name="value" pk="id" />
-			</fk>
-			<fk name="fk_smart_smartrule" to_schema="Default" to_table="smartrule" delete_action="cascade" update_action="cascade" >
-				<fk_column name="value" pk="id" />
-			</fk>
-		</table>
-		<table name="smartgroup" prior="smart" >
-			<column name="id" type="text" jt="-1" mandatory="y" />
-			<column name="op" type="enum" jt="12" mandatory="y" >
-				<defo><![CDATA[8]]></defo>
-				<enumeration><![CDATA[8, 9]]></enumeration>
-			</column>
-			<index name="Pk_smartgroup_id" unique="PRIMARY_KEY" >
-				<column name="id" />
-			</index>
-		</table>
-		<table name="smartrule" prior="Tbl" >
-			<column name="id" type="text" jt="-1" mandatory="y" />
-			<column name="field" type="text" jt="-1" mandatory="y" />
-			<column name="value" type="text" jt="-1" mandatory="y" />
-			<column name="op" type="integer" jt="4" mandatory="y" >
-				<defo><![CDATA[0]]></defo>
-				<enumeration><![CDATA[0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14]]></enumeration>
-			</column>
-			<index name="Pk_smartrule_id" unique="PRIMARY_KEY" >
-				<column name="id" />
-			</index>
-			<constraint name="Cns_smartrule" >
-				<string><![CDATA[op < 8 || op > 9]]></string>
-			</constraint>
-		</table>
 		<table name="sourceDir" prior="Tbl" generator_rows="100" >
-			<column name="id" prior="lib" type="text" jt="-1" mandatory="y" />
-			<column name="path" type="text" jt="-1" mandatory="y" />
-			<index name="Unq_sourceDir" unique="UNIQUE_KEY" >
+			<column name="id" prior="lib" type="TEXT" jt="-1" mandatory="y" />
+			<column name="path" type="TEXT" jt="-1" mandatory="y" />
+			<index name="Unq_sourceDir" unique="UNIQUE_INDEX" >
 				<column name="id" />
 				<column name="path" />
 			</index>
@@ -133,28 +90,316 @@
 				<fk_column name="id" pk="id" />
 			</fk>
 		</table>
+		<trigger name="create_library" table="library" id="Trigger-880" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER create_library AFTER INSERT ON library
+BEGIN
+INSERT INTO probe (lib) VALUES (NEW.id);
+END]]></string>
+		</trigger>
+		<trigger name="delete_library" table="library" id="Trigger-852" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER delete_library BEFORE DELETE ON library
+BEGIN
+DELETE FROM sourceDir WHERE id=OLD.id;
+DELETE FROM media WHERE lib=OLD.id;
+DELETE FROM playlist WHERE lib=OLD.id;
+DELETE FROM probe WHERE lib=OLD.id;
+DELETE FROM metadata WHERE id=OLD.id;
+END]]></string>
+		</trigger>
+		<trigger name="delete_media" id="Trigger-c6c" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER delete_media BEFORE DELETE ON media
+BEGIN
+DELETE FROM mediaPlaylist WHERE media=OLD.id;
+DELETE FROM metadata WHERE id=OLD.id;
+DELETE FROM sourceDir WHERE id=OLD.id;
+END]]></string>
+		</trigger>
+		<trigger name="delete_metadata" id="Trigger-efd" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER delete_metadata BEFORE DELETE ON metadata
+BEGIN
+DELETE FROM metadata WHERE id=OLD.pid;
+E]]></string>
+		</trigger>
+		<trigger name="delete_playlist" id="Trigger-1ddd" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER delete_playlist BEFORE DELETE ON playlist
+BEGIN
+DELETE FROM metadata WHERE id=OLD.id;
+END]]></string>
+		</trigger>
 	</schema>
-	<connector name="Sqlite" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.36.0.1.jar" driver_desc="Standard" host="localhost" port="7210" instance="D:/Devellopment/MediaPlayer/OMS/oms" />
-	<layout name="Default Layout" id="Layout_1fb6" show_relation="columns" >
-		<entity schema="Default" name="library" color="BED3F4" x="1248" y="144" />
-		<entity schema="Default" name="media" color="C1D8EE" x="1008" y="384" />
-		<entity schema="Default" name="mediaPlaylist" color="C1D8EE" x="784" y="592" />
-		<entity schema="Default" name="playlist" color="C1D8EE" x="576" y="336" />
-		<entity schema="Default" name="probe" color="BED3F4" x="1440" y="352" />
-		<entity schema="Default" name="smart" color="C1D8EE" x="800" y="176" />
-		<entity schema="Default" name="smartgroup" color="C1D8EE" x="800" y="384" />
-		<entity schema="Default" name="smartrule" color="C1D8EE" x="1008" y="144" />
-		<entity schema="Default" name="sourceDir" color="BED3F4" x="1440" y="144" />
-		<callout x="48" y="80" pointer="Round" >
+	<connector name="Sqlite" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.36.0.3.jar" driver_desc="Standard" host="localhost" port="7210" instance="C:/Qt/Perso/OpenMediaService/build-OMS-Desktop_Qt_6_3_0_MinGW_64_bit-Debug/Application/oms" />
+	<connector name="Sqlite" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.36.0.3.jar" driver_desc="Standard" host="localhost" port="7210" instance="D:/Devellopment/MediaPlayer/OMS/oms" />
+	<layout name="Parsed Script Layout" id="Layout_1fb6" show_relation="columns" >
+		<entity schema="Default" name="library" color="BED3F4" x="1248" y="176" />
+		<entity schema="Default" name="media" color="C1D8EE" x="1008" y="352" />
+		<entity schema="Default" name="mediaPlaylist" color="C1D8EE" x="784" y="624" />
+		<entity schema="Default" name="metadata" color="C1D8EE" x="1280" y="576" />
+		<entity schema="Default" name="playlist" color="C1D8EE" x="576" y="384" />
+		<entity schema="Default" name="probe" color="BED3F4" x="1440" y="384" />
+		<entity schema="Default" name="sourceDir" color="BED3F4" x="1440" y="176" />
+		<callout x="48" y="112" pointer="Round" >
 			<comment><![CDATA[DbSchema is disconnected from the database.
 New designed tables will be saved to project file and later can be create in any database.
 Right-click the layout to create new tables. Drop this callout from its context menu.]]></comment>
 		</callout>
+		<callout x="1248" y="80" pointer="Round" >
+			<comment><![CDATA[Current layout is generated by parsing the SQL script.
+DbSchema is in 'offline' mode (not connected to any database).]]></comment>
+		</callout>
 		<group name="library" color="ECF0F7" >
-			<entity schema="Default" name="library" />
-			<entity schema="Default" name="probe" />
 			<entity schema="Default" name="sourceDir" />
+			<entity schema="Default" name="probe" />
+			<entity schema="Default" name="library" />
 		</group>
+		<script name="SQL_Editor" id="Editor-1f38" language="SQL" >
+			<string><![CDATA[SELECT * FROM probe]]></string>
+		</script>
+		<script name="SQL_Editor_001" id="Editor-1057" language="SQL" >
+			<string><![CDATA[DELETE FROM library WHERE ]]></string>
+		</script>
+		<script name="SQL_Editor_002" id="Editor-1a18" language="SQL" >
+			<string><![CDATA[CREATE TABLE library ( 
+	id                   TEXT NOT NULL  PRIMARY KEY  ,
+	name                 TEXT(100) NOT NULL    ,
+	role                 INTEGER NOT NULL DEFAULT 0   ,
+	isShared             BOOLEAN NOT NULL DEFAULT 0   
+ );
+
+CREATE TABLE media ( 
+	id                   TEXT NOT NULL  PRIMARY KEY  ,
+	lib                  TEXT     ,
+	role                 INTEGER NOT NULL DEFAULT 0   ,
+	count                INTEGER NOT NULL DEFAULT 0   ,
+	rating               INTEGER NOT NULL DEFAULT 0   ,
+	added                DATE NOT NULL DEFAULT CURRENT_DATE   ,
+	lastFinished         DATE     ,
+	currentRead          NUMERIC NOT NULL DEFAULT 0   ,
+	FOREIGN KEY ( lib ) REFERENCES library( id )  
+ );
+
+CREATE TABLE playlist ( 
+	id                   TEXT NOT NULL  PRIMARY KEY  ,
+	name                 TEXT(100)     ,
+	isShuffle            BOOLEAN NOT NULL DEFAULT 0   ,
+	lib                  TEXT NOT NULL    ,
+	smart                TEXT     ,
+	FOREIGN KEY ( lib ) REFERENCES library( id )  
+ );
+
+CREATE TABLE probe ( 
+	lib                  TEXT NOT NULL  PRIMARY KEY  ,
+	lastProbed           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP   ,
+	FOREIGN KEY ( lib ) REFERENCES library( id ) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE TABLE sourceDir ( 
+	id                   TEXT NOT NULL    ,
+	path                 TEXT NOT NULL    ,
+	FOREIGN KEY ( id ) REFERENCES library( id ) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY ( id ) REFERENCES media( id ) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE UNIQUE INDEX Unq_sourceDir ON sourceDir ( id, path );
+
+CREATE TRIGGER create_library AFTER INSERT ON library
+BEGIN
+INSERT INTO probe (lib) VALUES (NEW.id);
+END
+
+CREATE TRIGGER delete_library BEFORE DELETE ON library
+BEGIN
+DELETE FROM sourceDir WHERE id=OLD.id;
+DELETE FROM media WHERE lib=OLD.id;
+DELETE FROM playlist WHERE lib=OLD.id;
+DELETE FROM probe WHERE lib=OLD.id;
+END
+
+INSERT INTO library ( id, name, role, isShared ) VALUES ( 'testid', 'TL', 5, 0);]]></string>
+		</script>
+		<script name="SQL_Editor_003" id="Editor-1013" language="SQL" >
+			<string><![CDATA[CREATE TABLE library ( 
+	id                   TEXT NOT NULL  PRIMARY KEY  
+ );
+
+CREATE TABLE media ( 
+	id                   TEXT NOT NULL  PRIMARY KEY  ,
+	lib                  TEXT     ,
+	FOREIGN KEY ( lib ) REFERENCES library( id )  
+ );
+
+CREATE TABLE playlist ( 
+	id                   TEXT NOT NULL  PRIMARY KEY  ,
+	lib                  TEXT NOT NULL    ,
+	smart                TEXT     ,
+	FOREIGN KEY ( lib ) REFERENCES library( id )  
+ );
+
+CREATE TABLE probe ( 
+	lib                  TEXT NOT NULL  PRIMARY KEY  ,
+	lastProbed           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP   ,
+	FOREIGN KEY ( lib ) REFERENCES library( id ) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE TABLE sourceDir ( 
+	id                   TEXT NOT NULL    ,
+	path                 TEXT NOT NULL    ,
+	FOREIGN KEY ( id ) REFERENCES library( id ) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY ( id ) REFERENCES media( id ) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE TABLE mediaPlaylist ( 
+	pl                   TEXT NOT NULL    ,
+	media                TEXT NOT NULL    ,
+	plindex              INTEGER     ,
+	FOREIGN KEY ( pl ) REFERENCES playlist( id )  ,
+	FOREIGN KEY ( media ) REFERENCES media( id )  
+ );
+
+CREATE TABLE metadata ( 
+	id                   TEXT NOT NULL    ,
+	name                 TEXT(100) NOT NULL    ,
+	value                TEXT NOT NULL    ,
+	pid                  TEXT NOT NULL  PRIMARY KEY  ,
+	FOREIGN KEY ( id ) REFERENCES media( id )  ,
+	FOREIGN KEY ( id ) REFERENCES library( id )  ,
+	FOREIGN KEY ( id ) REFERENCES playlist( id )  ,
+	FOREIGN KEY ( id ) REFERENCES metadata( pid )  
+ );
+
+CREATE UNIQUE INDEX Unq_sourceDir ON sourceDir ( id, path );
+
+CREATE UNIQUE INDEX idx_metadata ON metadata ( id, name );
+
+CREATE TRIGGER create_library AFTER INSERT ON library
+BEGIN
+INSERT INTO probe (lib) VALUES (NEW.id);
+END
+
+CREATE TRIGGER delete_library BEFORE DELETE ON library
+BEGIN
+DELETE FROM sourceDir WHERE id=OLD.id;
+DELETE FROM media WHERE lib=OLD.id;
+DELETE FROM playlist WHERE lib=OLD.id;
+DELETE FROM probe WHERE lib=OLD.id;
+DELETE FROM metadata WHERE id=OLD.id;
+END
+
+CREATE TRIGGER delete_media BEFORE DELETE ON media
+BEGIN
+DELETE FROM mediaPlaylist WHERE media=OLD.id;
+DELETE FROM metadata WHERE id=OLD.id;
+DELETE FROM sourceDir WHERE id=OLD.id;
+END
+
+CREATE TRIGGER delete_metadata BEFORE DELETE ON metadata
+BEGIN
+DELETE FROM metadata WHERE id=OLD.pid;
+END
+
+CREATE TRIGGER delete_playlist BEFORE DELETE ON playlist
+BEGIN
+DELETE FROM metadata WHERE id=OLD.id;
+END
+]]></string>
+		</script>
+		<script name="SQL_Editor_004" id="Editor-ed5" language="SQL" >
+			<string><![CDATA[CREATE TABLE library ( 
+	id                   TEXT NOT NULL  PRIMARY KEY  
+ );
+
+CREATE TABLE media ( 
+	id                   TEXT NOT NULL  PRIMARY KEY  ,
+	lib                  TEXT     ,
+	FOREIGN KEY ( lib ) REFERENCES library( id )  
+ );
+
+CREATE TABLE playlist ( 
+	id                   TEXT NOT NULL  PRIMARY KEY  ,
+	lib                  TEXT NOT NULL    ,
+	smart                TEXT     ,
+	FOREIGN KEY ( lib ) REFERENCES library( id )  
+ );
+
+CREATE TABLE probe ( 
+	lib                  TEXT NOT NULL  PRIMARY KEY  ,
+	lastProbed           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP   ,
+	FOREIGN KEY ( lib ) REFERENCES library( id ) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE TABLE sourceDir ( 
+	id                   TEXT NOT NULL    ,
+	path                 TEXT NOT NULL    ,
+	FOREIGN KEY ( id ) REFERENCES library( id ) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY ( id ) REFERENCES media( id ) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE TABLE mediaPlaylist ( 
+	pl                   TEXT NOT NULL    ,
+	media                TEXT NOT NULL    ,
+	plindex              INTEGER     ,
+	FOREIGN KEY ( pl ) REFERENCES playlist( id )  ,
+	FOREIGN KEY ( media ) REFERENCES media( id )  
+ );
+
+CREATE TABLE metadata ( 
+	id                   TEXT NOT NULL    ,
+	name                 TEXT(100) NOT NULL    ,
+	value                TEXT NOT NULL    ,
+	pid                  TEXT NOT NULL  PRIMARY KEY  ,
+	FOREIGN KEY ( id ) REFERENCES media( id )  ,
+	FOREIGN KEY ( id ) REFERENCES library( id )  ,
+	FOREIGN KEY ( id ) REFERENCES playlist( id )  ,
+	FOREIGN KEY ( id ) REFERENCES metadata( pid )  
+ );
+
+CREATE UNIQUE INDEX Unq_sourceDir ON sourceDir ( id, path );
+
+CREATE UNIQUE INDEX idx_metadata ON metadata ( id, name );
+
+CREATE TRIGGER create_library AFTER INSERT ON library
+BEGIN
+INSERT INTO probe (lib) VALUES (NEW.id);
+END
+
+CREATE TRIGGER delete_library BEFORE DELETE ON library
+BEGIN
+DELETE FROM sourceDir WHERE id=OLD.id;
+DELETE FROM media WHERE lib=OLD.id;
+DELETE FROM playlist WHERE lib=OLD.id;
+DELETE FROM probe WHERE lib=OLD.id;
+DELETE FROM metadata WHERE id=OLD.id;
+END
+
+CREATE TRIGGER delete_media BEFORE DELETE ON media
+BEGIN
+DELETE FROM mediaPlaylist WHERE media=OLD.id;
+DELETE FROM metadata WHERE id=OLD.id;
+DELETE FROM sourceDir WHERE id=OLD.id;
+END
+
+CREATE TRIGGER delete_metadata BEFORE DELETE ON metadata
+BEGIN
+DELETE FROM metadata WHERE id=OLD.pid;
+END
+
+CREATE TRIGGER delete_playlist BEFORE DELETE ON playlist
+BEGIN
+DELETE FROM metadata WHERE id=OLD.id;
+END
+]]></string>
+		</script>
+		<script name="create_library" id="Editor-127f" language="SQL" >
+			<string><![CDATA[CREATE TRIGGER create_library AFTER INSERT ON library
+BEGIN
+INSERT INTO probe (lib) VALUES (NEW.id);
+END]]></string>
+		</script>
+		<script name="library" id="Editor-1474" language="SQL" >
+			<string><![CDATA[DELETE FROM library;]]></string>
+		</script>
+		<script name="library_001" id="Editor-722" language="SQL" >
+			<string><![CDATA[DELETE FROM library WHERE id="testid";]]></string>
+		</script>
 		<script name="media" id="Editor_277" language="SQL" >
 			<string><![CDATA[CREATE TABLE media ( 
 	id                   text NOT NULL  PRIMARY KEY  ,
@@ -201,6 +446,15 @@ Right-click the layout to create new tables. Drop this callout from its context 
 	lastProbed           datetime NOT NULL DEFAULT CURRENT_TIMESTAMP   ,
 	FOREIGN KEY ( lib ) REFERENCES library( id ) ON DELETE CASCADE ON UPDATE CASCADE
  );]]></string>
+		</script>
+		<script name="probe_002" id="Editor-13ce" language="SQL" >
+			<string><![CDATA[SELECT lib, lastProbed
+FROM
+	probe e;]]></string>
+		</script>
+		<script name="probe_003" id="Editor-1e01" language="SQL" >
+			<string><![CDATA[SELECT * FROM library
+]]></string>
 		</script>
 		<script name="smart" id="Editor_1eaf" language="SQL" >
 			<string><![CDATA[CREATE TABLE smart ( 

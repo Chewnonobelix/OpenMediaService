@@ -9,6 +9,7 @@
 
 #include "../Data/datajson.h"
 #include "../Data/dataxml.h"
+#include "../Data/datasql.h"
 #include "abstractcontroller.h"
 #include "controllerlibrary.h"
 #include "tabmanager.h"

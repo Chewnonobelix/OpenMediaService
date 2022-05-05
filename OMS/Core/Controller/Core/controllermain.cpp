@@ -31,6 +31,7 @@ ControllerMain::~ControllerMain()
 void ControllerMain::exec() {
     qCDebug(mainregister) << "DataXml" << qRegisterMetaType<DataXml>();
     qCDebug(mainregister) << "DataJson" << qRegisterMetaType<DataJson>();
+    qCDebug(mainregister) << "DataSql" << qRegisterMetaType<DataSql>();
     qCDebug(mainregister) << "MediaPlayer::MediaRole"
                           << qRegisterMetaType<MediaPlayerGlobal::MediaRole>();
 

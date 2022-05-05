@@ -2,6 +2,7 @@
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlError>
 
 #include <Controller/Data/interfacesaver.h>
 
@@ -11,12 +12,15 @@
 
 class DataSql: public InterfaceSaver
 {
+private:
+    QSqlDatabase m_db;
+
 public:
     DataSql() = default;
     DataSql(const DataSql &);
-    ~DataSql() override = default;
+    ~DataSql() override;
 
-    virtual void init() = 0;
+    virtual void init() override;
 
 public slots:
     QMap<QUuid, LibraryPointer> selectLibrary() const override;
