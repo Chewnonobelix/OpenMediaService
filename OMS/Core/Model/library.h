@@ -45,6 +45,7 @@ private:
     QJsonArray jsonTagList(QList<MediaPlayerGlobal::Tag>) const;
     QList<MediaPlayerGlobal::Tag> fromjsonTagList(QJsonArray) const;
 
+    void connectLibrary(LibraryPointer);
 public:
 	Library();
 	using MetaData::MetaData;

@@ -33,7 +33,7 @@
 			<column name="name" type="TEXT" length="100" jt="-1" mandatory="y" />
 			<column name="value" type="TEXT" jt="-1" mandatory="y" />
 			<column name="pid" type="TEXT" jt="-1" mandatory="y" />
-			<index name="idx_metadata" unique="UNIQUE_KEY" >
+			<index name="idx_metadata" unique="UNIQUE_INDEX" >
 				<column name="id" />
 				<column name="name" />
 			</index>
@@ -90,6 +90,17 @@
 				<fk_column name="id" pk="id" />
 			</fk>
 		</table>
+		<view name="v_mediameta" >
+			<view_script><![CDATA[CREATE VIEW ${name} AS
+SELECT * FROM media
+INNER JOIN metadata ON metadata.id = media.id]]></view_script>
+			<column name="id" type="TEXT" />
+			<column name="lib" type="TEXT" />
+			<column name="id:1" type="TEXT" />
+			<column name="name" type="TEXT" />
+			<column name="value" type="TEXT" />
+			<column name="pid" type="TEXT" />
+		</view>
 		<trigger name="create_library" table="library" id="Trigger-880" isSystem="false" >
 			<string><![CDATA[CREATE TRIGGER create_library AFTER INSERT ON library
 BEGIN
@@ -106,7 +117,7 @@ DELETE FROM probe WHERE lib=OLD.id;
 DELETE FROM metadata WHERE id=OLD.id;
 END]]></string>
 		</trigger>
-		<trigger name="delete_media" id="Trigger-c6c" isSystem="false" >
+		<trigger name="delete_media" table="media" id="Trigger-fd1" isSystem="false" >
 			<string><![CDATA[CREATE TRIGGER delete_media BEFORE DELETE ON media
 BEGIN
 DELETE FROM mediaPlaylist WHERE media=OLD.id;
@@ -114,13 +125,13 @@ DELETE FROM metadata WHERE id=OLD.id;
 DELETE FROM sourceDir WHERE id=OLD.id;
 END]]></string>
 		</trigger>
-		<trigger name="delete_metadata" id="Trigger-efd" isSystem="false" >
+		<trigger name="delete_metadata" table="metadata" id="Trigger-15e7" isSystem="false" >
 			<string><![CDATA[CREATE TRIGGER delete_metadata BEFORE DELETE ON metadata
 BEGIN
 DELETE FROM metadata WHERE id=OLD.pid;
-E]]></string>
+END]]></string>
 		</trigger>
-		<trigger name="delete_playlist" id="Trigger-1ddd" isSystem="false" >
+		<trigger name="delete_playlist" table="playlist" id="Trigger-23b1" isSystem="false" >
 			<string><![CDATA[CREATE TRIGGER delete_playlist BEFORE DELETE ON playlist
 BEGIN
 DELETE FROM metadata WHERE id=OLD.id;
@@ -128,7 +139,6 @@ END]]></string>
 		</trigger>
 	</schema>
 	<connector name="Sqlite" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.36.0.3.jar" driver_desc="Standard" host="localhost" port="7210" instance="C:/Qt/Perso/OpenMediaService/build-OMS-Desktop_Qt_6_3_0_MinGW_64_bit-Debug/Application/oms" />
-	<connector name="Sqlite" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.36.0.3.jar" driver_desc="Standard" host="localhost" port="7210" instance="D:/Devellopment/MediaPlayer/OMS/oms" />
 	<layout name="Parsed Script Layout" id="Layout_1fb6" show_relation="columns" >
 		<entity schema="Default" name="library" color="BED3F4" x="1248" y="176" />
 		<entity schema="Default" name="media" color="C1D8EE" x="1008" y="352" />
@@ -137,6 +147,7 @@ END]]></string>
 		<entity schema="Default" name="playlist" color="C1D8EE" x="576" y="384" />
 		<entity schema="Default" name="probe" color="BED3F4" x="1440" y="384" />
 		<entity schema="Default" name="sourceDir" color="BED3F4" x="1440" y="176" />
+		<entity schema="Default" name="v_mediameta" color="3986C1" x="352" y="512" />
 		<callout x="48" y="112" pointer="Round" >
 			<comment><![CDATA[DbSchema is disconnected from the database.
 New designed tables will be saved to project file and later can be create in any database.
@@ -388,6 +399,9 @@ DELETE FROM metadata WHERE id=OLD.id;
 END
 ]]></string>
 		</script>
+		<script name="SQL_Editor_005" id="Editor-8" language="SQL" >
+			<string><![CDATA[DELETE FROM metadata]]></string>
+		</script>
 		<script name="create_library" id="Editor-127f" language="SQL" >
 			<string><![CDATA[CREATE TRIGGER create_library AFTER INSERT ON library
 BEGIN
@@ -448,9 +462,7 @@ END]]></string>
  );]]></string>
 		</script>
 		<script name="probe_002" id="Editor-13ce" language="SQL" >
-			<string><![CDATA[SELECT lib, lastProbed
-FROM
-	probe e;]]></string>
+			<string><![CDATA[SELECT * FROM library, metadata WHERE metadata.id = library.id]]></string>
 		</script>
 		<script name="probe_003" id="Editor-1e01" language="SQL" >
 			<string><![CDATA[SELECT * FROM library
