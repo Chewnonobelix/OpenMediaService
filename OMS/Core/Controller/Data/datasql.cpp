@@ -10,10 +10,10 @@ DataSql::~DataSql()
     }
 }
 
-void DataSql::connectLibrary(LibraryPointer l)
+void DataSql::connectLibrary(LibraryPointer l) const
 {
     connect(l.data(), &Library::libraryChanged, [l, this]() {
-        updateLibrary(l);
+        updateLibrary();
     });
 }
 
@@ -57,7 +57,7 @@ void DataSql::initMetadataRequest()
 void DataSql::initProbeRequest() {}
 void DataSql::initSourceDirRequest() {}
 
-QMap<QUuid, LibraryPointer> DataSql::selectLibrary()
+QMap<QUuid, LibraryPointer> DataSql::selectLibrary() const
 {
     auto ret = QMap<QUuid, LibraryPointer>();
     if(m_db.isOpen()) {
