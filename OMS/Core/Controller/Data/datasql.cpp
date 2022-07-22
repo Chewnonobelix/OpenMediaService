@@ -10,12 +10,6 @@ DataSql::~DataSql()
     }
 }
 
-void DataSql::connectLibrary(LibraryPointer l) const
-{
-    connect(l.data(), &Library::libraryChanged, [l, this]() {
-        updateLibrary();
-    });
-}
 
 void DataSql::initLibRequest()
 {
@@ -30,15 +24,9 @@ void DataSql::initLibRequest()
 
 void DataSql::initMediaRequest()
 {}
+
 void DataSql::initPlaylistRequest()
 {
-    m_createPlaylistRequest = QSharedPointer<QSqlQuery>::create("", m_db);
-    m_selectPlaylistRequest = QSharedPointer<QSqlQuery>::create("", m_db);
-    m_removePlaylistRequest = QSharedPointer<QSqlQuery>::create("", m_db);
-
-    qDebug()<<"Create Playlist request"<<m_createPlaylistRequest->prepare("INSERT INTO playlist (id, lib, smart) VALUES (:id, :lib, :smart)")<<m_createPlaylistRequest->lastError();
-    qDebug()<<"Select Playlist request"<<m_selectPlaylistRequest->prepare("SELECT * FROM playlist WHERE lib=:lib")<<m_selectPlaylistRequest->lastError();
-    qDebug()<<"Remove Playlist request"<<m_removePlaylistRequest->prepare("DELETE FROM playlist WHERE id = :id")<<m_removePlaylistRequest->lastError();
 }
 
 void DataSql::initMetadataRequest()
@@ -60,80 +48,22 @@ void DataSql::initSourceDirRequest() {}
 QMap<QUuid, LibraryPointer> DataSql::selectLibrary() const
 {
     auto ret = QMap<QUuid, LibraryPointer>();
-    if(m_db.isOpen()) {
-        auto res = m_selectLibraryRequest->exec();
-        qDebug()<<m_selectLibraryRequest->lastError();
-
-        while(m_selectLibraryRequest->next()) {
-            auto l = factory<Library>();
-            auto id = m_selectLibraryRequest->value("id");
-            l->setId(id.toUuid());
-
-            m_selectMetadataRequest->bindValue(":id", id);
-            m_selectMetadataRequest->exec();
-
-            qDebug()<<"Select library"<<l->id()<<m_selectMetadataRequest->lastError();
-
-            while(m_selectMetadataRequest->next()) {
-                l->setMetadata(m_selectMetadataRequest->value("name").toString(), m_selectMetadataRequest->value("value"));
-            }
-
-            selectMedia(l);
-            selectPlaylist(l);
-
-            m_libraries[l->id()] = l;
-            connectLibrary(l);
-        }
-    }
     return m_libraries;
 }
 
 bool DataSql::createLibrary(QString name, MediaPlayerGlobal::MediaRole role)
 {
-    auto l = factory<Library>();
-    l->setId(QUuid::createUuid());
-    l->setRole(role);
-    l->setName(name);
-    m_libraries[l->id()] = l;
-    connectLibrary(l);
-
-    SmartPlaylistPointer all = factory<SmartPlaylist>();
-    all->setName("All");
-    l->addSmartPlaylist(all);
-
-    if(m_db.isOpen()) {
-        m_createLibraryRequest->bindValue(":id", l->id().toString(QUuid::StringFormat::WithoutBraces));
-
-        auto res = m_createLibraryRequest->exec();
-
-        qDebug()<<res<<m_createLibraryRequest->lastError()<<m_createLibraryRequest->lastQuery()<<m_createLibraryRequest->executedQuery();
-
-
-        createMeta(l->id(), {"name", "role", "isShared"}, {l->name(), QString::number(int(l->role())), QString::number(false)});
-
-        addPlaylist(l);
-        if(res)
-            emit librariesChanged();
-
-        return res;
-    }
     return false;
 }
 
 bool DataSql::removeLibrary(QString id)
 {
-    auto uid = QUuid::fromString(id);
-    auto ret = m_libraries.remove(uid) > 0;
-    m_removeLibraryRequest->bindValue(":id", uid.toString(QUuid::StringFormat::WithoutBraces));
-    ret &= m_removeLibraryRequest->exec();
-
-    qDebug()<<"Remove lib"<<id<<ret<<m_removeLibraryRequest->lastError();
-
-    return ret;
+    return false;
 }
 
 bool DataSql::updateLibrary(LibraryPointer)
 {
+    //DO NOTHING
     return true;
 }
 
@@ -153,52 +83,3 @@ void DataSql::init()
         initSourceDirRequest();
     }
 }
-
-void DataSql::addPlaylist(LibraryPointer l)
-{
-    for(auto it: l->smartPlaylist()) {
-        m_createPlaylistRequest->bindValue(":id", it->id().toString(QUuid::StringFormat::WithoutBraces));
-        m_createPlaylistRequest->bindValue(":lib", l->id().toString(QUuid::StringFormat::WithoutBraces));
-        m_createPlaylistRequest->bindValue(":smart", it->rules()->id().toString(QUuid::StringFormat::WithoutBraces));
-
-        m_createPlaylistRequest->exec();
-        qDebug()<<m_createPlaylistRequest->lastError();
-
-
-//        createMeta(it->id(), "name", it->name());
-    }
-    for(auto it: l->playlist()) {
-        m_createPlaylistRequest->bindValue(":id", it->id().toString(QUuid::StringFormat::WithoutBraces));
-        m_createPlaylistRequest->bindValue(":lib", l->id().toString(QUuid::StringFormat::WithoutBraces));
-        m_createPlaylistRequest->bindValue(":smart", QUuid().toString(QUuid::StringFormat::WithoutBraces));
-
-        m_createPlaylistRequest->exec();
-        qDebug()<<m_createPlaylistRequest->lastError();
-
-
-//        createMeta(it->id(), "name", it->name());
-    }
-}
-
-void DataSql::addMedia(LibraryPointer) {}
-
-void DataSql::removePlaylist(LibraryPointer) {}
-void DataSql::removeMedia(LibraryPointer) {}
-
-void DataSql::updatePlaylist(LibraryPointer) {}
-void DataSql::updateMedia(LibraryPointer) {}
-
-void DataSql::selectPlaylist(LibraryPointer) const {}
-void DataSql::selectMedia(LibraryPointer) const {}
-
-void DataSql::createMeta (QUuid id, QStringList name, auto value)
-{
-    m_createMetadataRequest->bindValue(":id", id.toString(QUuid::StringFormat::WithoutBraces));
-    m_createMetadataRequest->bindValue(":pid", QUuid::createUuid().toString(QUuid::StringFormat::WithoutBraces));
-    m_createMetadataRequest->bindValue(":name", name);
-    m_createMetadataRequest->bindValue(":value", value);
-
-    m_createMetadataRequest->execBatch();
-
-    qDebug()<<m_createMetadataRequest->lastError();
-};

@@ -53,21 +53,6 @@ private:
     void initProbeRequest();
     void initSourceDirRequest();
 
-    void addPlaylist(LibraryPointer);
-    void addMedia(LibraryPointer);
-
-    void removePlaylist(LibraryPointer);
-    void removeMedia(LibraryPointer);
-
-    void updatePlaylist(LibraryPointer);
-    void updateMedia(LibraryPointer);
-
-    void selectPlaylist(LibraryPointer) const;
-    void selectMedia(LibraryPointer) const;
-
-    void createMeta(QUuid id, QStringList name, auto value);
-    void connectLibrary(LibraryPointer l) const;
-
 public:
     DataSql() = default;
     DataSql(const DataSql &);

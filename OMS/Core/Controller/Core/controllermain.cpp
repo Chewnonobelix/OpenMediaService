@@ -72,14 +72,14 @@ void ControllerMain::exec() {
                                  "MediaPlayer",
 
                                  "Media Player global");
-    qCDebug(mainregister)<< "InterfacePLugin"
-                          << qmlRegisterUncreatableType<InterfacePlugins>(
-                                 "InterfacePlugin", 1, 0, "InterfacePlugin", "Interface type");
+//    qCDebug(mainregister)<< "InterfacePLugin"
+//                          << qmlRegisterUncreatableType<InterfacePlugins>(
+//                                 "InterfacePlugin", 1, 0, "InterfacePlugin", "Interface type");
 
     qCDebug(mainregister) << "TabManager" << qmlRegisterUncreatableType<TabManager>("MediaPlayer.Model", 1, 0,
                                                                                     "TabManager", "Cpp owner");
 
-    qCDebug(mainregister) << "AbstractRule" << qmlRegisterUncreatableType<AbstractRule>("MediaPlayer.Model", 1, 0, "abstractRule", "Cpp owner");
+//    qCDebug(mainregister) << "AbstractRule" << qmlRegisterUncreatableType<AbstractRule>("MediaPlayer.Model", 1, 0, "abstractRule", "Cpp owner");
 
     qCDebug(mainregister) << "PlaylistListModel" << qmlRegisterUncreatableType<PlaylistListModel>("MediaPlayer.Model", 1, 0, "PlaylistListModel", "Cpp owner");
     qCDebug(mainregister) << "OrderDisplayModel" << qmlRegisterUncreatableType<OrderDisplayModel>("MediaPlayer.Model", 1, 0, "OrderDisplayModel", "Cpp owner");

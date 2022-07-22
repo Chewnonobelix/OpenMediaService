@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="OMS" id="Project_1b86" database="Sqlite" >
 	<schema name="Default" >
+		<table name="SmartGroup" >
+			<column name="id" type="TEXT" jt="-1" mandatory="y" />
+			<column name="op" type="INTEGER" jt="4" />
+			<column name="parent" type="TEXT" jt="-1" />
+			<index name="pk_SmartGroup" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_smartgroup_smartgroup" to_schema="Default" to_table="SmartGroup" >
+				<fk_column name="parent" pk="id" />
+			</fk>
+			<fk name="fk_smartgroup_playlist" to_schema="Default" to_table="playlist" >
+				<fk_column name="parent" pk="id" />
+			</fk>
+		</table>
+		<table name="SmartRule" >
+			<column name="id" type="TEXT" jt="-1" mandatory="y" />
+			<column name="op" type="INTEGER" jt="4" />
+			<column name="field" type="TEXT" jt="-1" />
+			<column name="value" type="TEXT" jt="-1" />
+			<column name="parent" type="TEXT" jt="-1" />
+			<index name="pk_SmartRule" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_smartrule_smartgroup" to_schema="Default" to_table="SmartGroup" >
+				<fk_column name="parent" pk="id" />
+			</fk>
+		</table>
 		<table name="library" prior="Tbl" generator_rows="100" >
 			<column name="id" type="TEXT" jt="-1" mandatory="y" />
 			<index name="pk_library" unique="PRIMARY_KEY" >
@@ -21,11 +48,11 @@
 			<column name="pl" type="TEXT" jt="-1" mandatory="y" />
 			<column name="media" type="TEXT" jt="-1" mandatory="y" />
 			<column name="plindex" prior="index" type="INTEGER" jt="4" />
-			<fk name="fk_mediaplaylist_playlist" to_schema="Default" to_table="playlist" >
-				<fk_column name="pl" pk="id" />
-			</fk>
 			<fk name="fk_mediaplaylist_media" to_schema="Default" to_table="media" >
 				<fk_column name="media" pk="id" />
+			</fk>
+			<fk name="fk_mediaplaylist_playlist" to_schema="Default" to_table="playlist" >
+				<fk_column name="pl" pk="id" />
 			</fk>
 		</table>
 		<table name="metadata" >
@@ -40,9 +67,6 @@
 			<index name="pk_metadata" unique="PRIMARY_KEY" >
 				<column name="pid" />
 			</index>
-			<fk name="fk_metadata_media" to_schema="Default" to_table="media" >
-				<fk_column name="id" pk="id" />
-			</fk>
 			<fk name="fk_metadata_library" to_schema="Default" to_table="library" >
 				<fk_column name="id" pk="id" />
 			</fk>
@@ -56,13 +80,9 @@
 		<table name="playlist" prior="Tbl" >
 			<column name="id" type="TEXT" jt="-1" mandatory="y" />
 			<column name="lib" type="TEXT" jt="-1" mandatory="y" />
-			<column name="smart" type="TEXT" jt="-1" />
 			<index name="pk_playlist" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
-			<fk name="fk_playlist_library" to_schema="Default" to_table="library" >
-				<fk_column name="lib" pk="id" />
-			</fk>
 		</table>
 		<table name="probe" prior="Tbl" >
 			<column name="lib" type="TEXT" jt="-1" mandatory="y" />
@@ -83,24 +103,13 @@
 				<column name="id" />
 				<column name="path" />
 			</index>
-			<fk name="fk_sourcedir_library" to_schema="Default" to_table="library" delete_action="cascade" update_action="cascade" >
+			<fk name="fk_sourcedir_media" to_schema="Default" to_table="media" >
 				<fk_column name="id" pk="id" />
 			</fk>
-			<fk name="fk_sourcedir_media" to_schema="Default" to_table="media" delete_action="cascade" update_action="cascade" >
+			<fk name="fk_sourcedir_library" to_schema="Default" to_table="library" >
 				<fk_column name="id" pk="id" />
 			</fk>
 		</table>
-		<view name="v_mediameta" >
-			<view_script><![CDATA[CREATE VIEW ${name} AS
-SELECT * FROM media
-INNER JOIN metadata ON metadata.id = media.id]]></view_script>
-			<column name="id" type="TEXT" />
-			<column name="lib" type="TEXT" />
-			<column name="id:1" type="TEXT" />
-			<column name="name" type="TEXT" />
-			<column name="value" type="TEXT" />
-			<column name="pid" type="TEXT" />
-		</view>
 		<trigger name="create_library" table="library" id="Trigger-880" isSystem="false" >
 			<string><![CDATA[CREATE TRIGGER create_library AFTER INSERT ON library
 BEGIN
@@ -135,32 +144,42 @@ END]]></string>
 			<string><![CDATA[CREATE TRIGGER delete_playlist BEFORE DELETE ON playlist
 BEGIN
 DELETE FROM metadata WHERE id=OLD.id;
+DELETE FROM mediaPlaylist WHERE pl=OLD.id;
+DELETE FROM SmartGroup WHERE parent=OLD.id;
+END]]></string>
+		</trigger>
+		<trigger name="delete_smartgroup" id="Trigger-af6" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER delete_SmartGroup BEFORE DELETE ON SmartGroup
+BEGIN
+DELETE FROM SmartGroup WHERE parent=OLD.id;
+DELETE FROM SmartRule WHERE parent=OLD.id;
 END]]></string>
 		</trigger>
 	</schema>
-	<connector name="Sqlite" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.36.0.3.jar" driver_desc="Standard" host="localhost" port="7210" instance="C:/Qt/Perso/OpenMediaService/build-OMS-Desktop_Qt_6_3_0_MinGW_64_bit-Debug/Application/oms" />
+	<connector name="Sqlite" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.36.0.3.jar" driver_desc="Standard" host="localhost" port="7210" instance="D:/Qt/OpenMediaService/OMS/oms" />
 	<layout name="Parsed Script Layout" id="Layout_1fb6" show_relation="columns" >
-		<entity schema="Default" name="library" color="BED3F4" x="1248" y="176" />
-		<entity schema="Default" name="media" color="C1D8EE" x="1008" y="352" />
-		<entity schema="Default" name="mediaPlaylist" color="C1D8EE" x="784" y="624" />
-		<entity schema="Default" name="metadata" color="C1D8EE" x="1280" y="576" />
-		<entity schema="Default" name="playlist" color="C1D8EE" x="576" y="384" />
-		<entity schema="Default" name="probe" color="BED3F4" x="1440" y="384" />
-		<entity schema="Default" name="sourceDir" color="BED3F4" x="1440" y="176" />
-		<entity schema="Default" name="v_mediameta" color="3986C1" x="352" y="512" />
-		<callout x="48" y="112" pointer="Round" >
+		<entity schema="Default" name="SmartGroup" color="3986C1" x="224" y="368" />
+		<entity schema="Default" name="SmartRule" color="3986C1" x="400" y="208" />
+		<entity schema="Default" name="library" color="BED3F4" x="1152" y="320" />
+		<entity schema="Default" name="media" color="C1D8EE" x="912" y="496" />
+		<entity schema="Default" name="mediaPlaylist" color="C1D8EE" x="592" y="368" />
+		<entity schema="Default" name="metadata" color="C1D8EE" x="1184" y="720" />
+		<entity schema="Default" name="playlist" color="C1D8EE" x="480" y="528" />
+		<entity schema="Default" name="probe" color="BED3F4" x="1344" y="528" />
+		<entity schema="Default" name="sourceDir" color="BED3F4" x="1344" y="320" />
+		<callout x="1152" y="224" pointer="Round" >
+			<comment><![CDATA[Current layout is generated by parsing the SQL script.
+DbSchema is in 'offline' mode (not connected to any database).]]></comment>
+		</callout>
+		<callout x="48" y="80" pointer="Round" >
 			<comment><![CDATA[DbSchema is disconnected from the database.
 New designed tables will be saved to project file and later can be create in any database.
 Right-click the layout to create new tables. Drop this callout from its context menu.]]></comment>
 		</callout>
-		<callout x="1248" y="80" pointer="Round" >
-			<comment><![CDATA[Current layout is generated by parsing the SQL script.
-DbSchema is in 'offline' mode (not connected to any database).]]></comment>
-		</callout>
 		<group name="library" color="ECF0F7" >
-			<entity schema="Default" name="sourceDir" />
 			<entity schema="Default" name="probe" />
 			<entity schema="Default" name="library" />
+			<entity schema="Default" name="sourceDir" />
 		</group>
 		<script name="SQL_Editor" id="Editor-1f38" language="SQL" >
 			<string><![CDATA[SELECT * FROM probe]]></string>
@@ -310,8 +329,7 @@ END
 CREATE TRIGGER delete_playlist BEFORE DELETE ON playlist
 BEGIN
 DELETE FROM metadata WHERE id=OLD.id;
-END
-]]></string>
+END]]></string>
 		</script>
 		<script name="SQL_Editor_004" id="Editor-ed5" language="SQL" >
 			<string><![CDATA[CREATE TABLE library ( 
@@ -396,8 +414,7 @@ END
 CREATE TRIGGER delete_playlist BEFORE DELETE ON playlist
 BEGIN
 DELETE FROM metadata WHERE id=OLD.id;
-END
-]]></string>
+END]]></string>
 		</script>
 		<script name="SQL_Editor_005" id="Editor-8" language="SQL" >
 			<string><![CDATA[DELETE FROM metadata]]></string>
