@@ -30,9 +30,9 @@ private:
     QSharedPointer<QSqlQuery> m_removePlaylistRequest;
     QSharedPointer<QSqlQuery> m_updatePlaylistRequest;
 
-    QSharedPointer<QSqlQuery> m_createMetadataRequest;
-    QSharedPointer<QSqlQuery> m_selectMetadataRequest;
-    QSharedPointer<QSqlQuery> m_removeMetadataRequest;
+//    QSharedPointer<QSqlQuery> m_createMetadataRequest;
+//    QSharedPointer<QSqlQuery> m_selectMetadataRequest;
+//    QSharedPointer<QSqlQuery> m_removeMetadataRequest;
     QSharedPointer<QSqlQuery> m_updateMetadataRequest;
 
     QSqlQuery m_createProbeRequest;
@@ -52,6 +52,8 @@ private:
     void initMetadataRequest();
     void initProbeRequest();
     void initSourceDirRequest();
+
+    bool updateMetadata(QUuid,QString, QVariant);
 
 public:
     DataSql() = default;
