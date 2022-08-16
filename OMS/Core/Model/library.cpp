@@ -56,9 +56,9 @@ void Library::set() {
     connect(this, &Library::playlistCountChanged, this, &Library::libraryChanged);
 
     connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia,
-            Qt::QueuedConnection);
+            Qt::DirectConnection);
     connect(&m_probe, &LibraryProbe::currentChanged, this,
-            &Library::onProbedChanged, Qt::QueuedConnection);
+            &Library::onProbedChanged, Qt::DirectConnection);
 
     m_replacer = QThread::create([this]() {
         auto list = m_playlist.values();

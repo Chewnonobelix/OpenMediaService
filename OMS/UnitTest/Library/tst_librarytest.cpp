@@ -584,6 +584,7 @@ void LibraryTest::onProbedChangedTest()
 {
     QFETCH(double, expected);
     QFETCH(int, mediaCount);
+    QEventLoop loop; //Needed for processing timerEvent
 
     Library l;
     auto probe = l.probe();
@@ -592,9 +593,14 @@ void LibraryTest::onProbedChangedTest()
     QSignalSpy spy(&l, &Library::mediasChanged);
     l.scan();
 
-    spy.wait();
+    QTimer timer;
+    QObject::connect(&timer, &QTimer::timeout, [&loop]() {
+        loop.quit();
+    });
+    timer.start(std::chrono::seconds(1));
+    loop.exec();
 
-    QCOMPARE(spy.count(), 26);
+    QCOMPARE(spy.count(), mediaCount+1);
     QCOMPARE(probe->current(), expected);
     QCOMPARE(l.mediaCount(), mediaCount);
 }
@@ -618,6 +624,7 @@ void LibraryTest::onSmartPlaylistChangedTest()
 {
     QFETCH(int, count);
     QFETCH(int, expected);
+    QEventLoop loop; //Needed for processing timerEvent
 
     Library l;
     auto spl = SmartPlaylistPointer::create();
@@ -635,7 +642,13 @@ void LibraryTest::onSmartPlaylistChangedTest()
     rule->setOp(AbstractRule::Op::Inferior);
     spl->setRules(group);
 
-    spy.wait();
+    QTimer timer;
+    QObject::connect(&timer, &QTimer::timeout, [&loop]() {
+        loop.quit();
+    });
+    timer.start(std::chrono::seconds(1));
+    loop.exec();
+
 
     QCOMPARE(spl->count(), expected);
 }
