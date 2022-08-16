@@ -97,10 +97,10 @@ MediaWindow {
                             display: qsTr("Xml")
                             db: "DataXml"
                         }
-                        //                    ListElement {
-                        //                        display: "SQL"
-                        //                        db: "DataSql"
-                        //                    }
+                        ListElement {
+                            display: "SQL"
+                            db: "DataSql"
+                        }
                     }
 
                     textRole: "display"

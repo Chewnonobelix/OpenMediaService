@@ -1,4 +1,4 @@
-QT += quick xml core qml
+QT += quick xml core qml sql
 
 CONFIG += c++latest
 
@@ -24,6 +24,7 @@ SOURCES += \
         Controller/Core/tabmanager.cpp \
         Controller/Core/tabwrapper.cpp \
         Controller/Data/datajson.cpp \
+        Controller/Data/datasql.cpp \
         Controller/Data/dataxml.cpp \
         Controller/Data/interfacesaver.cpp \
         Controller/DataModel/librarydatamodel.cpp \
@@ -77,8 +78,10 @@ HEADERS += \
     Controller/Core/tabmanager.h \
     Controller/Core/tabwrapper.h \
     Controller/Data/datajson.h \
+    Controller/Data/datasql.h \
     Controller/Data/dataxml.h \
     Controller/Data/interfacesaver.h \
+    Controller/Data/sqlrequest.h \
     Controller/DataModel/librarydatamodel.h \
     Controller/DataModel/orderdisplaymodel.h \
     Controller/DataModel/playlistlistmodel.h \

@@ -217,6 +217,17 @@ bool Library::removeMedia(QString id) {
     return ret;
 }
 
+QMap<QUuid, MediaPointer> Library::medias(QString id) {
+    QMap<QUuid, MediaPointer> ret;
+
+    if (QUuid::fromString(id).isNull())
+        ret = m_medias;
+    else
+        ret[QUuid::fromString(id)] = m_medias[QUuid::fromString(id)];
+
+    return ret;
+}
+
 bool operator<(LibraryPointer l1, LibraryPointer l2) {
     return (l1->name() < l2->name()) || (l1->role() < l2->role());
 }

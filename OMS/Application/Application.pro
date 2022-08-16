@@ -1,4 +1,4 @@
-QT += quick xml core qml
+QT += quick xml core qml sql
 
 CONFIG += c++latest
 

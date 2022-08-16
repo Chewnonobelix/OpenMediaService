@@ -45,6 +45,7 @@ private:
     QJsonArray jsonTagList(QList<MediaPlayerGlobal::Tag>) const;
     QList<MediaPlayerGlobal::Tag> fromjsonTagList(QJsonArray) const;
 
+    void connectLibrary(LibraryPointer);
 public:
 	Library();
 	using MetaData::MetaData;
@@ -82,6 +83,7 @@ public slots:
 
 	Q_INVOKABLE bool addMedia(MediaPointer);
 	Q_INVOKABLE bool removeMedia(QString);
+    Q_INVOKABLE QMap<QUuid, MediaPointer> medias(QString = "");
 
 	Q_INVOKABLE bool addSourceDir(QString);
 	Q_INVOKABLE bool removeSourceDir(QString);
@@ -95,6 +97,7 @@ public slots:
 	Q_INVOKABLE QMap<QUuid, PlaylistPointer> playlist(QString = "");
     Q_INVOKABLE QList<PlayList*> playlistList() const;
     Q_INVOKABLE bool addToPlaylist(QString, QString);
+
 	void onProbedChanged();
 	void onMediaChanged();
     void onSmartPlaylistChanged();
