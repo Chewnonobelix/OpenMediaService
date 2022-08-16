@@ -144,7 +144,7 @@ DELETE FROM SmartRule WHERE parent=OLD.id;
 END]]></string>
 		</trigger>
 	</schema>
-	<connector name="Build" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.36.0.3.jar" url="jdbc:sqlite:D:\Qt\OpenMediaService\build-OMS-Desktop_Qt_6_4_0_MinGW_64_bit-Debug\Application/oms" host="localhost" port="7210" instance="D:/Qt/OpenMediaService/OMS/oms" />
+	<connector name="Build" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.36.0.3.jar" driver_desc="Standard" url="jdbc:sqlite:D:\Qt\OpenMediaService\build-OMS-Desktop_Qt_6_4_0_MinGW_64_bit-Debug\Application/oms" host="localhost" port="7210" instance="D:/Qt/OpenMediaService/OMS/oms" />
 	<connector name="Sqlite" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.36.0.3.jar" driver_desc="Standard" host="localhost" port="7210" instance="D:/Qt/OpenMediaService/OMS/oms" />
 	<layout name="Parsed Script Layout" id="Layout_1fb6" show_relation="columns" >
 		<entity schema="Default" name="SmartGroup" color="3986C1" x="224" y="368" />
@@ -409,12 +409,10 @@ END]]></string>
 			<string><![CDATA[DELETE FROM metadata]]></string>
 		</script>
 		<script name="SQL_Editor_006" id="Editor-2694" language="SQL" >
-			<string><![CDATA[SELECT * FROM library
-]]></string>
+			<string><![CDATA[SELECT * FROM library]]></string>
 		</script>
 		<script name="SQL_Editor_007" id="Editor-555" language="SQL" >
-			<string><![CDATA[SELECT * FROM metadata
-]]></string>
+			<string><![CDATA[SELECT * FROM metadata]]></string>
 		</script>
 		<script name="SQL_Editor_008" id="Editor-127e" language="SQL" >
 			<string><![CDATA[SELECT * FROM probe]]></string>
@@ -427,6 +425,24 @@ END]]></string>
 		</script>
 		<script name="SQL_Editor_011" id="Editor-892" language="SQL" >
 			<string><![CDATA[SELECT * FROM  library as l, metadata as m, probe as p WHERE m.id = l.id OR p.lib = l.id;]]></string>
+		</script>
+		<script name="SQL_Editor_012" id="Editor-65e" language="SQL" >
+			<string><![CDATA[SELECT * FROM playlist WHERE lib=:lib
+SELECT * FROM mediaPlaylist WHERE pl=:pl
+SELECT * FROM SmartGroup WHERE parent=:parent
+SELECT * FROM SmartRule WHERE parent=:parent
+
+UPDATE SmartRule SET op=:op, field=:field, value::value WHERE id=:id
+
+UPDATE SmartGroup SET op=:op WHERE id=:id
+
+INSERT OR REPLACE INTO mediaPlaylist (pl, media, pIndex) VALUES (:pl, :media, :pIndex)
+
+DELETE FROM mediaPlaylist WHERE pl=:pl AND media=:media
+DELETE FROM playlist WHERE id=:id
+DELETE FROM SmartGroup WHERE id=:id
+DELETE FROM SmartRule WHERE id=:id
+]]></string>
 		</script>
 		<script name="create_library" id="Editor-127f" language="SQL" >
 			<string><![CDATA[CREATE TRIGGER create_library AFTER INSERT ON library

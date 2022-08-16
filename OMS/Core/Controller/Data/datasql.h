@@ -20,25 +20,34 @@ private:
     QSharedPointer<QSqlQuery> m_selectLibraryRequest;
     QSharedPointer<QSqlQuery> m_removeLibraryRequest;
 
-    QSqlQuery m_createMediaRequest;
-    QSqlQuery m_selectMediaRequest;
-    QSqlQuery m_removeMediaRequest;
-    QSqlQuery m_updateMediaRequest;
+    QSharedPointer<QSqlQuery> m_createMediaRequest;
+    QSharedPointer<QSqlQuery> m_selectMediaRequest;
+    QSharedPointer<QSqlQuery> m_removeMediaRequest;
 
     QSharedPointer<QSqlQuery> m_createPlaylistRequest;
     QSharedPointer<QSqlQuery> m_selectPlaylistRequest;
     QSharedPointer<QSqlQuery> m_removePlaylistRequest;
-    QSharedPointer<QSqlQuery> m_updatePlaylistRequest;
+    //    QSharedPointer<QSqlQuery> m_updatePlaylistRequest;
 
-//    QSharedPointer<QSqlQuery> m_createMetadataRequest;
-//    QSharedPointer<QSqlQuery> m_selectMetadataRequest;
-//    QSharedPointer<QSqlQuery> m_removeMetadataRequest;
+    QSharedPointer<QSqlQuery> m_selectSmartGroupRequest;
+    QSharedPointer<QSqlQuery> m_removeSmartGroupRequest;
+    QSharedPointer<QSqlQuery> m_updateSmartGroupRequest;
+
+    QSharedPointer<QSqlQuery> m_selectSmartRuleRequest;
+    QSharedPointer<QSqlQuery> m_removeSmartRuleRequest;
+    QSharedPointer<QSqlQuery> m_updateSmartRuleRequest;
+
+    QSharedPointer<QSqlQuery> m_createMediaPlaylistRequest;
+    QSharedPointer<QSqlQuery> m_selectMediaPlaylistRequest;
+    QSharedPointer<QSqlQuery> m_removeMediaPlaylistRequest;
+
+    QSharedPointer<QSqlQuery> m_selectMetadataRequest;
     QSharedPointer<QSqlQuery> m_updateMetadataRequest;
+    //    QSharedPointer<QSqlQuery> m_removeMetadataRequest;
 
-    QSqlQuery m_createProbeRequest;
-    QSqlQuery m_selectProbeRequest;
-    QSqlQuery m_removeProbeRequest;
-    QSqlQuery m_updateProbeRequest;
+    //    QSqlQuery m_createProbeRequest;
+    QSharedPointer<QSqlQuery> m_selectProbeRequest;
+    QSharedPointer<QSqlQuery> m_updateProbeRequest;
 
     QSqlQuery m_createSourceDirRequest;
     QSqlQuery m_selectSourceDirRequest;
@@ -54,6 +63,25 @@ private:
     void initSourceDirRequest();
 
     bool updateMetadata(QUuid,QString, QVariant);
+
+    void reloadMedia(QUuid);
+    void reloadPlaylist(QUuid);
+    void reloadLibrary();
+
+    void removeMedia(QUuid);
+    void removePlaylist(QUuid);
+    void removeSmartGroup(QUuid);
+    void removeSmartRule(QUuid);
+
+    void createMedia(MediaPointer);
+    void createPlaylist(PlaylistPointer);
+    void createSmartGroup(SmartGroupPointer);
+    void createSmartRule(SmartRule);
+
+    void updateMedia(MediaPointer);
+    void updatePlaylist(PlaylistPointer);
+    void updateSmartGroup(SmartGroupPointer);
+    void updateSmartRule(SmartRule);
 
 public:
     DataSql() = default;
