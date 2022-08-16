@@ -42,8 +42,8 @@ QVariant SmartRule::value() const
 
 bool SmartRule::setValue(QVariant newvalue)
 {
-    m_value = newvalue;
-    return setMetadata("value", newvalue);
+    m_value = newvalue.toList().isEmpty() ? QVariantList({newvalue}) : newvalue.toList();
+    return setMetadata("value", m_value);
 }
 
 QVariant& SmartRule::toTest()
@@ -59,8 +59,9 @@ QVariant SmartRule::toTest() const
 bool SmartRule::setToTest(QVariant newtoTest)
 {
     auto ret = m_toTest != newtoTest;
-    if(ret)
+    if(ret) {
         m_toTest = newtoTest.toList().isEmpty() ? QVariantList({newtoTest}) : newtoTest.toList();
+    }
     return ret;
 }
 
