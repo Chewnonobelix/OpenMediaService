@@ -457,3 +457,12 @@ QList<MediaPlayerGlobal::Tag> Library::fromjsonTagList(QJsonArray tag) const
 
     return ret;
 }
+
+QMap<QUuid, PlaylistPointer> Library::allPlaylist() const
+{
+    auto ret = m_playlist;
+    for(auto it: m_smartPlaylist)
+        ret[it->id()] = it;
+
+    return ret;
+}

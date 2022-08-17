@@ -60,16 +60,23 @@ public:
 
 	QUuid id() const;
     bool setId(QUuid);
+
 	QString name() const;
     bool setName(QString);
+
 	MediaPlayerGlobal::MediaRole role() const;
     bool setRole(MediaPlayerGlobal::MediaRole);
+
 	bool isShared() const;
     bool setShared(bool);
+
 	Q_INVOKABLE QStringList sourceDir() const;
+
 	int mediaCount() const;
+    int playlistCount() const;
+
 	LibraryProbe *probe();
-	int playlistCount() const;
+
     QList<MediaPlayerGlobal::Tag> tags() const;
     void addTag(MediaPlayerGlobal::Tag);
     bool editTag(MediaPlayerGlobal::Tag);
@@ -95,7 +102,10 @@ public slots:
 	Q_INVOKABLE bool addPlaylist(PlaylistPointer);
 	Q_INVOKABLE bool removePlaylist(QString);
 	Q_INVOKABLE QMap<QUuid, PlaylistPointer> playlist(QString = "");
+
     Q_INVOKABLE QList<PlayList*> playlistList() const;
+    QMap<QUuid, PlaylistPointer> allPlaylist() const;
+
     Q_INVOKABLE bool addToPlaylist(QString, QString);
 
 	void onProbedChanged();
