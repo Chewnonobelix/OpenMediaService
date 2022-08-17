@@ -202,6 +202,9 @@ bool Library::addMedia(MediaPointer p) {
         m_medias[p->id()]->blockSignals(false);
     }
     emit mediasChanged(m_medias[p->id()]);
+    for(auto it: m_smartPlaylist)
+        it->append(p);
+
     return true;
 }
 
@@ -259,10 +262,10 @@ bool Library::addSmartPlaylist(SmartPlaylistPointer smart) {
     connect(smart.data(), &PlayList::playlistChanged, this, &Library::libraryChanged);
     connect(smart.data(), &SmartPlaylist::rulesChanged, this, &Library::onSmartPlaylistChanged);
 
-    if(!
-
-        ret)
+    if(!ret) {
         emit playlistCountChanged();
+        emit smart->playlistChanged();
+    }
 
     return !ret;
 }

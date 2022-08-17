@@ -32,7 +32,7 @@ bool SmartPlaylist::isValid(MediaPointer m)
         return true;
 
     if(m_expression.isNull())
-        return false;
+        rebuild();
 
     m_rules->set(m);
 
