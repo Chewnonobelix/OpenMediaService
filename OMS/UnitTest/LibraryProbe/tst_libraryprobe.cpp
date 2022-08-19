@@ -78,6 +78,7 @@ void LibraryProbeTest::scanTest()
 {
     QFETCH(QStringList, sources);
     QFETCH(int, expectedCount);
+    QEventLoop loop; //Needed for processing timerEvent
 
     LibraryProbe probe;
     probe.setSourceDir(sources);
@@ -85,10 +86,15 @@ void LibraryProbeTest::scanTest()
     QSignalSpy currentChanged(&probe, &LibraryProbe::currentChanged);
     QSignalSpy mediaFind(&probe, &LibraryProbe::mediaFind);
 
-    auto result = probe.probe();
+    probe.probe();
 
-    mediaFind.wait();
-//    result.waitForFinished();
+    QTimer timer;
+    QObject::connect(&timer, &QTimer::timeout, [&loop]() {
+        loop.quit();
+    });
+    timer.start(std::chrono::seconds(1));
+    loop.exec();
+
 
     QCOMPARE(mediaFind.count(), expectedCount);
     QCOMPARE(currentChanged.count(), expectedCount);

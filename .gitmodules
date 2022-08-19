@@ -1,6 +1,7 @@
 [submodule "OMS/ExpressionLibrary"]
 	path = OMS/ExpressionLibrary
 	url = git@github.com:Chewnonobelix/ExpressionLibrary.git
+	tag = 1.0.0
 [submodule "OMS/DesignLibrary"]
 	path = OMS/DesignLibrary
 	url = git@github.com:Chewnonobelix/DesignLibrary.git

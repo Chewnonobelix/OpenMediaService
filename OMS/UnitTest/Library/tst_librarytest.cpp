@@ -584,6 +584,7 @@ void LibraryTest::onProbedChangedTest()
 {
     QFETCH(double, expected);
     QFETCH(int, mediaCount);
+    QEventLoop loop; //Needed for processing timerEvent
 
     Library l;
     auto probe = l.probe();
@@ -592,9 +593,14 @@ void LibraryTest::onProbedChangedTest()
     QSignalSpy spy(&l, &Library::mediasChanged);
     l.scan();
 
-    spy.wait();
+    QTimer timer;
+    QObject::connect(&timer, &QTimer::timeout, [&loop]() {
+        loop.quit();
+    });
+    timer.start(std::chrono::seconds(1));
+    loop.exec();
 
-    QCOMPARE(spy.count(), 26);
+    QCOMPARE(spy.count(), mediaCount+1);
     QCOMPARE(probe->current(), expected);
     QCOMPARE(l.mediaCount(), mediaCount);
 }
@@ -609,7 +615,34 @@ void LibraryTest::onProbedChangedTest_data()
 
 void LibraryTest::onMediasChangedTest()
 {
-    QFAIL("Not implemented");
+    Library l;
+    auto media = factory<Media>();
+    auto smart = factory<SmartPlaylist>();
+    auto group = smart->rules();
+    auto rule = group->add().dynamicCast<SmartRule>();
+    rule->setField("count");
+    rule->setValue(1);
+    rule->setOp(AbstractRule::Op::Inferior);
+    l.addSmartPlaylist(smart);
+    l.addMedia(media);
+
+    QEventLoop loop; //Needed for processing timerEvent
+    QTimer timer;
+    QObject::connect(&timer, &QTimer::timeout, [&loop]() {
+        loop.quit();
+    });
+    timer.start(std::chrono::seconds(1));
+    loop.exec();
+
+    QCOMPARE(smart->count(), 1);
+    QSignalSpy spy(&l, &Library::mediasChanged);
+    media->setCount(2);
+
+    timer.start(std::chrono::seconds(1));
+    loop.exec();
+
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(smart->count(), 0);
 }
 
 void LibraryTest::onMediasChangedTest_data() {}
@@ -635,7 +668,14 @@ void LibraryTest::onSmartPlaylistChangedTest()
     rule->setOp(AbstractRule::Op::Inferior);
     spl->setRules(group);
 
-    spy.wait();
+    QEventLoop loop; //Needed for processing timerEvent
+    QTimer timer;
+    QObject::connect(&timer, &QTimer::timeout, [&loop]() {
+        loop.quit();
+    });
+    timer.start(std::chrono::seconds(1));
+    loop.exec();
+
 
     QCOMPARE(spl->count(), expected);
 }

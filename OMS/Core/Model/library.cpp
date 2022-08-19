@@ -56,9 +56,9 @@ void Library::set() {
     connect(this, &Library::playlistCountChanged, this, &Library::libraryChanged);
 
     connect(&m_probe, &LibraryProbe::mediaFind, this, &Library::addMedia,
-            Qt::QueuedConnection);
+            Qt::DirectConnection);
     connect(&m_probe, &LibraryProbe::currentChanged, this,
-            &Library::onProbedChanged, Qt::QueuedConnection);
+            &Library::onProbedChanged, Qt::DirectConnection);
 
     m_replacer = QThread::create([this]() {
         auto list = m_playlist.values();
@@ -202,6 +202,9 @@ bool Library::addMedia(MediaPointer p) {
         m_medias[p->id()]->blockSignals(false);
     }
     emit mediasChanged(m_medias[p->id()]);
+    for(auto it: m_smartPlaylist)
+        it->append(p);
+
     return true;
 }
 
@@ -259,10 +262,10 @@ bool Library::addSmartPlaylist(SmartPlaylistPointer smart) {
     connect(smart.data(), &PlayList::playlistChanged, this, &Library::libraryChanged);
     connect(smart.data(), &SmartPlaylist::rulesChanged, this, &Library::onSmartPlaylistChanged);
 
-    if(!
-
-        ret)
+    if(!ret) {
         emit playlistCountChanged();
+        emit smart->playlistChanged();
+    }
 
     return !ret;
 }
@@ -454,6 +457,15 @@ QList<MediaPlayerGlobal::Tag> Library::fromjsonTagList(QJsonArray tag) const
         t.second = obj["tag"].toString();
         ret<<t;
     }
+
+    return ret;
+}
+
+QMap<QUuid, PlaylistPointer> Library::allPlaylist() const
+{
+    auto ret = m_playlist;
+    for(auto it: m_smartPlaylist)
+        ret[it->id()] = it;
 
     return ret;
 }
