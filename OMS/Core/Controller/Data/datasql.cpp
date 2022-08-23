@@ -32,7 +32,7 @@ void DataSql::initMediaRequest()
     m_selectMediaRequest = QSharedPointer<QSqlQuery>::create(m_db);
     m_removeMediaRequest = QSharedPointer<QSqlQuery>::create(m_db);
 
-    qDebug() << "Create media request" << m_createMediaRequest->prepare("INSERT INTO media(lib, id) VALUES (:id, :lib)")<< m_createMediaRequest->lastError();
+    qDebug() << "Create media request" << m_createMediaRequest->prepare("INSERT INTO media(lib, id) VALUES (:lib, :id)")<< m_createMediaRequest->lastError();
     qDebug() << "Select media request" << m_selectMediaRequest->prepare("SELECT * FROM media WHERE lib=:lib")<< m_selectMediaRequest->lastError();
     qDebug() << "Remove media request" << m_removeMediaRequest->prepare("DELETE FROM media WHERE lib=:lib AND id NOT IN (:ids)")<< m_removeMediaRequest->lastError();
 }
@@ -55,7 +55,7 @@ void DataSql::initPlaylistRequest()
     m_selectMediaPlaylistRequest = QSharedPointer<QSqlQuery>::create(m_db);
     m_removeMediaPlaylistRequest = QSharedPointer<QSqlQuery>::create(m_db);
 
-    qDebug() << "Create playlist request" << m_createPlaylistRequest->prepare("INSERT INTO playlist(lib, id) VALUES (:id, :lib)")<< m_createPlaylistRequest->lastError();
+    qDebug() << "Create playlist request" << m_createPlaylistRequest->prepare("INSERT INTO playlist(lib, id) VALUES (:lib, :id)")<< m_createPlaylistRequest->lastError();
     qDebug() << "Select playlist request" << m_selectPlaylistRequest->prepare("SELECT * FROM playlist WHERE lib=:lib")<< m_selectPlaylistRequest->lastError();
     qDebug() << "Remove playlist request" << m_removePlaylistRequest->prepare("DELETE FROM playlist WHERE id=:id")<< m_removePlaylistRequest->lastError();
 
