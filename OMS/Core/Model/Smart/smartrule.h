@@ -13,6 +13,10 @@
 
 #include <Model/Expression/expressionfactory.h>
 
+class SmartRule;
+
+using SmartRulePointer = QSharedPointer<SmartRule>;
+
 class MEDIAPLAYERCORE_EXPORT SmartRule: public AbstractRule {
 private:
     QVariant m_toTest;
