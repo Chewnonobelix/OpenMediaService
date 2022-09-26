@@ -285,38 +285,39 @@ bool remove (T container, QSharedPointer<QSqlQuery> query, QUuid lib)
     return query->exec();
 }
 
-void DataSql::removeMedia(QUuid lib)
+bool DataSql::deleteMedia(QUuid lib)
 {
     auto ret = remove(m_libraries[lib]->medias(), m_removeMediaRequest , lib);
+    return ret;
 }
 
-void DataSql::removePlaylist(QUuid lib)
+bool DataSql::deletePlaylist(QUuid lib)
 {
-    auto pl = m_libraries[lib]->playlist();
-    for(auto it: m_libraries[lib]->smartPlaylist())
-        pl[it->id()] = it;
-
+    auto pl = m_libraries[lib]->allPlaylist();
     auto ret = remove(pl, m_removeMediaRequest , lib);
+    return ret;
 }
 
-void DataSql::removeSmartGroup(QUuid id)
+bool DataSql::deleteSmartGroup(QUuid id)
 {
     m_removeSmartGroupRequest->bindValue(":id", id);
-    m_removeSmartGroupRequest->exec();
+    auto ret = m_removeSmartGroupRequest->exec();
+    return ret;
 }
 
-void DataSql::removeSmartRule(QUuid id)
+bool DataSql::deleteSmartRule(QUuid id)
 {
     m_removeSmartRuleRequest->bindValue(":id", id);
-    m_removeSmartRuleRequest->exec();
+    auto ret =  m_removeSmartRuleRequest->exec();
+    return ret;
 }
 
-void DataSql::createMedia(MediaPointer) {}
-void DataSql::createPlaylist(PlaylistPointer) {}
-void DataSql::createSmartGroup(SmartGroupPointer) {}
-void DataSql::createSmartRule(SmartRule) {}
+bool DataSql::insertMedia(MediaPointer) {return false;}
+bool DataSql::insertPlaylist(PlaylistPointer) {return false;}
+bool DataSql::insertSmartGroup(SmartGroupPointer) {return false;}
+bool DataSql::insertSmartRule(SmartRulePointer) {return false;}
 
-void DataSql::updateMedia(MediaPointer) {}
-void DataSql::updatePlaylist(PlaylistPointer) {}
-void DataSql::updateSmartGroup(SmartGroupPointer) {}
-void DataSql::updateSmartRule(SmartRule) {}
+bool DataSql::updateMedia(QUuid) {return false;}
+bool DataSql::updatePlaylist(QUuid) {return false;}
+bool DataSql::updateSmartGroup(QUuid) {return false;}
+bool DataSql::updateSmartRule(QUuid) {return false;}

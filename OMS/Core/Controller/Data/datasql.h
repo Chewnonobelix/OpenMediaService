@@ -68,20 +68,20 @@ private:
     void reloadPlaylist(QUuid);
     void reloadLibrary();
 
-    void removeMedia(QUuid);
-    void removePlaylist(QUuid);
-    void removeSmartGroup(QUuid);
-    void removeSmartRule(QUuid);
+    bool deleteMedia(QUuid) override;
+    bool deletePlaylist(QUuid) override;
+    bool deleteSmartGroup(QUuid) override;
+    bool deleteSmartRule(QUuid) override;
 
-    void createMedia(MediaPointer);
-    void createPlaylist(PlaylistPointer);
-    void createSmartGroup(SmartGroupPointer);
-    void createSmartRule(SmartRule);
+    bool insertMedia(MediaPointer) override;
+    bool insertPlaylist(PlaylistPointer) override;
+    bool insertSmartGroup(SmartGroupPointer) override;
+    bool insertSmartRule(SmartRulePointer) override;
 
-    void updateMedia(MediaPointer);
-    void updatePlaylist(PlaylistPointer);
-    void updateSmartGroup(SmartGroupPointer);
-    void updateSmartRule(SmartRule);
+    bool updateMedia(QUuid) override;
+    bool updatePlaylist(QUuid) override;
+    bool updateSmartGroup(QUuid) override;
+    bool updateSmartRule(QUuid) override;
 
 public:
     DataSql() = default;
