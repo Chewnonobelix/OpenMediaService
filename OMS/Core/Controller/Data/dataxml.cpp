@@ -108,8 +108,8 @@ bool DataXml::removeLibrary(QString l) {
 bool DataXml::updateLibrary(LibraryPointer lid) {
 	QFile f("Library/" + lid->id().toString() + ".xml");
 	bool ret = f.open(QIODevice::ReadWrite);
-	QDomDocument doc;
-	ret &= doc.setContent(&f);
+    QDomDocument doc;
+    ret &= (bool)doc.setContent(&f);
 
 	if (!ret)
 		return ret;

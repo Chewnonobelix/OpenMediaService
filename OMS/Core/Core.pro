@@ -1,6 +1,6 @@
 QT += quick xml core qml sql
 
-CONFIG += c++latest
+CONFIG += c++17
 
 TEMPLATE = lib
 DEFINES += MEDIAPLAYERCORE_LIBRARY
@@ -48,14 +48,14 @@ SOURCES += \
         Model/Smart/smartgroup.cpp \
         Model/Smart/smartrule.cpp \
         Model/smartplaylist.cpp \
-        Model\global.cpp \
-        Model\library.cpp \
-        Model\libraryprobe.cpp \
-        Model\media.cpp \
-        Model\playlist.cpp \
+        Model/global.cpp \
+        Model/library.cpp \
+        Model/libraryprobe.cpp \
+        Model/media.cpp \
+        Model/playlist.cpp \
         Controller/Core/controllersettings.cpp
 
-RESOURCES += View\qml.qrc
+RESOURCES += View/qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH = "$${OUT_PWD}/../Application/Ux"
@@ -63,7 +63,8 @@ QML_IMPORT_PATH = "$${OUT_PWD}/../Application/Ux"
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH = $$QML_IMPORT_PATH
 
-DEFINES += QT_DEPRECATED_WARNINGS QML_SOURCE=\\\"$$PWD/View/|$$PWD/../Plugins/Image/|$$PWD/../Plugins/Comics/\\\" QML_IMPORT_PATH=\\\"$$QML_IMPORT_PATH\\\"
+#DEFINES += QT_DEPRECATED_WARNINGS QML_SOURCE=\\\"$$PWD/View/|$$PWD/../Plugins/Image/|$$PWD/../Plugins/Comics/\\\" QML_IMPORT_PATH=\\\"$$QML_IMPORT_PATH\\\"
+DEFINES += QT_DEPRECATED_WARNINGS QML_SOURCE=\\\"$$PWD/View/\\\" QML_IMPORT_PATH=\\\"$$QML_IMPORT_PATH\\\"
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -103,11 +104,11 @@ HEADERS += \
     Model/Smart/smartgroup.h \
     Model/Smart/smartrule.h \
     Model/smartplaylist.h \
-    Model\global.h \
-    Model\library.h \
-    Model\libraryprobe.h \
-    Model\media.h \
-    Model\playlist.h \
+    Model/global.h \
+    Model/library.h \
+    Model/libraryprobe.h \
+    Model/media.h \
+    Model/playlist.h \
     Controller/Core/controllersettings.h \
     mediaplayercore_global.h
 
@@ -115,13 +116,25 @@ HEADERS += \
 INCLUDEPATH += $$PWD/../DesignLibrary/DesignPattern $$PWD/../ExpressionLibrary/LibExpression $$PWD/../UxComponent
 
 
-LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
-LIBS += -L$$OUT_PWD/../ExpressionLibrary/LibExpression/debug -lLibExpression
-LIBS += -L$$OUT_PWD/../Application/Ux -lUxComponents
+win32: {
+    LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
+    LIBS += -L$$OUT_PWD/../ExpressionLibrary/LibExpression/debug -lLibExpression
+    LIBS += -L$$OUT_PWD/../Application/Ux -lUxComponents
+}
+else:unix: {
+    LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/ -lDesignPattern
+    LIBS += -L$$OUT_PWD/../ExpressionLibrary/LibExpression/ -lLibExpression
+    LIBS += -L$$OUT_PWD/../Application/Ux -lUxComponents
+}
 
+win32: {
 smart.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//Rules//*.json) $$shell_path($${OUT_PWD}//..//Application//Rules))
 tr.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//Tr//*.qm) $$shell_path($${OUT_PWD}//..//Application//Tr))
 7z.commands += $$quote(cmd /c xcopy /Y /S /I $$shell_path($${PWD}//..//3rdParty//7z.*) $$shell_path($${OUT_PWD}//..//Application//3rdParty))
+}
+else:unix: {
+
+}
 
 QMAKE_EXTRA_TARGETS += smart tr 7z
 POST_TARGETDEPS += smart tr 7z

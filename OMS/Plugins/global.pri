@@ -2,7 +2,7 @@ QT += qml quick core
 
 TEMPLATE = lib
 
-CONFIG += c++latest plugin
+CONFIG += c++17 plugin
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -44,7 +44,19 @@ unix {
 
 INCLUDEPATH = $$PWD/../Core $$PWD/../3rdParty/xml2json/include
 DEPENDPATH = $$OUT_PWD/../../Application
-LIBS = -L$$OUT_PWD/../../Application -lLibMediaPlayerCore
+
+win32: {
+    LIBS += -L$$OUT_PWD/../../DesignLibrary/DesignPattern/debug -lDesignPattern
+    LIBS += -L$$OUT_PWD/../../ExpressionLibrary/LibExpression/debug -lLibExpression
+    LIBS += -L$$OUT_PWD/../../Application/Ux -lUxComponents
+    LIBS = -L$$OUT_PWD/../../Application -lLibMediaPlayerCore
+}
+else:unix: {
+    LIBS += -L$$OUT_PWD/../../DesignLibrary/DesignPattern/ -lDesignPattern
+    LIBS += -L$$OUT_PWD/../../ExpressionLibrary/LibExpression/ -lLibExpression
+    LIBS += -L$$OUT_PWD/../../Application/Ux -lUxComponents
+    LIBS = -L$$OUT_PWD/../../Application -lLibMediaPlayerCore
+}
 
 INCLUDEPATH += $$PWD/../DesignLibrary/DesignPattern $$PWD/../ExpressionLibrary/LibExpression $$PWD/../UxComponent
 

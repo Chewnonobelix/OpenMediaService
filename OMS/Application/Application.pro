@@ -1,6 +1,6 @@
 QT += quick xml core qml sql
 
-CONFIG += c++latest
+CONFIG += c++17
 
 INCLUDEPATH += ../DesignLibrary/DesignPattern ../ExpressionLibrary/LibExpression ../Core
 
