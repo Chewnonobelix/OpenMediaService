@@ -4,7 +4,7 @@
 void PluginManager::init() {
     QDir dir;
     dir.cd("Plugins");
-    auto list = dir.entryInfoList({"*.dll"});
+    auto list = dir.entryInfoList({"*.dll", "*.so"});
 
     auto toString = [](auto r) {
         switch(r) {

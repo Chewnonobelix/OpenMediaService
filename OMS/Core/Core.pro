@@ -5,7 +5,7 @@ CONFIG += c++17
 TEMPLATE = lib
 DEFINES += MEDIAPLAYERCORE_LIBRARY
 TARGET = LibMediaPlayerCore
-DLLDESTDIR = $$OUT_PWD/../Application/
+DESTDIR = $$OUT_PWD/../Application/
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Refer to the documentation for the
@@ -124,7 +124,7 @@ win32: {
 else:unix: {
     LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/ -lDesignPattern
     LIBS += -L$$OUT_PWD/../ExpressionLibrary/LibExpression/ -lLibExpression
-    LIBS += -L$$OUT_PWD/../Application/Ux -lUxComponents
+    LIBS += -L$$OUT_PWD/../Application/Ux/MediaPlayer/Components -lUxComponents
 }
 
 win32: {

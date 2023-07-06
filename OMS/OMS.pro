@@ -7,15 +7,15 @@ SUBDIRS = \
     ExpressionLibrary \
     UxComponent \
     Core \
+    Application \
     Plugins \
 #    UnitTest \
 #    ManulTest \
-    Application \
 
 TRANSLATIONS += Tr\Francais.ts \
                 Tr\English.ts
 
-Application.depends = Core Plugins
+Application.depends = Core
 #UnitTest.depends = Core Plugins
 Core.depends = DesignLibrary ExpressionLibrary UxComponent
 Plugins.depends = Core UxComponent
